@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "classcad-server --port 9091 --inst 1 --ccapp ./_gitignore/FreeBaseModeling-0.0.0-experimental.10.ccapp"
+    "start": "classcad-server --port 9091 --inst 1 --ccapp C:/Users/.../downloaded-x.x.x.ccapp"
   },
   "dependencies": {
     "@awvinf/classcad-windows-x64": "0.0.0-experimental.10"
