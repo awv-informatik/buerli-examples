@@ -1,0 +1,88 @@
+{
+  "name": "customizable-cad-client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "postinstall": "patch-package",
+    "start": "npm run dev",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-scripts eject",
+    "dev": "react-app-rewired start",
+    "lint": "eslint \"./src/**/*.ts?(x)\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "jsxBracketSameLine": true,
+    "tabWidth": 2,
+    "printWidth": 120
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@awvinf/icons": "^1.0.4",
+    "@buerli.io/classcad": "0.0.19",
+    "@buerli.io/com": "0.0.19",
+    "@buerli.io/core": "0.0.19",
+    "@buerli.io/react": "0.0.19",
+    "antd": "^3.26.18",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-three-fiber": "5.1.4",
+    "styled-components": "^4.4.1",
+    "three": "^0.122.0",
+    "zustand": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.54",
+    "@types/react": "^16.9.55",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^4.4.3",
+    "@types/webpack-env": "^1.13.6",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "babel-plugin-import": "^1.13.0",
+    "customize-cra": "^1.0.0",
+    "customize-cra-react-refresh": "^1.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "husky": "^2.3.0",
+    "less": "^3.12.2",
+    "less-loader": "^5.0.0",
+    "lint-staged": "^8.1.7",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.0.0",
+    "prettier": "^1.19.1",
+    "react-app-rewired": "^2.1.5",
+    "react-scripts": "3.4.3",
+    "rimraf": "^2.6.2",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.9.7",
+    "webpack-bundle-analyzer": "^3.8.0"
+  }
+}

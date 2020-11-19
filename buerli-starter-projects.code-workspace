@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "client/customizable-cad"
+		},
+				{
+			"path": "server"
+		}
+
+    ],
+    "settings": {}
+}
