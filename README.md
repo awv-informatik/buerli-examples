@@ -8,7 +8,7 @@ The projects in this repository serve as a template to easily set up new project
 
 First of all you need a running ClassCAD Server, which offers the CAD service via WebSocket. In the subdirectory `./server` you can find the corresponding template of an npm package.
 
-[Please have a look at the server readme](./server/README.md).
+[Please have a look at the server package](./server).
 
 ### 2. Client
 
