@@ -14,6 +14,6 @@ First of all you need a running ClassCAD Server, which offers the CAD service vi
 
 If the ClassCAD server is up, you are ready to start building cool CAD web apps!
 
-- [Solid API Application](./client/solid-api/README.md)
-- [History API Application](./client/history-api/README.md)
-- [Customizable CAD Application](./client/customizable-cad/README.md)
+- [Solid API Application](./client/solid-api)
+- [History API Application](./client/history-api)
+- [Customizable CAD Application](./client/customizable-cad)
