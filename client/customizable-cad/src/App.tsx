@@ -1,3 +1,4 @@
+import { Viewcube } from '@awvinf/buerli-plugins'
 import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
 import { Canvas, Plugin } from '@buerli.io/react'
 import React from 'react'
@@ -12,6 +13,8 @@ import {
 } from './styles/Layout'
 import { CCImportExport } from './utils/CCImportExport'
 import { FileUtils } from './utils/FileUtils'
+
+const ViewCube: any = Viewcube.View
 
 /**
  * The application component.
@@ -46,6 +49,7 @@ export const App: React.FC<{}> = () => {
               <Canvas drawingId={activeDrawingId} product controls plugins>
                 {globalPlgIds &&
                   globalPlgIds.map(id => <Plugin view key={id} drawingId={activeDrawingId} pluginId={id} />)}
+                <ViewCube drawingId={activeDrawingId} top={true} left={false} centerAxis={false} />
               </Canvas>
             </CanvasContainer>
           </CanvasCells>

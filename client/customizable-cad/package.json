@@ -43,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@awvinf/buerli-plugins": "^0.0.8",
     "@awvinf/icons": "^1.0.4",
     "@buerli.io/classcad": "0.0.19",
     "@buerli.io/com": "0.0.19",
