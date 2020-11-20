@@ -5,7 +5,7 @@ import * as Drawings from './plugins/DrawingsList'
 
 export const initBuerli = () => {
   init({
-    url: 'http://localhost:9091',
+    url: 'http://localhost:8081',
     elements,
     globalPlugins: [Drawings],
     plugins: {},
