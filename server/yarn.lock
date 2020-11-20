@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@awvinf/classcad-windows-x64@0.0.0-experimental.10":
-  version "0.0.0-experimental.10"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-experimental.10.tgz#98bd7f28fb0843348df97fdabb5fd6fa4ee742a1"
-  integrity sha512-1650HY54MKQoOLPYalqqFAs2xhj+Hy37FuRZT0A7qBLNmzqYZ76GkBbFBNCo88KYqUl77meK2pDBgJm3S/P7HA==
+"@awvinf/classcad-windows-x64@0.0.0-experimental.12":
+  version "0.0.0-experimental.12"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-experimental.12.tgz#1f5583e0fbdd2b7e65df55cca9f326a75c1c8990"
+  integrity sha512-29TwiAZKF6M4YHPJmiuh8CrV2Wm7KMS2ZTKzX41dFFlOirJY40rwU5vPMahWjA1YoOq2/zls9KiEtwe8lZpOjg==
   dependencies:
     awv3-node "10.0.2"
     unzipper "0.10.11"
