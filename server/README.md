@@ -29,7 +29,7 @@ In short, ClassCAD is a framework for developing CAD-based applications. ClassCA
    ```json
    // package.json
    "scripts": {
-     "start": "classcad-server --port 9091 --inst 1 --ccapp <FULL PATH TO CCAPP FILE>"
+     "start": "classcad-server --port 9091 --instances 1 --ccapp <FULL PATH TO CCAPP FILE>"
    }
    ```
 
