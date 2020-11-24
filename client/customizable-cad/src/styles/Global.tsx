@@ -12,7 +12,7 @@ const Global = styled.createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #e6e6fa;
+    background-color: #eeeeee;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

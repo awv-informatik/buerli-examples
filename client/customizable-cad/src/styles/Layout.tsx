@@ -8,8 +8,8 @@ export const MainGrid = styled.main`
 
 export const AppGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(60px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(52px, 1fr));
   max-height: 100%;
   overflow: hidden;
 `
@@ -17,7 +17,7 @@ export const AppGrid = styled.div`
 export const CanvasCells = styled.div`
   position: relative;
   display: flex;
-  grid-column: 6/-1;
+  grid-column: 7/-1;
   grid-row: 1/-1;
   overflow: hidden;
 `
@@ -46,16 +46,20 @@ export const MenuCells = styled.div`
 `
 
 export const GlobalPluginsCells = styled.div`
+  overflow: auto;
   z-index: 1000;
-  grid-column: 1/6;
-  grid-row-start: 2;
+  grid-column: 1/7;
+  grid-row: 2/-1;
   padding-left: 10px;
+  padding-right: 10px;
+  background-color: #eeeeee;
 `
 
 export const ObjectPluginsCells = styled.div`
   z-index: 1000;
   height: auto;
-  grid-column: 6/10;
+  grid-column: 7/10;
   grid-row-start: 2;
   padding-right: 10px;
+  background-color: #eeeeee;
 `
