@@ -1,18 +1,20 @@
 {
 	"folders": [
-		{
-			"path": "server"
-		},
-		{
-			"path": "client/customizable-cad"
-		},
-		{
-			"path": "client/solid-api"
-		},
-		{
-			"path": "client/history-api"
-		}
-
+        {
+            "path": "docs"
+        },
+        {
+            "path": "server"
+        },
+        {
+            "path": "client/customizable-cad"
+        },
+        {
+            "path": "client/solid-api"
+        },
+        {
+            "path": "client/history-api"
+        }
     ],
     "settings": {}
 }
