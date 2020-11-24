@@ -58,7 +58,7 @@ export const GlobalPluginsCells = styled.div`
 export const ObjectPluginsCells = styled.div`
   z-index: 1000;
   height: auto;
-  grid-column: 7/10;
+  grid-column: 7/12;
   grid-row-start: 2;
   padding-right: 10px;
   background-color: #eeeeee;
