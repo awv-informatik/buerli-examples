@@ -27,4 +27,4 @@ In order to get a running CAD application with ClassCAD and buerli, you need the
 - Client
   - buerli
 
-![overview](./docs/images/Overview.png)
+![overview](./docs/images/Overview.svg)
