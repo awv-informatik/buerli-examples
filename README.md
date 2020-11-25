@@ -17,3 +17,14 @@ If the ClassCAD server is up, you are ready to start building cool CAD web apps!
 - [Solid API Application](./client/solid-api)
 - [History API Application](./client/history-api)
 - [Customizable CAD Application](./client/customizable-cad)
+
+## Overview
+
+In order to get a running CAD application with ClassCAD and buerli, you need the following components:
+- Server
+  - ClassCAD binaries (instructions [here](./server/README.md))
+  - ClassCAD app file (instructions [here](./server/README.md))
+- Client
+  - buerli
+
+![overview](./docs/images/Overview.png)
