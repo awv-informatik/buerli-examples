@@ -2,7 +2,7 @@
 
 The projects in this repository serve as a template to easily set up new projects with buerli and ClassCAD. Examples are used to describe how to work with buerli/ClassCAD.
 
-## Getting Started
+## ◈ Getting Started
 
 ### 1. Server
 
@@ -18,7 +18,7 @@ If the ClassCAD server is up, you are ready to start building cool CAD web apps!
 - [History API Application](./client/history-api)
 - [Customizable CAD Application](./client/customizable-cad)
 
-## Overview
+## ◈ Overview
 
 In order to get a running CAD application with ClassCAD and buerli, you need the following components:
 - Server
