@@ -43,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^4.3.0",
     "@awvinf/buerli-plugins": "^0.0.8",
     "@awvinf/icons": "^1.0.4",
     "@buerli.io/classcad": "0.0.20",
@@ -50,7 +51,7 @@
     "@buerli.io/core": "0.0.20",
     "@buerli.io/headless": "0.0.20",
     "@buerli.io/react": "0.0.20",
-    "antd": "^3.26.18",
+    "antd": "^4.9.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-router-dom": "^5.2.0",

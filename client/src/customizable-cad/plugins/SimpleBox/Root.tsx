@@ -19,12 +19,12 @@ export const Root: React.FC<{ drawingId: DrawingID; pluginId: PluginID }> = ({ d
       </Checkbox>
       {v && (
         <div>
-          <Slider value={x} onChange={e => set({ x: e })} tipFormatter={e => `x=${e}`}></Slider>
-          <Slider value={y} onChange={e => set({ y: e })} tipFormatter={e => `y=${e}`}></Slider>
-          <Slider value={z} onChange={e => set({ z: e })} tipFormatter={e => `z=${e}`}></Slider>
-          <Slider value={w} onChange={e => set({ w: e })} tipFormatter={e => `w=${e}`}></Slider>
-          <Slider value={h} onChange={e => set({ h: e })} tipFormatter={e => `h=${e}`}></Slider>
-          <Slider value={d} onChange={e => set({ d: e })} tipFormatter={e => `d=${e}`}></Slider>
+          <Slider value={x} onChange={(e: any) => set({ x: e })} tipFormatter={e => `x=${e}`}></Slider>
+          <Slider value={y} onChange={(e: any) => set({ y: e })} tipFormatter={e => `y=${e}`}></Slider>
+          <Slider value={z} onChange={(e: any) => set({ z: e })} tipFormatter={e => `z=${e}`}></Slider>
+          <Slider value={w} onChange={(e: any) => set({ w: e })} tipFormatter={e => `w=${e}`}></Slider>
+          <Slider value={h} onChange={(e: any) => set({ h: e })} tipFormatter={e => `h=${e}`}></Slider>
+          <Slider value={d} onChange={(e: any) => set({ d: e })} tipFormatter={e => `d=${e}`}></Slider>
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@ export const initBuerli = () => {
   init({
     url: 'https://02.service.classcad.ch',
     elements,
-    globalPlugins: [Drawings, Features, SimpleBox, Measure, BoundingBoxInfo],
+    globalPlugins: [Drawings, SimpleBox, Measure, BoundingBoxInfo],
     plugins: {},
     theme: {
       primary: '#e36b7c',

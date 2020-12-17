@@ -23,7 +23,9 @@ const Part: React.FC<{ testParam: number }> = props => {
 
     return () => {
       cad.destroy()
-      scene.current.children = []
+      if (scene && scene.current) {
+        scene.current.children = []
+      }
     }
   }, [testParam])
 

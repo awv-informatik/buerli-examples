@@ -1,5 +1,5 @@
+import { CloseOutlined } from '@ant-design/icons'
 import { DrawingID, getDrawing, PluginID, useBuerli } from '@buerli.io/core'
-import Icon from 'antd/lib/icon'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -19,7 +19,7 @@ export const Root: React.FC<{ drawingId: DrawingID; pluginId: PluginID }> = ({ d
                 actions.removeDrawing(id)
                 e.stopPropagation()
               }}>
-              <Icon type="close"></Icon>
+              <CloseOutlined />
             </div>
           </ListEntry>
           <ListEntrySeparator />
