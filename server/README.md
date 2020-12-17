@@ -44,3 +44,9 @@ In short, ClassCAD is a framework for developing CAD-based applications. ClassCA
    ```
    yarn start
    ```
+   
+1. Check the status of the ClassCAD server which should now be available under http://localhost:9091
+   ```
+   http://localhost:9091/status
+   ```
+   This URL can now be used to initialize buerli on client side.
