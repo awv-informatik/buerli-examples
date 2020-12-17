@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { BoundingBoxInfo, Measure } from '@awvinf/buerli-plugins'
 import { init } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
-import * as Drawings from './plugins/DrawingsList'
-import * as Features from './plugins/FeaturesList'
-import * as SimpleBox from './plugins/SimpleBox'
 
 export const initBuerli = () => {
   init({
-    url: 'http://localhost:8081',
+    url: 'https://02.service.classcad.ch',
     elements,
-    globalPlugins: [Drawings, Features, SimpleBox, Measure, BoundingBoxInfo],
+    globalPlugins: [],
     plugins: {},
     theme: {
       primary: '#e36b7c',
