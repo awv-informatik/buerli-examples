@@ -1198,10 +1198,15 @@
   resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.19.tgz#7c9f31621e1ea7c809f2ba842da07981392dffbd"
   integrity sha512-BO9Pu68nkHc6vS/M1+r6Y3iEVp5UeDpaATeaT6JfN8JLUuaBpZe4rqUL6CIZ40m4pA9nMNRS5NLBxq++Xg7MoQ==
 
-"@buerli.io/com@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.npmjs.org/@buerli.io/com/-/com-0.0.19.tgz#31635ee5298d54db30801e1dd9e6091281c7b3c7"
-  integrity sha512-LBRVKqFSZoUd8QMxrNTllQULcG+L1FbByv4c+WRXQGs91crNDM7BfV9AB1SEGVpL9KEJXXthXejw7QgSHk8IPQ==
+"@buerli.io/classcad@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.20.tgz#c86f6e801bb102b96a177a072e783d6dbfd93c4f"
+  integrity sha512-+pZVL2mhU+x8aAmiQ+kl8AqHYDr5R7ybr7JObkJqjLcYIJzuRxjH1t6O6Xv7ltzQMYe1g6IHtNTZymgquRD61g==
+
+"@buerli.io/com@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/com/-/com-0.0.20.tgz#17557186480d08fb299a710dbefc38aa8ac29741"
+  integrity sha512-WA7o5KPB1N8bRaR+a+r34vOLO8DFfOmT2tFzaH2v57uBfHHmdFsuoeih3nwK9U4EPytNIt45JucV5NzOKSKXYw==
   dependencies:
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
@@ -1219,10 +1224,42 @@
     uuid "^3.3.2"
     zustand "2.2.3"
 
+"@buerli.io/core@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.20.tgz#b61fa537529e19f2e3e0a1e929aa3f0a7916db4f"
+  integrity sha512-ZzxNJKchEeHFxnOgxwoeYbka0bCimcaJYRzcNSszdJUfQ8NqAYzQPiwZAfCnyta294HhdTesQl595hWPFX6sSQ==
+  dependencies:
+    jsonpatch "^3.0.1"
+    strict-event-emitter-types "^2.0.0"
+    uuid "^3.3.2"
+    zustand "2.2.3"
+
+"@buerli.io/headless@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.20.tgz#4255813d614196d0be7789d2ded0fa502c089bd1"
+  integrity sha512-u/+sgM2aYwol7ITciMIBHAW+kyW/8kQc8z07m+EipKvM4wtQLWX0+4V2jom6yNF7EUQTFupWFLbkga2pNkKptQ==
+  dependencies:
+    react-promise-suspense "^0.3.2"
+
 "@buerli.io/react@0.0.19":
   version "0.0.19"
   resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.19.tgz#27a5d0db8678af404f8578bdf9ddcce828edd2af"
   integrity sha512-JmUvdaMUZrOWyQg4R5pxmYcHEVEhCLV9+7XOc0L47y6dYqUEqVV+h2Uf8fHQWcKswdddc5rqqV/OULQwcJuUiQ==
+  dependencies:
+    "@types/lodash-es" "^4.17.3"
+    antd "^3.20.1"
+    deepmerge "^4.2.2"
+    lodash-es "^4.17.15"
+    rc-color-picker "^1.2.6"
+    react-movable "^2.3.0"
+    react-spring "^8.0.27"
+    styled-components "^4.3.2"
+    three-line-raycast "^1.0.2"
+
+"@buerli.io/react@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.20.tgz#a60d436847f66028e5e6d10da7d9479492370964"
+  integrity sha512-AxcQw+b2/dYkxWXUn6Q6yypeEInkDhOTN8abjfrck55VXJMTENsAnR7O/e9nORwtS3knPxTOS7K5a6qnBo1CMg==
   dependencies:
     "@types/lodash-es" "^4.17.3"
     antd "^3.20.1"
@@ -5007,6 +5044,11 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
+
+fast-deep-equal@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
@@ -10234,6 +10276,13 @@ react-movable@^2.3.0:
   version "2.5.3"
   resolved "https://registry.npmjs.org/react-movable/-/react-movable-2.5.3.tgz#9510139c4762d783117d34fd2d816d3d63180113"
   integrity sha512-CazVL7eN4QTAEPwBlcp9101SAytzakpePa3b/lLpsTZyJn3z1uRbqiWA/NTQDjPvPj8h9ws8j8uUr8TBJTiJiw==
+
+react-promise-suspense@^0.3.2:
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/react-promise-suspense/-/react-promise-suspense-0.3.3.tgz#b085c7e0ac22b85fd3d605b1c4f181cda4310bc9"
+  integrity sha512-OdehKsCEWYoV6pMcwxbvJH99UrbXylmXJ1QpEL9OfHaUBzcAihyfSJV8jFq325M/wW9iKc/BoiLROXxMul+MxA==
+  dependencies:
+    fast-deep-equal "^2.0.1"
 
 react-reconciler@0.26.0:
   version "0.26.0"
