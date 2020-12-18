@@ -10,6 +10,20 @@ import {
 import { getCamera } from '@buerli.io/react'
 
 export const CCImportExport = {
+  createAndLoad1: (name: string, content: any): Promise<any> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const drawingId = await ccAPI.base.createCCDrawing(name)
+        if (drawingId) {
+          await ccAPI.baseModeler.load(drawingId, new File([], name), content)
+        }
+        resolve(undefined)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  },
+
   createAndLoad: (file: File): Promise<any> => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -17,7 +31,7 @@ export const CCImportExport = {
         if (drawingId) {
           await CCImportExport.load(drawingId, file)
         }
-        resolve()
+        resolve(undefined)
       } catch (error) {
         reject(error)
       }
@@ -53,7 +67,7 @@ export const CCImportExport = {
               await ccAPI.baseModeler.load(drawingId, file, reader.result as ArrayBuffer)
             }
             unsub()
-            resolve()
+            resolve(undefined)
           } catch (error) {
             reject(error)
           }
@@ -95,7 +109,7 @@ export const CCImportExport = {
           link.download = `drawing.${type}`
           link.click()
         }
-        resolve()
+        resolve(undefined)
       } catch (error) {
         reject(error)
       }

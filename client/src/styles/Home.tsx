@@ -4,6 +4,7 @@ export const Home = styled.section`
   position: relative;
   width: 100%;
   margin-top: 0 !important;
+  overflow: hidden;
 
   & .menu.left {
     position: absolute;

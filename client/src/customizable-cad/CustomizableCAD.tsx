@@ -2,15 +2,8 @@ import { Viewcube } from '@awvinf/buerli-plugins'
 import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
 import { Canvas, Plugin } from '@buerli.io/react'
 import React from 'react'
-import {
-  AppGrid,
-  CanvasCells,
-  CanvasContainer,
-  GlobalPluginsCells,
-  MainGrid,
-  MenuCells,
-  ObjectPluginsCells,
-} from '../styles/Layout'
+import testpart from '../resources/TestPart.of1'
+import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid, MenuCells } from '../styles/Layout'
 import { CCImportExport } from '../utils/CCImportExport'
 import { ErrorBoundary } from '../utils/ErrorBoundary'
 import { FileUtils } from '../utils/FileUtils'
@@ -44,6 +37,12 @@ export const CustomizableCAD: React.FC<{}> = () => {
     run()
   }, [])
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      CCImportExport.createAndLoad1('TestPart.of1', testpart)
+    }, 500)
+  }, [])
+
   return (
     <MainGrid>
       <AppGrid>
@@ -64,13 +63,12 @@ export const CustomizableCAD: React.FC<{}> = () => {
           </span>
         </MenuCells>
         <GlobalPluginsCells>
-          {globalPlgIds && globalPlgIds.map(id => <PluginWrapper key={id} drawingId={activeDrawingId} pluginId={id} />)}
+          <div>
+            {globalPlgIds &&
+              globalPlgIds.map(id => <PluginWrapper key={id} drawingId={activeDrawingId} pluginId={id} />)}
+            {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
+          </div>
         </GlobalPluginsCells>
-        {hasActivePlg && (
-          <ObjectPluginsCells>
-            <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />
-          </ObjectPluginsCells>
-        )}
       </AppGrid>
     </MainGrid>
   )
