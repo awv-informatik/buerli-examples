@@ -8,7 +8,7 @@ import * as SimpleBox from './plugins/SimpleBox'
 
 export const initBuerli = () => {
   init({
-    url: 'https://02.service.classcad.ch',
+    url: 'http://localhost:9091',
     elements,
     globalPlugins: [Drawings, SimpleBox, Measure, BoundingBoxInfo],
     plugins: {},

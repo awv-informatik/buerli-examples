@@ -5,17 +5,17 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import Controls from '../solid-api/Controls'
-import example from './models/assembly-example'
+import example from './models/As1_Assembly'
 
 const Part: React.FC<{ testParam: number }> = props => {
   const scene = useRef<THREE.Scene>()
   const { testParam } = props
 
   useEffect(() => {
-    const url = 'https://02.service.classcad.ch'
+    const url = 'http://localhost:9091'
     const cad = new history(url)
     cad.init(async api => {
-      const items = await example(api)
+      const items = await example(api, testParam)
       for (const item of items) {
         scene.current.add(item)
       }

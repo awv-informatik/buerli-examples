@@ -2,7 +2,7 @@ import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 import arraybuffer from '../../resources/Flange.of1'
 
-export const create = async (api: ApiHistory, ...params: number[]) => {
+export const create = async (api: ApiHistory, testParam: number) => {
   const file = new File(['Flange.of1'], 'Flange.of1', { type: 'application/x-binary' })
   const part = api.loadProduct(file, arraybuffer)
   const flanschdicke = 25

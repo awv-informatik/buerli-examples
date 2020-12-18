@@ -2,7 +2,7 @@ import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 import arraybuffer from '../../resources/Shadowbox.of1'
 
-export const create = async (api: ApiHistory, ...params: number[]) => {
+export const create = async (api: ApiHistory, testParam: number) => {
   const file = new File(['Shadowbox.of1'], 'Shadowbox.of1', {
     type: 'application/x-binary',
   })

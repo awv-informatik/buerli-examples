@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "classcad-server --port 8081 --instances 2 --ccapp C:/Users/.../downloaded-x.x.x.ccapp"
+    "start": "classcad-server --port 8081 --instances 2 --ccapp C:/Users/daniel/Downloads/FreeBaseModeling-0.0.0-experimental.12.ccapp"
   },
   "dependencies": {
     "@awvinf/classcad-windows-x64": "0.0.0-experimental.12"

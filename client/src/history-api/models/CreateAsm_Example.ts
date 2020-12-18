@@ -1,7 +1,7 @@
 import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 
-export const create = async (api: ApiHistory) => {
+export const create = async (api: ApiHistory, testParam: number) => {
   /* consts */
   const pt0 = { x: 0, y: 0, z: 0 }
   const pt1 = { x: 50, y: 0, z: 0 }
@@ -29,6 +29,7 @@ export const create = async (api: ApiHistory) => {
     nut,
     'Custom',
     [],
+    [],
     wcsNut.boxPos,
     wcsNut.boxRot,
     0,
@@ -39,6 +40,7 @@ export const create = async (api: ApiHistory) => {
     nut,
     'Custom',
     [],
+    [],
     wcsNut.cylPos,
     wcsNut.cylRot,
     0,
@@ -48,6 +50,7 @@ export const create = async (api: ApiHistory) => {
   const mate1Nut = await api.createWorkCoordSystem(
     nut,
     'Custom',
+    [],
     [],
     wcsNut.mate1Pos,
     wcsNut.mate1Rot,
@@ -73,6 +76,7 @@ export const create = async (api: ApiHistory) => {
     bolt,
     'Custom',
     [],
+    [],
     wcsBolt.shaftPos,
     wcsBolt.shaftRot,
     0,
@@ -83,6 +87,7 @@ export const create = async (api: ApiHistory) => {
     bolt,
     'Custom',
     [],
+    [],
     wcsBolt.headPos,
     wcsBolt.headRot,
     0,
@@ -92,6 +97,7 @@ export const create = async (api: ApiHistory) => {
   const mate1Bolt = await api.createWorkCoordSystem(
     bolt,
     'Custom',
+    [],
     [],
     wcsBolt.mate1Pos,
     wcsBolt.mate1Rot,
@@ -121,6 +127,7 @@ export const create = async (api: ApiHistory) => {
     lBracket,
     'Custom',
     [],
+    [],
     wcsLBracket.basePos,
     wcsLBracket.baseRot,
     0,
@@ -130,6 +137,7 @@ export const create = async (api: ApiHistory) => {
   const wcsSubBracket = await api.createWorkCoordSystem(
     lBracket,
     'Custom',
+    [],
     [],
     wcsLBracket.subPos,
     wcsLBracket.subRot,
@@ -143,6 +151,7 @@ export const create = async (api: ApiHistory) => {
     lBracket,
     'Custom',
     [],
+    [],
     wcsLBracket.mate1Pos,
     wcsLBracket.mate1Rot,
     0,
@@ -153,6 +162,7 @@ export const create = async (api: ApiHistory) => {
     lBracket,
     'Custom',
     [],
+    [],
     wcsLBracket.mate2Pos,
     wcsLBracket.mate2Rot,
     0,
@@ -162,6 +172,7 @@ export const create = async (api: ApiHistory) => {
   const mate3LBracket = await api.createWorkCoordSystem(
     lBracket,
     'Custom',
+    [],
     [],
     wcsLBracket.mate3Pos,
     wcsLBracket.mate3Rot,

@@ -12,7 +12,7 @@ const Part: React.FC<{ testParam: number }> = props => {
   const { testParam } = props
 
   useEffect(() => {
-    const url = 'https://02.service.classcad.ch'
+    const url = 'http://localhost:9091'
     const cad = new solid(url)
     cad.init(async api => {
       const items = await solidExample(api)
