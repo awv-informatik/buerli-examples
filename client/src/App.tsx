@@ -6,9 +6,9 @@ import HistoryApiApp from './history-api/HistoryApiApp'
 import SolidApiApp from './solid-api/SolidApiApp'
 
 const options = [
-  { label: 'solid-api', value: 'solid-api', comp: SolidApiApp },
-  { label: 'history-api', value: 'history-api', comp: HistoryApiApp },
-  { label: 'customizable-cad', value: 'customizable-cad', comp: CustomizableCAD },
+  { label: 'Solid API', value: 'solid-api', comp: SolidApiApp },
+  { label: 'History API', value: 'history-api', comp: HistoryApiApp },
+  { label: 'Customizable CAD', value: 'customizable-cad', comp: CustomizableCAD },
 ]
 
 const apps = {
