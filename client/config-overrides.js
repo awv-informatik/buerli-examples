@@ -8,6 +8,7 @@ const {
   addLessLoader,
   override,
   disableEsLint,
+  addWebpackModuleRule,
 } = require('customize-cra')
 const { addReactRefresh } = require('customize-cra-react-refresh')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -16,6 +17,7 @@ const pRes = path.resolve
 
 module.exports = (config, env) =>
   override(
+    addWebpackModuleRule({ test: /\.of1$/, use: 'arraybuffer-loader' }),
     addReactRefresh({}),
     disableEsLint(),
     removeModuleScopePlugin(),

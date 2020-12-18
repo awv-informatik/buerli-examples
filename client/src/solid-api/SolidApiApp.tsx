@@ -4,6 +4,7 @@ import { Messenger } from '@buerli.io/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
+import { CCSERVERURL } from '../config'
 import Controls from './Controls'
 import solidExample from './models/fish'
 
@@ -12,8 +13,7 @@ const Part: React.FC<{ testParam: number }> = props => {
   const { testParam } = props
 
   useEffect(() => {
-    const url = 'http://localhost:9091'
-    const cad = new solid(url)
+    const cad = new solid(CCSERVERURL)
     cad.init(async api => {
       const items = await solidExample(api)
       for (const item of items) {

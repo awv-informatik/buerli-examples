@@ -2,13 +2,14 @@
 import { BoundingBoxInfo, Measure } from '@awvinf/buerli-plugins'
 import { init } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
+import { CCSERVERURL } from '../config'
 import * as Drawings from './plugins/DrawingsList'
 import * as Features from './plugins/FeaturesList'
 import * as SimpleBox from './plugins/SimpleBox'
 
 export const initBuerli = () => {
   init({
-    url: 'http://localhost:9091',
+    url: CCSERVERURL,
     elements,
     globalPlugins: [Drawings, SimpleBox, Measure, BoundingBoxInfo],
     plugins: {},
