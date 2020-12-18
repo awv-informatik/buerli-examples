@@ -2,16 +2,19 @@ import 'antd/dist/antd.css'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import React from 'react'
 import CustomizableCAD from './customizable-cad/CustomizableCAD'
+import HistoryApiApp from './history-api/HistoryApiApp'
 import SolidApiApp from './solid-api/SolidApiApp'
 
 const options = [
-  { label: 'customizable-cad', value: 'customizable-cad' },
-  { label: 'solid-api', value: 'solid-api' },
+  { label: 'solid-api', value: 'solid-api', comp: SolidApiApp },
+  { label: 'history-api', value: 'history-api', comp: HistoryApiApp },
+  { label: 'customizable-cad', value: 'customizable-cad', comp: CustomizableCAD },
 ]
 
 const apps = {
-  [options[0].value]: CustomizableCAD,
-  [options[1].value]: SolidApiApp,
+  [options[0].value]: options[0].comp,
+  [options[1].value]: options[1].comp,
+  [options[2].value]: options[2].comp,
 }
 
 /**
