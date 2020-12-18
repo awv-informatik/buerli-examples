@@ -12,6 +12,7 @@ import {
   ObjectPluginsCells,
 } from '../styles/Layout'
 import { CCImportExport } from '../utils/CCImportExport'
+import { ErrorBoundary } from '../utils/ErrorBoundary'
 import { FileUtils } from '../utils/FileUtils'
 import initBuerli from './initBuerli'
 
@@ -85,11 +86,11 @@ const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObje
   const pluginApi = useDrawing(drawingId, d => d.api.plugin)
   const PluginRoot = usePlugin(drawingId, pluginId, d => d.Root)
   const pluginName = usePlugin(drawingId, pluginId, d => d.name)
-  const view = PluginRoot ? <PluginRoot drawingId={drawingId} pluginId={pluginId} /> : null
+  const domUI = PluginRoot ? <PluginRoot drawingId={drawingId} pluginId={pluginId} /> : null
   return (
     <div style={{ paddingBottom: '20px' }}>
       <div>
-        {!isObject && <h3>{pluginName}</h3>}
+        {!isObject && <h4>{pluginName}</h4>}
         {isObject && <h3 style={{ float: 'left', paddingBottom: '10px' }}>{pluginName}</h3>}
         {isObject && (
           <h4
@@ -99,7 +100,7 @@ const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObje
           </h4>
         )}
       </div>
-      {view}
+      <ErrorBoundary>{domUI}</ErrorBoundary>
     </div>
   )
 }

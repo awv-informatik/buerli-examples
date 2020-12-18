@@ -17,7 +17,7 @@ export const AppGrid = styled.div`
 export const CanvasCells = styled.div`
   position: relative;
   display: flex;
-  grid-column: 7/-1;
+  grid-column: 1/-1;
   grid-row: 1/-1;
   overflow: hidden;
 `
@@ -49,10 +49,10 @@ export const GlobalPluginsCells = styled.div`
   overflow: auto;
   z-index: 1000;
   grid-column: 1/7;
-  grid-row: 2/-1;
+  grid-row: 2;
+  height: min-content;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #eeeeee;
 `
 
 export const ObjectPluginsCells = styled.div`
@@ -61,5 +61,4 @@ export const ObjectPluginsCells = styled.div`
   grid-column: 7/12;
   grid-row-start: 2;
   padding-right: 10px;
-  background-color: #eeeeee;
 `

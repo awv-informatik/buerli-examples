@@ -11,7 +11,7 @@ export const initBuerli = () => {
   init({
     url: CCSERVERURL,
     elements,
-    globalPlugins: [Drawings, SimpleBox, Measure, BoundingBoxInfo],
+    globalPlugins: [Drawings, SimpleBox, BoundingBoxInfo, Features],
     plugins: {},
     theme: {
       primary: '#e36b7c',

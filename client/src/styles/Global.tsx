@@ -13,7 +13,6 @@ const Global = styled.createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #eeeeee;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -25,15 +24,17 @@ const Global = styled.createGlobalStyle`
 
   #root {
     overflow: auto;
-    font-family: segoe ui, arial, sans-serif;
   }
 
   body {
     position: fixed;
     overflow: hidden;
     overscroll-behavior-y: none;
-    color: black;
+    font-family: 'Segoe UI', Tahoma, Verdana, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: rgb(107, 113, 119);
+    background: white;
   }
 
   ::-webkit-scrollbar {
