@@ -2,10 +2,10 @@ import 'antd/dist/antd.css'
 import React from 'react'
 import CustomizableCAD from './customizable-cad/CustomizableCAD'
 import HistoryApiApp from './history-api/HistoryApiApp'
+import { Container } from './shared/styles/Container'
+import { Content } from './shared/styles/Content'
+import { Home } from './shared/styles/Home'
 import SolidApiApp from './solid-api/SolidApiApp'
-import { Container } from './styles/Container'
-import { Content } from './styles/Content'
-import { Home } from './styles/Home'
 
 const options = [
   { label: 'Solid API', value: 'solid-api', comp: SolidApiApp },

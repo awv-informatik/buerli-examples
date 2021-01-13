@@ -1,8 +1,8 @@
 import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
-import arraybuffer from '../../resources/Bolt.of1'
-import arraybuffer2 from '../../resources/Nut.of1'
-import arraybuffer3 from '../../resources/LBracket.of1'
+import arraybuffer from '../../shared/resources/Bolt.of1'
+import arraybuffer3 from '../../shared/resources/LBracket.of1'
+import arraybuffer2 from '../../shared/resources/Nut.of1'
 
 export const create = async (api: ApiHistory, testParam: number) => {
   const pt0 = { x: 0, y: 0, z: 0 }
