@@ -1,4 +1,4 @@
-import { ApiNoHistory, createPolyline } from '@buerli.io/headless'
+import { ApiNoHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 
 export const create = async (api: ApiNoHistory) => {

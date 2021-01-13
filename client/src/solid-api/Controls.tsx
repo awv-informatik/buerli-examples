@@ -6,6 +6,7 @@ declare global {
   type OrbitControlsT = ReactThreeFiber.Object3DNode<OrbitControls, typeof OrbitControls>
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
+    // eslint-disable-next-line @typescript-eslint/interface-name-prefix
     interface IntrinsicElements {
       orbitControls: OrbitControlsT
     }

@@ -1,5 +1,4 @@
 import { solid } from '@buerli.io/headless'
-import { Messenger } from '@buerli.io/react'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
 import React, { useEffect, useRef } from 'react'
 import { Canvas } from 'react-three-fiber'
@@ -30,18 +29,23 @@ const Part: React.FC<{ active: string }> = props => {
   const example = React.useMemo(() => examples.find(e => e.value === props.active), [props.active])
 
   useEffect(() => {
+    document.title = 'Solid API'
+  }, [])
+
+  useEffect(() => {
+    const sceneObj = scene.current
     const cad = new solid(CCSERVERURL)
     cad.init(async api => {
       const items = await example.create(api)
       for (const item of items) {
-        scene.current.add(item)
+        sceneObj.add(item)
       }
     })
 
     return () => {
       cad.destroy()
-      if (scene && scene.current) {
-        scene.current.children = []
+      if (sceneObj) {
+        sceneObj.children = []
       }
     }
   }, [example])
@@ -51,7 +55,7 @@ const Part: React.FC<{ active: string }> = props => {
 
 export const SolidApiApp: React.FC<{}> = () => {
   const [active, setActive] = React.useState<string>(examples[0].value)
-  const onChange = React.useCallback((active: RadioChangeEvent) => setActive(active.target.value), [setActive])
+  const onChange = React.useCallback((ev: RadioChangeEvent) => setActive(ev.target.value), [setActive])
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <br />
@@ -71,7 +75,6 @@ export const SolidApiApp: React.FC<{}> = () => {
           <Controls />
           <axesHelper visible={true} />
         </Canvas>
-        <Messenger config={{ placement: 'bottomRight' }} />
       </div>
     </div>
   )

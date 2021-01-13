@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { BoundingBoxInfo, Measure } from '@awvinf/buerli-plugins'
+import { BoundingBoxInfo } from '@awvinf/buerli-plugins'
 import { init } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
 import { CCSERVERURL } from '../config'

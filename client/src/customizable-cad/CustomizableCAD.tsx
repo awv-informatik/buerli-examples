@@ -25,6 +25,10 @@ export const CustomizableCAD: React.FC<{}> = () => {
   const hasActivePlg = activeDrawingId && activePluginId >= 0
 
   React.useEffect(() => {
+    document.title = 'Customizable CAD'
+  }, [])
+
+  React.useEffect(() => {
     if (globalPlgIds) globalPlgIds.forEach(id => pluginApi.setVisiblePlugin(id, true))
   }, [globalPlgIds, pluginApi])
 

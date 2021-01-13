@@ -36,7 +36,8 @@ export const App: React.FC<{}> = () => {
         <div className="menu middle">
           {options.map(o => (
             <a
-              href="#"
+              key={o.label}
+              href={'_blank'}
               onClick={e => {
                 e.preventDefault()
                 setActive(o.value)
