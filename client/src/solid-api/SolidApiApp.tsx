@@ -58,7 +58,6 @@ export const SolidApiApp: React.FC<{}> = () => {
   const onChange = React.useCallback((ev: RadioChangeEvent) => setActive(ev.target.value), [setActive])
   return (
     <div style={{ width: '100%', height: '100%' }}>
-      <br />
       <div style={{ width: '100%', height: '5%' }}>
         <Radio.Group options={examples} onChange={onChange} value={active} optionType="button" buttonStyle="solid" />
       </div>

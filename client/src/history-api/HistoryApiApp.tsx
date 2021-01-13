@@ -60,8 +60,6 @@ export const HistoryApiApp: React.FC<{}> = () => {
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <div style={{ width: '100%', height: '5%' }}>
-        <label style={{ margin: '5px' }}>Value</label>
-        <input type={'number'} value={testParam} onChange={e => setTestParam(Number.parseInt(e.target.value))}></input>
         <Radio.Group options={examples} onChange={onChange} value={active} optionType="button" buttonStyle="solid" />
       </div>
       <div style={{ width: '100%', height: '95%' }}>

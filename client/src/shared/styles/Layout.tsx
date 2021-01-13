@@ -19,7 +19,7 @@ export const CanvasCells = styled.div`
   position: relative;
   display: flex;
   grid-column: 1/-1;
-  grid-row: 1/-1;
+  grid-row: 1/-2;
   overflow: hidden;
 `
 
@@ -49,7 +49,7 @@ export const MenuCells = styled.div`
 export const GlobalPluginsCells = styled.div`
   position: relative;
   grid-column: 1/7;
-  grid-row: 2/-1;
+  grid-row: 2/-2;
   & div {
     z-index: 100;
     overflow: auto;

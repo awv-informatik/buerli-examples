@@ -3,10 +3,9 @@ import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.i
 import { Canvas, Plugin } from '@buerli.io/react'
 import React from 'react'
 import testpart from '../shared/resources/TestPart.of1'
-import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid, MenuCells } from '../shared/styles/Layout'
+import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid } from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
-import { FileUtils } from '../shared/utils/FileUtils'
 import initBuerli from './initBuerli'
 
 initBuerli()
@@ -32,15 +31,6 @@ export const CustomizableCAD: React.FC<{}> = () => {
     if (globalPlgIds) globalPlgIds.forEach(id => pluginApi.setVisiblePlugin(id, true))
   }, [globalPlgIds, pluginApi])
 
-  const load = React.useCallback(() => {
-    const run = async () => {
-      FileUtils.loadFile((f, c) => {
-        CCImportExport.createAndLoad(f)
-      })
-    }
-    run()
-  }, [])
-
   React.useEffect(() => {
     setTimeout(() => {
       CCImportExport.createAndLoad1('TestPart.of1', testpart)
@@ -61,11 +51,6 @@ export const CustomizableCAD: React.FC<{}> = () => {
             </CanvasContainer>
           </CanvasCells>
         )}
-        <MenuCells>
-          <span style={{ cursor: 'pointer' }} onClick={load}>
-            Open
-          </span>
-        </MenuCells>
         <GlobalPluginsCells>
           <div>
             {globalPlgIds &&
