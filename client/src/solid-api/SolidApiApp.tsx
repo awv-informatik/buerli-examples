@@ -1,6 +1,6 @@
 import { solid } from '@buerli.io/headless'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
@@ -25,14 +25,14 @@ const examples = [
 ]
 
 const Part: React.FC<{ active: string }> = props => {
-  const scene = useRef<THREE.Scene>()
+  const scene = React.useRef<THREE.Scene>()
   const example = React.useMemo(() => examples.find(e => e.value === props.active), [props.active])
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = 'Solid API'
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     const sceneObj = scene.current
     const cad = new solid(CCSERVERURL)
     cad.init(async api => {

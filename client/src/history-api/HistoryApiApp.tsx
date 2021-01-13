@@ -1,6 +1,6 @@
 import { history } from '@buerli.io/headless'
 import Radio, { RadioChangeEvent } from 'antd/lib/radio'
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
@@ -23,15 +23,15 @@ const examples = [
 ]
 
 const Part: React.FC<{ testParam: number; active: string }> = props => {
-  const scene = useRef<THREE.Scene>()
+  const scene = React.useRef<THREE.Scene>()
   const { testParam } = props
   const example = React.useMemo(() => examples.find(e => e.value === props.active), [props.active])
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = 'History API'
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     const sceneObj = scene.current
     const cad = new history(CCSERVERURL)
     cad.init(async api => {
@@ -53,7 +53,7 @@ const Part: React.FC<{ testParam: number; active: string }> = props => {
 }
 
 export const HistoryApiApp: React.FC<{}> = () => {
-  const [testParam, setTestParam] = useState(10)
+  const [testParam, setTestParam] = React.useState(10)
   const [active, setActive] = React.useState<string>(examples[0].value)
   const onChange = React.useCallback((ev: RadioChangeEvent) => setActive(ev.target.value), [setActive])
 
