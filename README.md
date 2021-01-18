@@ -1,4 +1,4 @@
-# buerli starter projects
+# buerli examples
 
 The projects in this repository serve as a template to easily set up new projects with buerli and ClassCAD. Examples are used to describe how to work with buerli/ClassCAD.
 
@@ -21,6 +21,7 @@ If the ClassCAD server is up, you are ready to start building cool CAD web apps!
 ## ◈ Overview
 
 In order to get a running CAD application with ClassCAD and buerli, you need the following components:
+
 - Server
   - ClassCAD binaries (instructions [here](./server/README.md))
   - ClassCAD app file (instructions [here](./server/README.md))
