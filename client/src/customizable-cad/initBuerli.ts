@@ -1,22 +1,30 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { BoundingBoxInfo } from '@awvinf/buerli-plugins'
+import { Boolean, Chamfer, Extrusion, Fillet, Sketch, WorkAxis, WorkPlane, WorkPoint } from '@awvinf/buerli-plugins'
+import { CCClasses } from '@buerli.io/classcad'
 import { init } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
 import { CCSERVERURL } from '../config'
-import * as Drawings from './plugins/DrawingsList'
 import * as Features from './plugins/FeaturesList'
-import * as SimpleBox from './plugins/SimpleBox'
 
 export const initBuerli = () => {
   init({
     url: CCSERVERURL,
     elements,
-    globalPlugins: [Drawings, SimpleBox, BoundingBoxInfo, Features],
-    plugins: {},
+    globalPlugins: [Features],
+    plugins: {
+      [CCClasses.CCSketch]: Sketch,
+      [CCClasses.CCExtrusion]: Extrusion,
+      [CCClasses.CCChamfer]: Chamfer,
+      [CCClasses.CCConstantRadiusFillet]: Fillet,
+      [CCClasses.CCUnion]: Boolean,
+      [CCClasses.CCWorkAxis]: WorkAxis,
+      [CCClasses.CCWorkPlane]: WorkPlane,
+      [CCClasses.CCWorkPoint]: WorkPoint,
+    },
     theme: {
       primary: '#e36b7c',
       secondary: '#fcc7cb',
-      dark: '#a0a0a0',
+      dark: '#ffffff',
       highlightedGeom: '#e36b7c',
       hoveredGeom: '#40a9ff',
     },
