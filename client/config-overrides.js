@@ -33,7 +33,6 @@ module.exports = (config, env) =>
       'react-dom': pRes('node_modules/react-dom'),
       'styled-components': pRes('node_modules/styled-components'),
       '@buerli.io/core': pRes('node_modules/@buerli.io/core'),
-      '@buerli.io/com': pRes('node_modules/@buerli.io/com'),
       '@buerli.io/react/build': pRes('node_modules/@buerli.io/react'),
       '@buerli.io/react': pRes('node_modules/@buerli.io/react'),
       '@buerli.io/classcad': pRes('node_modules/@buerli.io/classcad'),

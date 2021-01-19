@@ -1216,10 +1216,10 @@
   resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.21.tgz#e3c62fd667b27f02e7ea5d51369591695d273546"
   integrity sha512-Gz5MrMOUywl6+ftb55CunFAKmSQlKJaV+dOLtKavG+5TEvuNRAjNGp6diVEAHIxY6aMg2bcGkifcM7t0mIj7wQ==
 
-"@buerli.io/com@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@buerli.io/com/-/com-0.0.21.tgz#8e70d3f26fc55e6a92179086c21db9ca5bb25ff4"
-  integrity sha512-z4ZoYSwQB/BFMz0DB7LpYpIFXaqvMpGV4IItBO6HD23yrnfArC01+eAx59/K6QIELkvtkXlZGGUS/DgCADvRWw==
+"@buerli.io/classcad@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.22.tgz#3e74111e3c9261ccd66266aeee307a9e1696f183"
+  integrity sha512-ameN6JZZVCrQNF+KaACH9LtJNQb8KR9HmQzg3aKicGmFK4TLUtqtn96FIokt+va82HEyHuB479iISRbzG3FojA==
   dependencies:
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
@@ -1237,10 +1237,20 @@
     uuid "^3.3.2"
     zustand "2.2.3"
 
-"@buerli.io/headless@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.21.tgz#ec1f18e4deca86317b8898f52ae21d958c3c31e8"
-  integrity sha512-XhqAM2DEvvdkEd0RBAems75paPMueL3uhqQ4dNM7F9Mn43xmmwQXdBjka7dTmyJNLf98SdlhFUNao90qSYf1TA==
+"@buerli.io/core@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.22.tgz#283adc3656e95a5823693c566bc31258e11a0dec"
+  integrity sha512-bpo3cfS/o7FqxcKIycT/E8iCRZqzbdEbA9+e3FUTV0CxPrG9HgM8T1NS6+GW9EADSSquo3Oy4EdfZMViAAGg3A==
+  dependencies:
+    jsonpatch "^3.0.1"
+    strict-event-emitter-types "^2.0.0"
+    uuid "^3.3.2"
+    zustand "2.2.3"
+
+"@buerli.io/headless@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.22.tgz#1f8ac4f5c72e45d3ed1e09712433750881f6239e"
+  integrity sha512-Q4UVLsSjUyNaY2ZDT8TRszOOAM1QL5UTcs+RaASTS5XTuvWLYpAUp/HGY/pu6E+Au7HOMqdpIpON/I9GDQoXiw==
   dependencies:
     react-promise-suspense "^0.3.2"
 
@@ -1248,6 +1258,21 @@
   version "0.0.21"
   resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.21.tgz#e1268993f3ca81a5a3e1e29d70a6bc9516cfc7ae"
   integrity sha512-kIuyTwuUtxnqGIlKSO5eqqyS6kWbx34plrV7iP9aZwEgrlA70Yc93zFbiVGGyiUy0z7Y1W7+89s7unt5S5aiDQ==
+  dependencies:
+    "@types/lodash-es" "^4.17.3"
+    antd "^4.8.0"
+    deepmerge "^4.2.2"
+    lodash-es "^4.17.15"
+    rc-color-picker "^1.2.6"
+    react-movable "^2.3.0"
+    react-spring "^8.0.27"
+    styled-components "^4.3.2"
+    three-line-raycast "^1.0.2"
+
+"@buerli.io/react@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.22.tgz#7db8734349b240de4d5c7e89f7f0f43b8ff2e233"
+  integrity sha512-JorRkO7ogLXRc3WdOjU88InXp9Z07i5zmuMm4WP2o+BA1nhhagy7fda0Hb/cMSPRj3y1doropX2+/gZrW/nBKA==
   dependencies:
     "@types/lodash-es" "^4.17.3"
     antd "^4.8.0"
