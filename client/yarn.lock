@@ -52,16 +52,16 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/buerli-plugins@^0.0.10":
-  version "0.0.10"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.10.tgz#147ea8328a8559b9aa9d81d050e453ff032181a9"
-  integrity sha512-t+ccR6JXb9UhgeJj30y1MKMIynibm2vtI4zeLMQUD+TBcHY/VMb9mldey9YnCl1KcjNjcN297z+VoP8DiLwdbA==
+"@awvinf/buerli-plugins@^0.0.11":
+  version "0.0.11"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.11.tgz#9c597c2ee9e01811d663e97de5fe81a292bc10fa"
+  integrity sha512-8sCq9pxBWWq1774lrNCxBXv1+AfwvkZDODy9Uzrk9QoGap0Up2TEQP/MSe1EtgS+H5RSuYtBzyMLuX9JGFHWPQ==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@awvinf/icons" "1.0.4"
-    "@buerli.io/classcad" "0.0.21"
-    "@buerli.io/core" "0.0.21"
-    "@buerli.io/react" "0.0.21"
+    "@buerli.io/classcad" "0.0.22"
+    "@buerli.io/core" "0.0.22"
+    "@buerli.io/react" "0.0.22"
     drei "^0.0.32"
     three-rounded-box "^0.1.1"
     uuid "^3.3.2"
@@ -1211,11 +1211,6 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.21.tgz#e3c62fd667b27f02e7ea5d51369591695d273546"
-  integrity sha512-Gz5MrMOUywl6+ftb55CunFAKmSQlKJaV+dOLtKavG+5TEvuNRAjNGp6diVEAHIxY6aMg2bcGkifcM7t0mIj7wQ==
-
 "@buerli.io/classcad@0.0.22":
   version "0.0.22"
   resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.22.tgz#3e74111e3c9261ccd66266aeee307a9e1696f183"
@@ -1226,16 +1221,6 @@
     socket.io-client "^2.2.0"
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
-
-"@buerli.io/core@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.21.tgz#163071ab3841a5931d62888af82d9ae82227493d"
-  integrity sha512-vuhIw2cu1WRw2zAduufXqW8b+/h/Nl2Zhnf2aOGYxN5irMouMYQZ2t0dFJOSmvSUskMEdY0wVuNTWch4R2o4hA==
-  dependencies:
-    jsonpatch "^3.0.1"
-    strict-event-emitter-types "^2.0.0"
-    uuid "^3.3.2"
-    zustand "2.2.3"
 
 "@buerli.io/core@0.0.22":
   version "0.0.22"
@@ -1253,21 +1238,6 @@
   integrity sha512-Q4UVLsSjUyNaY2ZDT8TRszOOAM1QL5UTcs+RaASTS5XTuvWLYpAUp/HGY/pu6E+Au7HOMqdpIpON/I9GDQoXiw==
   dependencies:
     react-promise-suspense "^0.3.2"
-
-"@buerli.io/react@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.21.tgz#e1268993f3ca81a5a3e1e29d70a6bc9516cfc7ae"
-  integrity sha512-kIuyTwuUtxnqGIlKSO5eqqyS6kWbx34plrV7iP9aZwEgrlA70Yc93zFbiVGGyiUy0z7Y1W7+89s7unt5S5aiDQ==
-  dependencies:
-    "@types/lodash-es" "^4.17.3"
-    antd "^4.8.0"
-    deepmerge "^4.2.2"
-    lodash-es "^4.17.15"
-    rc-color-picker "^1.2.6"
-    react-movable "^2.3.0"
-    react-spring "^8.0.27"
-    styled-components "^4.3.2"
-    three-line-raycast "^1.0.2"
 
 "@buerli.io/react@0.0.22":
   version "0.0.22"

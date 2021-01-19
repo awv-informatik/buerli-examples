@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
-    "@awvinf/buerli-plugins": "^0.0.10",
+    "@awvinf/buerli-plugins": "^0.0.11",
     "@awvinf/icons": "^1.0.4",
     "@buerli.io/classcad": "0.0.22",
     "@buerli.io/core": "0.0.22",
