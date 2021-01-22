@@ -1,6 +1,5 @@
-import { Viewcube } from '@awvinf/buerli-plugins'
 import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
-import { Canvas, Plugin } from '@buerli.io/react'
+import { Canvas, Plugin, Viewcube } from '@buerli.io/react'
 import React from 'react'
 import testpart from '../shared/resources/NxPart.of1'
 import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid } from '../shared/styles/Layout'
@@ -9,8 +8,6 @@ import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
 import initBuerli from './initBuerli'
 
 initBuerli()
-
-const ViewCube: any = Viewcube.View
 
 /**
  * The application component.
@@ -46,7 +43,7 @@ export const CustomizableCAD: React.FC<{}> = () => {
               <Canvas drawingId={activeDrawingId} product controls plugins>
                 {globalPlgIds &&
                   globalPlgIds.map(id => <Plugin view key={id} drawingId={activeDrawingId} pluginId={id} />)}
-                <ViewCube drawingId={activeDrawingId} top={true} left={false} centerAxis={false} />
+                <Viewcube drawingId={activeDrawingId} top={true} left={false} centerAxis={false} />
               </Canvas>
             </CanvasContainer>
           </CanvasCells>
