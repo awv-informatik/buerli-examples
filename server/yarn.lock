@@ -2,14 +2,49 @@
 # yarn lockfile v1
 
 
-"@awvinf/classcad-windows-x64@0.0.0-experimental.21":
-  version "0.0.0-experimental.21"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-experimental.21.tgz#058202cc911bdf6e95e7bb67a433cf1d4615c301"
-  integrity sha512-K2U5sFi+8zOlPwpe1KAePJuD1q2vriX2CaH/NGcW7r0dwmifBED4PnJdvk5L02g9DwdZcUXvkAUcTRYFyKg2Yg==
+"@awvinf/classcad-windows-x64@0.0.0-experimental.23":
+  version "0.0.0-experimental.23"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-experimental.23.tgz#ec03f5106475a3e6441278c9a1606b3d26417b23"
+  integrity sha512-qnE4UvjmSODrgKyaf0Ldlf5IBBYIBMcjB8/x3zcN0ubo8Ue6j9kUxG0VzOErfy1gIc1eegISSMxnwhzyZhazyg==
   dependencies:
-    awv3-node "10.0.2"
-    unzipper "0.10.11"
+    "@buerli.io/node" "10.0.4"
     yargs "15.4.1"
+
+"@buerli.io/node@10.0.4":
+  version "10.0.4"
+  resolved "https://registry.npmjs.org/@buerli.io/node/-/node-10.0.4.tgz#20bcc83213f787ca48250ca44daecfe8b71ab67b"
+  integrity sha512-nd5tXn8H85rOp4Hh/EPDodyg5GCF8WfwLFB4a0dSUEoSX7pa450HMy0YYQO3iapGMqDGkZtlSJrKARbcZDz8ig==
+  dependencies:
+    chalk "^2.4.1"
+    compression "^1.7.3"
+    connect-timeout "^1.9.0"
+    cors "^2.8.4"
+    delay "^3.1.0"
+    emitter "^0.0.5"
+    express "^4.16.3"
+    fix-path "^2.1.0"
+    fs-extra "^7.0.0"
+    guid "^0.0.12"
+    is-port-available "^0.1.5"
+    lodash "^4.17.10"
+    moment "^2.22.2"
+    node-fetch "^2.2.0"
+    ora "^3.0.0"
+    os-utils "^0.0.14"
+    portfinder "^1.0.17"
+    redux "^4.0.0"
+    redux-logger "^3.0.6"
+    redux-thunk "^2.3.0"
+    serve-index "^1.9.1"
+    socket.io "^2.1.1"
+    stoppable "^1.0.6"
+    stringify-object-extract-functions "^2.4.1"
+    threads "^0.12.0"
+    unzipper "^0.10.11"
+    ws "^6.0.0"
+  optionalDependencies:
+    bufferutil "4.x.x"
+    utf-8-validate "5.x.x"
 
 "@gulp-sourcemaps/map-sources@1.X":
   version "1.0.0"
@@ -205,41 +240,6 @@ atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-
-awv3-node@10.0.2:
-  version "10.0.2"
-  resolved "https://registry.npmjs.org/awv3-node/-/awv3-node-10.0.2.tgz#07914c1734300699379c0d486d1f45eb2cdaa775"
-  integrity sha512-+pL7QuGQl2e14TzxUao0gh/J9Pg/yeXvEYQ80PY6oOD4o//pB69w9RJZZ5z/upv6UQMdSkj6Tmrv6N5LyjXQcQ==
-  dependencies:
-    chalk "^2.4.1"
-    compression "^1.7.3"
-    connect-timeout "^1.9.0"
-    cors "^2.8.4"
-    delay "^3.1.0"
-    emitter "^0.0.5"
-    express "^4.16.3"
-    fix-path "^2.1.0"
-    fs-extra "^7.0.0"
-    guid "^0.0.12"
-    is-port-available "^0.1.5"
-    lodash "^4.17.10"
-    moment "^2.22.2"
-    node-fetch "^2.2.0"
-    ora "^3.0.0"
-    os-utils "^0.0.14"
-    portfinder "^1.0.17"
-    redux "^4.0.0"
-    redux-logger "^3.0.6"
-    redux-thunk "^2.3.0"
-    serve-index "^1.9.1"
-    socket.io "^2.1.1"
-    stoppable "^1.0.6"
-    stringify-object-extract-functions "^2.4.1"
-    threads "^0.12.0"
-    ws "^6.0.0"
-  optionalDependencies:
-    bufferutil "4.x.x"
-    utf-8-validate "5.x.x"
 
 babel-core@^5.8.19:
   version "5.8.38"
@@ -3557,7 +3557,7 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-unzipper@0.10.11:
+unzipper@^0.10.11:
   version "0.10.11"
   resolved "https://registry.npmjs.org/unzipper/-/unzipper-0.10.11.tgz#0b4991446472cbdb92ee7403909f26c2419c782e"
   integrity sha512-+BrAq2oFqWod5IESRjL3S8baohbevGcVA+teAIOYWM3pDVdseogqbzhhvvmiyQrUNKFUnDMtELW3X8ykbyDCJw==

@@ -26,6 +26,7 @@ module.exports = (config, env) =>
     // process.env.NODE_ENV === 'production' && addWebpackPlugin(new BundleAnalyzerPlugin()),
     babelInclude([pRes('src')].filter(Boolean)),
     addWebpackAlias({
+      drei: pRes('node_modules/drei'),
       react: pRes('node_modules/react'),
       antd: pRes('node_modules/antd'),
       three: pRes('node_modules/three'),
@@ -36,5 +37,6 @@ module.exports = (config, env) =>
       '@buerli.io/react/build': pRes('node_modules/@buerli.io/react'),
       '@buerli.io/react': pRes('node_modules/@buerli.io/react'),
       '@buerli.io/classcad': pRes('node_modules/@buerli.io/classcad'),
+      '@buerli.io/headless': pRes('node_modules/@buerli.io/headless'),
     }),
   )(config, env)
