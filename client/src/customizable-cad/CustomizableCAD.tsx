@@ -8,6 +8,8 @@ import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
 import initBuerli from './initBuerli'
+import { featureDescCache } from './features'
+import { MDXProvider } from '@mdx-js/react'
 
 initBuerli()
 
@@ -46,15 +48,36 @@ export const CustomizableCAD: React.FC<{}> = () => {
           </Canvas>
         )}
       </ExampleCanvas3D>
-      <ExampleCode>
+      <ExampleCode style={{ overflow: 'auto', paddingRight: '5px' }}>
         {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
       </ExampleCode>
-      <ExampleDescription></ExampleDescription>
+      <ExampleDescription style={{ overflow: 'auto', padding: '10px 5px 0 0' }}>
+        {activeDrawingId && <DescriptionWrapper drawingId={activeDrawingId} />}
+      </ExampleDescription>
     </ExampleWrapper>
   )
 }
 
 export default CustomizableCAD
+
+const components = {
+  // Prevent page props from being passed to MDX wrapper
+  wrapper: (props: any) => <>{props.children}</>,
+  p: (props: any) => <p {...props} style={{ fontSize: '14px' }} />,
+}
+
+const DescriptionWrapper: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
+  const { feature: featureId, global } = useDrawing(drawingId, d => d.plugin.active)
+  const feature = useDrawing(drawingId, d => d.structure.tree[featureId])
+  const MDX = featureDescCache[feature?.class]
+  return MDX ? (
+    <div style={{ fontSize: '!important inherit' }}>
+      <MDXProvider components={components}>
+        <MDX />
+      </MDXProvider>
+    </div>
+  ) : null
+}
 
 const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObject?: boolean }> = ({
   drawingId,

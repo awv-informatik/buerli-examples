@@ -47,6 +47,7 @@
     "@awvinf/buerli-plugins": "0.0.12-beta.0",
     "@awvinf/icons": "^1.0.4",
     "@buerli.io/headless": "0.0.23-beta.0",
+    "@mdx-js/react": "^1.6.22",
     "@uiw/react-codemirror": "^3.0.3",
     "antd": "^4.9.4",
     "arraybuffer-loader": "^1.0.8",
@@ -60,6 +61,7 @@
     "zustand": "^2.2.4"
   },
   "devDependencies": {
+    "@mdx-js/loader": "^1.6.22",
     "@types/node": "^12.12.54",
     "@types/react": "^16.9.55",
     "@types/react-dom": "^16.9.8",
