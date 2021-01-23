@@ -1,8 +1,10 @@
+import { Features } from '@awvinf/buerli-plugins'
 import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
-import { Canvas, Plugin, Viewcube } from '@buerli.io/react'
+import { Canvas, Viewcube } from '@buerli.io/react'
 import React from 'react'
+import styled from 'styled-components'
 import testpart from '../shared/resources/NxPart.of1'
-import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid } from '../shared/styles/Layout'
+import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
 import initBuerli from './initBuerli'
@@ -35,28 +37,20 @@ export const CustomizableCAD: React.FC<{}> = () => {
   }, [])
 
   return (
-    <MainGrid>
-      <AppGrid>
+    <ExampleWrapper>
+      <FeaturesWrapper>{activeDrawingId && <Features drawingId={activeDrawingId} />}</FeaturesWrapper>
+      <ExampleCanvas3D>
         {activeDrawingId && (
-          <CanvasCells>
-            <CanvasContainer>
-              <Canvas drawingId={activeDrawingId} product controls plugins>
-                {globalPlgIds &&
-                  globalPlgIds.map(id => <Plugin view key={id} drawingId={activeDrawingId} pluginId={id} />)}
-                <Viewcube drawingId={activeDrawingId} top={true} left={false} centerAxis={false} />
-              </Canvas>
-            </CanvasContainer>
-          </CanvasCells>
+          <Canvas drawingId={activeDrawingId} product controls plugins>
+            <Viewcube drawingId={activeDrawingId} top={true} left={true} centerAxis={false} />
+          </Canvas>
         )}
-        <GlobalPluginsCells>
-          <div>
-            {globalPlgIds &&
-              globalPlgIds.map(id => <PluginWrapper key={id} drawingId={activeDrawingId} pluginId={id} />)}
-            {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
-          </div>
-        </GlobalPluginsCells>
-      </AppGrid>
-    </MainGrid>
+      </ExampleCanvas3D>
+      <ExampleCode>
+        {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
+      </ExampleCode>
+      <ExampleDescription></ExampleDescription>
+    </ExampleWrapper>
   )
 }
 
@@ -72,19 +66,37 @@ const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObje
   const pluginName = usePlugin(drawingId, pluginId, d => d.name)
   const domUI = PluginRoot ? <PluginRoot drawingId={drawingId} pluginId={pluginId} /> : null
   return (
-    <div style={{ paddingBottom: '20px' }}>
-      <div>
-        {!isObject && <h4>{pluginName}</h4>}
-        {isObject && <h3 style={{ float: 'left', paddingBottom: '10px' }}>{pluginName}</h3>}
+    <div style={{ paddingBottom: '20px', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px' }}>
+        {!isObject && <H4>{pluginName}</H4>}
+        {isObject && <H4>{pluginName}</H4>}
         {isObject && (
-          <h4
-            style={{ float: 'right', padding: 0, margin: 0, lineHeight: '2.3em', cursor: 'pointer' }}
-            onClick={() => pluginApi?.setActiveFeature(null)}>
-            X
-          </h4>
+          <H4 style={{ justifySelf: 'flex-end', cursor: 'pointer' }} onClick={() => pluginApi?.setActiveFeature(null)}>
+            ⤫
+          </H4>
         )}
       </div>
       <ErrorBoundary>{domUI}</ErrorBoundary>
     </div>
   )
 }
+
+const H4 = styled.div`
+  padding: 0 0 5px 3px;
+  font-size: 16.5px;
+  font-weight: bold;
+`
+
+const FeaturesWrapper = styled.div`
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
+  overflow: hidden;
+  span {
+    font-size: 15px;
+    padding: 0 0 1px 0;
+    color: inherit;
+  }
+  svg {
+    fill: rgb(107, 113, 119);
+  }
+`
