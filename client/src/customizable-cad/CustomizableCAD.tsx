@@ -14,12 +14,11 @@ import initBuerli from './initBuerli'
 
 initBuerli()
 
-let firstRender = true
-
 /**
  * The application component.
  */
 export const CustomizableCAD: React.FC<{}> = () => {
+  const firstRender = React.useRef<boolean>(true)
   const activeDrawingId = useBuerli(buerli => buerli.drawing.active)
   const pluginApi = useDrawing(activeDrawingId, drawing => drawing.api.plugin)
   const globalPlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.global)
@@ -44,10 +43,10 @@ export const CustomizableCAD: React.FC<{}> = () => {
 
   React.useEffect(() => {
     const dr = getDrawing(activeDrawingId)
-    if (dr && firstRender) {
+    if (dr && firstRender.current) {
       for (const id of featurePlgIds) {
         if (dr.structure.tree[id].class === CCClasses.CCChamfer) {
-          firstRender = false
+          firstRender.current = false
           dr.api.plugin.setActiveFeature(id)
           break
         }
