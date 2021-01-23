@@ -72,7 +72,7 @@ export const ExampleWrapper = styled.div`
   overflow: hidden;
   height: 100%;
   width: 100%;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: 200px 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 `
 

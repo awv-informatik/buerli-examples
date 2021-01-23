@@ -1,35 +1,83 @@
 import { history } from '@buerli.io/headless'
-import Radio, { RadioChangeEvent } from 'antd/lib/radio'
+import CodeMirror from '@uiw/react-codemirror'
+import 'codemirror/keymap/sublime'
+import 'codemirror/theme/material.css'
+import 'codemirror/theme/monokai.css'
 import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
+import {
+  ExampleCanvas3D,
+  ExampleCode,
+  ExampleDescription,
+  ExampleOptions,
+  ExampleWrapper,
+} from '../shared/styles/Layout'
 import Controls from '../solid-api/Controls'
+import { load } from './models'
 
-const examples = [
-  { label: 'Cube_Part', value: 'Cube_Part', create: require('./models/Cube_Part').default },
-  { label: 'As1_Assembly', value: 'As1_Assembly', create: require('./models/As1_Assembly').default },
-  {
-    label: 'ConstraintProblem_Example',
-    value: 'ConstraintProblem_Example',
-    create: require('./models/ConstraintProblem_Example').default,
-  },
-  { label: 'CreateAsm_Example', value: 'CreateAsm_Example', create: require('./models/CreateAsm_Example').default },
-  { label: 'Cylinder_Part', value: 'Cylinder_Part', create: require('./models/Cylinder_Part').default },
-  { label: 'Flange_Part', value: 'Flange_Part', create: require('./models/Flange_Part').default },
-  { label: 'LBracket_Assembly', value: 'LBracket_Assembly', create: require('./models/LBracket_Assembly').default },
-  { label: 'Nut-Bolt_Assembly', value: 'Nut-Bolt_Assembly', create: require('./models/Nut-Bolt_Assembly').default },
-  { label: 'Shadowbox_Part', value: 'Shadowbox_Part', create: require('./models/Shadowbox_Part').default },
-]
+type ExamplesType = ReturnType<typeof load>
 
-const Part: React.FC<{ testParam: number; active: string }> = props => {
-  const scene = React.useRef<THREE.Scene>()
-  const { testParam } = props
-  const example = React.useMemo(() => examples.find(e => e.value === props.active), [props.active])
+export const HistoryApiApp: React.FC<{}> = () => {
+  const examples = React.useMemo(() => load(), [])
+  const options = React.useMemo(() => examples.map(e => e.file), [examples])
+  const [testParam, setTestParam] = React.useState(10)
+  const [active, setActive] = React.useState<string>(examples[0].file)
+  const example = React.useMemo(() => examples.find(e => e.file === active), [active, examples])
 
   React.useEffect(() => {
     document.title = 'History API'
   }, [])
+
+  return (
+    <ExampleWrapper>
+      <ExampleOptions>
+        {options.map(o => (
+          <div className={o === active ? 'active' : ''} key={o} onClick={e => setActive(o)}>
+            {o}
+          </div>
+        ))}
+      </ExampleOptions>
+      <ExampleCanvas3D>
+        <Canvas camera={{ position: [30, 15, 20], fov: 50 }}>
+          <ambientLight intensity={0.2} />
+          <pointLight position={[20, 0, 0]} intensity={0.1} />
+          <pointLight position={[0, 20, 0]} intensity={0.5} />
+          <pointLight position={[0, 0, 20]} intensity={0.9} />
+
+          <group scale={[0.1, 0.1, 0.1]}>
+            <Part active={active} examples={examples} testParam={testParam} />
+          </group>
+          <Controls />
+          <axesHelper visible={true} />
+        </Canvas>
+      </ExampleCanvas3D>
+      <ExampleCode>
+        <CodeMirror
+          height="100%"
+          width="100%"
+          value={example.text}
+          options={{
+            folding: true,
+            readOnly: true,
+            theme: 'material',
+            keyMap: 'sublime',
+            mode: 'ts',
+          }}
+        />
+      </ExampleCode>
+      <ExampleDescription></ExampleDescription>
+    </ExampleWrapper>
+  )
+}
+
+export default HistoryApiApp
+
+const Part: React.FC<{ testParam: number; active: string; examples: ExamplesType }> = props => {
+  const scene = React.useRef<THREE.Scene>()
+  const { testParam } = props
+  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
 
   React.useEffect(() => {
     const sceneObj = scene.current
@@ -51,33 +99,3 @@ const Part: React.FC<{ testParam: number; active: string }> = props => {
 
   return <scene ref={scene} />
 }
-
-export const HistoryApiApp: React.FC<{}> = () => {
-  const [testParam, setTestParam] = React.useState(10)
-  const [active, setActive] = React.useState<string>(examples[0].value)
-  const onChange = React.useCallback((ev: RadioChangeEvent) => setActive(ev.target.value), [setActive])
-
-  return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <div style={{ width: '100%', height: '5%' }}>
-        <Radio.Group options={examples} onChange={onChange} value={active} optionType="button" buttonStyle="solid" />
-      </div>
-      <div style={{ width: '100%', height: '95%' }}>
-        <Canvas camera={{ position: [30, 15, 20], fov: 50 }}>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[20, 0, 0]} intensity={0.1} />
-          <pointLight position={[0, 20, 0]} intensity={0.5} />
-          <pointLight position={[0, 0, 20]} intensity={0.9} />
-
-          <group scale={[0.1, 0.1, 0.1]}>
-            <Part testParam={testParam} active={active} />
-          </group>
-          <Controls />
-          <axesHelper visible={true} />
-        </Canvas>
-      </div>
-    </div>
-  )
-}
-
-export default HistoryApiApp
