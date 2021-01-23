@@ -1,15 +1,16 @@
 import { Features } from '@awvinf/buerli-plugins'
-import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
+import { CCClasses } from '@buerli.io/classcad'
+import { DrawingID, getDrawing, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
 import { Canvas, Viewcube } from '@buerli.io/react'
+import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 import styled from 'styled-components'
 import testpart from '../shared/resources/NxPart.of1'
 import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
-import initBuerli from './initBuerli'
 import { featureDescCache } from './features'
-import { MDXProvider } from '@mdx-js/react'
+import initBuerli from './initBuerli'
 
 initBuerli()
 
@@ -20,6 +21,7 @@ export const CustomizableCAD: React.FC<{}> = () => {
   const activeDrawingId = useBuerli(buerli => buerli.drawing.active)
   const pluginApi = useDrawing(activeDrawingId, drawing => drawing.api.plugin)
   const globalPlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.global)
+  const featurePlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.feature)
 
   const activePluginId = useDrawing(activeDrawingId, drawing => drawing.plugin.active.feature) || -1
   const hasActivePlg = activeDrawingId && activePluginId >= 0
@@ -37,6 +39,18 @@ export const CustomizableCAD: React.FC<{}> = () => {
       CCImportExport.createAndLoad1('TestPart.of1', testpart)
     }, 500)
   }, [])
+
+  React.useEffect(() => {
+    const dr = getDrawing(activeDrawingId)
+    if (dr) {
+      for (const id of featurePlgIds) {
+        if (dr.structure.tree[id].class === CCClasses.CCChamfer) {
+          dr.api.plugin.setActiveFeature(id)
+          break
+        }
+      }
+    }
+  }, [activeDrawingId, featurePlgIds])
 
   return (
     <ExampleWrapper>
@@ -113,7 +127,8 @@ const H4 = styled.div`
 const FeaturesWrapper = styled.div`
   grid-row: 1 / 3;
   grid-column: 1 / 2;
-  overflow: hidden;
+  overflow: auto;
+  padding-right: 5px;
   span {
     font-size: 15px;
     padding: 0 0 1px 0;

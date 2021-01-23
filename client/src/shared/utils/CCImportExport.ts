@@ -10,14 +10,14 @@ import {
 import { getCamera } from '@buerli.io/react'
 
 export const CCImportExport = {
-  createAndLoad1: (name: string, content: any): Promise<any> => {
+  createAndLoad1: (name: string, content: any): Promise<DrawingID> => {
     return new Promise(async (resolve, reject) => {
       try {
         const drawingId = await ccAPI.base.createCCDrawing(name)
         if (drawingId) {
           await ccAPI.baseModeler.load(drawingId, new File([], name), content)
         }
-        resolve(undefined)
+        resolve(drawingId)
       } catch (error) {
         reject(error)
       }
