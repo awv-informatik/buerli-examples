@@ -4,13 +4,12 @@ import { CCClasses } from '@buerli.io/classcad'
 import { init } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
 import { CCSERVERURL } from '../config'
-import * as Features from './plugins/FeaturesList'
 
 export const initBuerli = () => {
   init({
     url: CCSERVERURL,
     elements,
-    globalPlugins: [Features],
+    globalPlugins: [],
     plugins: {
       [CCClasses.CCSketch]: Sketch,
       [CCClasses.CCExtrusion]: Extrusion,

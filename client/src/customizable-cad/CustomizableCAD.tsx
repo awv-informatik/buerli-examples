@@ -1,13 +1,20 @@
-import { DrawingID, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
-import { Canvas, Plugin, Viewcube } from '@buerli.io/react'
+import { Features } from '@awvinf/buerli-plugins'
+import { CCClasses } from '@buerli.io/classcad'
+import { DrawingID, getDrawing, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
+import { Canvas, Viewcube } from '@buerli.io/react'
+import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
+import styled from 'styled-components'
 import testpart from '../shared/resources/NxPart.of1'
-import { AppGrid, CanvasCells, CanvasContainer, GlobalPluginsCells, MainGrid } from '../shared/styles/Layout'
+import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
+import { featureDescCache } from './features'
 import initBuerli from './initBuerli'
 
 initBuerli()
+
+let firstRender = true
 
 /**
  * The application component.
@@ -16,6 +23,7 @@ export const CustomizableCAD: React.FC<{}> = () => {
   const activeDrawingId = useBuerli(buerli => buerli.drawing.active)
   const pluginApi = useDrawing(activeDrawingId, drawing => drawing.api.plugin)
   const globalPlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.global)
+  const featurePlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.feature)
 
   const activePluginId = useDrawing(activeDrawingId, drawing => drawing.plugin.active.feature) || -1
   const hasActivePlg = activeDrawingId && activePluginId >= 0
@@ -34,33 +42,59 @@ export const CustomizableCAD: React.FC<{}> = () => {
     }, 500)
   }, [])
 
+  React.useEffect(() => {
+    const dr = getDrawing(activeDrawingId)
+    if (dr && firstRender) {
+      for (const id of featurePlgIds) {
+        if (dr.structure.tree[id].class === CCClasses.CCChamfer) {
+          firstRender = false
+          dr.api.plugin.setActiveFeature(id)
+          break
+        }
+      }
+    }
+  }, [activeDrawingId, featurePlgIds])
+
   return (
-    <MainGrid>
-      <AppGrid>
+    <ExampleWrapper>
+      <FeaturesWrapper>{activeDrawingId && <Features drawingId={activeDrawingId} />}</FeaturesWrapper>
+      <ExampleCanvas3D>
         {activeDrawingId && (
-          <CanvasCells>
-            <CanvasContainer>
-              <Canvas drawingId={activeDrawingId} product controls plugins>
-                {globalPlgIds &&
-                  globalPlgIds.map(id => <Plugin view key={id} drawingId={activeDrawingId} pluginId={id} />)}
-                <Viewcube drawingId={activeDrawingId} top={true} left={false} centerAxis={false} />
-              </Canvas>
-            </CanvasContainer>
-          </CanvasCells>
+          <Canvas drawingId={activeDrawingId} product controls plugins>
+            <Viewcube drawingId={activeDrawingId} top={true} left={true} centerAxis={false} />
+          </Canvas>
         )}
-        <GlobalPluginsCells>
-          <div>
-            {globalPlgIds &&
-              globalPlgIds.map(id => <PluginWrapper key={id} drawingId={activeDrawingId} pluginId={id} />)}
-            {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
-          </div>
-        </GlobalPluginsCells>
-      </AppGrid>
-    </MainGrid>
+      </ExampleCanvas3D>
+      <ExampleCode style={{ overflow: 'auto', paddingRight: '10px' }}>
+        {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
+      </ExampleCode>
+      <ExampleDescription style={{ overflow: 'auto', padding: '10px 10px 0 0' }}>
+        {activeDrawingId && <DescriptionWrapper drawingId={activeDrawingId} />}
+      </ExampleDescription>
+    </ExampleWrapper>
   )
 }
 
 export default CustomizableCAD
+
+const components = {
+  // Prevent page props from being passed to MDX wrapper
+  wrapper: (props: any) => <>{props.children}</>,
+  p: (props: any) => <p {...props} style={{ fontSize: '14px' }} />,
+}
+
+const DescriptionWrapper: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
+  const { feature: featureId, global } = useDrawing(drawingId, d => d.plugin.active)
+  const feature = useDrawing(drawingId, d => d.structure.tree[featureId])
+  const MDX = featureDescCache[feature?.class]
+  return MDX ? (
+    <div style={{ fontSize: '!important inherit' }}>
+      <MDXProvider components={components}>
+        <MDX />
+      </MDXProvider>
+    </div>
+  ) : null
+}
 
 const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObject?: boolean }> = ({
   drawingId,
@@ -72,19 +106,38 @@ const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObje
   const pluginName = usePlugin(drawingId, pluginId, d => d.name)
   const domUI = PluginRoot ? <PluginRoot drawingId={drawingId} pluginId={pluginId} /> : null
   return (
-    <div style={{ paddingBottom: '20px' }}>
-      <div>
-        {!isObject && <h4>{pluginName}</h4>}
-        {isObject && <h3 style={{ float: 'left', paddingBottom: '10px' }}>{pluginName}</h3>}
+    <div style={{ paddingBottom: '20px', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px' }}>
+        {!isObject && <H4>{pluginName}</H4>}
+        {isObject && <H4>{pluginName}</H4>}
         {isObject && (
-          <h4
-            style={{ float: 'right', padding: 0, margin: 0, lineHeight: '2.3em', cursor: 'pointer' }}
-            onClick={() => pluginApi?.setActiveFeature(null)}>
-            X
-          </h4>
+          <H4 style={{ justifySelf: 'flex-end', cursor: 'pointer' }} onClick={() => pluginApi?.setActiveFeature(null)}>
+            ⤫
+          </H4>
         )}
       </div>
       <ErrorBoundary>{domUI}</ErrorBoundary>
     </div>
   )
 }
+
+const H4 = styled.div`
+  padding: 0 0 5px 3px;
+  font-size: 16.5px;
+  font-weight: bold;
+`
+
+const FeaturesWrapper = styled.div`
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
+  overflow: auto;
+  padding-right: 5px;
+  span {
+    font-size: 15px;
+    padding: 0 0 1px 0;
+    color: inherit;
+  }
+  svg {
+    fill: rgb(107, 113, 119);
+  }
+`
