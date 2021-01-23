@@ -14,6 +14,8 @@ import initBuerli from './initBuerli'
 
 initBuerli()
 
+let firstRender = true
+
 /**
  * The application component.
  */
@@ -42,9 +44,10 @@ export const CustomizableCAD: React.FC<{}> = () => {
 
   React.useEffect(() => {
     const dr = getDrawing(activeDrawingId)
-    if (dr) {
+    if (dr && firstRender) {
       for (const id of featurePlgIds) {
         if (dr.structure.tree[id].class === CCClasses.CCChamfer) {
+          firstRender = false
           dr.api.plugin.setActiveFeature(id)
           break
         }
@@ -62,10 +65,10 @@ export const CustomizableCAD: React.FC<{}> = () => {
           </Canvas>
         )}
       </ExampleCanvas3D>
-      <ExampleCode style={{ overflow: 'auto', paddingRight: '5px' }}>
+      <ExampleCode style={{ overflow: 'auto', paddingRight: '10px' }}>
         {hasActivePlg && <PluginWrapper drawingId={activeDrawingId} pluginId={activePluginId} isObject />}
       </ExampleCode>
-      <ExampleDescription style={{ overflow: 'auto', padding: '10px 5px 0 0' }}>
+      <ExampleDescription style={{ overflow: 'auto', padding: '10px 10px 0 0' }}>
         {activeDrawingId && <DescriptionWrapper drawingId={activeDrawingId} />}
       </ExampleDescription>
     </ExampleWrapper>
