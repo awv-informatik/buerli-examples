@@ -9,7 +9,7 @@ import testpart from '../shared/resources/NxPart.of1'
 import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
-import { featureDescCache } from './features'
+import { docs } from './docs'
 import initBuerli from './initBuerli'
 
 initBuerli()
@@ -85,7 +85,7 @@ const components = {
 const DescriptionWrapper: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
   const { feature: featureId, global } = useDrawing(drawingId, d => d.plugin.active)
   const feature = useDrawing(drawingId, d => d.structure.tree[featureId])
-  const MDX = featureDescCache[feature?.class]
+  const MDX = docs[feature?.class]
   return MDX ? (
     <div style={{ fontSize: '!important inherit' }}>
       <MDXProvider components={components}>

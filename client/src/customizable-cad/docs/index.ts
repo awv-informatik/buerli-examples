@@ -8,4 +8,4 @@ for (const clazz of classes) {
   } catch (error) {}
 }
 export default classMap
-export const featureDescCache = classMap
+export const docs = classMap
