@@ -7,6 +7,7 @@ import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
+import { CanvasContent } from '../shared/components/CanvasContent'
 import {
   ExampleCanvas3D,
   ExampleCode,
@@ -14,7 +15,6 @@ import {
   ExampleOptions,
   ExampleWrapper,
 } from '../shared/styles/Layout'
-import Controls from '../solid-api/Controls'
 import { load } from './models'
 
 type ExamplesType = ReturnType<typeof load>
@@ -40,23 +40,12 @@ export const HistoryApiApp: React.FC<{}> = () => {
         ))}
       </ExampleOptions>
       <ExampleCanvas3D>
-        <Canvas camera={{ position: [30, 15, 20], fov: 50 }}>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[20, 0, 0]} intensity={0.1} />
-          <pointLight position={[0, 20, 0]} intensity={0.5} />
-          <pointLight position={[0, 0, 20]} intensity={0.9} />
-
-          <group scale={[0.1, 0.1, 0.1]}>
-            <Part active={active} examples={examples} testParam={testParam} />
-          </group>
-          <Controls />
-          <axesHelper visible={true} />
+        <Canvas>
+          <Part active={active} examples={examples} testParam={testParam} />
         </Canvas>
       </ExampleCanvas3D>
       <ExampleCode>
         <CodeMirror
-          height="100%"
-          width="100%"
           value={example.text}
           options={{
             folding: true,
@@ -74,28 +63,39 @@ export const HistoryApiApp: React.FC<{}> = () => {
 
 export default HistoryApiApp
 
-const Part: React.FC<{ testParam: number; active: string; examples: ExamplesType }> = props => {
-  const scene = React.useRef<THREE.Scene>()
-  const { testParam } = props
-  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
+const Part: React.FC<{
+  testParam: number
+  active: string
+  examples: ExamplesType
+  onState?: (state: 'loading' | 'done') => void
+}> = ({ testParam, active, examples, onState }) => {
+  const example = React.useMemo(() => examples.find(e => e.file === active), [active])
+  const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
 
   React.useEffect(() => {
-    const sceneObj = scene.current
+    document.title = 'Solid API'
+  }, [])
+
+  React.useEffect(() => {
+    setMeshes([])
+    onState && onState('loading')
     const cad = new history(CCSERVERURL)
     cad.init(async api => {
       const items = await example.create(api, testParam)
-      for (const item of items) {
-        sceneObj.add(item)
-      }
+      onState && onState('done')
+      setMeshes(items)
     })
 
-    return () => {
-      cad.destroy()
-      if (sceneObj) {
-        sceneObj.children = []
-      }
-    }
-  }, [testParam, example])
+    return () => cad.destroy()
+  }, [example])
 
-  return <scene ref={scene} />
+  return (
+    <>
+      <CanvasContent>
+        {meshes.map(m => (
+          <mesh key={m.uuid} {...m} />
+        ))}
+      </CanvasContent>
+    </>
+  )
 }

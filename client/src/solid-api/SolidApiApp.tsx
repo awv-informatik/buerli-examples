@@ -7,6 +7,7 @@ import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
+import { CanvasContent } from '../shared/components/CanvasContent'
 import {
   ExampleCanvas3D,
   ExampleCode,
@@ -14,7 +15,6 @@ import {
   ExampleOptions,
   ExampleWrapper,
 } from '../shared/styles/Layout'
-import Controls from './Controls'
 import { load } from './models'
 
 type ExamplesType = ReturnType<typeof load>
@@ -39,23 +39,12 @@ export const SolidApiApp: React.FC<{}> = () => {
         ))}
       </ExampleOptions>
       <ExampleCanvas3D>
-        <Canvas camera={{ position: [30, 15, 20], fov: 50 }}>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[20, 0, 0]} intensity={0.1} />
-          <pointLight position={[0, 20, 0]} intensity={0.5} />
-          <pointLight position={[0, 0, 20]} intensity={0.9} />
-
-          <group scale={[0.1, 0.1, 0.1]}>
-            <Part active={active} examples={examples} />
-          </group>
-          <Controls />
-          <axesHelper visible={true} />
+        <Canvas>
+          <Part active={active} examples={examples} />
         </Canvas>
       </ExampleCanvas3D>
       <ExampleCode>
         <CodeMirror
-          height="100%"
-          width="100%"
           value={example.text}
           options={{
             folding: true,
@@ -73,27 +62,38 @@ export const SolidApiApp: React.FC<{}> = () => {
 
 export default SolidApiApp
 
-const Part: React.FC<{ active: string; examples: ExamplesType }> = props => {
-  const scene = React.useRef<THREE.Scene>()
-  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active, props.examples])
+const Part: React.FC<{
+  active: string
+  examples: ExamplesType
+  onState?: (state: 'loading' | 'done') => void
+}> = props => {
+  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
+  const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
 
   React.useEffect(() => {
-    const sceneObj = scene.current
+    document.title = 'Solid API'
+  }, [])
+
+  React.useEffect(() => {
+    setMeshes([])
+    props.onState && props.onState('loading')
     const cad = new solid(CCSERVERURL)
     cad.init(async api => {
       const items = await example.create(api)
-      for (const item of items) {
-        sceneObj.add(item)
-      }
+      props.onState && props.onState('done')
+      setMeshes(items)
     })
 
-    return () => {
-      cad.destroy()
-      if (sceneObj) {
-        sceneObj.children = []
-      }
-    }
+    return () => cad.destroy()
   }, [example])
 
-  return <scene ref={scene} />
+  return (
+    <>
+      <CanvasContent>
+        {meshes.map(m => (
+          <mesh key={m.uuid} {...m} />
+        ))}
+      </CanvasContent>
+    </>
+  )
 }
