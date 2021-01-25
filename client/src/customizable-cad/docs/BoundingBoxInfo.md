@@ -1,1 +1,1 @@
-# BoundingBoxInfo
+BoundingBoxInfo documentation

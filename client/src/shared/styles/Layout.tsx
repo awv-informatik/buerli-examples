@@ -110,3 +110,9 @@ export const ExampleDescription = styled.div`
   grid-column: 3 / 4;
   overflow: hidden;
 `
+
+export const ExampleRightSidebar = styled.div`
+  grid-row: 1 / 3;
+  grid-column: 3 / 4;
+  overflow: hidden;
+`
