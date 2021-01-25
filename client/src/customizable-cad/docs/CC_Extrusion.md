@@ -1,103 +1,17 @@
-Extrusion documentation
+## Extrusion documentation
 
-Thanks for visiting [The Markdown Guide](https://www.markdownguide.org)!
+Extrusion features are building blocks for creating and modifying solid bodies within a part. You need to create a sketch before and use selector for sketch region to define the entities that must be extruded. Region must be closed to create a valid manifold solid.
 
-This Markdown cheat sheet provides a quick overview of all the Markdown syntax elements. It can’t cover every edge case, so if you need more information about any of these elements, refer to the reference guides for [basic syntax](https://www.markdownguide.org/basic-syntax) and [extended syntax](https://www.markdownguide.org/extended-syntax).
+**Note:** Make sure that the sketch is visible, by clicking on the eye icon of sketch in the feature tree.
 
-## Basic Syntax
+### construction methods
 
-These are the elements outlined in John Gruber’s original design document. All Markdown applications support these elements.
+1. Type: Up, Down., Symmetric or Custom
 
-### Heading
+2. Height
 
-# H1
+3. Taper angle
 
-## H2
+### Upcoming
 
-### H3
-
-### Bold
-
-**bold text**
-
-### Italic
-
-_italicized text_
-
-### Blockquote
-
-> blockquote
-
-### Ordered List
-
-1. First item
-2. Second item
-3. Third item
-
-### Unordered List
-
-- First item
-- Second item
-- Third item
-
-### Code
-
-`code`
-
-### Horizontal Rule
-
----
-
-### Link
-
-[title](https://www.example.com)
-
-### Image
-
-<img style={{height: "100px"}} src={require("./CC_Chamfer.png")} />
-
-## Extended Syntax
-
-These elements extend the basic syntax by adding additional features. Not all Markdown applications support these elements.
-
-### Table
-
-| Syntax    | Description |
-| --------- | ----------- |
-| Header    | Title       |
-| Paragraph | Text        |
-
-### Fenced Code Block
-
-```
-{
-  "firstName": "John",
-  "lastName": "Smith",
-  "age": 25
-}
-```
-
-### Footnote
-
-Here's a sentence with a footnote. [^1]
-
-[^1]: This is the footnote.
-
-### Heading ID
-
-### My Great Heading {#custom-id}
-
-### Definition List
-
-term
-: definition
-
-### Strikethrough
-
-~~The world is flat.~~
-
-### Task List
-
-- [x] Write the press release
-- [ ] Update the website
-- [ ] Contact the media
+There are plans for extrusion of brep faces.
