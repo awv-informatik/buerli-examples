@@ -6,10 +6,16 @@ import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 import styled from 'styled-components'
 import testpart from '../shared/resources/NxPart.of1'
-import { ExampleCanvas3D, ExampleCode, ExampleDescription, ExampleWrapper } from '../shared/styles/Layout'
+import {
+  ExampleCanvas3D,
+  ExampleCode,
+  ExampleDescription,
+  ExampleOptions,
+  ExampleWrapper,
+} from '../shared/styles/Layout'
 import { CCImportExport } from '../shared/utils/CCImportExport'
 import { ErrorBoundary } from '../shared/utils/ErrorBoundary'
-import { docs } from './docs'
+import { docs, globalPluginNames } from './docs'
 import initBuerli from './initBuerli'
 
 initBuerli()
@@ -20,20 +26,16 @@ initBuerli()
 export const CustomizableCAD: React.FC<{}> = () => {
   const firstRender = React.useRef<boolean>(true)
   const activeDrawingId = useBuerli(buerli => buerli.drawing.active)
-  const pluginApi = useDrawing(activeDrawingId, drawing => drawing.api.plugin)
-  const globalPlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.global)
   const featurePlgIds = useDrawing(activeDrawingId, drawing => drawing.plugin.feature)
 
-  const activePluginId = useDrawing(activeDrawingId, drawing => drawing.plugin.active.feature) || -1
-  const hasActivePlg = activeDrawingId && activePluginId >= 0
+  const activeFeaturePluginId = useDrawing(activeDrawingId, drawing => drawing.plugin.active.feature)
+  const activeGlobalPluginId = useDrawing(activeDrawingId, drawing => drawing.plugin.active.global[0])
+  const activePluginId = activeGlobalPluginId ? activeGlobalPluginId : activeFeaturePluginId
+  const hasActivePlg = Boolean(activeDrawingId) || Boolean(activePluginId)
 
   React.useEffect(() => {
     document.title = 'Customizable CAD'
   }, [])
-
-  React.useEffect(() => {
-    if (globalPlgIds) globalPlgIds.forEach(id => pluginApi.setVisiblePlugin(id, true))
-  }, [globalPlgIds, pluginApi])
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -56,7 +58,19 @@ export const CustomizableCAD: React.FC<{}> = () => {
 
   return (
     <ExampleWrapper>
-      <FeaturesWrapper>{activeDrawingId && <Features drawingId={activeDrawingId} />}</FeaturesWrapper>
+      <FeaturesWrapper>
+        {activeDrawingId && (
+          <>
+            <H4>Features</H4>
+            <Features drawingId={activeDrawingId} />
+            <div style={{ height: '15px' }} />
+            <H4>Globals</H4>
+            <ExampleOptions>
+              <GlobalPluginSelector drawingId={activeDrawingId} />
+            </ExampleOptions>
+          </>
+        )}
+      </FeaturesWrapper>
       <ExampleCanvas3D>
         {activeDrawingId && (
           <Canvas drawingId={activeDrawingId} product controls plugins>
@@ -85,7 +99,12 @@ const components = {
 const DescriptionWrapper: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
   const { feature: featureId, global } = useDrawing(drawingId, d => d.plugin.active)
   const feature = useDrawing(drawingId, d => d.structure.tree[featureId])
-  const MDX = docs[feature?.class]
+  const MDX = React.useMemo(() => {
+    if (global.length > 0) {
+      return docs[getDrawing(drawingId)?.plugin?.refs[global[0]].name]
+    }
+    return docs[feature?.class]
+  }, [global, drawingId, feature])
   return MDX ? (
     <div style={{ fontSize: '!important inherit' }}>
       <MDXProvider components={components}>
@@ -120,8 +139,43 @@ const PluginWrapper: React.FC<{ drawingId: DrawingID; pluginId: PluginID; isObje
   )
 }
 
+const GlobalPluginSelector: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
+  const [activeName, setActiveName] = React.useState<string>('')
+  const pluginApi = useDrawing(drawingId, drawing => drawing.api.plugin)
+  const active = useDrawing(drawingId, drawing => drawing.plugin.active)
+  const activate = React.useCallback(
+    (name: string) => {
+      const dr = getDrawing(drawingId)
+      if (dr) {
+        const pluginId = dr.plugin.global.find(id => {
+          return dr.plugin.refs[id].name === name ? id : undefined
+        })
+        for (const globalId of active.global) {
+          pluginApi.setActiveGlobal(globalId, globalId === pluginId)
+        }
+        const isActive = active.global.indexOf(pluginId) < 0
+        pluginApi.setActiveGlobal(pluginId, isActive)
+        setActiveName(isActive && name)
+      }
+    },
+    [pluginApi, drawingId, active],
+  )
+  return (
+    <>
+      {globalPluginNames.map(o =>
+        // only show the global plugins which have a documentation file
+        docs[o] ? (
+          <div key={o} onClick={() => activate(o)} className={o === activeName ? 'active' : ''}>
+            {o}
+          </div>
+        ) : null,
+      )}
+    </>
+  )
+}
+
 const H4 = styled.div`
-  padding: 0 0 5px 3px;
+  padding: 0 0 8px 0;
   font-size: 16.5px;
   font-weight: bold;
 `
