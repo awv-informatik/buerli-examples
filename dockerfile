@@ -39,20 +39,25 @@ RUN npm -v
 
 ENV BEX_DIR /buerli-examples
 RUN mkdir -p $BEX_DIR
-COPY ./ $BEX_DIR
-COPY ./docker-res/start.sh $BEX_DIR
-
 ENV CLIENT_DIR $BEX_DIR/client
+RUN mkdir -p $CLIENT_DIR
+ENV SERVER_DIR $BEX_DIR/server
+RUN mkdir -p $SERVER_DIR
+
+COPY ./client $BEX_DIR/client
+COPY ./server $BEX_DIR/server
+
 WORKDIR $CLIENT_DIR
 RUN yarn
 
-ENV SERVER_DIR $BEX_DIR/server
 WORKDIR $SERVER_DIR
 COPY ./docker-res/package-linux.json $SERVER_DIR/package.json
-COPY ./docker-res/EnterpriseBaseModeling.ccapp $SERVER_DIR
+COPY ./docker-res/EnterpriseBaseModeling.ccapp $SERVER_DIR/EnterpriseBaseModeling.ccapp
 RUN yarn
 RUN chmod -R +x ./node_modules/@awvinf/classcad-linux-x64
 RUN cp ./node_modules/@awvinf/classcad-linux-x64/libboost* /lib/x86_64-linux-gnu
 
 WORKDIR $BEX_DIR
+COPY ./docker-res/start.sh $BEX_DIR/start.sh
+RUN chmod +x start.sh
 CMD ./start.sh

@@ -14,8 +14,13 @@ services:
     ports:
       - 8081:8181 # ClassCAD Server
       - 8082:8082 # Webpack Server
+    volumes:
+      - npm-cache:/usr/local/share/.cache
     restart: always
 
 networks:
   examples-network:
     name: buerli-network
+
+volumes:
+  npm-cache:
