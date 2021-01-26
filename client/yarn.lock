@@ -57,10 +57,10 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/buerli-plugins@0.0.12-beta.0":
-  version "0.0.12-beta.0"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.12-beta.0.tgz#c0d3649b6bea2091857af5ca0fa0cd0cbc2753b0"
-  integrity sha512-fi4CAYFbVkYLRm/tX26EX305mYfWWrRdDS6py18RQiZLvjN7a0JRQXex9qM6yZZrI8X2VwSZ2E0Q1ZhJbydbzw==
+"@awvinf/buerli-plugins@0.0.12-beta.1":
+  version "0.0.12-beta.1"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.12-beta.1.tgz#871cb2199849a009551bfb5dd5553a6837653ea8"
+  integrity sha512-4nYbG8ACVrR8QbvDuq+siywF+ixBnwzaH0Yg0pu+cIwgRjpZTZdVDwnKOXY96ULBigqdFGEuyctvddE5+OzmIA==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@awvinf/icons" "1.0.4"
