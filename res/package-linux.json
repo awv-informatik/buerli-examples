@@ -1,0 +1,11 @@
+{
+  "name": "classcad-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/@awvinf/classcad-linux-x64/bin.js --instances 5 --ccappfile ./EnterpriseBaseModeling.ccapp"
+  },
+  "dependencies": {
+    "@awvinf/classcad-linux-x64": "0.0.0-experimental.23"
+  }
+}

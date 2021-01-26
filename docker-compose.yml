@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  buerli-examples:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: awv/buerli-examples
+    container_name: buerli-examples
+    tty: true
+    stdin_open: true
+    networks:
+      - examples-network
+    ports:
+      - 8081:8181 # ClassCAD Server
+      - 8082:8082 # Webpack Server
+    restart: always
+
+networks:
+  examples-network:
+    name: buerli-network

@@ -5,7 +5,9 @@ _gitignore/
 **/chrome/**
 **/*.log
 .DS_Store
-
+/res/*.ccapp
+/res/*.cfe
+/res/*.cf1
 
 # Logs
 logs
