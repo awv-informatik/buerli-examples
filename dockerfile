@@ -1,32 +1,16 @@
 FROM ubuntu:18.04
 
 RUN apt update && \
-  apt install -y wget locales libicu60 libglu1-mesa-dev ocl-icd-opencl-dev && \
+  apt install -y curl locales libicu60 libglu1-mesa-dev ocl-icd-opencl-dev && \
   locale-gen en_US.UTF-8 && \
   update-locale LANG=en_US.UTF-8
 
 ###############################
-## INSTALL nvm / node / npm / yarn
+## INSTALL node / npm / yarn
 ###############################
 
-# nvm environment variables
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 10.15.3
-RUN mkdir -p $NVM_DIR
-
-# install nvm
-RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-
-# add node and npm to path so the commands are available
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-# install node and npm
-RUN echo "source $NVM_DIR/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    nvm use default" | bash
-
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN apt install -y nodejs
 RUN npm i -g yarn
 
 # confirm installation
