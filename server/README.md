@@ -24,12 +24,12 @@ In short, ClassCAD is a framework for developing CAD-based applications. ClassCA
 
    > ⚠️ **Important!** The user area of buerli.io is under construction and not yet available!
 
-1. Open the file `package.json` and replace the path passed to `--ccapp` with the full path to your `ccapp` file downloaded just before.
+1. Open the file `package.json` and replace the path passed to `--ccappfile` with the full path to your `ccapp` file downloaded just before.
 
    ```json
    // package.json
    "scripts": {
-     "start": "classcad-server --port 9091 --instances 1 --ccapp <FULL PATH TO CCAPP FILE>"
+     "start": "classcad-server --port 9091 --instances 1 --ccappfile <FULL PATH TO CCAPP FILE>"
    }
    ```
 
@@ -44,7 +44,7 @@ In short, ClassCAD is a framework for developing CAD-based applications. ClassCA
    ```
    yarn start
    ```
-   
+
 1. Check the status of the ClassCAD server which should now be available under http://localhost:9091
    ```
    http://localhost:9091/status
