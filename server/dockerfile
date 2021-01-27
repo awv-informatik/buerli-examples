@@ -21,12 +21,13 @@ ENV SERVER_DIR /buerli
 RUN mkdir -p $SERVER_DIR
 WORKDIR $SERVER_DIR
 
-COPY ./ $SERVER_DIR
-COPY ./docker-res/EnterpriseBaseModeling.ccapp $SERVER_DIR/EnterpriseBaseModeling.ccapp
-COPY ./docker-res/package-linux.json $SERVER_DIR/package.json
-
+COPY ./.npmrc $SERVER_DIR
+COPY ./.yarnrc $SERVER_DIR
+COPY ./yarn.lock $SERVER_DIR
+COPY ./package-linux.json $SERVER_DIR/package.json
 RUN yarn
 RUN chmod -R +x ./node_modules/@awvinf/classcad-linux-x64
 RUN cp ./node_modules/@awvinf/classcad-linux-x64/libboost* /lib/x86_64-linux-gnu
+COPY ./EnterpriseBaseModeling.ccapp $SERVER_DIR/EnterpriseBaseModeling.ccapp
 
 CMD yarn start

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "classcad-server --ip localhost --port 8081 --instances 2 --ccappfile ./_gitignore/EnterpriseBaseModeling.ccapp"
+    "start": "classcad-server --ip localhost --port 8081 --instances 2 --ccappfile ./EnterpriseBaseModeling.ccapp"
   },
   "dependencies": {
     "@awvinf/classcad-windows-x64": "0.0.0-experimental.23"

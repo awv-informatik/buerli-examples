@@ -17,9 +17,15 @@ RUN npm i -g yarn
 
 ENV CLIENT_DIR /buerli
 RUN mkdir -p $CLIENT_DIR
+WORKDIR $CLIENT_DIR
+
+COPY ./.npmrc $CLIENT_DIR
+COPY ./.yarnrc $CLIENT_DIR
+COPY ./yarn.lock $CLIENT_DIR
+COPY ./package.json $CLIENT_DIR
+COPY ./patches $CLIENT_DIR/patches
+RUN yarn
 
 COPY ./ $CLIENT_DIR
 
-WORKDIR $CLIENT_DIR
-RUN yarn
 CMD yarn start
