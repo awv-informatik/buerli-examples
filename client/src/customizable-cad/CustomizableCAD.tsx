@@ -3,6 +3,7 @@ import { CCClasses } from '@buerli.io/classcad'
 import { DrawingID, getDrawing, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
 import { Canvas, Viewcube } from '@buerli.io/react'
 import { MDXProvider } from '@mdx-js/react'
+import { Spin } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
 import testpart from '../shared/resources/NxPart.of1'
@@ -27,15 +28,19 @@ export const CustomizableCAD: React.FC<{}> = () => {
   const activePluginId = activeGlobalPluginId ? activeGlobalPluginId : activeFeaturePluginId
   const hasActivePlg = Boolean(activeDrawingId) && Boolean(activePluginId)
   const isObjectPlg = hasActivePlg && !Boolean(activeGlobalPluginId)
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     document.title = 'Customizable CAD'
   }, [])
 
   React.useEffect(() => {
+    setLoading(true)
     setTimeout(() => {
-      CCImportExport.createAndLoad1('TestPart.of1', testpart)
-    }, 500)
+      CCImportExport.createAndLoad1('TestPart.of1', testpart).finally(() => {
+        setLoading(false)
+      })
+    }, 100)
   }, [])
 
   React.useEffect(() => {
@@ -71,6 +76,12 @@ export const CustomizableCAD: React.FC<{}> = () => {
           <Canvas drawingId={activeDrawingId} product controls plugins>
             <Viewcube drawingId={activeDrawingId} top={true} left={true} centerAxis={false} />
           </Canvas>
+        )}
+        {loading && (
+          <div style={{ display: 'grid', justifyItems: 'center', zIndex: 1000 }}>
+            <Spin size="large" />
+            <span style={{ paddingLeft: '8px', color: 'dodgerblue', opacity: 0.8 }}>Loading...</span>
+          </div>
         )}
       </ExampleCanvas3D>
       <ExampleRightSidebar style={{ overflow: 'auto', paddingRight: '10px' }}>

@@ -1,5 +1,6 @@
 import { history } from '@buerli.io/headless'
 import CodeMirror from '@uiw/react-codemirror'
+import { Spin } from 'antd'
 import 'codemirror/keymap/sublime'
 import 'codemirror/theme/material.css'
 import 'codemirror/theme/monokai.css'
@@ -25,6 +26,7 @@ export const HistoryApiApp: React.FC<{}> = () => {
   const [testParam, setTestParam] = React.useState(10)
   const [active, setActive] = React.useState<string>(examples[0].file)
   const example = React.useMemo(() => examples.find(e => e.file === active), [active, examples])
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     document.title = 'History API'
@@ -41,8 +43,19 @@ export const HistoryApiApp: React.FC<{}> = () => {
       </ExampleOptions>
       <ExampleCanvas3D>
         <Canvas>
-          <Part active={active} examples={examples} testParam={testParam} />
+          <Part
+            active={active}
+            examples={examples}
+            testParam={testParam}
+            onState={state => setLoading(state === 'loading')}
+          />
         </Canvas>
+        {loading && (
+          <div style={{ display: 'grid', justifyItems: 'center', zIndex: 1000 }}>
+            <Spin size="large" />
+            <span style={{ paddingLeft: '8px', color: 'dodgerblue', opacity: 0.8 }}>Loading...</span>
+          </div>
+        )}
       </ExampleCanvas3D>
       <ExampleCode>
         <CodeMirror

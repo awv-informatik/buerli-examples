@@ -97,6 +97,13 @@ export const ExampleCanvas3D = styled.div`
   grid-row: 1 / 3;
   grid-column: 2 / 3;
   overflow: hidden;
+  display: grid;
+  > * {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    align-self: center;
+    justify-self: center;
+  }
 `
 
 export const ExampleCode = styled.div`
