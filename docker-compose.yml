@@ -1,26 +1,34 @@
 version: "3.5"
 
 services:
-  buerli-examples:
+  buerli-examples-client:
     build:
-      context: .
+      context: ./client
       dockerfile: dockerfile
-    image: awv/buerli-examples
-    container_name: buerli-examples
+    image: buerli/examples-client
+    container_name: buerli-examples-client
+    tty: true
+    stdin_open: true
+    networks:
+      - examples-network
+    ports:
+      - 8082:8082 # Webpack Server
+    restart: unless-stopped
+
+  buerli-examples-server:
+    build:
+      context: ./server
+      dockerfile: dockerfile
+    image: buerli/examples-server
+    container_name: buerli-examples-server
     tty: true
     stdin_open: true
     networks:
       - examples-network
     ports:
       - 8081:8181 # ClassCAD Server
-      - 8082:8082 # Webpack Server
-    volumes:
-      - npm-cache:/usr/local/share/.cache
-    restart: always
+    restart: unless-stopped
 
 networks:
   examples-network:
     name: buerli-network
-
-volumes:
-  npm-cache:

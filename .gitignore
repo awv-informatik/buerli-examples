@@ -5,9 +5,9 @@ _gitignore/
 **/chrome/**
 **/*.log
 .DS_Store
-/docker-res/*.ccapp
-/docker-res/*.cfe
-/docker-res/*.cf1
+**/*.ccapp
+**/*.cfe
+**/*.cf1
 
 # Logs
 logs
