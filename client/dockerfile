@@ -4,12 +4,11 @@ RUN apt update && \
   apt install -y curl
 
 ###############################
-## INSTALL node / npm / yarn
+## INSTALL node / npm
 ###############################
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
 RUN apt install -y nodejs
-RUN npm i -g yarn
 
 ###############################
 ## INSTALL / RUN examples client
@@ -19,13 +18,11 @@ ENV CLIENT_DIR /buerli
 RUN mkdir -p $CLIENT_DIR
 WORKDIR $CLIENT_DIR
 
-COPY ./.npmrc $CLIENT_DIR
-COPY ./.yarnrc $CLIENT_DIR
-COPY ./yarn.lock $CLIENT_DIR
-COPY ./package.json $CLIENT_DIR
-COPY ./patches $CLIENT_DIR/patches
-RUN yarn
+COPY ./.npmrc ./
+COPY ./package.json ./
+COPY ./patches ./patches
+RUN npm i
 
 COPY ./ $CLIENT_DIR
 
-CMD yarn start
+CMD npm run start
