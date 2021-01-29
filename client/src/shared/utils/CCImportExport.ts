@@ -50,8 +50,8 @@ export const CCImportExport = {
             const unsub = buerliApi.subscribe<GeometryBounds>(
               bounds => {
                 if (!bounds) return
-                getCamera(drawingId)?.actions.setOrientation('iso', bounds)
-                getCamera(drawingId)?.actions.setZoom('fit', bounds)
+                getCamera(drawingId)?.api.setOrientation('iso', bounds)
+                getCamera(drawingId)?.api.setZoom('fit', bounds)
               },
               state => state.drawing.refs[drawingId].geometry.bounds,
             )
