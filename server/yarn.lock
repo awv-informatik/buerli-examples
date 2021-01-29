@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@awvinf/classcad-windows-x64@0.0.0-experimental.26":
-  version "0.0.0-experimental.26"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-experimental.26.tgz#b46ccef34046b03ee0e34a8a3b1c3c23deae6830"
-  integrity sha512-+mCstse5C0Kw8I/RAqqoD9rFSgks9k3FUCQ/uzCDZ1wuxVYP6cZOwm2LKqacFpVIcvcS6OET7BwIlGw8n+1Tyg==
+"@awvinf/classcad-windows-x64@^0.0.0-beta.1":
+  version "0.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-beta.1.tgz#a19636c7f9a6d9618e7b10c5059eb9c802559ec4"
+  integrity sha512-Dpa4wTA7SAyNTKvx/CQKhKaWT7H2KqrfPO10tZcUszGbNbKV1j+7bXql7YjWiaZptJB8yzX9N0VmY5rl7lj8Ww==
   dependencies:
     "@buerli.io/node" "10.0.4"
     yargs "15.4.1"
