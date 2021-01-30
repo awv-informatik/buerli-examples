@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Boolean, Chamfer, Extrusion, Fillet, Sketch, WorkAxis, WorkPlane, WorkPoint } from '@awvinf/buerli-plugins'
 import { CCClasses } from '@buerli.io/classcad'
 import { init } from '@buerli.io/core'
+import { Boolean, Chamfer, Extrusion, Fillet, Sketch, WorkAxis, WorkPlane, WorkPoint } from '@buerli.io/plugins'
 import { elements } from '@buerli.io/react'
 import { CCSERVERURL } from '../config'
 import { globalPlugins } from './docs'

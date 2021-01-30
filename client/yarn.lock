@@ -57,19 +57,6 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/buerli-plugins@0.0.12-beta.2":
-  version "0.0.12-beta.2"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.12-beta.2.tgz#34776ae25fa90c7386813758773c4c967bbda19a"
-  integrity sha512-VtPAHIlHlfrpip4R0Idkrbj6adLcxERnfxZVlu86pR+mq8/qe98UXpL0BuOBJstEhVkom9kmdR0D/b85CNTSBw==
-  dependencies:
-    "@ant-design/compatible" "^1.0.8"
-    "@awvinf/icons" "1.0.4"
-    "@buerli.io/classcad" "0.0.23-beta.2"
-    "@buerli.io/react" "0.0.23-beta.2"
-    drei "^0.0.32"
-    three-rounded-box "^0.1.1"
-    uuid "^3.3.2"
-
 "@awvinf/icons@1.0.4", "@awvinf/icons@^1.0.4":
   version "1.0.4"
   resolved "https://registry.npmjs.org/@awvinf/icons/-/icons-1.0.4.tgz#db989998fcbabc72cb43834e64386a0cdb49c717"
@@ -1355,6 +1342,19 @@
   dependencies:
     "@buerli.io/classcad" "0.0.23-beta.2"
     react-promise-suspense "^0.3.2"
+
+"@buerli.io/plugins@0.0.12-beta.3":
+  version "0.0.12-beta.3"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@buerli.io/plugins/-/plugins-0.0.12-beta.3.tgz#ccc70f0d627564f4ea237b38b2b4b5e0af986fab"
+  integrity sha512-ZN6HXAzMpzV28bo1GMzmFucUFXCJhf8Os7SKcwQP/ZUt3/E9m9U973HzO+OvjTz5dHoEITvKQCGPYswrxun6+Q==
+  dependencies:
+    "@ant-design/compatible" "^1.0.8"
+    "@awvinf/icons" "1.0.4"
+    "@buerli.io/classcad" "0.0.23-beta.2"
+    "@buerli.io/react" "0.0.23-beta.2"
+    drei "^0.0.32"
+    three-rounded-box "^0.1.1"
+    uuid "^3.3.2"
 
 "@buerli.io/react@0.0.23-beta.2":
   version "0.0.23-beta.2"

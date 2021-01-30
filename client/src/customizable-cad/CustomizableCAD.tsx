@@ -1,6 +1,6 @@
-import { Features } from '@awvinf/buerli-plugins'
 import { CCClasses } from '@buerli.io/classcad'
 import { DrawingID, getDrawing, PluginID, useBuerli, useDrawing, usePlugin } from '@buerli.io/core'
+import { Features } from '@buerli.io/plugins'
 import { Canvas, Viewcube } from '@buerli.io/react'
 import { MDXProvider } from '@mdx-js/react'
 import { Spin } from 'antd'

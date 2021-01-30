@@ -1,5 +1,5 @@
-import * as plugins from '@awvinf/buerli-plugins'
 import { CCClasses } from '@buerli.io/classcad'
+import * as plugins from '@buerli.io/plugins'
 
 export const globalPlugins = Object.values(plugins)
   .map(p => p)
