@@ -57,15 +57,15 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/buerli-plugins@0.0.12-beta.1":
-  version "0.0.12-beta.1"
-  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.12-beta.1.tgz#871cb2199849a009551bfb5dd5553a6837653ea8"
-  integrity sha512-4nYbG8ACVrR8QbvDuq+siywF+ixBnwzaH0Yg0pu+cIwgRjpZTZdVDwnKOXY96ULBigqdFGEuyctvddE5+OzmIA==
+"@awvinf/buerli-plugins@0.0.12-beta.2":
+  version "0.0.12-beta.2"
+  resolved "https://nexus001.ntb.ch/repository/awv-npm-public-group/@awvinf/buerli-plugins/-/buerli-plugins-0.0.12-beta.2.tgz#34776ae25fa90c7386813758773c4c967bbda19a"
+  integrity sha512-VtPAHIlHlfrpip4R0Idkrbj6adLcxERnfxZVlu86pR+mq8/qe98UXpL0BuOBJstEhVkom9kmdR0D/b85CNTSBw==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@awvinf/icons" "1.0.4"
-    "@buerli.io/classcad" "0.0.23-beta.0"
-    "@buerli.io/react" "0.0.23-beta.0"
+    "@buerli.io/classcad" "0.0.23-beta.2"
+    "@buerli.io/react" "0.0.23-beta.2"
     drei "^0.0.32"
     three-rounded-box "^0.1.1"
     uuid "^3.3.2"
@@ -1326,42 +1326,42 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.0.23-beta.0":
-  version "0.0.23-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.23-beta.0.tgz#646e2ad1ccf05de63b55f679995678ce7cbed9b8"
-  integrity sha512-EyOn1uQislERBvVvv7/6iKfwOp5frPoWETjpE/sfdUIK9sGpUAVq0sfZVXPQZbfIDMK6reS3vBzw6xbvghY7pw==
+"@buerli.io/classcad@0.0.23-beta.2":
+  version "0.0.23-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.23-beta.2.tgz#92dc97f6fad027f4d71d70cc7db6dc38e3d830da"
+  integrity sha512-0DB3sPA7NoANrs9H8JYclyamVG9iVDmjfN1JZkP2t31qVYiXc7rmOGDsn2RINH/6bxKM/JCWyU0+HvYma0AFAQ==
   dependencies:
-    "@buerli.io/core" "0.0.23-beta.0"
+    "@buerli.io/core" "0.0.23-beta.2"
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
     socket.io-client "^2.2.0"
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
 
-"@buerli.io/core@0.0.23-beta.0":
-  version "0.0.23-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.23-beta.0.tgz#521ca147722d2df5c99d29f406c8e83b907af2bd"
-  integrity sha512-kMHwRhtHJXDJ7Qb4WeFfvMmn+1UeI+HnmVxlOb/7rOMTYQJoF3VXB0UAB0mkKl2aY4yhNUJfRRDqIyAXBI/1Tg==
+"@buerli.io/core@0.0.23-beta.2":
+  version "0.0.23-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.23-beta.2.tgz#c02593a3b2b61b547fc38f38d1db5dcdaed8dfe3"
+  integrity sha512-NvgBTQyVI8BRPHcEYBx4UNz1vDtSz5G3fVyMoZdHw3TDpV4a02apV1XToFh1OSsYRlGWIKOYPmEsDQGVfId/DA==
   dependencies:
     jsonpatch "^3.0.1"
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
     zustand "2.2.3"
 
-"@buerli.io/headless@0.0.23-beta.0":
-  version "0.0.23-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.23-beta.0.tgz#383f39effc7bfb6d59b3adce848c175742ed4eb0"
-  integrity sha512-9L19ghbHaCvyf96AhDirrm4Wy3aEqDA0UNCrqk95A1IJWWuTedUiavjM/ugViessp8AzFNnHbQqk6XCHAsYpyw==
+"@buerli.io/headless@0.0.23-beta.2":
+  version "0.0.23-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.23-beta.2.tgz#90110c48a528b34c5f683dec586aa2f8d0e3caf6"
+  integrity sha512-+8dH6bRiy01LHoA8oEP5ddS5b+Nw1AQBVUYSxQBILC0LwfFcFRms4faizgxao6F1zZG8vpny7jEFveRFMW9lCw==
   dependencies:
-    "@buerli.io/classcad" "0.0.23-beta.0"
+    "@buerli.io/classcad" "0.0.23-beta.2"
     react-promise-suspense "^0.3.2"
 
-"@buerli.io/react@0.0.23-beta.0":
-  version "0.0.23-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.23-beta.0.tgz#1c37e518cde933ac810859ef8171df71ea1224e7"
-  integrity sha512-l/FY1X1W/+oHZqHaFfXF9RT7uM1MqGkJoOdGOofY81OJ0NDoXRc5nSDUjgC7fQvUNOcwE+N0/DX8ULH8IyZ3dw==
+"@buerli.io/react@0.0.23-beta.2":
+  version "0.0.23-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.23-beta.2.tgz#ec234276bf4aa7feed50f53af5ccf39bc3c44442"
+  integrity sha512-JSRPaSpGu/R6oOKIP5yu82q0K61cp5jmkT20nEmhiNRM6VNfWITRYfQTOYMlBEUWj6RL05gwlQQ4lYdTcBmSjw==
   dependencies:
-    "@buerli.io/core" "0.0.23-beta.0"
+    "@buerli.io/core" "0.0.23-beta.2"
     "@types/lodash-es" "^4.17.3"
     antd "^4.8.0"
     deepmerge "^4.2.2"
