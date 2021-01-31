@@ -30,6 +30,7 @@ module.exports = (config, env) =>
       react: pRes('node_modules/react'),
       antd: pRes('node_modules/antd'),
       three: pRes('node_modules/three'),
+      zustand: pRes('node_modules/zustand'),
       'react-three-fiber': pRes('node_modules/react-three-fiber'),
       'react-dom': pRes('node_modules/react-dom'),
       'styled-components': pRes('node_modules/styled-components'),
@@ -38,5 +39,6 @@ module.exports = (config, env) =>
       '@buerli.io/react': pRes('node_modules/@buerli.io/react'),
       '@buerli.io/classcad': pRes('node_modules/@buerli.io/classcad'),
       '@buerli.io/headless': pRes('node_modules/@buerli.io/headless'),
+      '@buerli.io/plugins': pRes('node_modules/@buerli.io/plugins'),
     }),
   )(config, env)
