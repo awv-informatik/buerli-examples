@@ -8,6 +8,7 @@ import {
   IStructureTree,
 } from '@buerli.io/core'
 import { getCamera } from '@buerli.io/react'
+import { extname } from 'path'
 
 export const CCImportExport = {
   createAndLoad1: (name: string, content: any): Promise<DrawingID> => {
@@ -15,7 +16,8 @@ export const CCImportExport = {
       try {
         const drawingId = await ccAPI.base.createCCDrawing(name)
         if (drawingId) {
-          await ccAPI.baseModeler.load(drawingId, new File([], name), content)
+          const type = extname(name).replace('.', '')
+          await ccAPI.baseModeler.load(drawingId, content, type, name)
         }
         resolve(drawingId)
       } catch (error) {
@@ -64,7 +66,8 @@ export const CCImportExport = {
                 }
               }
             } else {
-              await ccAPI.baseModeler.load(drawingId, file, reader.result as ArrayBuffer)
+              const type = extname(file.name).replace('.', '')
+              await ccAPI.baseModeler.load(drawingId, reader.result as ArrayBuffer, type, file.name)
             }
             unsub()
             resolve(undefined)
@@ -87,7 +90,7 @@ export const CCImportExport = {
         switch (type) {
           case 'of1':
           case 'stp':
-            data = await ccAPI.common.save(drawingId, type)
+            data = await ccAPI.baseModeler.save(drawingId, type)
             break
           case 'bli':
             const drawing = getDrawing(drawingId)
