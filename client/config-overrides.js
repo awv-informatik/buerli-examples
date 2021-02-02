@@ -51,8 +51,6 @@ const aliases = {
   '@buerli.io/headless': fsEx(`${root}${bheadless}`) ? pRes(`${root}${bheadless}/src`) : `@buerli.io/headless`,
 }
 
-console.info(babelInc, aliases)
-
 module.exports = (config, env) =>
   override(
     addWebpackModuleRule({ test: /\.of1$/, use: 'arraybuffer-loader' }),
