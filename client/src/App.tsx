@@ -1,3 +1,4 @@
+import { api as buerliApi } from '@buerli.io/core'
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
@@ -7,6 +8,7 @@ import { Container } from './shared/styles/Container'
 import { Content } from './shared/styles/Content'
 import { Home } from './shared/styles/Home'
 import SolidApiApp from './solid-api/SolidApiApp'
+;(window as any).buerli = buerliApi
 
 const options = [
   { label: 'Solid API', value: 'solid-api', comp: SolidApiApp },

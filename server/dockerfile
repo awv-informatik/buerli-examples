@@ -1,17 +1,17 @@
 FROM ubuntu:18.04
 
-RUN apt update
+RUN apt-get update
 
 # Install node and npm
-RUN apt install -y curl
+RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
-RUN apt install -y nodejs
+RUN apt-get install -y nodejs
 
 # Install linux dependencies
-RUN apt install -y libicu60
-RUN apt install -y libglu1-mesa-dev
-RUN apt install -y ocl-icd-opencl-dev
-RUN apt install -y locales
+RUN apt-get install -y libicu60
+RUN apt-get install -y libglu1-mesa-dev
+RUN apt-get install -y ocl-icd-opencl-dev
+RUN apt-get install -y locales
 RUN locale-gen en_US.UTF-8
 
 # Install ClassCAD

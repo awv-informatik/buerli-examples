@@ -1,14 +1,14 @@
 FROM ubuntu:18.04
 
-RUN apt update && \
-  apt install -y curl
+RUN apt-get update && \
+  apt-get install -y curl
 
 ###############################
 ## INSTALL node / npm
 ###############################
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
-RUN apt install -y nodejs
+RUN apt-get install -y nodejs
 
 ###############################
 ## INSTALL / RUN examples client
@@ -18,7 +18,6 @@ ENV CLIENT_DIR /buerli
 RUN mkdir -p $CLIENT_DIR
 WORKDIR $CLIENT_DIR
 
-COPY ./.npmrc ./
 COPY ./package.json ./
 COPY ./patches ./patches
 RUN npm i

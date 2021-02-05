@@ -45,8 +45,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@awvinf/icons": "^1.0.4",
-    "@buerli.io/headless": "0.0.23-beta.3",
-    "@buerli.io/plugins": "0.0.12-beta.4",
+    "@buerli.io/headless": "0.0.24-beta.0",
+    "@buerli.io/plugins": "0.0.13-beta.0",
     "@mdx-js/react": "^1.6.22",
     "@uiw/react-codemirror": "^3.0.3",
     "antd": "^4.9.4",
