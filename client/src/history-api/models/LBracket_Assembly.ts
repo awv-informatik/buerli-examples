@@ -1,3 +1,4 @@
+import { ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/Bolt.of1'
@@ -29,19 +30,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdBoltHeadShaft = await api.getWorkCoordSystem(boltRefId, 'WCS_Head-Shaft')
-  const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
-
-  /* Bolt at origin */
-  await api.createFastenedOriginConstraint(
-    nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdOrigin[0] },
-    0,
-    0,
-    0,
-    0,
-    0,
-    'FOC',
-  )
+  const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
   const fileNut = new File(['Nut.of1'], 'Nut.of1', { type: 'application/x-binary' })
@@ -52,6 +41,18 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const nutRefId = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
+  /* Set bolt to origin of nut-bolt-assembly */
+  await api.createFastenedOriginConstraint(
+    nutBoltAsm,
+    { refId: boltRefId, wcsId: wcsIdBoltOrigin[0] },
+    0,
+    0,
+    0,
+    0,
+    ReorientedType.REORIENTED_0,
+    'FOC0',
+  )
+
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
@@ -61,7 +62,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    0,
+    ReorientedType.REORIENTED_0,
     'FC1',
   )
 
@@ -89,7 +90,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    0,
+    ReorientedType.REORIENTED_0,
     'FOC',
   )
 
@@ -106,7 +107,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    0,
+    ReorientedType.REORIENTED_0,
     'FC2',
   )
 
@@ -119,7 +120,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    0,
+    ReorientedType.REORIENTED_0,
     'FC3',
   )
 
@@ -132,12 +133,11 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    0,
+    ReorientedType.REORIENTED_0,
     'FC4',
   )
 
   const geoms = await api.createBufferGeometry(lBracketAsm)
-  api.saveFile('C:/04_AWV/CADDaten/TestParts/AssemblyBuilding/headlessExports/lBracket_Asm_Ref.of1')
   return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
 }
 

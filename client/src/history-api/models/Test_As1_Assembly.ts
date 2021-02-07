@@ -1,4 +1,3 @@
-import { ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/Bolt.of1'
@@ -58,16 +57,16 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
   /* Set bolt to origin of nut-bolt-assembly */
-  await api.createFastenedOriginConstraint(
-    nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdBoltOrigin[0] },
-    0,
-    0,
-    0,
-    0,
-    ReorientedType.REORIENTED_0,
-    'FOC0',
-  )
+  // await api.createFastenedOriginConstraint(
+  //   nutBoltAsm,
+  //   { refId: boltRefId, wcsId: wcsIdBoltOrigin[0] },
+  //   0,
+  //   0,
+  //   0,
+  //   0,
+  //   0,
+  //   'FOC0',
+  // )
 
   /* Set nut on bolt */
   await api.createFastenedConstraint(
@@ -78,7 +77,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC1',
   )
 
@@ -110,16 +109,16 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const nutBoltAsmRef3 = await api.addNode(nutBoltAsm, lBracketAsm, [pt0, xDir, yDir])
 
   /* Set lBracket to origin of lBracket-assembly */
-  await api.createFastenedOriginConstraint(
-    lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracketOrigin[0] },
-    0,
-    0,
-    0,
-    0,
-    ReorientedType.REORIENTED_0,
-    'FOC1',
-  )
+  // await api.createFastenedOriginConstraint(
+  //   lBracketAsm,
+  //   { refId: lBracketRef1, wcsId: wcsIdLBracketOrigin[0] },
+  //   0,
+  //   0,
+  //   0,
+  //   0,
+  //   0,
+  //   'FOC1',
+  // )
 
   /* Set 1st nut-bolt-assembly on lBracket */
   await api.createFastenedConstraint(
@@ -130,7 +129,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC2',
   )
 
@@ -143,7 +142,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC3',
   )
 
@@ -156,7 +155,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC4',
   )
 
@@ -176,31 +175,24 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const wcsIdPlate5 = await api.getWorkCoordSystem(plateRef, 'WCS_Hole5-Top')
 
   /* Set plate to origin of as1-assembly */
-  await api.createFastenedOriginConstraint(
-    as1Asm,
-    { refId: plateRef, wcsId: wcsIdPlateBase[0] },
-    0,
-    0,
-    0,
-    0,
-    ReorientedType.REORIENTED_0,
-    'FOC2',
-  )
+  await api.createFastenedOriginConstraint(as1Asm, { refId: plateRef, wcsId: wcsIdPlateBase[0] }, 0, 0, 0, 0, 0, 'FOC2')
 
   /* Add nut to nut-bolt assembly template */
   const lBracketAsmRef1 = await api.addNode(lBracketAsm, as1Asm, [pt0, xDir, yDir])
   const lBracketAsmRef2 = await api.addNode(lBracketAsm, as1Asm, [pt0, xDir, yDir])
 
+  const lBracketRefET1 = await api.getAssemblyNode(lBracketAsmRef1, 'Part1')
+
   /* Set 1st lBracket-assembly on plate */
   await api.createFastenedConstraint(
     as1Asm,
     { refId: plateRef, wcsId: wcsIdPlate2[0] },
-    { refId: lBracketAsmRef1, wcsId: wcsIdLBracket2Bottom[0] },
+    { refId: lBracketRefET1[0], wcsId: wcsIdLBracket2Bottom[0] },
     0,
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC5',
   )
 
@@ -213,7 +205,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC6',
   )
 
@@ -237,16 +229,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const nutRefId2 = await api.addNode(nut, rodAsm, [pt0, xDir, yDir])
 
   /* Set rod to origin of rod-assembly */
-  await api.createFastenedOriginConstraint(
-    rodAsm,
-    { refId: rodRefId, wcsId: wcsIdRodOrigin[0] },
-    0,
-    0,
-    0,
-    0,
-    ReorientedType.REORIENTED_0,
-    'FOC3',
-  )
+  //await api.createFastenedOriginConstraint(rodAsm, { refId: rodRefId, wcsId: wcsIdRodOrigin[0] }, 0, 0, 0, 0, 0, 'FOC3')
 
   /* Set 1st nut on rod */
   await api.createFastenedConstraint(
@@ -257,7 +240,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC7',
   )
 
@@ -270,27 +253,30 @@ export const create = async (api: ApiHistory, testParam: number) => {
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC8',
   )
 
   /* Add nut to nut-bolt assembly template */
   const rodAsmRef = await api.addNode(rodAsm, as1Asm, [pt0, xDir, yDir])
 
+  const rodAsmRefET = await api.getAssemblyNode(rodAsmRef, 'Part3')
+
   /* Set rod-assembly on lBracket of first lBracket-assembly */
   await api.createFastenedConstraint(
     as1Asm,
-    { refId: lBracketAsmRef1, wcsId: wcsIdLBracketRod[0] },
-    { refId: rodAsmRef, wcsId: wscIdRodLeft[0] },
+    { refId: lBracketRefET1[0], wcsId: wcsIdLBracketRod[0] },
+    { refId: rodAsmRefET[0], wcsId: wscIdRodLeft[0] },
     0,
     0,
     0,
     0,
-    ReorientedType.REORIENTED_0,
+    0,
     'FC9',
   )
 
   const geoms = await api.createBufferGeometry(as1Asm)
+  api.saveFile('C:/04_AWV/CADDaten/TestParts/AssemblyBuilding/headlessExports/as1_Asm_Ref.of1')
   return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
 }
 

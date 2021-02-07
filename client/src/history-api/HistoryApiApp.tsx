@@ -1,6 +1,5 @@
 import { history } from '@buerli.io/headless'
 import CodeMirror from '@uiw/react-codemirror'
-import { Spin } from 'antd'
 import 'codemirror/keymap/sublime'
 import 'codemirror/theme/material.css'
 import 'codemirror/theme/monokai.css'
@@ -8,14 +7,7 @@ import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
-import { CanvasContent } from '../shared/components/CanvasContent'
-import {
-  ExampleCanvas3D,
-  ExampleCode,
-  ExampleDescription,
-  ExampleOptions,
-  ExampleWrapper,
-} from '../shared/styles/Layout'
+import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { load } from './models'
 
 type ExamplesType = ReturnType<typeof load>
@@ -33,15 +25,9 @@ export const HistoryApiApp: React.FC<{}> = () => {
   }, [])
 
   return (
-    <ExampleWrapper>
-      <ExampleOptions>
-        {options.map(o => (
-          <div className={o === active ? 'active' : ''} key={o} onClick={e => setActive(o)}>
-            {o}
-          </div>
-        ))}
-      </ExampleOptions>
-      <ExampleCanvas3D>
+    <ExampleLayout>
+      <Options values={options} onChange={v => setActive(v)} active={active} />
+      <CanvasContainer>
         <Canvas>
           <Part
             active={active}
@@ -50,14 +36,9 @@ export const HistoryApiApp: React.FC<{}> = () => {
             onState={state => setLoading(state === 'loading')}
           />
         </Canvas>
-        {loading && (
-          <div style={{ display: 'grid', justifyItems: 'center', zIndex: 1000 }}>
-            <Spin size="large" />
-            <span style={{ paddingLeft: '8px', color: 'dodgerblue', opacity: 0.8 }}>Loading...</span>
-          </div>
-        )}
-      </ExampleCanvas3D>
-      <ExampleCode>
+        {loading && <Spin />}
+      </CanvasContainer>
+      <div>
         <CodeMirror
           value={example.text}
           options={{
@@ -68,9 +49,8 @@ export const HistoryApiApp: React.FC<{}> = () => {
             mode: 'ts',
           }}
         />
-      </ExampleCode>
-      <ExampleDescription></ExampleDescription>
-    </ExampleWrapper>
+      </div>
+    </ExampleLayout>
   )
 }
 

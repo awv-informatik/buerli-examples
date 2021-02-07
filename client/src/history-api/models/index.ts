@@ -1,13 +1,15 @@
 const toc: { label: string; file: string }[] = [
-  { label: 'Cube_Part', file: 'Cube_Part' },
   { label: 'As1_Assembly', file: 'As1_Assembly' },
-  { label: 'ConstraintProblem_Example', file: 'ConstraintProblem_Example' },
   { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
-  { label: 'Cylinder_Part', file: 'Cylinder_Part' },
-  { label: 'Flange_Part', file: 'Flange_Part' },
+  { label: 'CreatePart_Example', file: 'CreatePart_Example' },
+  { label: 'FlangeWithExpressions_Example', file: 'FlangeWithExpressions_Example' },
   { label: 'LBracket_Assembly', file: 'LBracket_Assembly' },
+  { label: 'LoadFile_Example', file: 'LoadFile_Example' },
   { label: 'Nut-Bolt_Assembly', file: 'Nut-Bolt_Assembly' },
-  { label: 'Shadowbox_Part', file: 'Shadowbox_Part' },
+  { label: 'ShadowboxWithExpressions_Example', file: 'ShadowboxWithExpressions_Example' },
+  { label: 'Test_As1_Assembly', file: 'Test_As1_Assembly' },
+  { label: 'Test_ConstraintProblem', file: 'Test_ConstraintProblem' },
+  { label: 'Test_Cube_Part', file: 'Test_Cube_Part' },
 ]
 
 export default toc

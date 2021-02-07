@@ -45,8 +45,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@awvinf/icons": "^1.0.4",
-    "@buerli.io/headless": "0.0.24-beta.0",
-    "@buerli.io/plugins": "0.0.13-beta.0",
+    "@buerli.io/headless": "0.0.24-beta.3",
+    "@buerli.io/plugins": "0.0.13-beta.3",
     "@mdx-js/react": "^1.6.22",
     "@uiw/react-codemirror": "^3.0.3",
     "antd": "^4.9.4",
@@ -58,7 +58,7 @@
     "react-three-fiber": "5.1.4",
     "styled-components": "^4.4.1",
     "three": "^0.122.0",
-    "zustand": "^2.2.4"
+    "zustand": "3.3.1"
   },
   "devDependencies": {
     "@mdx-js/loader": "^1.6.22",

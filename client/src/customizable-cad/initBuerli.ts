@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { CCClasses } from '@buerli.io/classcad'
-import { init } from '@buerli.io/core'
-import { Boolean, Chamfer, Extrusion, Fillet, Sketch, WorkAxis, WorkPlane, WorkPoint } from '@buerli.io/plugins'
+import { init, Plugin } from '@buerli.io/core'
+import * as plugins from '@buerli.io/plugins'
 import { elements } from '@buerli.io/react'
 import { CCSERVERURL } from '../config'
-import { globalPlugins } from './docs'
+
+const pluginsArray = Object.values(plugins) as Plugin[]
+const globalPlugins = pluginsArray.filter(p => Boolean(p.description) && p.description.global) as Plugin[]
 
 export const initBuerli = () => {
   init({
@@ -12,19 +14,19 @@ export const initBuerli = () => {
     elements,
     globalPlugins,
     plugins: {
-      [CCClasses.CCSketch]: Sketch,
-      [CCClasses.CCExtrusion]: Extrusion,
-      [CCClasses.CCChamfer]: Chamfer,
-      [CCClasses.CCConstantRadiusFillet]: Fillet,
-      [CCClasses.CCUnion]: Boolean,
-      [CCClasses.CCWorkAxis]: WorkAxis,
-      [CCClasses.CCWorkPlane]: WorkPlane,
-      [CCClasses.CCWorkPoint]: WorkPoint,
+      [CCClasses.CCSketch]: plugins.Sketch,
+      [CCClasses.CCExtrusion]: plugins.Extrusion,
+      [CCClasses.CCChamfer]: plugins.Chamfer,
+      [CCClasses.CCConstantRadiusFillet]: plugins.Fillet,
+      [CCClasses.CCUnion]: plugins.Boolean,
+      [CCClasses.CCWorkAxis]: plugins.WorkAxis,
+      [CCClasses.CCWorkPlane]: plugins.WorkPlane,
+      [CCClasses.CCWorkPoint]: plugins.WorkPoint,
     },
     theme: {
-      primary: '#e36b7c',
-      secondary: '#fcc7cb',
-      dark: '#ffffff',
+      primary: 'rgba(0,0,0,0)',
+      secondary: 'rgba(0,0,0,0)',
+      dark: 'rgba(0,0,0,0.1)',
       highlightedGeom: '#e36b7c',
       hoveredGeom: '#40a9ff',
     },

@@ -4,8 +4,6 @@ import React from 'react'
 import styled from 'styled-components'
 import CustomizableCAD from './customizable-cad/CustomizableCAD'
 import HistoryApiApp from './history-api/HistoryApiApp'
-import { Container } from './shared/styles/Container'
-import { Content } from './shared/styles/Content'
 import { Home } from './shared/styles/Home'
 import SolidApiApp from './solid-api/SolidApiApp'
 ;(window as any).buerli = buerliApi
@@ -59,6 +57,24 @@ export const App: React.FC<{}> = () => {
 }
 
 export default App
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 120px 1fr;
+`
+
+const Content = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  padding-bottom: 2rem;
+  overflow: hidden;
+`
 
 const Options = styled.div`
   a.active {

@@ -1,0 +1,18 @@
+import { DrawingID, usePlugin } from '@buerli.io/core'
+import React from 'react'
+import { useStore } from '../store'
+import { MarkdownLazy } from './MarkdownLazy'
+
+export const PluginMarkdown: React.FC<{ drawingId: DrawingID }> = ({ drawingId }) => {
+  const pluginDocs = useStore(s => s.pluginDocs)
+  const activePlg = useStore(s => s.activePlugin)
+  const pluginName = usePlugin(drawingId, activePlg, p => p?.name)
+  const data = React.useMemo(() => {
+    if (pluginName && pluginDocs[pluginName]) {
+      return pluginDocs[pluginName]
+    }
+    return null
+  }, [pluginName])
+
+  return data ? <MarkdownLazy data={data} /> : null
+}
