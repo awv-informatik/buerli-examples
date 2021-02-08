@@ -1,11 +1,11 @@
-import { Spin as SpinImpl } from 'antd'
+import AntdSpin from 'antd/lib/spin'
 import React from 'react'
 import styled from 'styled-components'
 
 export const Spin: React.FC = () => {
   return (
     <Container>
-      <SpinImpl size="large" />
+      <AntdSpin size="large" />
       <Loading>Loading...</Loading>
     </Container>
   )
