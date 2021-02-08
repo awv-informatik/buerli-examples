@@ -20,7 +20,7 @@ export const SolidApiApp: React.FC<{}> = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    document.title = 'Solid API'
+    document.title = 'Solid'
   }, [])
 
   return (
@@ -57,10 +57,6 @@ const Part: React.FC<{
 }> = props => {
   const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
-
-  React.useEffect(() => {
-    document.title = 'Solid API'
-  }, [])
 
   React.useEffect(() => {
     setMeshes([])
