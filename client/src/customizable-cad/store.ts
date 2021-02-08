@@ -4,8 +4,11 @@ import create, { SetState } from 'zustand'
 
 const toc: { name: string; file?: string; mdFile?: string }[] = [
   { name: 'Intro', mdFile: 'Intro.md' },
-  { name: 'Chamfer', file: 'NxPart.of1' },
+  { name: 'engPart0', file: 'engPart0.of1' },
   { name: 'TestPart', file: 'TestPart.of1' },
+  { name: 'engPart1', file: 'engPart1.of1' },
+  { name: 'gripper', file: 'gripper.of1' },
+  { name: 'SimpleBooleans', file: 'SimpleBooleans.of1' },
 ]
 
 const exampleMap: Record<string, Example> = {}
@@ -27,7 +30,12 @@ const globalPlugins = [
 
 const objectPluginMap = {
   [plugins.Chamfer.description.name]: CCClasses.CCChamfer,
+  [plugins.Fillet.description.name]: CCClasses.CCConstantRadiusFillet,
   [plugins.Extrusion.description.name]: CCClasses.CCExtrusion,
+  [plugins.Boolean.description.name]: CCClasses.CCUnion,
+  [plugins.CircularPattern.description.name]: CCClasses.CCCircularPattern,
+  //[plugins.Sketch.description.name]: CCClasses.CCSketch,
+  // [plugins.Import.description.name]: CCClasses.CCImport,
 }
 const objectPlugins = Object.keys(objectPluginMap)
 
