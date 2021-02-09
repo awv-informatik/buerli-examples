@@ -9,6 +9,7 @@ This package provides a default setup for Windows systems.
 **Install**
 
 ```
+# working dir 'server'
 yarn
 ```
 
@@ -19,6 +20,7 @@ Go to [buerli.io](https://buerli.io), sign up for a **user account** and downloa
 **Start the server**
 
 ```
+# working dir 'server'
 yarn start
 ```
 
