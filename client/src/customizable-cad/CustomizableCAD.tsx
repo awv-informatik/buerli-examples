@@ -30,7 +30,7 @@ export const CustomizableCAD: React.FC<{}> = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    document.title = 'Customizable CAD'
+    document.title = 'Customizable'
   }, [])
 
   React.useEffect(() => {

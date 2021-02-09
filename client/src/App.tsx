@@ -9,9 +9,9 @@ import SolidApiApp from './solid-api/SolidApiApp'
 ;(window as any).buerli = buerliApi
 
 const options = [
-  { label: 'Solid API', value: 'solid-api', comp: SolidApiApp },
-  { label: 'History API', value: 'history-api', comp: HistoryApiApp },
-  { label: 'Customizable CAD', value: 'customizable-cad', comp: CustomizableCAD },
+  { label: 'Solid', value: 'solid', comp: SolidApiApp },
+  { label: 'History', value: 'history', comp: HistoryApiApp },
+  { label: 'Customizable', value: 'customizable', comp: CustomizableCAD },
 ]
 
 const apps = {
