@@ -2,14 +2,14 @@
 
 ## Getting Started
 
-### Install dependencies
+**Install**
 
 ```
 # working dir 'client'
 yarn
 ```
 
-### Start development server
+**Start the dev server**
 
 ```
 # working dir 'client'
