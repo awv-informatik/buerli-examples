@@ -7,12 +7,8 @@ const toc: { label: string; file: string }[] = [
   { label: 'As1_Assembly', file: 'As1_Assembly' },
   { label: 'FlangeWithExpressions_Example', file: 'FlangeWithExpressions_Example' },
   { label: 'LBracket_Assembly', file: 'LBracket_Assembly' },
-  { label: 'LoadFile_Example', file: 'LoadFile_Example' },
   { label: 'Nut-Bolt_Assembly', file: 'Nut-Bolt_Assembly' },
   { label: 'ShadowboxWithExpressions_Example', file: 'ShadowboxWithExpressions_Example' },
-  { label: 'Test_As1_Assembly', file: 'Test_As1_Assembly' },
-  { label: 'Test_ConstraintProblem', file: 'Test_ConstraintProblem' },
-  { label: 'Test_Cube_Part', file: 'Test_Cube_Part' },
 ]
 
 const exampleMap: Record<string, Example> = {}
