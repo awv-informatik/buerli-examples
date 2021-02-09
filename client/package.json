@@ -1,6 +1,6 @@
 {
-  "name": "customizable-cad-client",
-  "version": "0.0.1",
+  "name": "buerli-examples-client",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "postinstall": "patch-package",

@@ -1,4 +1,4 @@
-import { history } from '@buerli.io/headless'
+import { solid } from '@buerli.io/headless'
 import CodeMirror from '@uiw/react-codemirror'
 import 'codemirror/keymap/sublime'
 import 'codemirror/theme/material.css'
@@ -12,16 +12,15 @@ import { load } from './models'
 
 type ExamplesType = ReturnType<typeof load>
 
-export const HistoryApiApp: React.FC<{}> = () => {
+export const SolidApp: React.FC<{}> = () => {
   const examples = React.useMemo(() => load(), [])
   const options = React.useMemo(() => examples.map(e => e.file), [examples])
-  const [testParam, setTestParam] = React.useState(10)
   const [active, setActive] = React.useState<string>(examples[0].file)
   const example = React.useMemo(() => examples.find(e => e.file === active), [active, examples])
   const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    document.title = 'History'
+    document.title = 'Solid'
   }, [])
 
   return (
@@ -29,12 +28,7 @@ export const HistoryApiApp: React.FC<{}> = () => {
       <Options values={options} onChange={v => setActive(v)} active={active} />
       <CanvasContainer>
         <Canvas>
-          <Part
-            active={active}
-            examples={examples}
-            testParam={testParam}
-            onState={state => setLoading(state === 'loading')}
-          />
+          <Part active={active} examples={examples} onState={state => setLoading(state === 'loading')} />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
@@ -54,24 +48,23 @@ export const HistoryApiApp: React.FC<{}> = () => {
   )
 }
 
-export default HistoryApiApp
+export default SolidApp
 
 const Part: React.FC<{
-  testParam: number
   active: string
   examples: ExamplesType
   onState?: (state: 'loading' | 'done') => void
-}> = ({ testParam, active, examples, onState }) => {
-  const example = React.useMemo(() => examples.find(e => e.file === active), [active])
+}> = props => {
+  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
 
   React.useEffect(() => {
     setMeshes([])
-    onState && onState('loading')
-    const cad = new history(CCSERVERURL)
+    props.onState && props.onState('loading')
+    const cad = new solid(CCSERVERURL)
     cad.init(async api => {
-      const items = await example.create(api, testParam)
-      onState && onState('done')
+      const items = await example.create(api)
+      props.onState && props.onState('done')
       setMeshes(items)
     })
 
@@ -79,12 +72,10 @@ const Part: React.FC<{
   }, [example])
 
   return (
-    <>
-      <CanvasContent>
-        {meshes.map(m => (
-          <mesh key={m.uuid} {...m} />
-        ))}
-      </CanvasContent>
-    </>
+    <CanvasContent>
+      {meshes.map(m => (
+        <mesh key={m.uuid} {...m} />
+      ))}
+    </CanvasContent>
   )
 }

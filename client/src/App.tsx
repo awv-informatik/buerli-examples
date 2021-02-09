@@ -1,16 +1,14 @@
-import { api as buerliApi } from '@buerli.io/core'
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
-import CustomizableCAD from './customizable-cad/CustomizableCAD'
-import HistoryApiApp from './history-api/HistoryApiApp'
+import CustomizableCAD from './customizable/CustomizableCAD'
+import HistoryApp from './history/HistoryApp'
 import { Home } from './shared/styles/Home'
-import SolidApiApp from './solid-api/SolidApiApp'
-;(window as any).buerli = buerliApi
+import SolidApp from './solid/SolidApp'
 
 const options = [
-  { label: 'Solid', value: 'solid', comp: SolidApiApp },
-  { label: 'History', value: 'history', comp: HistoryApiApp },
+  { label: 'Solid', value: 'solid', comp: SolidApp },
+  { label: 'History', value: 'history', comp: HistoryApp },
   { label: 'Customizable', value: 'customizable', comp: CustomizableCAD },
 ]
 

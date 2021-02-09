@@ -13,7 +13,7 @@ yarn
 
 ```
 # working dir 'client'
-yarn dev
+yarn start
 ```
 
 The examples application is now available at http://localhost:8082.
