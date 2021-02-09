@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "patch-package",
     "start": "npm run dev",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
@@ -81,7 +80,6 @@
     "less": "^3.12.2",
     "less-loader": "^5.0.0",
     "lint-staged": "^8.1.7",
-    "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.0.0",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.2",
