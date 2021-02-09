@@ -29,3 +29,5 @@ The server should now be available at http://localhost:8081. Please check the st
 ```
 http://localhost:8081/status
 ```
+
+Now, you are ready to start the [client](../client/README.md)
