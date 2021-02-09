@@ -1,23 +1,17 @@
 import { solid } from '@buerli.io/headless'
-import CodeMirror from '@uiw/react-codemirror'
-import 'codemirror/keymap/sublime'
-import 'codemirror/theme/material.css'
-import 'codemirror/theme/monokai.css'
 import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
-import { load } from './models'
-
-type ExamplesType = ReturnType<typeof load>
+import Code from '../shared/components/Code'
+import { useStore } from './store'
 
 export const SolidApp: React.FC<{}> = () => {
-  const examples = React.useMemo(() => load(), [])
-  const options = React.useMemo(() => examples.map(e => e.file), [examples])
-  const [active, setActive] = React.useState<string>(examples[0].file)
-  const example = React.useMemo(() => examples.find(e => e.file === active), [active, examples])
-  const [loading, setLoading] = React.useState<boolean>(false)
+  const set = useStore(s => s.set)
+  const exampleIds = useStore(s => s.examples.ids)
+  const activeExample = useStore(s => s.activeExample)
+  const loading = useStore(s => s.loading)
 
   React.useEffect(() => {
     document.title = 'Solid'
@@ -25,24 +19,15 @@ export const SolidApp: React.FC<{}> = () => {
 
   return (
     <ExampleLayout>
-      <Options values={options} onChange={v => setActive(v)} active={active} />
+      <Options values={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
       <CanvasContainer>
         <Canvas>
-          <Part active={active} examples={examples} onState={state => setLoading(state === 'loading')} />
+          <Part />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
       <div>
-        <CodeMirror
-          value={example.text}
-          options={{
-            folding: true,
-            readOnly: true,
-            theme: 'material',
-            keyMap: 'sublime',
-            mode: 'ts',
-          }}
-        />
+        <CodeWrapper />
       </div>
     </ExampleLayout>
   )
@@ -50,26 +35,24 @@ export const SolidApp: React.FC<{}> = () => {
 
 export default SolidApp
 
-const Part: React.FC<{
-  active: string
-  examples: ExamplesType
-  onState?: (state: 'loading' | 'done') => void
-}> = props => {
-  const example = React.useMemo(() => props.examples.find(e => e.file === props.active), [props.active])
+const Part: React.FC = () => {
+  const set = useStore(s => s.set)
+  const activeExample = useStore(s => s.activeExample)
+  const example = useStore(s => s.examples.objs[activeExample])
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
 
   React.useEffect(() => {
     setMeshes([])
-    props.onState && props.onState('loading')
+    set({ loading: true })
     const cad = new solid(CCSERVERURL)
     cad.init(async api => {
       const items = await example.create(api)
-      props.onState && props.onState('done')
+      set({ loading: false })
       setMeshes(items)
     })
 
     return () => cad.destroy()
-  }, [example])
+  }, [example, set])
 
   return (
     <CanvasContent>
@@ -78,4 +61,10 @@ const Part: React.FC<{
       ))}
     </CanvasContent>
   )
+}
+
+const CodeWrapper: React.FC = () => {
+  const activeExample = useStore(s => s.activeExample)
+  const example = useStore(s => s.examples.objs[activeExample])
+  return <Code data={example.text}></Code>
 }

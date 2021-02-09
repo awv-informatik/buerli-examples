@@ -37,10 +37,10 @@ export const CanvasContent: React.FC<{ children: any }> = ({ children }) => {
     boundingBox.setFromObject(outer.current)
     const center = new THREE.Vector3()
     boundingBox.getCenter(center)
-    const size = new THREE.Vector3()
-    boundingBox.getSize(size)
+    const bbSize = new THREE.Vector3()
+    boundingBox.getSize(bbSize)
     // get the max side of the bounding box (fits to width OR height as needed )
-    const maxDim = Math.max(size.x, size.y, size.z)
+    const maxDim = Math.max(bbSize.x, bbSize.y, bbSize.z)
     const fov = curCam.fov * (Math.PI / 180)
     let cameraZ = Math.abs((maxDim / 4) * Math.tan(fov * 2))
     cameraZ *= offset // zoom out a little so that objects don't fill the screen

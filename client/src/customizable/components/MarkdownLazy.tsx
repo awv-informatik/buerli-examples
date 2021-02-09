@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 import { Spin } from '../../shared/components'
@@ -16,7 +17,6 @@ export const MarkdownLazy: React.FC<{ data: Promise<{ default: any }> }> = ({ da
 }
 
 const components = {
-  // Prevent page props from being passed to MDX wrapper
   wrapper: (props: any) => <>{props.children}</>,
   p: (props: any) => <p {...props} style={{ fontSize: '15px' }} />,
 }

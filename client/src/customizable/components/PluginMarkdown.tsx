@@ -12,7 +12,7 @@ export const PluginMarkdown: React.FC<{ drawingId: DrawingID }> = ({ drawingId }
       return pluginDocs[pluginName]
     }
     return null
-  }, [pluginName])
+  }, [pluginDocs, pluginName])
 
   return data ? <MarkdownLazy data={data} /> : null
 }

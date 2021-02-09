@@ -41,7 +41,6 @@ export const create = async (api: ApiHistory, testParam: number) => {
   /* Get needed workcoordsystems of bolt */
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdBoltHeadShaft = await api.getWorkCoordSystem(boltRefId, 'WCS_Head-Shaft')
-  const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Load Nut part */
   const fileNut = new File(['Nut.of1'], 'Nut.of1', { type: 'application/x-binary' })
@@ -101,7 +100,6 @@ export const create = async (api: ApiHistory, testParam: number) => {
   const wcsIdLBracket2Bottom = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Bottom')
   const wcsIdLBracket3 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole3-Top')
   const wcsIdLBracketRod = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Rod')
-  const wcsIdLBracketOrigin = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Origin')
 
   /* Add nut-bolt assembly three times to lBracket-assembly template */
   const nutBoltAsmRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [pt0, xDir, yDir])
@@ -222,7 +220,6 @@ export const create = async (api: ApiHistory, testParam: number) => {
   /* Get needed workcoordsystems of rod */
   const wscIdRodLeft = await api.getWorkCoordSystem(rodRefId, 'WCS_Nut_Left')
   const wcsIdRodRight = await api.getWorkCoordSystem(rodRefId, 'WCS_Nut_Right')
-  const wcsIdRodOrigin = await api.getWorkCoordSystem(rodRefId, 'WCS_Origin')
 
   /* Add nut to nut-bolt assembly template */
   const nutRefId1 = await api.addNode(nut, rodAsm, [pt0, xDir, yDir])
