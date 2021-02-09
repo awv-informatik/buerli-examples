@@ -7,7 +7,6 @@ export const create = async (api: ApiHistory, testParam: number) => {
     type: 'application/x-binary',
   })
   const asm = await api.loadFile(file, arraybuffer)
-  const temp = await api.getPartFromContainer()
 
   const geoms = await api.createBufferGeometry(asm)
   return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
