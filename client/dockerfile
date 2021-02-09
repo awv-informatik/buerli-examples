@@ -19,7 +19,6 @@ RUN mkdir -p $CLIENT_DIR
 WORKDIR $CLIENT_DIR
 
 COPY ./package.json ./
-COPY ./patches ./patches
 RUN npm i
 
 COPY ./ $CLIENT_DIR
