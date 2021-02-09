@@ -13,7 +13,6 @@ const toc: { label: string; file: string }[] = [
   { label: 'polyline-extrusion', file: 'polyline-extrusion' },
   { label: 'polyline-revolve', file: 'polyline-revolve' },
   { label: 'rounded-rect', file: 'rounded-rect' },
-  { label: 'samples', file: 'samples' },
   { label: 'spline-shape', file: 'spline-shape' },
   { label: 'testfile', file: 'testfile' },
   { label: 'whiffleball', file: 'whiffleball' },

@@ -2,9 +2,9 @@ import { ApiHistory } from '@buerli.io/headless'
 import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
-  { label: 'As1_Assembly', file: 'As1_Assembly' },
-  { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
   { label: 'CreatePart_Example', file: 'CreatePart_Example' },
+  { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
+  { label: 'As1_Assembly', file: 'As1_Assembly' },
   { label: 'FlangeWithExpressions_Example', file: 'FlangeWithExpressions_Example' },
   { label: 'LBracket_Assembly', file: 'LBracket_Assembly' },
   { label: 'LoadFile_Example', file: 'LoadFile_Example' },
