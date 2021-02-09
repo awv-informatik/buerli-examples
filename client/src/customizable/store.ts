@@ -34,7 +34,7 @@ const objectPluginMap = {
   [plugins.Extrusion.description.name]: CCClasses.CCExtrusion,
   [plugins.Boolean.description.name]: CCClasses.CCUnion,
   [plugins.CircularPattern.description.name]: CCClasses.CCCircularPattern,
-  //[plugins.Sketch.description.name]: CCClasses.CCSketch,
+  [plugins.Sketch.description.name]: CCClasses.CCSketch,
   // [plugins.Import.description.name]: CCClasses.CCImport,
 }
 const objectPlugins = Object.keys(objectPluginMap)
