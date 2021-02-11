@@ -1,20 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "lib": ["es5", "es2015.promise", "dom"],
+    "strict": false,
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "build.ts/",
-    "baseUrl": "./",
-    "paths": {
-      "@buerli.io/core": ["./../../buerli/buerli-core/build/index"],
-      "@buerli.io/react": ["./../../buerli/buerli-react/build/index"],
-      "@buerli.io/classcad": ["./../../buerli/buerli-classcad/build/index"],
-      "@buerli.io/headless": ["./../../buerli/buerli-headless/build/index"],
-      "@buerli.io/plugins": ["./../../buerli-plugins/build/index"],
-      "@awvinf/buerli-backend": ["./../../buerli-backend/build/index"],
-      "@awvinf/buerli-tooling": ["./../../buerli-tooling/build/index"],
-      "@awvinf/buerli-developer": ["./../../buerli-developer/build/index"]
-    },
     "jsx": "react",
     "allowJs": false,
     "declaration": true,
@@ -29,7 +20,6 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "isolatedModules": true,
     "noEmit": true
   },

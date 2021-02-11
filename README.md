@@ -1,6 +1,6 @@
 # buerli examples
 
-This repository contains examples to describe how to work with buerli/ClassCAD.
+Examples that show what buerli and ClassCAD can do.
 
 ## Getting Started
 

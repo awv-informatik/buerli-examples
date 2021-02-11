@@ -14,7 +14,6 @@ const toc: { label: string; file: string }[] = [
   { label: 'polyline-revolve', file: 'polyline-revolve' },
   { label: 'rounded-rect', file: 'rounded-rect' },
   { label: 'spline-shape', file: 'spline-shape' },
-  { label: 'testfile', file: 'testfile' },
   { label: 'whiffleball', file: 'whiffleball' },
 ]
 
