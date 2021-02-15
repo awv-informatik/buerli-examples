@@ -13,7 +13,7 @@ const { addReactRefresh } = require('customize-cra-react-refresh')
 
 module.exports = (config, env) =>
   override(
-    addWebpackModuleRule({ test: /\.of1$/, use: 'arraybuffer-loader' }),
+    addWebpackModuleRule({ test: /\.(of1|stp)$/, use: 'arraybuffer-loader' }),
     addReactRefresh({}),
     disableEsLint(),
     removeModuleScopePlugin(),
