@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { Code } from '../shared/components/Code'
-import { Parameters } from '../shared/components/Parameters'
+import { Parameters } from './components/Parameters'
 import { useStore } from './store'
 
 export const HistoryApp: React.FC<{}> = () => {

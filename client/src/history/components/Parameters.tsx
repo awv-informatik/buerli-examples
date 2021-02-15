@@ -1,18 +1,19 @@
 import { Form, Input } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useStore } from '../../history/store'
+import { Example, useStore } from '../store'
 
 export const Parameters: React.FC<{}> = () => {
   const set = useStore(s => s.set)
   const examples = useStore(s => s.examples)
   const activeExample = useStore(s => s.activeExample)
   const example = useStore(s => s.examples.objs[activeExample])
+  const [localExamples, setLocalExamples] = useState<{ ids: string[]; objs: Record<string, Example> }>(examples)
 
-  const setParams = (newParam: { label: string; value: number }) => {
-    const examplesCopy = { ...examples }
+  const handleOnChange = (newParam: { label: string; value: number }) => {
+    const examplesCopy = { ...localExamples }
     examplesCopy.objs[activeExample].params[newParam.label] = newParam.value
-    set({ examples: examplesCopy })
+    setLocalExamples(examplesCopy)
   }
 
   return example && example.params ? (
@@ -23,8 +24,16 @@ export const Parameters: React.FC<{}> = () => {
             <Input
               type={'number'}
               value={example.params[key]}
+              onBlur={(e: any) => {
+                set({ examples: localExamples })
+              }}
+              onKeyDown={(e: any) => {
+                if (e.key === 'Enter') {
+                  set({ examples: localExamples })
+                }
+              }}
               onChange={(e: any) => {
-                setParams({ label: key, value: Number.parseInt(e.target.value) })
+                handleOnChange({ label: key, value: Number.parseInt(e.target.value) })
               }}
             />
           </Form.Item>
