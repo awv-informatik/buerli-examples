@@ -1,10 +1,10 @@
 import { ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
-import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/Bolt.of1'
 import arraybuffer2 from '../../shared/resources/Nut.of1'
+import { ParamType } from '../store'
 
-export const create = async (api: ApiHistory, testParam: number) => {
+export const create = async (api: ApiHistory, params?: ParamType) => {
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
@@ -58,9 +58,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     ReorientedType.REORIENTED_0,
     'FC1',
   )
-
-  const geoms = await api.createBufferGeometry(nutBoltAsm)
-  return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
+  return nutBoltAsm
 }
 
 export default create

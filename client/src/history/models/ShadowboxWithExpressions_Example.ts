@@ -1,19 +1,32 @@
 import { ApiHistory } from '@buerli.io/headless'
-import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/Shadowbox.of1'
+import { ParamType } from '../store'
 
-export const create = async (api: ApiHistory, testParam: number) => {
+export const paramsMap: ParamType = {
+  Depth: 20,
+  Height: 200,
+  Width: 400,
+  'Min. Gap': 5,
+  'Hole Diameter': 50,
+  Columns: 10,
+  Rows: 4,
+}
+
+export const create = async (api: ApiHistory, params?: ParamType) => {
   const file = new File(['Shadowbox.of1'], 'Shadowbox.of1', {
     type: 'application/x-binary',
   })
-  const part = api.loadProduct(file, arraybuffer)
-  const minGap = 5
-  const holeDiameter = 50
-  let columns = 10
-  let rows = 4
-  const foamDepth = 20
-  const foamHeight = 200
-  const foamWidth = 400
+  return await api.loadFile(file, arraybuffer)
+}
+
+export const update = async (api: ApiHistory, partId: number, params?: ParamType) => {
+  const minGap = params['Min. Gap']
+  const holeDiameter = params['Hole Diameter']
+  let columns = params['Columns']
+  let rows = params['Rows']
+  const foamDepth = params['Depth']
+  const foamHeight = params['Height']
+  const foamWidth = params['Width']
 
   // Calculate max. columns and rows
   columns =
@@ -29,18 +42,13 @@ export const create = async (api: ApiHistory, testParam: number) => {
   console.info('Rows: ' + rows)
 
   api.setExpressions(
-    part,
+    partId,
     { name: 'Columns', value: columns },
     { name: 'Rows', value: rows },
     { name: 'HoleDiameter', value: holeDiameter },
     { name: 'FoamDepth', value: foamDepth },
     { name: 'FoamHeight', value: foamHeight },
     { name: 'FoamWidth', value: foamWidth },
-  )
-
-  const geoms = await api.createBufferGeometry(part)
-  return geoms.map(
-    geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(255, 0, 0)') })),
   )
 }
 

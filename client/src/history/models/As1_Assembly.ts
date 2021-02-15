@@ -1,19 +1,19 @@
 import { ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
-import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/Bolt.of1'
 import arraybuffer3 from '../../shared/resources/LBracket.of1'
 import arraybuffer2 from '../../shared/resources/Nut.of1'
 import arraybuffer4 from '../../shared/resources/Plate.of1'
 import arraybuffer5 from '../../shared/resources/Rod.of1'
+import { ParamType } from '../store'
 
-export const create = async (api: ApiHistory, testParam: number) => {
+export const create = async (api: ApiHistory, params?: ParamType) => {
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
 
   /* Create different variables to control expressions */
-  const shaftDiameter = testParam
+  const shaftDiameter = 10
   const shaftLength = 42
   const rodDiameter = shaftDiameter
 
@@ -289,9 +289,7 @@ export const create = async (api: ApiHistory, testParam: number) => {
     ReorientedType.REORIENTED_0,
     'FC9',
   )
-
-  const geoms = await api.createBufferGeometry(as1Asm)
-  return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
+  return as1Asm
 }
 
 export default create
