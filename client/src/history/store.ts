@@ -2,6 +2,7 @@ import { ApiHistory } from '@buerli.io/headless'
 import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
+  { label: 'Gripper_Example', file: 'Gripper_Example' },
   { label: 'CreatePart_Example', file: 'CreatePart_Example' },
   { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
   { label: 'As1_Assembly', file: 'As1_Assembly' },
@@ -13,10 +14,14 @@ const toc: { label: string; file: string }[] = [
 
 const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const example = require(`./models/${t.file}`)
   exampleMap[t.label] = {
     label: t.label,
-    create: require(`./models/${t.file}`).create,
+    create: example.create,
+    update: example.update,
     text: import(`!!raw-loader!./models/${t.file}.ts`),
+    params: example.paramsMap,
   }
 }
 
@@ -41,6 +46,10 @@ type State = Readonly<{
 
 type Example = {
   label: string
-  create?: (api: ApiHistory, param: any) => any
+  create?: (api: ApiHistory, params?: any) => any
+  update?: (api: ApiHistory, partId: number, params?: ParamType) => any
   text?: Promise<{ default: any }>
+  params?: ParamType
 }
+
+export type ParamType = Record<string, number>
