@@ -55,7 +55,7 @@ const Part: React.FC = () => {
     const cad = new history(CCSERVERURL)
     cad.init(async api => {
       historyApi.current = api
-      productId.current = await example.create(api)
+      productId.current = await example.create(api, example.params)
       const items = await createMeshes(productId.current, api)
       set({ loading: false })
       setMeshes(items)

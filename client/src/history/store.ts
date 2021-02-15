@@ -2,7 +2,6 @@ import { ApiHistory } from '@buerli.io/headless'
 import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
-  { label: 'Gripper_Example', file: 'Gripper_Example' },
   { label: 'CreatePart_Example', file: 'CreatePart_Example' },
   { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
   { label: 'As1_Assembly', file: 'As1_Assembly' },
@@ -10,6 +9,7 @@ const toc: { label: string; file: string }[] = [
   { label: 'LBracket_Assembly', file: 'LBracket_Assembly' },
   { label: 'Nut-Bolt_Assembly', file: 'Nut-Bolt_Assembly' },
   { label: 'ShadowboxWithExpressions_Example', file: 'ShadowboxWithExpressions_Example' },
+  { label: 'Gripper_Example', file: 'Gripper_Example' },
 ]
 
 const exampleMap: Record<string, Example> = {}
@@ -44,7 +44,7 @@ type State = Readonly<{
   set: SetState<State>
 }>
 
-type Example = {
+export type Example = {
   label: string
   create?: (api: ApiHistory, params?: any) => any
   update?: (api: ApiHistory, partId: number, params?: ParamType) => any

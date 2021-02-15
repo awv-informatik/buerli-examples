@@ -7,8 +7,8 @@ export const paramsMap: ParamType = {
   Height: 200,
   Width: 400,
   'Min. Gap': 5,
-  'Hole Diameter': 50,
-  Columns: 10,
+  'Hole Diameter': 35,
+  Columns: 8,
   Rows: 4,
 }
 
@@ -16,10 +16,9 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const file = new File(['Shadowbox.of1'], 'Shadowbox.of1', {
     type: 'application/x-binary',
   })
-  return await api.loadFile(file, arraybuffer)
-}
+  const productId = await api.loadFile(file, arraybuffer)
 
-export const update = async (api: ApiHistory, partId: number, params?: ParamType) => {
+  // Set initial values
   const minGap = params['Min. Gap']
   const holeDiameter = params['Hole Diameter']
   let columns = params['Columns']
@@ -33,16 +32,46 @@ export const update = async (api: ApiHistory, partId: number, params?: ParamType
     foamWidth - columns * holeDiameter >= (columns + 1) * minGap
       ? columns
       : Math.floor((foamWidth - (columns + 1) * minGap) / holeDiameter)
-  console.info('Columns: ' + columns)
 
   rows =
     foamHeight - rows * holeDiameter >= (rows + 1) * minGap
       ? rows
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
-  console.info('Rows: ' + rows)
+
+  await api.setExpressions(
+    productId,
+    { name: 'Columns', value: columns },
+    { name: 'Rows', value: rows },
+    { name: 'HoleDiameter', value: holeDiameter },
+    { name: 'FoamDepth', value: foamDepth },
+    { name: 'FoamHeight', value: foamHeight },
+    { name: 'FoamWidth', value: foamWidth },
+  )
+  return productId
+}
+
+export const update = async (api: ApiHistory, productId: number, params?: ParamType) => {
+  const minGap = params['Min. Gap']
+  const holeDiameter = params['Hole Diameter']
+  let columns = params['Columns']
+  let rows = params['Rows']
+  const foamDepth = params['Depth']
+  const foamHeight = params['Height']
+  const foamWidth = params['Width']
+
+  // Calculate max. columns and rows
+  columns =
+    foamWidth - columns * holeDiameter >= (columns + 1) * minGap
+      ? columns
+      : Math.floor((foamWidth - (columns + 1) * minGap) / holeDiameter)
+
+  rows =
+    foamHeight - rows * holeDiameter >= (rows + 1) * minGap
+      ? rows
+      : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
   api.setExpressions(
-    partId,
+    productId,
     { name: 'Columns', value: columns },
     { name: 'Rows', value: rows },
     { name: 'HoleDiameter', value: holeDiameter },

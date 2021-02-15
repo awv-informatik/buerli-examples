@@ -1,5 +1,4 @@
 import { ApiHistory } from '@buerli.io/headless'
-//import * as THREE from 'three'
 import arraybuffer from '../../shared/resources/gripperV2.of1'
 import { ParamType } from '../store'
 
@@ -14,12 +13,22 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const file = new File(['gripperV2.of1'], 'gripperV2.of1', {
     type: 'application/x-binary',
   })
-  return await api.loadFile(file, arraybuffer)
+  const productId = await api.loadFile(file, arraybuffer)
+
+  // Set initial values
+  await api.setExpressions(
+    productId,
+    { name: 'W', value: params['Width'] },
+    { name: 'H', value: params['Height'] },
+    { name: 'D', value: params['Distance'] },
+    { name: 'W1', value: params['Taper'] },
+  )
+  return productId
 }
 
-export const update = async (api: ApiHistory, partId: number, params?: ParamType) => {
+export const update = async (api: ApiHistory, productId: number, params?: ParamType) => {
   await api.setExpressions(
-    partId,
+    productId,
     { name: 'W', value: params['Width'] },
     { name: 'H', value: params['Height'] },
     { name: 'D', value: params['Distance'] },
