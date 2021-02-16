@@ -16,7 +16,7 @@ declare global {
 
 extend({ OrbitControls })
 
-export const CanvasContent: React.FC<{ children: any }> = ({ children }) => {
+export const CanvasContent: React.FC<{ children: any; fitContent?: boolean }> = ({ children, fitContent }) => {
   const { camera, gl, size, setDefaultCamera } = useThree()
   const outer = React.useRef<THREE.Group>()
   const inner = React.useRef<THREE.Group>()
@@ -44,22 +44,26 @@ export const CanvasContent: React.FC<{ children: any }> = ({ children }) => {
     const fov = curCam.fov * (Math.PI / 180)
     let cameraZ = Math.abs((maxDim / 4) * Math.tan(fov * 2))
     cameraZ *= offset // zoom out a little so that objects don't fill the screen
-    curCam.position.z = center.z + cameraZ
     const minZ = boundingBox.min.z
     const cameraToFarEdge = minZ < 0 ? -minZ + cameraZ : cameraZ - minZ
     curCam.far = cameraToFarEdge * 5
+    curCam.near = 0.1
     curCam.updateProjectionMatrix()
-    if (controls.current) {
-      // set camera to rotate around center of loaded object
-      controls.current.target = center
-      // prevent camera from zooming out far enough to create far plane cutoff
-      controls.current.maxDistance = cameraToFarEdge * 4
-      // save the controls state
-      controls.current.saveState()
-    } else {
-      curCam.lookAt(center)
+
+    if (fitContent) {
+      curCam.position.z = center.z + cameraZ
+      if (controls.current) {
+        // set camera to rotate around center of loaded object
+        controls.current.target = center
+        // prevent camera from zooming out far enough to create far plane cutoff
+        controls.current.maxDistance = cameraToFarEdge * 4
+        // save the controls state
+        controls.current.saveState()
+      } else {
+        curCam.lookAt(center)
+      }
     }
-  }, [children])
+  }, [children, fitContent])
 
   React.useEffect(() => {
     if (camRef.current) {

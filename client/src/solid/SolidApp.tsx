@@ -55,7 +55,7 @@ const Part: React.FC = () => {
   }, [example, set])
 
   return (
-    <CanvasContent>
+    <CanvasContent fitContent>
       {meshes.map(m => (
         <mesh key={m.uuid} {...m} />
       ))}

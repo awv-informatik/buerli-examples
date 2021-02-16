@@ -1,4 +1,5 @@
 import { ApiHistory } from '@buerli.io/headless'
+import produce from 'immer'
 import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
@@ -29,6 +30,9 @@ const useStore = create<State>(set => ({
   activeExample: toc[0].label,
   examples: { ids: Object.keys(exampleMap), objs: exampleMap },
   set,
+  setParam: (exampleId: string, paramName: string, paramValue: number) => {
+    set(state => produce(state, draft => void (draft.examples.objs[exampleId].params[paramName] = paramValue)))
+  },
 }))
 
 export { useStore }
@@ -38,10 +42,11 @@ export { useStore }
 // TYPES
 
 type State = Readonly<{
-  activeExample?: string
+  activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
   set: SetState<State>
+  setParam: (exampleId: string, paramName: string, paramValue: number) => void
 }>
 
 export type Example = {

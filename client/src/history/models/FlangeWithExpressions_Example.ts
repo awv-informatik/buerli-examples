@@ -7,7 +7,7 @@ export const paramsMap: ParamType = {
   'Inner Radius': 100,
 }
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
   const file = new File(['Flange.of1'], 'Flange.of1', { type: 'application/x-binary' })
   const productId = await api.loadFile(file, arraybuffer)
 
@@ -25,7 +25,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   return productId
 }
 
-export const update = async (api: ApiHistory, productId: number, params?: ParamType) => {
+export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {
   const flanschdicke = params['Flange Depth']
   const innenradius = params['Inner Radius']
   const anzahlBohrungen = Math.ceil(innenradius / 10) >= 3 ? Math.ceil(innenradius / 10) : 3

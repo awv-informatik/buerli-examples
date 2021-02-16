@@ -1,46 +1,48 @@
 import { Form, Input } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Example, useStore } from '../store'
+import { useStore } from '../store'
 
-export const Parameters: React.FC<{}> = () => {
-  const set = useStore(s => s.set)
-  const examples = useStore(s => s.examples)
-  const activeExample = useStore(s => s.activeExample)
-  const example = useStore(s => s.examples.objs[activeExample])
-  const [localExamples, setLocalExamples] = useState<{ ids: string[]; objs: Record<string, Example> }>(examples)
-
-  const handleOnChange = (newParam: { label: string; value: number }) => {
-    const examplesCopy = { ...localExamples }
-    examplesCopy.objs[activeExample].params[newParam.label] = newParam.value
-    setLocalExamples(examplesCopy)
-  }
-
-  return example && example.params ? (
+export const Parameters: React.FC = () => {
+  const active = useStore(s => s.activeExample)
+  const params = useStore(s => s.examples.objs[active]?.params)
+  return params ? (
     <Container>
       <Form layout="horizontal">
-        {Object.keys(example.params).map((key, index) => (
+        {Object.keys(params).map((key, index) => (
           <Form.Item style={{ margin: '5px' }} key={index} label={key}>
-            <Input
-              type={'number'}
-              value={example.params[key]}
-              onBlur={(e: any) => {
-                set({ examples: localExamples })
-              }}
-              onKeyDown={(e: any) => {
-                if (e.key === 'Enter') {
-                  set({ examples: localExamples })
-                }
-              }}
-              onChange={(e: any) => {
-                handleOnChange({ label: key, value: Number.parseInt(e.target.value) })
-              }}
-            />
+            <Param exampleId={active} name={key} value={params[key]} />
           </Form.Item>
         ))}
       </Form>
     </Container>
   ) : null
+}
+
+const Param: React.FC<{ exampleId: string; value: number; name: string }> = ({ exampleId, value, name }) => {
+  const setParam = useStore(s => s.setParam)
+  const [val, setVal] = React.useState<number>(value)
+  console.info(val)
+
+  const handleOnChange = React.useCallback(() => {
+    setParam(exampleId, name, val)
+  }, [val, name, exampleId, setParam])
+
+  return (
+    <Input
+      type={'number'}
+      value={val || ''}
+      onBlur={handleOnChange}
+      onKeyDown={(e: any) => {
+        if (e.key === 'Enter') {
+          handleOnChange()
+        }
+      }}
+      onChange={(e: any) => {
+        setVal(Number.parseInt(e.target.value))
+      }}
+    />
+  )
 }
 
 const Container = styled.div`

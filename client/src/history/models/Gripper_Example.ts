@@ -9,7 +9,7 @@ export const paramsMap: ParamType = {
   Taper: 50,
 }
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
   const file = new File(['gripperV2.of1'], 'gripperV2.of1', {
     type: 'application/x-binary',
   })
@@ -26,7 +26,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   return productId
 }
 
-export const update = async (api: ApiHistory, productId: number, params?: ParamType) => {
+export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {
   await api.setExpressions(
     productId,
     { name: 'W', value: params['Width'] },

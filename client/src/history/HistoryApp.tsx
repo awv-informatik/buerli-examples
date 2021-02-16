@@ -43,55 +43,59 @@ export default HistoryApp
 const Part: React.FC = () => {
   const set = useStore(s => s.set)
   const activeExample = useStore(s => s.activeExample)
-  const examples = useStore(s => s.examples)
-  const example = useStore(s => s.examples.objs[activeExample])
+  const { update, create, params } = useStore(s => s.examples.objs[activeExample])
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const historyApi = React.useRef<ApiHistory>()
   const productId = React.useRef<number>(0)
-
-  React.useEffect(() => {
-    setMeshes([])
-    set({ loading: true })
-    const cad = new history(CCSERVERURL)
-    cad.init(async api => {
-      historyApi.current = api
-      productId.current = await example.create(api, example.params)
-      const items = await createMeshes(productId.current, api)
-      set({ loading: false })
-      setMeshes(items)
-    })
-    return () => cad.destroy()
-  }, [example, set])
-
-  React.useEffect(() => {
-    historyApi.current && update()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [example.params, examples])
+  const [first, setFirst] = React.useState<boolean>(true)
 
   const createMeshes = async (prodId: number, api: ApiHistory) => {
+    if (!api) return
     const geoms = await api.createBufferGeometry(prodId)
     return geoms.map(
       geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') })),
     )
   }
 
-  const update = async () => {
-    if (historyApi.current && example.update) {
-      await example.update(historyApi.current, productId.current, example.params)
-      const items = await createMeshes(productId.current, historyApi.current)
+  React.useEffect(() => {
+    historyApi.current = null
+    setFirst(true)
+    setMeshes([])
+    set({ loading: true })
+    const cad = new history(CCSERVERURL)
+    cad.init(async api => {
+      historyApi.current = api
+      productId.current = await create(api)
+      const items = await createMeshes(productId.current, api)
       setMeshes(items)
-    }
-  }
+      setTimeout(() => void setFirst(false), 50)
+      set({ loading: false })
+    })
+    return () => cad.destroy()
+  }, [create, set, historyApi])
 
-  return (
+  React.useEffect(() => {
+    const run = async () => {
+      if (historyApi.current && update && params) {
+        set({ loading: true })
+        await update(historyApi.current, productId.current, params)
+        const items = await createMeshes(productId.current, historyApi.current)
+        setMeshes(items)
+        set({ loading: false })
+      }
+    }
+    run()
+  }, [update, params, historyApi, set])
+
+  return historyApi.current ? (
     <>
-      <CanvasContent>
+      <CanvasContent fitContent={meshes.length > 0 && first}>
         {meshes.map(m => (
           <mesh key={m.uuid} {...m} />
         ))}
       </CanvasContent>
     </>
-  )
+  ) : null
 }
 
 const CodeWrapper: React.FC = () => {
