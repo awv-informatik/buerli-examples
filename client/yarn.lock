@@ -1336,56 +1336,64 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.0.24":
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.24.tgz#6a74d0c9c54af4e2de0ea67d84d8c8b1ae7b2b6f"
-  integrity sha512-BPEperHSwPNdozYKtsa536dTD7WN5uo3nxFxm2R9cT2Rlg8j72abzF+3jk+kQkrFzMSue9iSViyWJpeQCpsvXg==
+"@buerli.io/classcad@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.26.tgz#d7319466b3874c12acaa8efec9a0903b5f5a01b5"
+  integrity sha512-ndbceQgZloSjYzHlAmA/4I8RATu2iyRYT6tl3HJLVKvExIXukqNnQ7KrQZfLyGHZIKwCT7HwdG6kbGR/YqI6Ow==
   dependencies:
-    "@buerli.io/core" "0.0.24"
+    "@buerli.io/core" "0.0.26"
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
+    react "^17.0.1"
     socket.io-client "^2.2.0"
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/core@0.0.24":
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.24.tgz#814fe13b7cbe39206faa8a083aebb35028320db8"
-  integrity sha512-NvEso1UmyyY1mtvpsUdGgu/ZbzVCTmrLULooJ9dRHjjMv8S54xPIOFA/xzM6VUDEYwUyNVlQ9Wc9In4S9yjtWA==
+"@buerli.io/core@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.26.tgz#0256b31113ab42f6bdd174ea6738590349f7e715"
+  integrity sha512-TDlluW8jqzR2HFyjZIRtC2CrUIcuDZ7/YfWuOfbMW4rUB4iorq8SBS6NTyI9Doe/jeGyiOm2O+3ldlBmXDDiLQ==
   dependencies:
     jsonpatch "^3.0.1"
+    react "^17.0.1"
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/headless@0.0.24":
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.24.tgz#76df3a6863a9e04db9298844d7977d06f1bb7e13"
-  integrity sha512-vVw1zw3piRHQH0zwK15fJFKHReC0hKcCnJWG+lqmQ35BeOl0lFwCfvXpOLDNXAU3E4+fo6aTrhIGu4weXGT4fA==
+"@buerli.io/headless@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.26.tgz#8ede1b90b8b11558ac7f9ed42e7795c03a15172a"
+  integrity sha512-C2oTWGnbKH7JRtdExf1DwxeLd06g37OSTA54gwO3bFcY/O/liMQaGEdN6Mk8f0fxedmmEbjqUfITxB6j02/jgw==
   dependencies:
-    "@buerli.io/classcad" "0.0.24"
+    "@buerli.io/classcad" "0.0.26"
 
-"@buerli.io/plugins@0.0.13":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.13.tgz#6daf75c9cf29f9bb98ea6f61f7846fe41600156b"
-  integrity sha512-GtB5Q+om4Q0Am9D1DiedmZySXaXHnYASzNVZuQmeSGYRd9edB3unfjPIQmpXRhFXC+hsvmClyH7ssMeJKsDsKw==
+"@buerli.io/plugins@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.14.tgz#a5e4c99bd976dc67a4a329fb8e7e16bba4e1d1d5"
+  integrity sha512-OndHO4D5XmY+KHmqQtON8YumJpmX8CajMyX/C3oEZxfUsniNauhC7hCJK54mWUC8uPGtEvF5nHgjQDxaug/6cw==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
+    "@ant-design/icons" "^4.4.0"
     "@awvinf/icons" "^1.0.4"
-    "@buerli.io/classcad" "0.0.24"
-    "@buerli.io/react" "0.0.24"
+    "@buerli.io/classcad" "0.0.26"
+    "@buerli.io/react" "0.0.26"
+    antd "4.11.2"
     drei "2.2.12"
+    react "^17.0.1"
+    react-movable "^2.3.0"
+    styled-components "^4.3.2"
     three-rounded-box "^0.1.1"
     uuid "^3.3.2"
-    zustand "^2.2.4"
+    zustand ">= 2.2.3 <3.0"
 
-"@buerli.io/react@0.0.24":
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.24.tgz#bc450943fe2d6fae43a3dd2b495fb606842f5f26"
-  integrity sha512-mm59tV47ij6aaop2k7u/CB4B/znehCc9GoJ3ptxP+oB+BlCRVVFiQap3IQAFo7ZJvb1VLTnTeC/kVtBT3oPTcw==
+"@buerli.io/react@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.26.tgz#4ed7ce883185ba052379a446703763be9ab66274"
+  integrity sha512-2zUr99HE6TojoqOZRNBVNoArGWJ2V570SBsKSjxXPhZTTFAFhC3rdwC5C5WaB2amUsr9254DjktNf2ikSWm4+Q==
   dependencies:
-    "@buerli.io/core" "0.0.24"
+    "@ant-design/icons" "^4.4.0"
+    "@buerli.io/core" "0.0.26"
     antd "^4.8.0"
     deepmerge "^4.2.2"
     drei "2.2.12"
@@ -1395,6 +1403,7 @@
     react-spring "^8.0.27"
     styled-components "^4.3.2"
     three-line-raycast "^1.0.2"
+    uuid "^3.3.2"
     zustand "^2.2.4"
 
 "@cnakazawa/watch@^1.0.3":
@@ -2417,6 +2426,54 @@ ansi-styles@^4.1.0:
   integrity sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==
   dependencies:
     color-convert "^2.0.1"
+
+antd@4.11.2:
+  version "4.11.2"
+  resolved "https://registry.npmjs.org/antd/-/antd-4.11.2.tgz#28c20409e2d186d8915cdc6eacf1cfb2b82d9b5b"
+  integrity sha512-cdjPRlmamETae6c2uvQHRXDN5/T7I/zPiByaeolbq/FRG14JYv9hyUaydXI7n4s6rynPQ2Q6bFdCQ+/r9xZYbA==
+  dependencies:
+    "@ant-design/colors" "^5.0.0"
+    "@ant-design/icons" "^4.4.0"
+    "@ant-design/react-slick" "~0.28.1"
+    "@babel/runtime" "^7.11.2"
+    array-tree-filter "^2.1.0"
+    classnames "^2.2.6"
+    copy-to-clipboard "^3.2.0"
+    lodash "^4.17.20"
+    moment "^2.25.3"
+    rc-cascader "~1.4.0"
+    rc-checkbox "~2.3.0"
+    rc-collapse "~3.1.0"
+    rc-dialog "~8.5.1"
+    rc-drawer "~4.2.0"
+    rc-dropdown "~3.2.0"
+    rc-field-form "~1.18.0"
+    rc-image "~5.1.1"
+    rc-input-number "~6.1.0"
+    rc-mentions "~1.5.0"
+    rc-menu "~8.10.0"
+    rc-motion "^2.4.0"
+    rc-notification "~4.5.2"
+    rc-pagination "~3.1.2"
+    rc-picker "~2.5.1"
+    rc-progress "~3.1.0"
+    rc-rate "~2.9.0"
+    rc-resize-observer "^1.0.0"
+    rc-select "~12.1.0"
+    rc-slider "~9.7.1"
+    rc-steps "~4.1.0"
+    rc-switch "~3.2.0"
+    rc-table "~7.12.0"
+    rc-tabs "~11.7.0"
+    rc-textarea "~0.3.0"
+    rc-tooltip "~5.0.0"
+    rc-tree "~4.1.0"
+    rc-tree-select "~4.3.0"
+    rc-trigger "^5.2.1"
+    rc-upload "~3.3.4"
+    rc-util "^5.7.0"
+    scroll-into-view-if-needed "^2.2.25"
+    warning "^4.0.3"
 
 antd@^4.8.0:
   version "4.12.2"
@@ -10470,6 +10527,16 @@ rc-image@~4.2.0:
     rc-dialog "~8.4.0"
     rc-util "^5.0.6"
 
+rc-image@~5.1.1:
+  version "5.1.4"
+  resolved "https://registry.npmjs.org/rc-image/-/rc-image-5.1.4.tgz#e251101159db80c3e33276aaa4669a991c7486c0"
+  integrity sha512-hilxwwEAYJXocY6i+lEdEibvHVOLgN43EQFfjKFiiruRNiUQzGWcdCseyaeTZgInTDrf+QWZP6MujlZjtEbpkA==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    classnames "^2.2.6"
+    rc-dialog "~8.5.0"
+    rc-util "^5.0.6"
+
 rc-image@~5.2.0:
   version "5.2.1"
   resolved "https://registry.npmjs.org/rc-image/-/rc-image-5.2.1.tgz#a4114eb42f558d7b2e1ef2acae25f56ed219bb6d"
@@ -10701,6 +10768,17 @@ rc-table@~7.11.0:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
     rc-resize-observer "^0.2.0"
+    rc-util "^5.4.0"
+    shallowequal "^1.1.0"
+
+rc-table@~7.12.0:
+  version "7.12.5"
+  resolved "https://registry.npmjs.org/rc-table/-/rc-table-7.12.5.tgz#92fe3ff62ab59d3d29f5da53d4fba68dc02b836c"
+  integrity sha512-XV4m5h0W+NjGkNzvp5ahOhYHyNG8oPNV9pTLre2EsfmyStXUJBICyfkNID7WZulMdCehv/Wa3MdqXwZ4EsJchw==
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.5"
+    rc-resize-observer "^1.0.0"
     rc-util "^5.4.0"
     shallowequal "^1.1.0"
 
@@ -11091,7 +11169,7 @@ react-use-measure@^2.0.2:
   dependencies:
     debounce "^1.2.0"
 
-react@17.0.1:
+react@17.0.1, react@^17.0.1:
   version "17.0.1"
   resolved "https://registry.npmjs.org/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
   integrity sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
@@ -13814,7 +13892,7 @@ zustand@3.3.1, zustand@^3.0.3:
   resolved "https://registry.npmjs.org/zustand/-/zustand-3.3.1.tgz#de5c4b51112b84e0f819d8b3f336fbfbc087d758"
   integrity sha512-o0rgrBsi29nCkPHdhtkAHisCIlmRUoXOV+1AmDMeCgkGG0i5edFSpGU0KiZYBvFmBYycnck4Z07JsLYDjSET9g==
 
-zustand@^2.2.4:
+"zustand@>= 2.2.3 <3.0", zustand@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/zustand/-/zustand-2.2.4.tgz#3b38f9192ae06e6a737ce2d78cbdc321b1c7f185"
   integrity sha512-THkjmdAT3h7WzLGDFmC7LVdDOxplYXOdXy0rIEIe/Yn5NDUZNEpywurVdereUlL/hR0Yxm/P7uiSGNYw1eYxBA==
