@@ -26,7 +26,7 @@ services:
     networks:
       - examples-network
     ports:
-      - 8081:8182 # ClassCAD Server
+      - 8081:8081 # ClassCAD Server
     restart: unless-stopped
 
 networks:

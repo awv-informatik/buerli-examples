@@ -30,5 +30,5 @@ RUN cp ./node_modules/@awvinf/classcad-linux-x64/libboost_thread.so.1.65.1 /lib/
 COPY ./FreeBaseModeling.ccapp modeling.ccapp
 
 # Start the server
-EXPOSE 8182/tcp
-CMD npx classcad --ip 0.0.0.0 --port 8182 --instances 5 --ccappfile modeling.ccapp
+EXPOSE 8081/tcp
+CMD npx classcad --ip 0.0.0.0 --port 8081 --instances 5 --ccappfile modeling.ccapp
