@@ -4,7 +4,7 @@
 
 This package provides a default setup for Windows systems.
 
-> ⚠️ To get started with the linux server please follow the instructions at [classcad-linux-x64](https://www.npmjs.com/package/@awvinf/classcad-linux-x64)!
+> ⚠️ To get started with the linux server please follow the instructions here [dockerfile](./dockerfile)!
 
 **Install**
 
