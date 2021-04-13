@@ -10,10 +10,7 @@ export const paramsMap: ParamType = {
 }
 
 export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
-  const file = new File(['gripperV2.of1'], 'gripperV2.of1', {
-    type: 'application/x-binary',
-  })
-  const productId = await api.loadFile(file, arraybuffer)
+  const productId = await api.loadFile(arraybuffer, 'of1')
 
   // Set initial values
   await api.setExpressions(

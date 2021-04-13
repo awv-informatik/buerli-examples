@@ -26,8 +26,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const rodAsm = await api.createAssemblyAsTemplate('Rod_Asm')
 
   /* Load Bolt part */
-  const fileBolt = new File(['Bolt.of1'], 'Bolt.of1', { type: 'application/x-binary' })
-  const bolt = await api.loadProduct(fileBolt, arraybuffer)
+  const bolt = await api.loadProduct(arraybuffer, 'of1')
 
   /* Set expressions on bolt part (optional) */
   api.setExpressions(
@@ -45,8 +44,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Load Nut part */
-  const fileNut = new File(['Nut.of1'], 'Nut.of1', { type: 'application/x-binary' })
-  const nut = await api.loadProduct(fileNut, arraybuffer2)
+  const nut = await api.loadProduct(arraybuffer2, 'of1')
 
   /* Set expressions on bolt part (optional) */
   api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
@@ -83,8 +81,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load LBracket part */
-  const fileLBracket = new File(['LBracket.of1'], 'LBracket.of1', { type: 'application/x-binary' })
-  const lBracket = await api.loadProduct(fileLBracket, arraybuffer3)
+  const lBracket = await api.loadProduct(arraybuffer3, 'of1')
 
   /* Set expressions on lBracket part (optional) */
   api.setExpressions(
@@ -161,8 +158,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load Plate part */
-  const filePlate = new File(['Plate.of1'], 'Plate.of1', { type: 'application/x-binary' })
-  const plate = await api.loadProduct(filePlate, arraybuffer4)
+  const plate = await api.loadProduct(arraybuffer4, 'of1')
 
   /* Set expressions on plate part (optional) */
   api.setExpressions(plate, { name: 'Hole_Diameter', value: shaftDiameter })
@@ -218,8 +214,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load Rod part */
-  const fileRod = new File(['Rod.of1'], 'Rod.of1', { type: 'application/x-binary' })
-  const rod = await api.loadProduct(fileRod, arraybuffer5)
+  const rod = await api.loadProduct(arraybuffer5, 'of1')
 
   /* Set expressions on rod part (optional) */
   api.setExpressions(rod, { name: 'Rod_Diameter', value: rodDiameter })

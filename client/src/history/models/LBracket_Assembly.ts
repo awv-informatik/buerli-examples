@@ -18,8 +18,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const nutBoltAsm = await api.createAssemblyAsTemplate('NutBolt_Asm')
 
   /* Bolt */
-  const fileBolt = new File(['Bolt.of1'], 'Bolt.of1', { type: 'application/x-binary' })
-  const bolt = await api.loadProduct(fileBolt, arraybuffer)
+  const bolt = await api.loadProduct(arraybuffer, 'of1')
 
   api.setExpressions(
     bolt,
@@ -33,8 +32,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
-  const fileNut = new File(['Nut.of1'], 'Nut.of1', { type: 'application/x-binary' })
-  const nut = await api.loadProduct(fileNut, arraybuffer2)
+  const nut = await api.loadProduct(arraybuffer2, 'of1')
 
   api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
 
@@ -67,8 +65,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* LBracket */
-  const fileLBracket = new File(['LBracket.of1'], 'LBracket.of1', { type: 'application/x-binary' })
-  const lBracket = await api.loadProduct(fileLBracket, arraybuffer3)
+  const lBracket = await api.loadProduct(arraybuffer3, 'of1')
 
   api.setExpressions(
     lBracket,

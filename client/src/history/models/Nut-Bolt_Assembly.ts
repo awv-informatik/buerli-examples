@@ -14,8 +14,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const nutBoltAsm = await api.createRootAssembly('NutBolt_Asm')
 
   /* Bolt */
-  const fileBolt = new File(['Bolt.of1'], 'Bolt.of1', { type: 'application/x-binary' })
-  const bolt = await api.loadProduct(fileBolt, arraybuffer)
+  const bolt = await api.loadProduct(arraybuffer, 'of1')
 
   api.setExpressions(
     bolt,
@@ -28,8 +27,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
-  const fileNut = new File(['Nut.of1'], 'Nut.of1', { type: 'application/x-binary' })
-  const nut = await api.loadProduct(fileNut, arraybuffer2)
+  const nut = await api.loadProduct(arraybuffer2, 'of1')
   api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
   const nutRefId = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')

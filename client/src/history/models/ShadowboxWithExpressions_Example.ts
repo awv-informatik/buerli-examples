@@ -13,10 +13,7 @@ export const paramsMap: ParamType = {
 }
 
 export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
-  const file = new File(['Shadowbox.of1'], 'Shadowbox.of1', {
-    type: 'application/x-binary',
-  })
-  const productId = await api.loadFile(file, arraybuffer)
+  const productId = await api.loadFile(arraybuffer, 'of1')
 
   // Set initial values
   const minGap = params['Min. Gap']
