@@ -1,4 +1,4 @@
-import { ReorientedType } from '@buerli.io/classcad'
+import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import { ParamType } from '../store'
 
@@ -193,24 +193,20 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
 
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { refId: boltRef, wcsId: mate1Bolt },
+    { refId: boltRef, wcsId: mate1Bolt, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FOC1',
   )
 
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { refId: nutRef, wcsId: mate1Nut },
-    { refId: boltRef, wcsId: mate1Bolt },
+    { refId: nutRef, wcsId: mate1Nut, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: boltRef, wcsId: mate1Bolt, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     -20,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC1',
   )
 
@@ -221,46 +217,39 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const lBracketRef = await api.addNode(lBracket, lBracketAsm, [pt3, xDir, yDir])
   await api.createFastenedOriginConstraint(
     lBracketAsm,
-    { refId: lBracketRef, wcsId: mate1LBracket },
+    { refId: lBracketRef, wcsId: mate1LBracket, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     20,
-    1,
-    ReorientedType.REORIENTED_0,
     'FOC2',
   )
 
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef, wcsId: mate1LBracket },
-    { refId: nutBoltRef0, wcsId: wcsShaftBolt },
+    { refId: lBracketRef, wcsId: mate1LBracket, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: nutBoltRef0, wcsId: wcsShaftBolt, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     20,
-    1,
-    ReorientedType.REORIENTED_0,
+
     'FC2',
   )
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef, wcsId: mate2LBracket },
-    { refId: nutBoltRef1, wcsId: wcsShaftBolt },
+    { refId: lBracketRef, wcsId: mate2LBracket, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: nutBoltRef1, wcsId: wcsShaftBolt, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     20,
-    1,
-    ReorientedType.REORIENTED_0,
     'FC3',
   )
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef, wcsId: mate3LBracket },
-    { refId: nutBoltRef2, wcsId: wcsShaftBolt },
+    { refId: lBracketRef, wcsId: mate3LBracket, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: nutBoltRef2, wcsId: wcsShaftBolt, flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     20,
-    1,
-    ReorientedType.REORIENTED_0,
     'FC4',
   )
   return lBracketAsm

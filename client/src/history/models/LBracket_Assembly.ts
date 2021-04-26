@@ -1,4 +1,4 @@
-import { ReorientedType } from '@buerli.io/classcad'
+import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import arraybuffer from '../../shared/resources/Bolt.of1'
 import arraybuffer3 from '../../shared/resources/LBracket.of1'
@@ -42,25 +42,21 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Set bolt to origin of nut-bolt-assembly */
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdBoltOrigin[0] },
+    { refId: boltRefId, wcsId: wcsIdBoltOrigin[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FOC0',
   )
 
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdBoltNut[0] },
-    { refId: nutRefId, wcsId: wcsIdNut[0] },
+    { refId: boltRefId, wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: nutRefId, wcsId: wcsIdNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC1',
   )
 
@@ -82,12 +78,15 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* LBracket at origin */
   await api.createFastenedOriginConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracketOrigin[0] },
+    {
+      refId: lBracketRef1,
+      wcsId: wcsIdLBracketOrigin[0],
+      flip: FlipType.FLIP_X,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FOC',
   )
 
@@ -98,39 +97,53 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracket1[0] },
-    { refId: nutBoltAsmRef1, wcsId: wcsIdBoltHeadShaft[0] },
+    { refId: lBracketRef1, wcsId: wcsIdLBracket1[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      refId: nutBoltAsmRef1,
+      wcsId: wcsIdBoltHeadShaft[0],
+      flip: FlipType.FLIP_X,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC2',
   )
 
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracket2Top[0] },
-    { refId: nutBoltAsmRef2, wcsId: wcsIdBoltHeadShaft[0] },
+    {
+      refId: lBracketRef1,
+      wcsId: wcsIdLBracket2Top[0],
+      flip: FlipType.FLIP_X,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      refId: nutBoltAsmRef2,
+      wcsId: wcsIdBoltHeadShaft[0],
+      flip: FlipType.FLIP_X,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC3',
   )
 
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracket3[0] },
-    { refId: nutBoltAsmRef3, wcsId: wcsIdBoltHeadShaft[0] },
+    { refId: lBracketRef1, wcsId: wcsIdLBracket3[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      refId: nutBoltAsmRef3,
+      wcsId: wcsIdBoltHeadShaft[0],
+      flip: FlipType.FLIP_X,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC4',
   )
   return lBracketAsm

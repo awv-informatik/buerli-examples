@@ -1,4 +1,4 @@
-import { ReorientedType } from '@buerli.io/classcad'
+import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import arraybuffer from '../../shared/resources/Bolt.of1'
 import arraybuffer2 from '../../shared/resources/Nut.of1'
@@ -35,25 +35,21 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdOrigin[0] },
+    { refId: boltRefId, wcsId: wcsIdOrigin[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FOC',
   )
 
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { refId: nutRefId, wcsId: wcsIdNut[0] },
-    { refId: boltRefId, wcsId: wcsIdBoltNut[0] },
+    { refId: nutRefId, wcsId: wcsIdNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: boltRefId, wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
-    0,
-    ReorientedType.REORIENTED_0,
     'FC1',
   )
   return nutBoltAsm
