@@ -20,7 +20,7 @@ RUN mkdir -p $SERVER_DIR
 WORKDIR $SERVER_DIR
 
 RUN npm init -y
-RUN npm i @awvinf/classcad-linux-x64@^0.0.0-beta.3
+RUN npm i @awvinf/classcad-linux-x64@^0.0.0-beta.4
 RUN chmod +x ./node_modules/@awvinf/classcad-linux-x64/ClassCADInstance
 
 # Copy runtimes to libs

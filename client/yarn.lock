@@ -1336,12 +1336,12 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.27.tgz#dc2f3cb865da2f97a205b0f9d28412d379db88b8"
-  integrity sha512-bcHpfp9fi6D9pNA705wis9ufzWDG/K5ekkMfK65zzIPbEz8uVY9tZtahMSyvBifhA70IG3CYpfLI3GLwL6p/aQ==
+"@buerli.io/classcad@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.28.tgz#fa621126ac6701b735da62a07d87874e38cc9dc1"
+  integrity sha512-ABUTuyw3MI/435DiuUEmR8QgiORVanUPQ+C9OQSgnm3q38bCwYZaoP9zmI7tjT5Ju/Fcu26hChCO5vFnWdtvPw==
   dependencies:
-    "@buerli.io/core" "0.0.27"
+    "@buerli.io/core" "0.0.28"
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
     react "^17.0.1"
@@ -1350,10 +1350,10 @@
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/core@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.27.tgz#0acbf4e804319040180b62e5b76900425b4ecd2e"
-  integrity sha512-Vms8RNAT6NlDip9TyVon5WrDhHnEqeDi7Af+y5ID5x+E+J4HmHprTRz/C4siShB5Sp7hltXAOuLOxR5Th4SN/Q==
+"@buerli.io/core@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.28.tgz#1e0fa02b30cf10f87d743d9d5a275bd84e496ad3"
+  integrity sha512-cnrmMiA5FTWAib6r73KAvE6rs33Ipjc2K90EU+oWAnsorhT9V7Lk+f1hzh3c1QH0n4RaT5JhKvwCnqi4sDPVog==
   dependencies:
     jsonpatch "^3.0.1"
     react "^17.0.1"
@@ -1361,23 +1361,23 @@
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/headless@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.27.tgz#3190fc378e1810550a263c2486eed3e61fd620cd"
-  integrity sha512-nAbDU/58mt8gf3RQCxm0Yt9hDBqs6h6izKiGgwcJVn8FpHR9fO888k51qNsTdD52Ebh7HQnx5idqI3A5PzQf5A==
+"@buerli.io/headless@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.28.tgz#d87745facc185a95405fcde63c48fef98182a076"
+  integrity sha512-mYwD0Bo2e64Q14Yi4HrhjOibFujLDGf0Uhf8jFe1JG5zdeTC5nH3XvyQ6DZmMCsdWCdCuY78jBHiHbiJPKYiww==
   dependencies:
-    "@buerli.io/classcad" "0.0.27"
+    "@buerli.io/classcad" "0.0.28"
 
-"@buerli.io/plugins@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.15.tgz#231f1e1cdc03bd0f5f39a2d4eee057999d9742bc"
-  integrity sha512-Ne17FUMLcnuzIp3jpN43d8xSivfOnf/MX6ZZsHJZxRQrnbSj0MDO50CgELosGSKrwvWnozD0+w9tB1S9Dn3dDw==
+"@buerli.io/plugins@0.0.16":
+  version "0.0.16"
+  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.16.tgz#b727a892564237f380bfe2c32df5111e9391f905"
+  integrity sha512-7D83TLZcP2KACWsv5x2w6hGmb7gnZu0TmBFNepup1NzchPwR2OU6GlS6omauemFBQJDa0mo6FMW5P6QQQbkXfg==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@ant-design/icons" "^4.4.0"
     "@awvinf/icons" "^1.0.4"
-    "@buerli.io/classcad" "0.0.27"
-    "@buerli.io/react" "0.0.27"
+    "@buerli.io/classcad" "0.0.28"
+    "@buerli.io/react" "0.0.28"
     antd "4.11.2"
     drei "2.2.12"
     react "^17.0.1"
@@ -1387,13 +1387,13 @@
     uuid "^3.3.2"
     zustand ">= 2.2.3 <3.0"
 
-"@buerli.io/react@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.27.tgz#179857bc30f95ffe010c5395657dfaa48bf0034a"
-  integrity sha512-NAA/22dbgx3v9BgeDMx+rL6TUupMEzzXdAjyrMCQ+umBOPsjhiRSMLSZCwwn+RWpf+4a2OhN74q43jIghOW4GQ==
+"@buerli.io/react@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.28.tgz#e1a3bac7160511076f09841f88090e534149bb7d"
+  integrity sha512-GCd/B1RlCfcywmsSj6BTGFbGiyIhUuUnPC3dAM5VMF4d1WAynYgNHYTYNe7y2nYOaGAyNCVmvUrMoYWY1z7kyA==
   dependencies:
     "@ant-design/icons" "^4.4.0"
-    "@buerli.io/core" "0.0.27"
+    "@buerli.io/core" "0.0.28"
     antd "^4.8.0"
     deepmerge "^4.2.2"
     drei "2.2.12"
