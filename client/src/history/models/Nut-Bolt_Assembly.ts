@@ -35,7 +35,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdOrigin[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: boltRefId, wcsId: wcsIdOrigin[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
@@ -45,8 +45,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { refId: nutRefId, wcsId: wcsIdNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
-    { refId: boltRefId, wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_X, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: nutRefId, wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    { refId: boltRefId, wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
