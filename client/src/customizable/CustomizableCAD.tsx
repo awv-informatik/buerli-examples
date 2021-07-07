@@ -1,6 +1,6 @@
 import { ccAPI } from '@buerli.io/classcad'
 import { api as buerliApi, DrawingID, useBuerli } from '@buerli.io/core'
-import { Features } from '@buerli.io/plugins'
+import { FeatureList } from '@buerli.io/plugins'
 import { Canvas, Viewcube } from '@buerli.io/react'
 import { extname } from 'path'
 import React from 'react'
@@ -12,6 +12,7 @@ import { MarkdownLazy } from './components/MarkdownLazy'
 import { PluginController } from './components/PluginController'
 import { PluginMarkdown } from './components/PluginMarkdown'
 import { PluginUI } from './components/PluginUI'
+import { Validator } from './components/Validator'
 import initBuerli from './initBuerli'
 import { useStore } from './store'
 
@@ -73,7 +74,9 @@ export const CustomizableCAD: React.FC<{}> = () => {
             <div style={{ height: '100%', justifySelf: 'flex-start', overflow: 'auto', zIndex: 1000 }}>
               <H4>Features</H4>
               <div className="features">
-                <Features drawingId={activeDrId} />
+                <Validator drawingId={activeDrId} needsDrawing needsCurrentProduct>
+                  <FeatureList drawingId={activeDrId} />
+                </Validator>
               </div>
               <div style={{ height: '15px' }} />
               <H4>Globals</H4>
