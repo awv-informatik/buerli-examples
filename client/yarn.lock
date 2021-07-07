@@ -80,10 +80,10 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/icons@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/@awvinf/icons/-/icons-1.0.4.tgz#db989998fcbabc72cb43834e64386a0cdb49c717"
-  integrity sha512-YGPf4uE6EwPkUTN/bLgjwqxfPluQbpq4MqZs/ff/acPtVvexIDnOe8H8kcmL9O98OgCvzd8Oku/xuEkAWLaazw==
+"@awvinf/icons@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/@awvinf/icons/-/icons-1.0.6.tgz#9873549a49d67ce7fc8892422414f4af87a2298f"
+  integrity sha512-vpL6aWTXnhCi3CAdSoJ2dAgkRIJaXKFp7eOzjriD+AFi8F7jj7uUazRG3ZPLI+s5z/SIsSC6kbq6LagxQ3pkDQ==
 
 "@babel/code-frame@7.8.3":
   version "7.8.3"
@@ -1270,6 +1270,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.2.0":
+  version "7.14.6"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.10.4", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.10.4"
   resolved "https://registry.npmjs.org/@babel/template/-/template-7.10.4.tgz#3251996c4200ebc71d1a8fc405fba940f36ba278"
@@ -1336,12 +1343,12 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.28.tgz#fa621126ac6701b735da62a07d87874e38cc9dc1"
-  integrity sha512-ABUTuyw3MI/435DiuUEmR8QgiORVanUPQ+C9OQSgnm3q38bCwYZaoP9zmI7tjT5Ju/Fcu26hChCO5vFnWdtvPw==
+"@buerli.io/classcad@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.0.30.tgz#66aee4d96ae1a0e78371f7834b61dff20fd8271a"
+  integrity sha512-fJEUj617spn+25Fy3E6LL2BxsgAS7tW9p3Q/7q8Ju3DVqdjRYNlOavEImL4r97V/WwOOe+eh0Z7WRNANYa81kw==
   dependencies:
-    "@buerli.io/core" "0.0.28"
+    "@buerli.io/core" "0.0.30"
     base64-arraybuffer "^0.2.0"
     pako "^1.0.10"
     react "^17.0.1"
@@ -1350,10 +1357,10 @@
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/core@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.28.tgz#1e0fa02b30cf10f87d743d9d5a275bd84e496ad3"
-  integrity sha512-cnrmMiA5FTWAib6r73KAvE6rs33Ipjc2K90EU+oWAnsorhT9V7Lk+f1hzh3c1QH0n4RaT5JhKvwCnqi4sDPVog==
+"@buerli.io/core@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.0.30.tgz#f5aaa63eaed38fcc2376b9ce8c7fa91ae8f9397e"
+  integrity sha512-6DxE13kwvxGwlVhYYokGicvLT0QSr+3thQq+8gbv7AXxZYJh25Clzflwl/zpPLD1IumCQokzMOABZTDrXtqlLg==
   dependencies:
     jsonpatch "^3.0.1"
     react "^17.0.1"
@@ -1361,39 +1368,41 @@
     uuid "^3.3.2"
     zustand "^2.2.4"
 
-"@buerli.io/headless@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.28.tgz#d87745facc185a95405fcde63c48fef98182a076"
-  integrity sha512-mYwD0Bo2e64Q14Yi4HrhjOibFujLDGf0Uhf8jFe1JG5zdeTC5nH3XvyQ6DZmMCsdWCdCuY78jBHiHbiJPKYiww==
+"@buerli.io/headless@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.0.30.tgz#88bb60c9dee5da586167e31c24b717707c35dab5"
+  integrity sha512-uUGOY5kLD8b4ahTUmU5mqap5awSdocSz7QaQ/Ttd+256QXnsCFf7+WaKoQc5zkXsjuouwoTI71XGsoK4LNyAuQ==
   dependencies:
-    "@buerli.io/classcad" "0.0.28"
+    "@buerli.io/classcad" "0.0.30"
 
-"@buerli.io/plugins@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.16.tgz#b727a892564237f380bfe2c32df5111e9391f905"
-  integrity sha512-7D83TLZcP2KACWsv5x2w6hGmb7gnZu0TmBFNepup1NzchPwR2OU6GlS6omauemFBQJDa0mo6FMW5P6QQQbkXfg==
+"@buerli.io/plugins@0.0.18":
+  version "0.0.18"
+  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.18.tgz#a28ff53f7e880590e63ed39a7415de0155436fd5"
+  integrity sha512-S1ew1G+4gKFBIbyF8emPgnYslnNm1xBM/hPT8uG7aejjOFuDzH/XOQkJsmbEiW337ybSFMX7NSw0loRIe5pPOQ==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@ant-design/icons" "^4.4.0"
-    "@awvinf/icons" "^1.0.4"
-    "@buerli.io/classcad" "0.0.28"
-    "@buerli.io/react" "0.0.28"
+    "@awvinf/icons" "^1.0.6"
+    "@buerli.io/classcad" "0.0.30"
+    "@buerli.io/react" "0.0.30"
     antd "4.11.2"
     drei "2.2.12"
     react "^17.0.1"
     react-movable "^2.3.0"
+    react-sortable-hoc "^2.0.0"
+    react-uid "^2.3.1"
     styled-components "^4.3.2"
     three-rounded-box "^0.1.1"
     uuid "^3.3.2"
     zustand ">= 2.2.3 <3.0"
 
-"@buerli.io/react@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.28.tgz#e1a3bac7160511076f09841f88090e534149bb7d"
-  integrity sha512-GCd/B1RlCfcywmsSj6BTGFbGiyIhUuUnPC3dAM5VMF4d1WAynYgNHYTYNe7y2nYOaGAyNCVmvUrMoYWY1z7kyA==
+"@buerli.io/react@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.0.30.tgz#28cd6b7a95b35744fd293cf9bbeee1347709f768"
+  integrity sha512-pjkTLsiOSypCiCtWvlFkmj5AiKXfqAQTBcgEuoE4gvg6DFhdsbpa1g+sQGTL96CXnGlQkoEny6fWzB9bMA4jtw==
   dependencies:
     "@ant-design/icons" "^4.4.0"
-    "@buerli.io/core" "0.0.28"
+    "@buerli.io/core" "0.0.30"
     antd "^4.8.0"
     deepmerge "^4.2.2"
     drei "2.2.12"
@@ -10161,7 +10170,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11138,6 +11147,15 @@ react-scripts@3.4.3:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-sortable-hoc@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/react-sortable-hoc/-/react-sortable-hoc-2.0.0.tgz#f6780d8aa4b922a21f3e754af542f032677078b7"
+  integrity sha512-JZUw7hBsAHXK7PTyErJyI7SopSBFRcFHDjWW5SWjcugY0i6iH7f+eJkY8cJmGMlZ1C9xz1J3Vjz0plFpavVeRg==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    invariant "^2.2.4"
+    prop-types "^15.5.7"
+
 react-spring@^8.0.27:
   version "8.0.27"
   resolved "https://registry.npmjs.org/react-spring/-/react-spring-8.0.27.tgz#97d4dee677f41e0b2adcb696f3839680a3aa356a"
@@ -11161,6 +11179,13 @@ react-three-fiber@5.1.4:
     tiny-emitter "^2.1.0"
     use-asset "^0.1.2"
     utility-types "^3.10.0"
+
+react-uid@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/react-uid/-/react-uid-2.3.1.tgz#22a75d4a948a4824b9b8078cbf864d55d91ca4be"
+  integrity sha512-6C5pwNYP1udgp5feQ9MTBZBKD4su9nhD2aYCFY1bB0Bpask8wYKYz0ZhAtAJ4lcmTDC5kY1ByGTQMFDHQW6p0w==
+  dependencies:
+    tslib "^1.10.0"
 
 react-use-measure@^2.0.2:
   version "2.0.3"
