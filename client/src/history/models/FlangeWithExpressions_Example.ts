@@ -8,7 +8,7 @@ export const paramsMap: ParamType = {
 }
 
 export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
-  const productId = await api.loadFile(arraybuffer, 'of1')
+  const productId = await api.load(arraybuffer, 'of1')
 
   // Set initial values
   const flanschdicke = params['Flange Depth']
