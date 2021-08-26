@@ -1,4 +1,5 @@
-import { DrawingID, getDrawing, useDrawing } from '@buerli.io/core'
+import { DrawingID, getDrawing } from '@buerli.io/core'
+import { useDrawing } from '@buerli.io/react'
 import React from 'react'
 import { Options } from '../../shared/components'
 import { useStore } from '../store'

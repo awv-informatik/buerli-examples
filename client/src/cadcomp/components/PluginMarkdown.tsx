@@ -1,4 +1,5 @@
-import { DrawingID, usePlugin } from '@buerli.io/core'
+import { DrawingID } from '@buerli.io/core'
+import { usePlugin } from '@buerli.io/react'
 import React from 'react'
 import { useStore } from '../store'
 import { MarkdownLazy } from './MarkdownLazy'

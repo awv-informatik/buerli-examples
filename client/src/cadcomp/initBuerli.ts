@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { CCClasses } from '@buerli.io/classcad'
 import { init, Plugin } from '@buerli.io/core'
 import * as plugins from '@buerli.io/plugins'

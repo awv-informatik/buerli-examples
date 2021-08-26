@@ -6,7 +6,6 @@ declare module '*.ts'
 declare module '*.tsx'
 
 declare module '@mdx-js/react' {
-  import { ComponentType, StyleHTMLAttributes } from 'react'
   type MDXProps = {
     children: React.ReactNode
     components?: { wrapper: React.ReactNode }

@@ -1,13 +1,14 @@
+import { api as buerliApi } from '@buerli.io/core'
 import { solid } from '@buerli.io/headless'
+import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import Code from '../shared/components/Code'
 import { useStore } from './store'
 
-export const SolidApp: React.FC<{}> = () => {
+export const SolidApp: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)
@@ -51,7 +52,10 @@ const Part: React.FC = () => {
       setMeshes(items)
     })
 
-    return () => cad.destroy()
+    return () => {
+      buerliApi.getState().api.setActiveDrawing(null)
+      cad.destroy()
+    }
   }, [example, set])
 
   return (

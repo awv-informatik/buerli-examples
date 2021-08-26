@@ -2,7 +2,8 @@
  * @see https://reactjs.org/docs/error-boundaries.html
  */
 
-import { api, DrawingID, useDrawing } from '@buerli.io/core'
+import { api, DrawingID } from '@buerli.io/core'
+import { useDrawing } from '@buerli.io/react'
 import React from 'react'
 
 type State = { hasError?: boolean }

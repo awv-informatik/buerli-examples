@@ -1,7 +1,8 @@
+import { api as buerliApi } from '@buerli.io/core'
 import { history } from '@buerli.io/headless'
 import { ApiHistory } from '@buerli.io/headless/build/history'
+import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
@@ -9,7 +10,7 @@ import { Code } from '../shared/components/Code'
 import { Parameters } from './components/Parameters'
 import { useStore } from './store'
 
-export const HistoryApp: React.FC<{}> = () => {
+export const HistoryApp: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)
@@ -71,7 +72,10 @@ const Part: React.FC = () => {
       setTimeout(() => void setFirst(false), 50)
       set({ loading: false })
     })
-    return () => cad.destroy()
+    return () => {
+      buerliApi.getState().api.setActiveDrawing(null)
+      cad.destroy()
+    }
   }, [create, set, historyApi])
 
   React.useEffect(() => {

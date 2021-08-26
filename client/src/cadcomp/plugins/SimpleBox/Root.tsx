@@ -1,4 +1,5 @@
-import { DrawingID, PluginID, usePlugin } from '@buerli.io/core'
+import { DrawingID, PluginID } from '@buerli.io/core'
+import { usePlugin } from '@buerli.io/react'
 import Checkbox from 'antd/lib/checkbox'
 import Slider from 'antd/lib/slider'
 import React from 'react'

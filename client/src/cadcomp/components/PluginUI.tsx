@@ -1,4 +1,5 @@
-import { DrawingID, useDrawing, usePlugin } from '@buerli.io/core'
+import { DrawingID } from '@buerli.io/core'
+import { useDrawing, usePlugin } from '@buerli.io/react'
 import React from 'react'
 import styled from 'styled-components'
 import { ErrorBoundary } from '../../shared/utils/ErrorBoundary'
