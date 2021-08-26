@@ -1,18 +1,21 @@
 FROM ubuntu:18.04
 
-RUN apt-get update
+# Install linux dependencies
+RUN apt-get update && apt-get install -y \
+    libicu60 \
+    libglu1-mesa-dev \
+    ocl-icd-opencl-dev \
+    locales
+
+# Language settings
+ENV LANG C
+ENV LANGUAGE C
+ENV LC_ALL C
 
 # Install node and npm
 RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
 RUN apt-get install -y nodejs
-
-# Install linux dependencies
-RUN apt-get install -y libicu60
-RUN apt-get install -y libglu1-mesa-dev
-RUN apt-get install -y ocl-icd-opencl-dev
-RUN apt-get install -y locales
-RUN locale-gen en_US.UTF-8
 
 # Install ClassCAD
 ENV SERVER_DIR /buerli
@@ -20,7 +23,7 @@ RUN mkdir -p $SERVER_DIR
 WORKDIR $SERVER_DIR
 
 RUN npm init -y
-RUN npm i @awvinf/classcad-linux-x64@^0.0.0-beta.6
+RUN npm i @awvinf/classcad-linux-x64@0.0.0-beta.7
 RUN chmod +x ./node_modules/@awvinf/classcad-linux-x64/ClassCADInstance
 
 # Copy runtimes to libs
