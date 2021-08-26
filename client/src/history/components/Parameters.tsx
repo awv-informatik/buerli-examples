@@ -22,7 +22,6 @@ export const Parameters: React.FC = () => {
 const Param: React.FC<{ exampleId: string; value: number; name: string }> = ({ exampleId, value, name }) => {
   const setParam = useStore(s => s.setParam)
   const [val, setVal] = React.useState<number>(value)
-  console.info(val)
 
   const handleOnChange = React.useCallback(() => {
     setParam(exampleId, name, val)

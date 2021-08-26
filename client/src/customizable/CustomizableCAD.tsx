@@ -1,18 +1,15 @@
 import { ccAPI } from '@buerli.io/classcad'
 import { api as buerliApi, DrawingID } from '@buerli.io/core'
-import { FeatureList } from '@buerli.io/plugins'
-import { Canvas, useBuerli, Viewcube } from '@buerli.io/react'
+import { Drawing } from '@buerli.io/plugins'
+import { useBuerli } from '@buerli.io/react'
 import { extname } from 'path'
 import React from 'react'
-import styled from 'styled-components'
 import { CanvasContainer, ExampleLayout, Spin } from '../shared/components'
 import { ExampleList } from './components/ExampleList'
-import { GlobalPluginList } from './components/GlobalPluginList'
 import { MarkdownLazy } from './components/MarkdownLazy'
 import { PluginController } from './components/PluginController'
 import { PluginMarkdown } from './components/PluginMarkdown'
 import { PluginUI } from './components/PluginUI'
-import { Validator } from './components/Validator'
 import initBuerli from './initBuerli'
 import { useStore } from './store'
 
@@ -66,21 +63,18 @@ export const CustomizableCAD: React.FC = () => {
         <ExampleList />
         {example?.markdown?.data && !activeDrId && <MarkdownLazy data={example.markdown.data} />}
         {activeDrId && (
-          <CanvasContainer>
+          <CanvasContainer style={{ padding: '40px' }}>
             {loading && <Spin />}
-            <Canvas drawingId={activeDrId} product controls plugins>
-              <Viewcube drawingId={activeDrId} top={true} left={false} centerAxis={false} />
-            </Canvas>
-            <div style={{ height: '100%', justifySelf: 'flex-start', overflow: 'auto', zIndex: 1000 }}>
-              <H4>Features</H4>
-              <div className="features">
-                <Validator drawingId={activeDrId} needsDrawing needsCurrentProduct>
-                  <FeatureList drawingId={activeDrId} />
-                </Validator>
-              </div>
-              <div style={{ height: '15px' }} />
-              <H4>Globals</H4>
-              <GlobalPluginList drawingId={activeDrId} />
+            <div
+              style={{
+                borderRadius: '6px',
+                height: '100%',
+                width: '100%',
+                overflow: 'hidden',
+                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                background: '#f0f0f0',
+              }}>
+              <Drawing drawingId={activeDrId} />
             </div>
           </CanvasContainer>
         )}
@@ -96,9 +90,3 @@ export const CustomizableCAD: React.FC = () => {
 }
 
 export default CustomizableCAD
-
-const H4 = styled.div`
-  padding: 0 0 8px 0;
-  font-size: 16.5px;
-  font-weight: bold;
-`
