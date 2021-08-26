@@ -21,7 +21,7 @@ const apps = {
 /**
  * The application component.
  */
-export const App: React.FC<{}> = () => {
+export const App: React.FC = () => {
   const [active, setActive] = React.useState<string>(options[0].value)
   const ActiveApp = React.useMemo(() => apps[active], [active])
   return (

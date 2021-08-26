@@ -9,7 +9,7 @@ import { Code } from '../shared/components/Code'
 import { Parameters } from './components/Parameters'
 import { useStore } from './store'
 
-export const HistoryApp: React.FC<{}> = () => {
+export const HistoryApp: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)

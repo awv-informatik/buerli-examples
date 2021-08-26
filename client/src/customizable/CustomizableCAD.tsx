@@ -21,7 +21,7 @@ initBuerli()
 /**
  * The application component.
  */
-export const CustomizableCAD: React.FC<{}> = () => {
+export const CustomizableCAD: React.FC = () => {
   const api = useBuerli(b => b.api)
   const activeDrId = useBuerli(b => b.drawing.active)
   const drawingId = React.useRef<DrawingID | undefined>()

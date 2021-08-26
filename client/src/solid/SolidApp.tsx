@@ -7,7 +7,7 @@ import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '..
 import Code from '../shared/components/Code'
 import { useStore } from './store'
 
-export const SolidApp: React.FC<{}> = () => {
+export const SolidApp: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)

@@ -21,6 +21,7 @@ const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
   exampleMap[t.label] = {
     label: t.label,
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     create: require(`./models/${t.file}`).create,
     text: import(`!!raw-loader!./models/${t.file}.ts`),
   }

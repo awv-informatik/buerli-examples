@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
+const classes: Record<number, string> = { 1: 'one', 2: 'two', 3: 'three', 4: 'four' }
+
 export const ExampleLayout: React.FC = ({ children }) => {
-  const classes: Record<number, string> = { 1: 'one', 2: 'two', 3: 'three', 4: 'four' }
   const count = React.useMemo(() => {
     const filtered: any[] = []
     React.Children.forEach(children, c => {
@@ -10,7 +11,7 @@ export const ExampleLayout: React.FC = ({ children }) => {
     })
     return filtered.length
   }, [children])
-  const cls = React.useMemo(() => classes[count], [count, classes])
+  const cls = React.useMemo(() => classes[count], [count])
   return <InnerLayout className={cls}>{children}</InnerLayout>
 }
 
