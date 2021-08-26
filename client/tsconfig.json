@@ -4,9 +4,13 @@
     "target": "ES2017",
     "module": "ESNext",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "outDir": "build.ts/",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": false,
     "declaration": true,
     "preserveConstEnums": true,
@@ -21,7 +25,10 @@
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["./src/**/*"]
+  "include": [
+    "./src/**/*"
+  ]
 }
