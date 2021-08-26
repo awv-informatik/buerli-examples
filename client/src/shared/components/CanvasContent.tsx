@@ -1,5 +1,5 @@
+import { extend, ReactThreeFiber, useFrame, useThree } from '@react-three/fiber'
 import React, { useRef } from 'react'
-import { extend, ReactThreeFiber, useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -16,7 +16,7 @@ declare global {
 extend({ OrbitControls })
 
 export const CanvasContent: React.FC<{ children: any; fitContent?: boolean }> = ({ children, fitContent }) => {
-  const { camera, gl, size, setDefaultCamera } = useThree()
+  const { gl, size } = useThree()
   const outer = React.useRef<THREE.Group>()
   const inner = React.useRef<THREE.Group>()
   const camRef = React.useRef<THREE.PerspectiveCamera>()
@@ -70,14 +70,6 @@ export const CanvasContent: React.FC<{ children: any; fitContent?: boolean }> = 
       camRef.current.updateProjectionMatrix()
     }
   }, [size, camRef])
-
-  React.useLayoutEffect(() => {
-    if (camRef.current) {
-      const oldCam = camera
-      setDefaultCamera(camRef.current as any)
-      return () => setDefaultCamera(oldCam)
-    }
-  }, [camera, camRef, setDefaultCamera])
 
   return (
     <>
