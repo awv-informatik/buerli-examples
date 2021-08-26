@@ -22,6 +22,6 @@ It contains examples for the following use cases:
 
 - [Solid Modeling Application - _client/src/solid_](./client/src/solid)
 - [History Modeling Application - _client/src/history_](./client/src/history)
-- [Customizable CAD Application - _client/src/customizable_](./client/src/customizable)
+- [CAD components Application - _client/src/cadcomp_](./client/src/cadcomp)
 
 ![overview](./docs/images/Overview.svg)

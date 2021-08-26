@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
-import CustomizableCAD from './customizable/CustomizableCAD'
+import CadComp from './cadcomp/CadComp'
 import HistoryApp from './history/HistoryApp'
 import { Home } from './shared/styles/Home'
 import SolidApp from './solid/SolidApp'
@@ -9,7 +9,7 @@ import SolidApp from './solid/SolidApp'
 const options = [
   { label: 'Solid', value: 'solid', comp: SolidApp },
   { label: 'History', value: 'history', comp: HistoryApp },
-  { label: 'Customizable', value: 'customizable', comp: CustomizableCAD },
+  { label: 'Components', value: 'cadcomp', comp: CadComp },
 ]
 
 const apps = {

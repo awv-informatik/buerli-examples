@@ -18,7 +18,7 @@ initBuerli()
 /**
  * The application component.
  */
-export const CustomizableCAD: React.FC = () => {
+export const CadComp: React.FC = () => {
   const api = useBuerli(b => b.api)
   const activeDrId = useBuerli(b => b.drawing.active)
   const drawingId = React.useRef<DrawingID | undefined>()
@@ -28,7 +28,7 @@ export const CustomizableCAD: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    document.title = 'Customizable'
+    document.title = 'CadComp'
   }, [])
 
   React.useEffect(() => {
@@ -89,4 +89,4 @@ export const CustomizableCAD: React.FC = () => {
   )
 }
 
-export default CustomizableCAD
+export default CadComp
