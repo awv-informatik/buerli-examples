@@ -1,3 +1,4 @@
+import { api as buerliApi } from '@buerli.io/core'
 import { history } from '@buerli.io/headless'
 import { ApiHistory } from '@buerli.io/headless/build/history'
 import { Canvas } from '@react-three/fiber'
@@ -71,7 +72,10 @@ const Part: React.FC = () => {
       setTimeout(() => void setFirst(false), 50)
       set({ loading: false })
     })
-    return () => cad.destroy()
+    return () => {
+      buerliApi.getState().api.setActiveDrawing(null)
+      cad.destroy()
+    }
   }, [create, set, historyApi])
 
   React.useEffect(() => {

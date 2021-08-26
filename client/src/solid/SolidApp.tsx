@@ -1,3 +1,4 @@
+import { api as buerliApi } from '@buerli.io/core'
 import { solid } from '@buerli.io/headless'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
@@ -51,7 +52,10 @@ const Part: React.FC = () => {
       setMeshes(items)
     })
 
-    return () => cad.destroy()
+    return () => {
+      buerliApi.getState().api.setActiveDrawing(null)
+      cad.destroy()
+    }
   }, [example, set])
 
   return (
