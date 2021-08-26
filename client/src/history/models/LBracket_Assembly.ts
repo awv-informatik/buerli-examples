@@ -42,7 +42,12 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Set bolt to origin of nut-bolt-assembly */
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdBoltOrigin[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [boltRefId],
+      wcsId: wcsIdBoltOrigin[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -52,8 +57,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { refId: boltRefId, wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { refId: nutRefId, wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    { matePath: [boltRefId], wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    { matePath: [nutRefId], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     0,
     0,
     0,
@@ -79,7 +84,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   await api.createFastenedOriginConstraint(
     lBracketAsm,
     {
-      refId: lBracketRef1,
+      matePath: [lBracketRef1],
       wcsId: wcsIdLBracketOrigin[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -97,9 +102,14 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracket1[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
-      refId: nutBoltAsmRef1,
+      matePath: [lBracketRef1],
+      wcsId: wcsIdLBracket1[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutBoltAsmRef1],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -114,13 +124,13 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   await api.createFastenedConstraint(
     lBracketAsm,
     {
-      refId: lBracketRef1,
+      matePath: [lBracketRef1],
       wcsId: wcsIdLBracket2Top[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      refId: nutBoltAsmRef2,
+      matePath: [nutBoltAsmRef2],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -134,9 +144,14 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
     lBracketAsm,
-    { refId: lBracketRef1, wcsId: wcsIdLBracket3[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
-      refId: nutBoltAsmRef3,
+      matePath: [lBracketRef1],
+      wcsId: wcsIdLBracket3[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutBoltAsmRef3],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
