@@ -1,6 +1,6 @@
 import { solid } from '@buerli.io/headless'
+import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
