@@ -16,7 +16,7 @@ declare global {
 extend({ OrbitControls })
 
 export const CanvasContent: React.FC<{ children: any; fitContent?: boolean }> = ({ children, fitContent }) => {
-  const { gl, size } = useThree()
+  const { camera, gl, size, set } = useThree()
   const outer = React.useRef<THREE.Group>()
   const inner = React.useRef<THREE.Group>()
   const camRef = React.useRef<THREE.PerspectiveCamera>()
@@ -70,6 +70,14 @@ export const CanvasContent: React.FC<{ children: any; fitContent?: boolean }> = 
       camRef.current.updateProjectionMatrix()
     }
   }, [size, camRef])
+
+  React.useLayoutEffect(() => {
+    if (camRef.current) {
+      const oldCam = camera
+      set({ camera: camRef.current })
+      return () => set({ camera: oldCam })
+    }
+  }, [camera, camRef, set])
 
   return (
     <>
