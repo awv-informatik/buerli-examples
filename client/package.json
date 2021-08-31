@@ -28,7 +28,6 @@
   ],
   "dependencies": {
     "@ant-design/icons": "4.6.3",
-    "@awvinf/icons": "1.0.8",
     "@buerli.io/headless": "0.0.31",
     "@buerli.io/plugins": "0.0.19",
     "@mdx-js/react": "1.6.22",

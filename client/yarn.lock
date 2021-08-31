@@ -70,11 +70,6 @@
     lodash "^4.17.15"
     resize-observer-polyfill "^1.5.0"
 
-"@awvinf/icons@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/@awvinf/icons/-/icons-1.0.8.tgz#ce332412aabf4332d76d9fd3599c63fdf1ca8f60"
-  integrity sha512-s/rseXzO6830y1qkg0id6hYfs1+faCCgZPtotQERNDT5pW3sbNNhZOxX/u5wS9bp0zdE6n6YD0+/t7JlC8UYLg==
-
 "@babel/code-frame@7.10.4", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
