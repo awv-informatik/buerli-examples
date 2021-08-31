@@ -1,5 +1,5 @@
 import { CCClasses } from '@buerli.io/classcad'
-import * as plugins from '@buerli.io/plugins'
+import * as plugins from '@buerli.io/react-cad'
 import create, { SetState } from 'zustand'
 
 const toc: { name: string; file?: string; mdFile?: string }[] = [

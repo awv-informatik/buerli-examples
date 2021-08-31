@@ -1,7 +1,7 @@
 import { ccAPI } from '@buerli.io/classcad'
 import { api as buerliApi, DrawingID } from '@buerli.io/core'
-import { Drawing } from '@buerli.io/plugins'
 import { useBuerli } from '@buerli.io/react'
+import { Drawing } from '@buerli.io/react-cad'
 import { extname } from 'path'
 import React from 'react'
 import { CanvasContainer, ExampleLayout, Spin } from '../shared/components'

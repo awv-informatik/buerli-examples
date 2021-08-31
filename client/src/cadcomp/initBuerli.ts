@@ -1,7 +1,7 @@
 import { CCClasses } from '@buerli.io/classcad'
 import { init, Plugin } from '@buerli.io/core'
-import * as plugins from '@buerli.io/plugins'
 import { elements } from '@buerli.io/react'
+import * as plugins from '@buerli.io/react-cad'
 import { CCSERVERURL } from '../config'
 
 const pluginsArray = Object.values(plugins) as Plugin[]

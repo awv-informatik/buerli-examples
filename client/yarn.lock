@@ -2034,10 +2034,10 @@
   dependencies:
     "@buerli.io/classcad" "0.0.31"
 
-"@buerli.io/plugins@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.npmjs.org/@buerli.io/plugins/-/plugins-0.0.19.tgz#abced1b5d3d3970a5b47eee6e5effe5db62700db"
-  integrity sha512-F3csiR8MtYW4Qe5IaQB7e1CcjbIeqqAYm1Vxp4TEdPLvdwr0yq0dfyJuECpdB6CinkqdBnnu550lpASj48zcyA==
+"@buerli.io/react-cad@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@buerli.io/react-cad/-/react-cad-0.0.20.tgz#11326cf2274cadb5457f05f1dbf82de106dde8cc"
+  integrity sha512-Lb68QRb+8Te3kakmwnWZdHUHrGTB2k46KjIFIPlmV2OO6st/iapm5FcF9rFYqE28qKl5cZk229UndxzCXK0cBA==
   dependencies:
     "@ant-design/compatible" "^1.0.8"
     "@buerli.io/classcad" "0.0.31"
