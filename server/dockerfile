@@ -23,11 +23,11 @@ RUN mkdir -p $SERVER_DIR
 WORKDIR $SERVER_DIR
 
 RUN npm init -y
-RUN npm i @awvinf/classcad-linux-x64@0.0.0-beta.7
-RUN chmod +x ./node_modules/@awvinf/classcad-linux-x64/ClassCADInstance
+RUN npm i @classcad/linux-x64@0.0.0-beta.7
+RUN chmod +x ./node_modules/@classcad/linux-x64/ClassCADInstance
 
 # Copy runtimes to libs
-RUN cp ./node_modules/@awvinf/classcad-linux-x64/libboost_thread.so.1.65.1 /lib/x86_64-linux-gnu
+RUN cp ./node_modules/@classcad/linux-x64/libboost_thread.so.1.65.1 /lib/x86_64-linux-gnu
 
 # Copy the .ccapp downloaded from buerli.io.
 COPY ./FreeBaseModeling.ccapp modeling.ccapp

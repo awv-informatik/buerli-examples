@@ -2,18 +2,10 @@
 # yarn lockfile v1
 
 
-"@awvinf/classcad-windows-x64@0.0.0-beta.7":
-  version "0.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@awvinf/classcad-windows-x64/-/classcad-windows-x64-0.0.0-beta.7.tgz#2a0e6f14969a728278b4978144b996662a92f761"
-  integrity sha512-C/60iOw4ZICKhjR/qOLXcK5sKvpgenfJbB8wmcPIXaePbRHni9ldmmRDI+lvtL0jgrnOJr62kKt3vZKDW9tX8A==
-  dependencies:
-    "@buerli.io/node" "10.1.0"
-    yargs "15.4.1"
-
-"@buerli.io/node@10.1.0":
+"@classcad/node@10.1.0":
   version "10.1.0"
-  resolved "https://registry.yarnpkg.com/@buerli.io/node/-/node-10.1.0.tgz#5eecf853f85fe15f86a205db001fd6cd0efe4757"
-  integrity sha512-FgsBHazVg2pH+ZzbyEDRuGkFFAVn1dROicrelCmU66dZn6sft7h0CO7HolYT5iu06+4gxtBQZ3p8MMyrI/W05Q==
+  resolved "https://registry.yarnpkg.com/@classcad/node/-/node-10.1.0.tgz#7d162daa3a0eb237c9734e88f0afdb491966824a"
+  integrity sha512-gC7AQs1E6TrA37I0IC3IosR+OkOHUBfI/Uuukz62uMvI9kvyEJszAHJAlUdHUClQaUgYAZU5jS7w/ErkjT0pVg==
   dependencies:
     chalk "^2.4.1"
     compression "^1.7.3"
@@ -45,6 +37,14 @@
   optionalDependencies:
     bufferutil "4.x.x"
     utf-8-validate "5.x.x"
+
+"@classcad/windows-x64@0.0.0-beta.7":
+  version "0.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@classcad/windows-x64/-/windows-x64-0.0.0-beta.7.tgz#2eae529e37b4134a44415ed1e1275d3e3bf35d69"
+  integrity sha512-K190C6OXHHlnltWzHquMK4eNyk/5Jw8o3TkbPqz56fRxcrosDcoTeA9dszgKn8LwE0SkadAYLOi+CgTvd97JaA==
+  dependencies:
+    "@classcad/node" "10.1.0"
+    yargs "15.4.1"
 
 "@gulp-sourcemaps/map-sources@1.X":
   version "1.0.0"
