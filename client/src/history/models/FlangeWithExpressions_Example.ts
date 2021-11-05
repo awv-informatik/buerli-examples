@@ -1,5 +1,5 @@
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/Flange.of1'
+import arraybuffer from '../../shared/resources/FlangeV2.of1'
 import { ParamType } from '../store'
 
 export const paramsMap: ParamType = {
@@ -29,7 +29,7 @@ export const update = async (api: ApiHistory, productId: number, params: ParamTy
   const innenradius = params['Inner Radius']
   const anzahlBohrungen = Math.ceil(innenradius / 10) >= 3 ? Math.ceil(innenradius / 10) : 3
 
-  api.setExpressions(
+  await api.setExpressions(
     productId,
     { name: 'AnzahlBohrungen', value: anzahlBohrungen },
     { name: 'Flanschdicke', value: flanschdicke },

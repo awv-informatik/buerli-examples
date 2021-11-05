@@ -1,5 +1,5 @@
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/Shadowbox.of1'
+import arraybuffer from '../../shared/resources/ShadowboxV2.of1'
 import { ParamType } from '../store'
 
 export const paramsMap: ParamType = {
