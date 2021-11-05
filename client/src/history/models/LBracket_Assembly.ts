@@ -18,7 +18,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const nutBoltAsm = await api.createAssemblyAsTemplate('NutBolt_Asm')
 
   /* Bolt */
-  const bolt = await api.loadProduct(arraybuffer, 'of1')
+  const boltProduct = await api.loadProduct(arraybuffer, 'of1')
+  const bolt = boltProduct[0]
 
   api.setExpressions(
     bolt,
@@ -32,7 +33,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
-  const nut = await api.loadProduct(arraybuffer2, 'of1')
+  const nutProduct = await api.loadProduct(arraybuffer2, 'of1')
+  const nut = nutProduct[0]
 
   api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
 
@@ -66,7 +68,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* LBracket */
-  const lBracket = await api.loadProduct(arraybuffer3, 'of1')
+  const lBracketProduct = await api.loadProduct(arraybuffer3, 'of1')
+  const lBracket = lBracketProduct[0]
 
   api.setExpressions(
     lBracket,

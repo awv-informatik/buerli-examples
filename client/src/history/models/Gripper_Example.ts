@@ -10,7 +10,8 @@ export const paramsMap: ParamType = {
 }
 
 export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
-  const productId = await api.load(arraybuffer, 'of1')
+  const products = await api.load(arraybuffer, 'of1')
+  const productId = products[0]
 
   // Set initial values
   await api.setExpressions(

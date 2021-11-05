@@ -26,7 +26,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const rodAsm = await api.createAssemblyAsTemplate('Rod_Asm')
 
   /* Load Bolt part */
-  const bolt = await api.loadProduct(arraybuffer, 'of1')
+  const boltProduct = await api.loadProduct(arraybuffer, 'of1')
+  const bolt = boltProduct[0]
 
   /* Set expressions on bolt part (optional) */
   api.setExpressions(
@@ -44,7 +45,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Load Nut part */
-  const nut = await api.loadProduct(arraybuffer2, 'of1')
+  const nutProduct = await api.loadProduct(arraybuffer2, 'of1')
+  const nut = nutProduct[0]
 
   /* Set expressions on bolt part (optional) */
   api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
@@ -82,7 +84,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load LBracket part */
-  const lBracket = await api.loadProduct(arraybuffer3, 'of1')
+  const lBracketProduct = await api.loadProduct(arraybuffer3, 'of1')
+  const lBracket = lBracketProduct[0]
 
   /* Set expressions on lBracket part (optional) */
   api.setExpressions(
@@ -186,7 +189,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load Plate part */
-  const plate = await api.loadProduct(arraybuffer4, 'of1')
+  const plateProduct = await api.loadProduct(arraybuffer4, 'of1')
+  const plate = plateProduct[0]
 
   /* Set expressions on plate part (optional) */
   api.setExpressions(plate, { name: 'Hole_Diameter', value: shaftDiameter })
@@ -246,7 +250,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Load Rod part */
-  const rod = await api.loadProduct(arraybuffer5, 'of1')
+  const rodProduct = await api.loadProduct(arraybuffer5, 'of1')
+  const rod = rodProduct[0]
 
   /* Set expressions on rod part (optional) */
   api.setExpressions(rod, { name: 'Rod_Diameter', value: rodDiameter })

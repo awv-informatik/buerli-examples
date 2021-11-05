@@ -16,12 +16,12 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
   const anzahlBohrungen = Math.ceil(innenradius / 10) >= 3 ? Math.ceil(innenradius / 10) : 3
 
   await api.setExpressions(
-    productId,
+    productId[0],
     { name: 'AnzahlBohrungen', value: anzahlBohrungen },
     { name: 'Flanschdicke', value: flanschdicke },
     { name: 'Innenradius', value: innenradius },
   )
-  return productId
+  return productId[0]
 }
 
 export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {
@@ -35,6 +35,8 @@ export const update = async (api: ApiHistory, productId: number, params: ParamTy
     { name: 'Flanschdicke', value: flanschdicke },
     { name: 'Innenradius', value: innenradius },
   )
+
+  return productId
 }
 
 export default create
