@@ -14,7 +14,7 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
 
   // Set initial values
   await api.setExpressions(
-    productId,
+    productId[0],
     { name: 'W', value: params['Width'] },
     { name: 'H', value: params['Height'] },
     { name: 'D', value: params['Distance'] },

@@ -4,7 +4,6 @@ import { ApiHistory } from '@buerli.io/headless/build/history'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
-import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { Code } from '../shared/components/Code'
 import { Parameters } from './components/Parameters'
@@ -63,7 +62,7 @@ const Part: React.FC = () => {
     setFirst(true)
     setMeshes([])
     set({ loading: true })
-    const cad = new history(CCSERVERURL)
+    const cad = new history()
     cad.init(async api => {
       historyApi.current = api
       productId.current = await create(api)

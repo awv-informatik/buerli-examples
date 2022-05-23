@@ -1,5 +1,5 @@
-import { CCClasses } from '@buerli.io/classcad'
-import { init, Plugin } from '@buerli.io/core'
+import { CCClasses, init, SocketIOClient } from '@buerli.io/classcad'
+import { Plugin } from '@buerli.io/core'
 import { elements } from '@buerli.io/react'
 import * as plugins from '@buerli.io/react-cad'
 import { CCSERVERURL } from '../config'
@@ -8,8 +8,7 @@ const pluginsArray = Object.values(plugins) as Plugin[]
 const globalPlugins = pluginsArray.filter(p => Boolean(p.description) && p.description.global) as Plugin[]
 
 export const initBuerli = () => {
-  init({
-    url: CCSERVERURL,
+  init(id => new SocketIOClient(CCSERVERURL, id), {
     elements,
     globalPlugins,
     plugins: {

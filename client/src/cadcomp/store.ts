@@ -13,7 +13,7 @@ const toc: { name: string; file?: string; mdFile?: string }[] = [
 
 const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
-  const markdown = t.mdFile ? import(`!babel-loader!@mdx-js/loader!./docs/${t.mdFile}`) : null
+  const markdown = t.mdFile ? import(`!!@mdx-js/loader!./docs/${t.mdFile}`) : null
   const cadModel = t.file ? import(`!!arraybuffer-loader!./../shared/resources/${t.file}`) : null
   exampleMap[t.name] = {
     label: t.name,
@@ -41,7 +41,7 @@ const objectPlugins = Object.keys(objectPluginMap)
 
 const pluginDocs: Record<string, Promise<{ default: any }>> = {}
 for (const name of globalPlugins.concat(objectPlugins)) {
-  pluginDocs[name] = import(`!babel-loader!@mdx-js/loader!./docs/${objectPluginMap[name] || name}.md`)
+  pluginDocs[name] = import(`!!@mdx-js/loader!./docs/${objectPluginMap[name] || name}.md`)
 }
 
 const useStore = create<State>(set => ({

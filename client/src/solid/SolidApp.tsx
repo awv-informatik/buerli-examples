@@ -3,7 +3,6 @@ import { solid } from '@buerli.io/headless'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
-import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import Code from '../shared/components/Code'
 import { useStore } from './store'
@@ -45,7 +44,7 @@ const Part: React.FC = () => {
   React.useEffect(() => {
     setMeshes([])
     set({ loading: true })
-    const cad = new solid(CCSERVERURL)
+    const cad = new solid()
     cad.init(async api => {
       const items = await example.create(api)
       set({ loading: false })

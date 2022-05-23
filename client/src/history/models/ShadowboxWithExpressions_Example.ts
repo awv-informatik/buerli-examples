@@ -36,7 +36,7 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
   await api.setExpressions(
-    productId,
+    productId[0],
     { name: 'Columns', value: columns },
     { name: 'Rows', value: rows },
     { name: 'HoleDiameter', value: holeDiameter },
