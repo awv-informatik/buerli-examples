@@ -1,5 +1,5 @@
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/Shadowbox.of1'
+import arraybuffer from '../../shared/resources/ShadowboxV2.of1'
 import { ParamType } from '../store'
 
 export const paramsMap: ParamType = {
@@ -44,7 +44,7 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
     { name: 'FoamHeight', value: foamHeight },
     { name: 'FoamWidth', value: foamWidth },
   )
-  return productId
+  return productId[0]
 }
 
 export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {

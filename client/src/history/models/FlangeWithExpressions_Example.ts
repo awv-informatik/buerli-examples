@@ -1,5 +1,5 @@
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/Flange.of1'
+import arraybuffer from '../../shared/resources/FlangeV2.of1'
 import { ParamType } from '../store'
 
 export const paramsMap: ParamType = {
@@ -21,7 +21,7 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
     { name: 'Flanschdicke', value: flanschdicke },
     { name: 'Innenradius', value: innenradius },
   )
-  return productId
+  return productId[0]
 }
 
 export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {

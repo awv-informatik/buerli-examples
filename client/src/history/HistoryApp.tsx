@@ -1,6 +1,5 @@
 import { api as buerliApi } from '@buerli.io/core'
-import { history } from '@buerli.io/headless'
-import { ApiHistory } from '@buerli.io/headless/build/history'
+import { history, ApiHistory } from '@buerli.io/headless'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
