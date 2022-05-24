@@ -69,7 +69,6 @@
     "less": "4.1.2",
     "less-loader": "10.2.0",
     "lint-staged": "11.1.2",
-    "postcss": "7",
     "prettier": "2.4.1",
     "raw-loader": "4.0.2",
     "react-app-rewired": "2.1.8",
