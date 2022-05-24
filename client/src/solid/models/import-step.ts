@@ -4,7 +4,6 @@ import data from '../../shared/resources/ventil.stp'
 
 export const create = async (api: ApiNoHistory) => {
   const importedIds = await api.import(data)
-  console.info(importedIds)
   const geom = await api.createBufferGeometry(importedIds[0])
   const mesh = new THREE.Mesh(
     geom,
