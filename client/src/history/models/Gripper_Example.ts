@@ -20,7 +20,7 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
     { name: 'D', value: params['Distance'] },
     { name: 'W1', value: params['Taper'] },
   )
-  return productId
+  return productId[0]
 }
 
 export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {
