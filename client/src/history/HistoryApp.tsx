@@ -64,11 +64,17 @@ const Part: React.FC = () => {
     const cad = new history()
     cad.init(async api => {
       historyApi.current = api
-      productId.current = await create(api)
-      const items = await createMeshes(productId.current, api)
-      setMeshes(items)
-      setTimeout(() => void setFirst(false), 50)
-      set({ loading: false })
+      try {
+        productId.current = await create(api)
+        const items = await createMeshes(productId.current, api)
+        setMeshes(items)
+        setTimeout(() => void setFirst(false), 50)
+      } catch (error) {
+        setMeshes([])
+        console.error(JSON.stringify(error))
+      } finally {
+        set({ loading: false })
+      }
     })
     return () => {
       buerliApi.getState().api.setActiveDrawing(null)
@@ -80,10 +86,16 @@ const Part: React.FC = () => {
     const run = async () => {
       if (historyApi.current && update && params) {
         set({ loading: true })
-        await update(historyApi.current, productId.current, params)
-        const items = await createMeshes(productId.current, historyApi.current)
-        setMeshes(items)
-        set({ loading: false })
+        try {
+          await update(historyApi.current, productId.current, params)
+          const items = await createMeshes(productId.current, historyApi.current)
+          setMeshes(items)
+        } catch (error) {
+          setMeshes([])
+          console.error(JSON.stringify(error))
+        } finally {
+          set({ loading: false })
+        }
       }
     }
     run()

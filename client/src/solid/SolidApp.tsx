@@ -46,9 +46,15 @@ const Part: React.FC = () => {
     set({ loading: true })
     const cad = new solid()
     cad.init(async api => {
-      const items = await example.create(api)
-      set({ loading: false })
-      setMeshes(items)
+      try {
+        const items = await example.create(api)
+        setMeshes(items)
+      } catch (error) {
+        setMeshes([])
+        console.error(JSON.stringify(error))
+      } finally {
+        set({ loading: false })
+      }
     })
 
     return () => {
