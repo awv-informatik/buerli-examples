@@ -4,7 +4,7 @@ import { useBuerli } from '@buerli.io/react'
 import { Drawing } from '@buerli.io/react-cad'
 import { extname } from 'path-browserify'
 import React from 'react'
-import { CanvasContainer, ExampleLayout, Spin } from '../shared/components'
+import { CanvasContainer, ExampleLayout } from '../shared/components'
 import { ExampleList } from './components/ExampleList'
 import { MarkdownLazy } from './components/MarkdownLazy'
 import { PluginController } from './components/PluginController'
@@ -25,7 +25,6 @@ export const CadComp: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const example = useStore(s => s.examples.objs[activeExample])
   const activePlg = useStore(s => s.activePlugin)
-  const [loading, setLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     document.title = 'CadComp'
@@ -34,7 +33,6 @@ export const CadComp: React.FC = () => {
   React.useEffect(() => {
     const run = async () => {
       if (!example || !example.model.data) return
-      setLoading(true)
       try {
         const content = (await example.model.data).default
         const drId = await ccAPI.base.createCCDrawing()
@@ -46,8 +44,6 @@ export const CadComp: React.FC = () => {
         }
       } catch (error) {
         console.error(error)
-      } finally {
-        setLoading(false)
       }
     }
     run()
@@ -64,7 +60,6 @@ export const CadComp: React.FC = () => {
         {example?.markdown?.data && !activeDrId && <MarkdownLazy data={example.markdown.data} />}
         {activeDrId && (
           <CanvasContainer style={{ padding: '40px' }}>
-            {loading && <Spin />}
             <div
               style={{
                 borderRadius: '6px',

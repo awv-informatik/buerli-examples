@@ -70,7 +70,7 @@ const Content = styled.div`
   height: 100%;
   padding-left: 4rem;
   padding-right: 4rem;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
   overflow: hidden;
 `
 
