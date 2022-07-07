@@ -14,8 +14,8 @@ const server = new Server(
     // -------------DEFAULT SETTINGS--------------------------------------------
     instances: 5,
     configurationData: "ClassCAD.ini",
-    ccappFile: "FreeBaseModeling.ccapp",
-    output: path.resolve("./node_modules/@classcad/linux-x64"), // replace with classcad-linux-x64 if linux is your system
+    ccappFile: "<PATH TO CCAPP FILE>.ccapp",
+    output: path.resolve("./node_modules/@classcad/windows-x64"), // replace with classcad-linux-x64 if linux is your system
     publicPort: 9091,
     enableInvisibleGraphics: true,
   },

@@ -2,7 +2,7 @@ import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
 import HistoryApp from './history/HistoryApp'
-import initBuerli from './initBuerli'
+import { initBuerli } from './initBuerli'
 import { Home } from './shared/styles/Home'
 import SolidApp from './solid/SolidApp'
 
