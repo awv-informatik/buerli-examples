@@ -1,4 +1,4 @@
-import { FlipType, ReorientedType } from '@buerli.io/classcad'
+import { FlipType, ReorientedType, BooleanOperationType, WorkCoordSystemType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
 import { ParamType } from '../store'
 
@@ -28,7 +28,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const nut = await api.createPartAsTemplate('Nut')
   const wcsBoxNut = await api.createWorkCoordSystem(
     nut,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsNut.boxPos,
@@ -39,7 +39,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const wcsCylNut = await api.createWorkCoordSystem(
     nut,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsNut.cylPos,
@@ -50,7 +50,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const mate1Nut = await api.createWorkCoordSystem(
     nut,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsNut.mate1Pos,
@@ -61,7 +61,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const boxNut = api.box(nut, [wcsBoxNut], 30, 30, 10)
   const cylNut = api.cylinder(nut, [wcsCylNut], 20, 40)
-  api.boolean(nut, 'Subtraction', [boxNut, cylNut])
+  api.boolean(nut, BooleanOperationType.SUBTRACTION, [boxNut, cylNut])
 
   /* bolt part */
   const wcsBolt = {
@@ -75,7 +75,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const bolt = await api.createPartAsTemplate('Bolt')
   const wcsShaftBolt = await api.createWorkCoordSystem(
     bolt,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsBolt.shaftPos,
@@ -86,7 +86,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const wcsHeadBolt = await api.createWorkCoordSystem(
     bolt,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsBolt.headPos,
@@ -97,7 +97,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const mate1Bolt = await api.createWorkCoordSystem(
     bolt,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsBolt.mate1Pos,
@@ -108,7 +108,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const shaft = api.cylinder(bolt, [wcsShaftBolt], 20, 60)
   const head = api.cylinder(bolt, [wcsHeadBolt], 30, 10)
-  api.boolean(bolt, 'Union', [shaft, head])
+  api.boolean(bolt, BooleanOperationType.UNION, [shaft, head])
 
   /* lbracket part */
   const wcsLBracket = {
@@ -126,7 +126,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const lBracket = await api.createPartAsTemplate('L_Bracket')
   const wcsBaseBracket = await api.createWorkCoordSystem(
     lBracket,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsLBracket.basePos,
@@ -137,7 +137,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const wcsSubBracket = await api.createWorkCoordSystem(
     lBracket,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsLBracket.subPos,
@@ -150,7 +150,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const subBracket = api.box(lBracket, [wcsSubBracket], 200, 100, 100)
   const mate1LBracket = await api.createWorkCoordSystem(
     lBracket,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsLBracket.mate1Pos,
@@ -161,7 +161,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const mate2LBracket = await api.createWorkCoordSystem(
     lBracket,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsLBracket.mate2Pos,
@@ -172,7 +172,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
   const mate3LBracket = await api.createWorkCoordSystem(
     lBracket,
-    'Custom',
+    WorkCoordSystemType.WCS_CUSTOM,
     [],
     [],
     wcsLBracket.mate3Pos,
@@ -184,7 +184,13 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const sub1Bracket = api.cylinder(lBracket, [mate1LBracket], 20, 40)
   const sub2Bracket = api.cylinder(lBracket, [mate2LBracket], 20, 40)
   const sub3Bracket = api.cylinder(lBracket, [mate3LBracket], 20, 40)
-  api.boolean(lBracket, 'Subtraction', [baseBracket, subBracket, sub1Bracket, sub2Bracket, sub3Bracket])
+  api.boolean(lBracket, BooleanOperationType.SUBTRACTION, [
+    baseBracket,
+    subBracket,
+    sub1Bracket,
+    sub2Bracket,
+    sub3Bracket,
+  ])
 
   /* nut-bolt assembly */
   const nutBoltAsm = await api.createAssemblyAsTemplate('Nut_Bolt_Assembly')
