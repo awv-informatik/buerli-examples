@@ -1,21 +1,21 @@
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
-import CadComp from './cadcomp/CadComp'
 import HistoryApp from './history/HistoryApp'
+import initBuerli from './initBuerli'
 import { Home } from './shared/styles/Home'
 import SolidApp from './solid/SolidApp'
+
+initBuerli()
 
 const options = [
   { label: 'Solid', value: 'solid', comp: SolidApp },
   { label: 'History', value: 'history', comp: HistoryApp },
-  { label: 'Components', value: 'cadcomp', comp: CadComp },
 ]
 
 const apps = {
   [options[0].value]: options[0].comp,
   [options[1].value]: options[1].comp,
-  [options[2].value]: options[2].comp,
 }
 
 /**
