@@ -14,13 +14,13 @@ export const create = async (api: ApiHistory, params: ParamType = paramsMap) => 
 
   // Set initial values
   await api.setExpressions(
-    productId,
+    productId[0],
     { name: 'W', value: params['Width'] },
     { name: 'H', value: params['Height'] },
     { name: 'D', value: params['Distance'] },
     { name: 'W1', value: params['Taper'] },
   )
-  return productId
+  return productId[0]
 }
 
 export const update = async (api: ApiHistory, productId: number, params: ParamType = paramsMap) => {

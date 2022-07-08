@@ -21,11 +21,11 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const bolt = await api.loadProduct(arraybuffer, 'of1')
 
   api.setExpressions(
-    bolt,
+    bolt[0],
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
-  const boltRefId = await api.addNode(bolt, nutBoltAsm, [pt0, xDir, yDir])
+  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdBoltHeadShaft = await api.getWorkCoordSystem(boltRefId, 'WCS_Head-Shaft')
@@ -34,9 +34,9 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'of1')
 
-  api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
 
-  const nutRefId = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
+  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
   /* Set bolt to origin of nut-bolt-assembly */
@@ -69,12 +69,12 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const lBracket = await api.loadProduct(arraybuffer3, 'of1')
 
   api.setExpressions(
-    lBracket,
+    lBracket[0],
     { name: 'Rod_Hole_Diameter', value: rodDiameter },
     { name: 'Hole_Diameter', value: shaftDiameter },
   )
 
-  const lBracketRef1 = await api.addNode(lBracket, lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
+  const lBracketRef1 = await api.addNode(lBracket[0], lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
   const wcsIdLBracketOrigin = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Origin')
   const wcsIdLBracket1 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole1-Top')
   const wcsIdLBracket2Top = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Top')

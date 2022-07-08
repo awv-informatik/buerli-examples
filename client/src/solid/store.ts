@@ -15,6 +15,7 @@ const toc: { label: string; file: string }[] = [
   { label: 'rounded-rect', file: 'rounded-rect' },
   { label: 'spline-shape', file: 'spline-shape' },
   { label: 'whiffleball', file: 'whiffleball' },
+  { label: 'import-step', file: 'import-step' },
 ]
 
 const exampleMap: Record<string, Example> = {}

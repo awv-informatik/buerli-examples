@@ -17,19 +17,19 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const bolt = await api.loadProduct(arraybuffer, 'of1')
 
   api.setExpressions(
-    bolt,
+    bolt[0],
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
-  const boltRefId = await api.addNode(bolt, nutBoltAsm, [pt0, xDir, yDir])
+  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'of1')
-  api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
-  const nutRefId = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
+  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
+  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
   /* Bolt at origin */

@@ -30,13 +30,13 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
 
   /* Set expressions on bolt part (optional) */
   api.setExpressions(
-    bolt,
+    bolt[0],
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
 
   /* Add bolt to nut-bolt assembly template */
-  const boltRefId = await api.addNode(bolt, nutBoltAsm, [pt0, xDir, yDir])
+  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of bolt */
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
@@ -47,10 +47,10 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const nut = await api.loadProduct(arraybuffer2, 'of1')
 
   /* Set expressions on bolt part (optional) */
-  api.setExpressions(nut, { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
 
   /* Add nut to nut-bolt-assembly template */
-  const nutRefId = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
+  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of nut */
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
@@ -86,13 +86,13 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
 
   /* Set expressions on lBracket part (optional) */
   api.setExpressions(
-    lBracket,
+    lBracket[0],
     { name: 'Rod_Hole_Diameter', value: rodDiameter },
     { name: 'Hole_Diameter', value: shaftDiameter },
   )
 
   /* Add lBracket to lbracket-assembly template */
-  const lBracketRef1 = await api.addNode(lBracket, lBracketAsm, [pt0, xDir, yDir])
+  const lBracketRef1 = await api.addNode(lBracket[0], lBracketAsm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of lBracket */
   const wcsIdLBracket1 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole1-Top')
@@ -189,10 +189,10 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const plate = await api.loadProduct(arraybuffer4, 'of1')
 
   /* Set expressions on plate part (optional) */
-  api.setExpressions(plate, { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions(plate[0], { name: 'Hole_Diameter', value: shaftDiameter })
 
   /* Add nut to nut-bolt assembly template */
-  const plateRef = await api.addNode(plate, as1Asm, [pt0, xDir, yDir])
+  const plateRef = await api.addNode(plate[0], as1Asm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of plate */
   const wcsIdPlateBase = await api.getWorkCoordSystem(plateRef, 'WCS_Origin')
@@ -249,10 +249,10 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const rod = await api.loadProduct(arraybuffer5, 'of1')
 
   /* Set expressions on rod part (optional) */
-  api.setExpressions(rod, { name: 'Rod_Diameter', value: rodDiameter })
+  api.setExpressions(rod[0], { name: 'Rod_Diameter', value: rodDiameter })
 
   /* Add nut to nut-bolt assembly template */
-  const rodRefId = await api.addNode(rod, rodAsm, [pt0, xDir, yDir])
+  const rodRefId = await api.addNode(rod[0], rodAsm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of rod */
   const wscIdRodLeft = await api.getWorkCoordSystem(rodRefId, 'WCS_Nut_Left')
@@ -260,8 +260,8 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdRodOrigin = await api.getWorkCoordSystem(rodRefId, 'WCS_Origin')
 
   /* Add nut to nut-bolt assembly template */
-  const nutRefId1 = await api.addNode(nut, rodAsm, [pt0, xDir, yDir])
-  const nutRefId2 = await api.addNode(nut, rodAsm, [pt0, xDir, yDir])
+  const nutRefId1 = await api.addNode(nut[0], rodAsm, [pt0, xDir, yDir])
+  const nutRefId2 = await api.addNode(nut[0], rodAsm, [pt0, xDir, yDir])
 
   /* Set rod to origin of rod-assembly */
   await api.createFastenedOriginConstraint(

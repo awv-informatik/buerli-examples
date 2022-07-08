@@ -1,10 +1,8 @@
 import { api as buerliApi } from '@buerli.io/core'
-import { history } from '@buerli.io/headless'
-import { ApiHistory } from '@buerli.io/headless/build/history'
+import { history, ApiHistory } from '@buerli.io/headless'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
-import { CCSERVERURL } from '../config'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { Code } from '../shared/components/Code'
 import { Parameters } from './components/Parameters'
@@ -63,14 +61,20 @@ const Part: React.FC = () => {
     setFirst(true)
     setMeshes([])
     set({ loading: true })
-    const cad = new history(CCSERVERURL)
+    const cad = new history()
     cad.init(async api => {
       historyApi.current = api
-      productId.current = await create(api)
-      const items = await createMeshes(productId.current, api)
-      setMeshes(items)
-      setTimeout(() => void setFirst(false), 50)
-      set({ loading: false })
+      try {
+        productId.current = await create(api)
+        const items = await createMeshes(productId.current, api)
+        setMeshes(items)
+        setTimeout(() => void setFirst(false), 50)
+      } catch (error) {
+        setMeshes([])
+        console.error(JSON.stringify(error))
+      } finally {
+        set({ loading: false })
+      }
     })
     return () => {
       buerliApi.getState().api.setActiveDrawing(null)
@@ -82,10 +86,16 @@ const Part: React.FC = () => {
     const run = async () => {
       if (historyApi.current && update && params) {
         set({ loading: true })
-        await update(historyApi.current, productId.current, params)
-        const items = await createMeshes(productId.current, historyApi.current)
-        setMeshes(items)
-        set({ loading: false })
+        try {
+          await update(historyApi.current, productId.current, params)
+          const items = await createMeshes(productId.current, historyApi.current)
+          setMeshes(items)
+        } catch (error) {
+          setMeshes([])
+          console.error(JSON.stringify(error))
+        } finally {
+          set({ loading: false })
+        }
       }
     }
     run()
