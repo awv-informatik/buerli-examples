@@ -23,6 +23,26 @@
       //"trace": true,
       //"diagnosticLogging": true,
       //"verboseDiagnosticLogging": true
+    },
+    {
+      // https://github.com/Microsoft/vscode-chrome-debug/issues/75
+      "name": "Run storybook",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:6006",
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}/dist",
+      "userDataDir": "${workspaceRoot}/.vscode/chrome", //Can be any directory. Makes chrome load in a different directory so that it opens in a new instance.
+      "port": 9222,
+      "smartStep": true,
+      "sourceMapPathOverrides": {},
+      "runtimeArgs": [
+        "--new-window", //Open in new window,
+        "--max-active-webgl-contexts=16"
+      ]
+      //"trace": true,
+      //"diagnosticLogging": true,
+      //"verboseDiagnosticLogging": true
     }
   ]
 }
