@@ -3,10 +3,14 @@ import { ComponentMeta, ComponentStory } from '@storybook/react'
 import HistoryApp from '../history/HistoryApp'
 
 export default {
-  title: 'Example/HistoryApp',
+  title: 'Examples/History',
   component: HistoryApp,
 } as ComponentMeta<typeof HistoryApp>
 
 const Template: ComponentStory<typeof HistoryApp> = args => <HistoryApp {...args} />
 
-export const Primary = Template.bind({})
+export const CreatePart = Template.bind({})
+CreatePart.args = {
+  label: 'CreatePart',
+  filename: 'CreatePart_Example',
+}

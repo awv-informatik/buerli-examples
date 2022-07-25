@@ -48,7 +48,7 @@ export const App: React.FC = () => {
         </Options>
       </Home>
       <Content>
-        <ActiveApp />
+        <ActiveApp label={''} filename={''} />
       </Content>
     </Container>
   )

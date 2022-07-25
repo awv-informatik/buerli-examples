@@ -6,12 +6,20 @@ import * as THREE from 'three'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { Code } from '../shared/components/Code'
 import { Parameters } from './components/Parameters'
-import { useStore } from './store'
+import { useStore, Example } from './store'
 
-export const HistoryApp: React.FC = () => {
-  const set = useStore(s => s.set)
-  const exampleIds = useStore(s => s.examples.ids)
-  const activeExample = useStore(s => s.activeExample)
+export const HistoryApp: React.FC<{ label: string; filename: string }> = ({ label, filename }) => {
+  //const set = useStore(s => s.set)
+  // const exampleIds = useStore(s => s.examples.ids)
+  const file = require(`./models/${filename}`)
+  const example: Example = {
+    label: label,
+    create: file.create,
+    update: file.update,
+    text: import(`!!raw-loader!./models/${filename}.ts`),
+    params: file.paramsMap,
+  }
+  const activeExample = example
   const loading = useStore(s => s.loading)
 
   React.useEffect(() => {
@@ -21,28 +29,28 @@ export const HistoryApp: React.FC = () => {
   return (
     <ExampleLayout>
       <div style={{ display: 'grid' }}>
-        <Options values={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        {/* <Options values={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} /> */}
         <Parameters />
       </div>
       <CanvasContainer>
         <Canvas>
-          <Part />
+          <Part example={activeExample} />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
-      <div>
+      {/* <div>
         <CodeWrapper />
-      </div>
+      </div> */}
     </ExampleLayout>
   )
 }
 
 export default HistoryApp
 
-const Part: React.FC = () => {
+const Part: React.FC<{ example: Example }> = ({ example }) => {
   const set = useStore(s => s.set)
-  const activeExample = useStore(s => s.activeExample)
-  const { update, create, params } = useStore(s => s.examples.objs[activeExample])
+  //const activeExample = useStore(s => s.activeExample)
+  const { update, create, params } = example
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const historyApi = React.useRef<ApiHistory>()
   const productId = React.useRef<number>(0)
