@@ -1,7 +1,7 @@
 import { api as buerliApi } from '@buerli.io/core'
 import { history, ApiHistory } from '@buerli.io/headless'
 import { Canvas } from '@react-three/fiber'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, CanvasContent, ExampleLayout, Options, Spin } from '../shared/components'
 import { Code } from '../shared/components/Code'
@@ -26,7 +26,7 @@ export const HistoryApp: React.FC = () => {
       </div>
       <CanvasContainer>
         <Canvas>
-          <Part />
+          <PartMeshes />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
@@ -39,7 +39,7 @@ export const HistoryApp: React.FC = () => {
 
 export default HistoryApp
 
-const Part: React.FC = () => {
+const PartMeshes: React.FC = () => {
   const set = useStore(s => s.set)
   const activeExample = useStore(s => s.activeExample)
   const { update, create, params } = useStore(s => s.examples.objs[activeExample])
