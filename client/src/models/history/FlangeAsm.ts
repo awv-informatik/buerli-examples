@@ -1,19 +1,17 @@
 /* eslint-disable max-lines */
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory } from '@buerli.io/headless'
 import flangeAB from '../../shared/resources/FlangePrt.of1'
 import boltAB from '../../shared/resources/Bolt_M22.of1'
 import nutAB from '../../shared/resources/Nut_M22.of1'
-import { useEffect } from 'react'
-
-export type CreateFuncSelection = (api: ApiHistory) => Promise<number | null>
+import { Api } from '../../history/store'
 
 const origin = { x: 0, y: 0, z: 0 }
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
 let zDir = { x: 0, y: 0, z: 1 }
 
-export const create: CreateFuncSelection = async (api: ApiHistory) => {
+export const create = async (api: ApiHistory) => {
 
   // Create the root assembly
   const root = await api.createRootAssembly('FlangeAsm')
@@ -104,12 +102,8 @@ export const create: CreateFuncSelection = async (api: ApiHistory) => {
     )
     return root
   }
-  return null
 }
 
+export const apiType = Api.HISTORY
 
-export default create
-
-///////////////////////////////////////////////////////////////
-// INTERNALS
-///////////////////////////////////////////////////////////////
+export default { create, apiType }

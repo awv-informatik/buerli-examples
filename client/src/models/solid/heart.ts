@@ -1,5 +1,6 @@
 import { ApiNoHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
+import { Api } from '../../history/store'
 
 export const create = async (api: ApiNoHistory) => {
   const shape = new THREE.Shape()
@@ -11,12 +12,19 @@ export const create = async (api: ApiNoHistory) => {
   shape.bezierCurveTo(80, 35, 80, 0, 50, 0)
   shape.bezierCurveTo(35, 0, 25, 25, 25, 25)
   const basicBody = api.extrude([0, 0, 5], shape)
-  const geom = await api.createBufferGeometry(basicBody)
+  return basicBody
+}
+
+export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+  if (!api) return
+  const geom = await api.createBufferGeometry(solidId)
   const mesh = new THREE.Mesh(
     geom,
-    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(255, 0, 0)') }),
+    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(255, 120, 255)') }),
   )
   return [mesh]
 }
 
-export default create
+export const apiType = Api.NOHISTORY
+
+export default { create,  getBufferGeom, apiType }

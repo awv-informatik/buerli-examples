@@ -4,13 +4,12 @@ import styled from 'styled-components'
 import HistoryApp from './history/HistoryApp'
 import { initBuerli } from './initBuerli'
 import { Home } from './shared/styles/Home'
-import SolidApp from './solid/SolidApp'
 import BuerliGeometryApp from './buerliGeometry/BuerliGeometryApp'
 
 initBuerli()
 
 const options = [
-  { label: 'Solid', value: 'solid', comp: SolidApp },
+  // { label: 'Solid', value: 'solid', comp: HistoryApp },
   { label: 'History', value: 'history', comp: HistoryApp },
   { label: 'BuerliGeometry', value: 'buerliGeometry', comp: BuerliGeometryApp },
 ]
@@ -18,7 +17,7 @@ const options = [
 const apps = {
   [options[0].value]: options[0].comp,
   [options[1].value]: options[1].comp,
-  [options[2].value]: options[2].comp,
+  // [options[2].value]: options[2].comp,
 }
 
 /**

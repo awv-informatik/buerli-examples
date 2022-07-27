@@ -1,12 +1,8 @@
-import { ApiHistory, DimensionType, history } from "@buerli.io/headless"
-import { api as buerliAPI, PointMemValue } from '@buerli.io/core'
-import { useEffect } from "react"
-import { BooleanOperationType, BrepElemType, ChamferType, OrientationType, ViewType, WorkAxisType, WorkCoordSystemType } from "@buerli.io/classcad"
-import { useBuerli } from "@buerli.io/react"
+import { ApiHistory } from "@buerli.io/headless"
+import { BooleanOperationType, BrepElemType, ChamferType, WorkAxisType, WorkCoordSystemType } from "@buerli.io/classcad"
+import { Api } from "../../history/store"
 
-export type CreateFuncSelection = (api: ApiHistory) => Promise<number | null>
-
-export const create: CreateFuncSelection = async (api: ApiHistory) => {
+export const create = async (api: ApiHistory) => {
   // Initial create
   const rotation = { x: 0, y: 0, z: 0 }
   const offset = { x: 0, y: 0, z: 0 }
@@ -53,8 +49,10 @@ export const create: CreateFuncSelection = async (api: ApiHistory) => {
 
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flange2, pattern] )
     await api.createWorkCoordSystem(flange, WorkCoordSystemType.WCS_CUSTOM, [], [], holeOffset1Top, rotation, 0, false, 'WCSBoltHoleTop')
+    return flange
   }
-  return null
 }
 
-export default create
+export const apiType = Api.HISTORY
+
+export default { create, apiType }

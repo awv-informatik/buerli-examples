@@ -3,19 +3,19 @@ import produce from 'immer'
 import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
-  { label: 'Flange_Part', file: 'FlangePrt' },
-  { label: 'Flange_Asm', file: 'FlangeAsm' },
+  { label: 'Flange_Part', file: 'history/FlangePrt' },
+  { label: 'Flange_Asm', file: 'history/FlangeAsm' },
 ]
 
 const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const example = require(`./models/${t.file}`)
+  const example = require(`../models/${t.file}`)
   exampleMap[t.label] = {
     label: t.label,
     create: example.create,
     update: example.update,
-    text: import(`!!raw-loader!./models/${t.file}.ts`),
+    text: import(`!!raw-loader!../models/${t.file}.ts`),
     params: example.paramsMap,
   }
 }
