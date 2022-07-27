@@ -1,8 +1,10 @@
-import { ApiHistory } from "@buerli.io/headless"
+import { ApiHistory, history } from "@buerli.io/headless"
 import { BooleanOperationType, BrepElemType, ChamferType, WorkAxisType, WorkCoordSystemType } from "@buerli.io/classcad"
-import { Api } from "../../history/store"
+import { Api, Create } from "../../store"
 
-export const create = async (api: ApiHistory) => {
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
+
   // Initial create
   const rotation = { x: 0, y: 0, z: 0 }
   const offset = { x: 0, y: 0, z: 0 }
@@ -53,6 +55,6 @@ export const create = async (api: ApiHistory) => {
   }
 }
 
-export const apiType = Api.HISTORY
+export const cad = new history()
 
-export default { create, apiType }
+export default { create, cad }

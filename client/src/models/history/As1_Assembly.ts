@@ -5,7 +5,7 @@ import arraybuffer3 from '../../shared/resources/LBracket.of1'
 import arraybuffer2 from '../../shared/resources/Nut.of1'
 import arraybuffer4 from '../../shared/resources/Plate.of1'
 import arraybuffer5 from '../../shared/resources/Rod.of1'
-import { ParamType } from '../../history/store'
+import { ParamType } from '../../store'
 
 export const create = async (api: ApiHistory, params?: ParamType) => {
   const pt0 = { x: 0, y: 0, z: 0 }

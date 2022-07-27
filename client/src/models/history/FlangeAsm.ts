@@ -1,17 +1,18 @@
 /* eslint-disable max-lines */
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory } from '@buerli.io/headless'
+import { ApiHistory, history } from '@buerli.io/headless'
 import flangeAB from '../../shared/resources/FlangePrt.of1'
 import boltAB from '../../shared/resources/Bolt_M22.of1'
 import nutAB from '../../shared/resources/Nut_M22.of1'
-import { Api } from '../../history/store'
+import { Create } from '../../store'
 
 const origin = { x: 0, y: 0, z: 0 }
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
 let zDir = { x: 0, y: 0, z: 1 }
 
-export const create = async (api: ApiHistory) => {
+export const create: Create = async (apiType, param) => {
+  const api = apiType as ApiHistory
 
   // Create the root assembly
   const root = await api.createRootAssembly('FlangeAsm')
@@ -104,6 +105,6 @@ export const create = async (api: ApiHistory) => {
   }
 }
 
-export const apiType = Api.HISTORY
+export const cad = new history()
 
-export default { create, apiType }
+export default { create, cad }

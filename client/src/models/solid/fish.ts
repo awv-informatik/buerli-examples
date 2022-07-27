@@ -1,8 +1,10 @@
-import { ApiNoHistory } from '@buerli.io/headless'
+import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
-import { Api } from '../../history/store'
+import { Create } from '../../store'
 
-export const create = async (api: ApiNoHistory) => {
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiNoHistory
+
   const x = 25
   const y = 25
   const shape = new THREE.Shape()
@@ -32,6 +34,6 @@ export const getScene = async (solidId: number, api: ApiNoHistory) => {
   return scene
 }
 
-export const apiType = Api.NOHISTORY
+export const cad = new solid()
 
-export default { create, getScene, apiType }
+export default { create, getScene, cad }

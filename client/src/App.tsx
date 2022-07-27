@@ -1,17 +1,15 @@
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
-import HistoryApp from './history/HistoryApp'
+import HistoryApp from './components/HistoryApp'
 import { initBuerli } from './initBuerli'
-import { Home } from './shared/styles/Home'
-import BuerliGeometryApp from './buerliGeometry/BuerliGeometryApp'
+import { Home } from './styles/Home'
 
 initBuerli()
 
 const options = [
   // { label: 'Solid', value: 'solid', comp: HistoryApp },
   { label: 'History', value: 'history', comp: HistoryApp },
-  { label: 'BuerliGeometry', value: 'buerliGeometry', comp: BuerliGeometryApp },
 ]
 
 const apps = {

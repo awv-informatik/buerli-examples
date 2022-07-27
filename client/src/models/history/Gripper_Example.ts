@@ -1,6 +1,6 @@
-import { ApiHistory } from '@buerli.io/headless'
+import { ApiHistory, solid } from '@buerli.io/headless'
 import arraybuffer from '../../shared/resources/gripperV2.of1'
-import { ParamType } from '../store'
+import { Create, ParamType } from '../../store'
 
 export const paramsMap: ParamType = {
   Width: 60,
@@ -9,7 +9,9 @@ export const paramsMap: ParamType = {
   Taper: 50,
 }
 
-export const create = async (api: ApiHistory, params: ParamType = paramsMap) => {
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
+
   const productId = await api.load(arraybuffer, 'of1')
 
   // Set initial values
@@ -33,4 +35,6 @@ export const update = async (api: ApiHistory, productId: number, params: ParamTy
   )
 }
 
-export default create
+export const cad = new solid()
+
+export default { create, update, cad }

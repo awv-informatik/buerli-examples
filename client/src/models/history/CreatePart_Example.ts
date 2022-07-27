@@ -1,8 +1,10 @@
-import { ApiHistory } from '@buerli.io/headless'
-import { Api, ParamType } from '../../history/store'
+import { ApiHistory, history } from '@buerli.io/headless'
+import { Create } from '../../store'
 import * as THREE from 'three'
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
+
   const part = api.createPart('Part')
   api.cylinder(part, [], 10, 100)
   const topEdges = await api.pick(part, 'edge', [{ x: 0, y: 0, z: 100 }])
@@ -18,6 +20,6 @@ export const getBufferGeom = async (productId: number, api: ApiHistory) => {
   )
 }
 
-export const apiType = Api.HISTORY
+export const cad = new history()
 
-export default { create,  getBufferGeom, apiType }
+export default { create,  getBufferGeom, cad }
