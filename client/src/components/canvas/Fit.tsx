@@ -1,33 +1,25 @@
-import { DrawingID, GeometryBounds } from '@buerli.io/core'
-import { useBuerli, useDrawing } from '@buerli.io/react'
-import { useIsLoading } from '@buerli.io/react-cad'
-import { Bounds, SizeProps, useBounds } from '@react-three/drei'
+import { Bounds, useBounds } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React from 'react'
+import create, { GetState, SetState } from 'zustand'
+
+type StoreProps = { stamp: number; fit: () => void }
+const store = (set: SetState<StoreProps>, get: GetState<StoreProps>): StoreProps => ({
+  stamp: 0,
+  fit: () => set({ stamp: Date.now() }),
+})
+export const useFit = create<StoreProps>(store)
 
 /**
- * Fit to scene bounds if the ClassCAD geometry bounds changed.
+ * Fit to scene bounds if the user request by store.fit.
  */
-function Refresh({ ccBounds }: { ccBounds: GeometryBounds }) {
+function StampFit() {
   const bounds = useBounds()
+  const stamp = useFit(f => f.stamp)
 
   React.useEffect(() => {
     bounds?.refresh().clip().fit()
-  }, [bounds, ccBounds])
-
-  return null
-}
-
-/**
- * Fit to scene bounds after the active drawing changed.
- */
-function SwitchDrawing() {
-  const bounds = useBounds()
-  const currDrId = useBuerli(b => b.drawing.active) || ''
-
-  React.useEffect(() => {
-    bounds?.refresh().clip().fit()
-  }, [bounds, currDrId])
+  }, [bounds, stamp])
 
   return null
 }
@@ -55,24 +47,12 @@ function DblClick() {
 /**
  * Fits three scene to its bounds.
  */
-export function Fit({
-  drawingId,
-  children,
-  onFit,
-}: {
-  drawingId: DrawingID
-  children?: React.ReactNode
-  onFit?: (bounds: SizeProps) => void
-}) {
-  const isLoading = useIsLoading(drawingId)
-  const ccBounds = useDrawing(drawingId, d => d.geometry.bounds) as GeometryBounds
-
+export function Fit({ children }: { children?: React.ReactNode }) {
   return (
-    <Bounds onFit={onFit}>
+    <Bounds>
       {children}
       <DblClick />
-      <SwitchDrawing />
-      {isLoading && <Refresh ccBounds={ccBounds} />}
+      <StampFit />
     </Bounds>
   )
 }

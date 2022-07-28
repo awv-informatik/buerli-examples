@@ -8,14 +8,11 @@ import { Home } from './styles/Home'
 initBuerli()
 
 const options = [
-  // { label: 'Solid', value: 'solid', comp: HistoryApp },
   { label: 'History', value: 'history', comp: HistoryApp },
 ]
 
 const apps = {
   [options[0].value]: options[0].comp,
-  [options[1].value]: options[1].comp,
-  // [options[2].value]: options[2].comp,
 }
 
 /**
