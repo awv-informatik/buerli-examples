@@ -20,12 +20,12 @@ const toc: { label: string; file: string }[] = [
 const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const example = require(`../models/${t.file}`)
+  const example = require(`./models/${t.file}`)
   exampleMap[t.label] = {
     label: t.label,
     // create: example.create,
     // update: example.update,
-    text: import(`!!raw-loader!../models/${t.file}.ts`),
+    text: import(`!!raw-loader!./models/${t.file}.ts`),
     params: example.paramsMap,
     ...example
   }

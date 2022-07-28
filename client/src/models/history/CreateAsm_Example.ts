@@ -1,6 +1,6 @@
 import { FlipType, ReorientedType, BooleanOperationType, WorkCoordSystemType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
-import { ParamType } from '../store'
+import { ParamType } from '../../store'
 
 export const create = async (api: ApiHistory, params?: ParamType) => {
   /* consts */

@@ -1,6 +1,6 @@
 import { ApiNoHistory } from '@buerli.io/headless'
 import * as THREE from 'three'
-import data from '../../shared/resources/ventil.stp'
+import data from '../../resources/ventil.stp'
 
 export const create = async (api: ApiNoHistory) => {
   const importedIds = await api.import(data)

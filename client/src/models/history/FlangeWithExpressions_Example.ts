@@ -1,6 +1,6 @@
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/FlangeV2.of1'
-import { ParamType } from '../store'
+import arraybuffer from '../../resources/FlangeV2.of1'
+import { ParamType } from '../../store'
 
 export const paramsMap: ParamType = {
   'Flange Depth': 20,

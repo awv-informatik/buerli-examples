@@ -1,5 +1,5 @@
 import { ApiHistory, solid } from '@buerli.io/headless'
-import arraybuffer from '../../shared/resources/gripperV2.of1'
+import arraybuffer from '../../resources/gripperV2.of1'
 import { Create, ParamType } from '../../store'
 
 export const paramsMap: ParamType = {

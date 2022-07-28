@@ -1,6 +1,6 @@
 import { ApiHistory, history } from "@buerli.io/headless"
 import { BooleanOperationType, BrepElemType, ChamferType, WorkAxisType, WorkCoordSystemType } from "@buerli.io/classcad"
-import { Api, Create } from "../../store"
+import { Create } from "../../store"
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
