@@ -1,4 +1,3 @@
-import { api as buerliApi } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
 import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
 import { Canvas } from '@react-three/fiber'
@@ -12,7 +11,7 @@ import { Code } from './Code'
 import { Parameters } from './Parameters'
 import { useStore } from '../store'
 
-export const HistoryApp: React.FC = () => {
+export const Main: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)
@@ -51,7 +50,7 @@ export const HistoryApp: React.FC = () => {
   )
 }
 
-export default HistoryApp
+export default Main
 
 const Part: React.FC = () => {
   const set = useStore(s => s.set)
@@ -73,7 +72,7 @@ const Part: React.FC = () => {
     cad.init(async api => {
       headlessApi.current = api
       try {
-        productOrSolidId.current = await create(api)
+        productOrSolidId.current = await create(api, params)
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
           setMeshes(tempMeshes)
@@ -83,6 +82,7 @@ const Part: React.FC = () => {
         }
       } catch (error) {
         setMeshes([])
+        setScene(null)
         console.error(JSON.stringify(error))
       } finally {
         fit()
@@ -90,34 +90,36 @@ const Part: React.FC = () => {
       }
     })
     return () => {
-      buerliApi.getState().api.setActiveDrawing(null)
-      cad.destroy()
+      // buerliApi.getState().api.setActiveDrawing(null)
+      // cad.destroy()
     }
   }, [create, set, headlessApi, fit, cad, getBufferGeom, getScene])
 
-  // React.useEffect(() => {
-  //   const run = async () => {
-  //     if (headlessApi.current && update && params) {
-  //       //set({ loading: true })
-  //       try {
-  //         await update(headlessApi.current, productOrSolidId.current, params)
-  //         if (getBufferGeom) {
-  //           const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
-  //           setMeshes(tempMeshes)
-  //         } else if (getScene) {
-  //           const tempScene = await getScene(productOrSolidId.current, headlessApi.current)
-  //           setScene(tempScene)
-  //         }
-  //       } catch (error) {
-  //         setMeshes([])
-  //         console.error(JSON.stringify(error))
-  //       } finally {
-  //         //set({ loading: false })
-  //       }
-  //     }
-  //   }
-  //   run()
-  // }, [update, params, headlessApi, set])
+  React.useEffect(() => {
+    const run = async () => {
+      if (headlessApi.current && update && params) {
+        //set({ loading: true })
+        try {
+          await update(headlessApi.current, productOrSolidId.current, params)
+          if (getBufferGeom) {
+            const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
+            setMeshes(tempMeshes)
+          } else if (getScene) {
+            const tempScene = await getScene(productOrSolidId.current, headlessApi.current)
+            setScene(tempScene)
+          }
+        } catch (error) {
+          setMeshes([])
+          setScene(null)
+          console.error(JSON.stringify(error))
+        } finally {
+          fit()
+          //set({ loading: false })
+        }
+      }
+    }
+    run()
+  }, [update, params, headlessApi, set])
 
   if (getBufferGeom && meshes) {
     return <group>

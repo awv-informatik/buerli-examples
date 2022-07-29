@@ -1,26 +1,16 @@
 import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
-import HistoryApp from './components/HistoryApp'
+import Main from './components/Main'
 import { initBuerli } from './initBuerli'
 import { Home } from './styles/Home'
 
 initBuerli()
 
-const options = [
-  { label: 'History', value: 'history', comp: HistoryApp },
-]
-
-const apps = {
-  [options[0].value]: options[0].comp,
-}
-
 /**
  * The application component.
  */
 export const App: React.FC = () => {
-  const [active, setActive] = React.useState<string>(options[0].value)
-  const ActiveApp = React.useMemo(() => apps[active], [active])
   return (
     <Container>
       <Home>
@@ -29,23 +19,9 @@ export const App: React.FC = () => {
             buerli.<span style={{ fontSize: '0.4em', verticalAlign: 'super', letterSpacing: 0 }}>BETA | EXAMPLES</span>
           </h1>
         </div>
-        <Options className="menu middle">
-          {options.map(o => (
-            <a
-              className={o.value === active ? 'active' : ''}
-              key={o.label}
-              href={'_blank'}
-              onClick={e => {
-                e.preventDefault()
-                setActive(o.value)
-              }}>
-              {o.label}
-            </a>
-          ))}
-        </Options>
       </Home>
       <Content>
-        <ActiveApp />
+        <Main />
       </Content>
     </Container>
   )
