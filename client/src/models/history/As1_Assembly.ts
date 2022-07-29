@@ -1,13 +1,15 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory } from '@buerli.io/headless'
+import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/Bolt.of1'
 import arraybuffer3 from '../../resources/LBracket.of1'
 import arraybuffer2 from '../../resources/Nut.of1'
 import arraybuffer4 from '../../resources/Plate.of1'
 import arraybuffer5 from '../../resources/Rod.of1'
-import { ParamType } from '../../store'
+import { Create } from '../../store'
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const create: Create = async (apiType, params?) => {
+  const api = apiType as ApiHistory
+  
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
@@ -36,7 +38,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Add bolt to nut-bolt assembly template */
-  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
+  const boltRefId = api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
 
   /* Get needed workcoordsystems of bolt */
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
@@ -200,7 +202,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const wcsIdPlate5 = await api.getWorkCoordSystem(plateRef, 'WCS_Hole5-Top')
 
   /* Set plate to origin of as1-assembly */
-  await api.createFastenedOriginConstraint(
+  const constrPlate = api.createFastenedOriginConstraint(
     as1Asm,
     { matePath: [plateRef], wcsId: wcsIdPlateBase[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     0,
@@ -214,12 +216,12 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   const lBracketAsmRef2 = await api.addNode(lBracketAsm, as1Asm, [pt0, xDir, yDir])
 
   /* Set 1st lBracket-assembly on plate */
-  await api.createFastenedConstraint(
+  const constrLBracket1 = await api.createFastenedConstraint(
     as1Asm,
     { matePath: [plateRef], wcsId: wcsIdPlate2[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
       matePath: [lBracketAsmRef1],
-      wcsId: wcsIdLBracket2Bottom[0],
+      wcsId: wcsIdBoltOrigin[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
@@ -230,7 +232,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   )
 
   /* Set 2nd lBracket-assembly on plate */
-  await api.createFastenedConstraint(
+  const constrLBracket2 = await api.createFastenedConstraint(
     as1Asm,
     { matePath: [plateRef], wcsId: wcsIdPlate5[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
@@ -313,7 +315,85 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
     0,
     'FC9',
   )
+
+  type VID = Promise<number | null> | number
+  
+  const firstConstraint: {
+    constrId: VID
+    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
+    mate2: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
+    xOffset: number
+    yOffset: number
+    zOffset: number
+  } = {
+    constrId: constrLBracket1,
+    mate1: {
+      matePath: [plateRef],
+      wcsId: wcsIdPlate2[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    mate2: {
+      matePath: [boltRefId, nutBoltAsmRef2, lBracketAsmRef1],
+      wcsId: wcsIdBoltOrigin[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    xOffset: 0,
+    yOffset: 0,
+    zOffset: 0,
+  }
+
+  const secondConstraint: {
+    constrId: VID
+    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
+    mate2: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
+    xOffset: number
+    yOffset: number
+    zOffset: number
+  } = {
+    constrId: constrLBracket2,
+    mate1: {
+      matePath: [plateRef],
+      wcsId: wcsIdPlate5[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    mate2: {
+      matePath: [boltRefId, nutBoltAsmRef2, lBracketAsmRef2],
+      wcsId: wcsIdBoltOrigin[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    xOffset: 0,
+    yOffset: 0,
+    zOffset: 50,
+  }
+  //boltRefId, nutBoltAsmRef2, lBracketAsmRef1
+  await api.updateFastenedConstraints(firstConstraint, secondConstraint)
+
+  const thirdConstraint: {
+    constrId: VID
+    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
+    xOffset: number
+    yOffset: number
+    zOffset: number
+  } = {
+    constrId: constrPlate,
+    mate1: {
+      matePath: [plateRef],
+      wcsId: wcsIdPlateBase[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    xOffset: 50,
+    yOffset: 50,
+    zOffset: 0,
+  }
+  await api.updateFastenedOriginConstraints(thirdConstraint)
   return as1Asm
 }
 
-export default create
+export const cad = new history()
+
+export default { create, cad }

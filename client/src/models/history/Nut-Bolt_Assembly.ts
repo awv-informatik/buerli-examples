@@ -1,10 +1,13 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory } from '@buerli.io/headless'
+import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/Bolt.of1'
 import arraybuffer2 from '../../resources/Nut.of1'
-import { ParamType } from '../../store'
+import { Create, ParamType } from '../../store'
+import * as THREE from 'three'
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
+
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
@@ -21,7 +24,7 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
-  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
+  const boltRefId = api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
@@ -55,4 +58,6 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   return nutBoltAsm
 }
 
-export default create
+export const cad = new history()
+
+export default { create, cad }

@@ -4,12 +4,8 @@ import create, { SetState } from 'zustand'
 
 const toc: { label: string; file: string }[] = [
   { label: 'CreatePart', file: 'history/CreatePart_Example' },
-  // { label: 'CreateAsm_Example', file: 'CreateAsm_Example' },
-  // { label: 'As1_Assembly', file: 'As1_Assembly' },
-  // { label: 'FlangeWithExpressions_Example', file: 'FlangeWithExpressions_Example' },
-  // { label: 'LBracket_Assembly', file: 'LBracket_Assembly' },
-  // { label: 'Nut-Bolt_Assembly', file: 'Nut-Bolt_Assembly' },
-  // { label: 'ShadowboxWithExpressions_Example', file: 'ShadowboxWithExpressions_Example' },
+  { label: 'As1_Assembly', file: 'history/As1_Assembly' },
+  { label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
   { label: 'Gripper_Example', file: 'history/Gripper_Example' },
   { label: 'fish', file: 'solid/fish' },
   { label: 'heart', file: 'solid/heart' },
