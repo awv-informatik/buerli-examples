@@ -4,14 +4,16 @@ import React from 'react'
 import styled from 'styled-components'
 import { Param, useStore } from '../store'
 
-export const Params: React.FC<{ params: Param[] }> = ({ params }) => {
+export const Params: React.FC = () => {
+  const exampleId = useStore(s => s.activeExample)
+  const params: Param[] = useStore(s => s.examples.objs[exampleId]?.paramsMap)
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'min-content 200px', gap: '10px', alignItems: 'center' }}>
       {params.map(param => [
-        <label key={`1-${param.index}-${param.name}-${param.section}`} style={{ margin: '5px' }}>
+        <label key={`1-${param.index}-${param.name}`} style={{ margin: '5px' }}>
           {param.name}
         </label>,
-        <ParamInput key={`2-${param.index}-${param.name}-${param.section}`} param={param} />,
+        <ParamInput key={`2-${param.index}-${param.name}`} param={param} />,
       ])}
     </div>
   )
@@ -20,22 +22,32 @@ export const Params: React.FC<{ params: Param[] }> = ({ params }) => {
 export default Params
 
 // *****************************************
-// *****************************************
 // INTERNALS
+// *****************************************
 
 const prs = Number.parseInt
 
 const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
-  const { section, index, type, value } = param
+  const { index, type, value } = param
+  const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.params[section]?.values[index] || value)
-  const api = useStore(s => s.apis[section])
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value) 
+  const api = useStore(s => s.examples.objs[exampleId].api)
   return (
     <>
       {type === 'number' ? (
-        <NrInput type={'number'} defaultValue={val} onBlur={e => setParam(section, index, prs(e.target.value))} />
+        <NrInput
+          type={'number'}
+          defaultValue={val}
+          onBlur={e => setParam(exampleId, index, prs(e.target.value)) }
+          onKeyDown={(e: any) => {
+            if (e.key === 'Enter') {
+              setParam(exampleId, index, prs(e.target.value))
+            }
+          }}
+        />
       ) : type === 'boolean' ? (
-        <input type={'checkbox'} checked={val} onChange={e => setParam(section, index, e.target.checked)} />
+        <input type={'checkbox'} checked={val} onChange={e => setParam(exampleId, index, e.target.checked)} />
       ) : type === 'enum' ? (
         <EnumParam param={param} />
       ) : type === 'slider' ? (
@@ -46,7 +58,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
         <button
           onClick={e => {
             value(param, api)
-            setParam(section, index, Date.now())
+            setParam(exampleId, index, Date.now())
           }}
           style={{ cursor: 'pointer' }}>
           run
@@ -57,10 +69,11 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
 }
 
 const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
-  const { section, index, value, values } = param
+  const { index, value, values } = param
   const vals = values || []
+  const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.params[section]?.values[index] || value)
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const marks: any = {}
   for (let i = 0; i < vals.length; i++) {
     marks[i] = `${vals[i]}`
@@ -74,16 +87,17 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
       min={min}
       max={max}
       step={1}
-      onAfterChange={e => setParam(section, index, vals[e])}
+      onAfterChange={(e: any) => setParam(exampleId, index, vals[e])}
     />
   )
 }
 
 const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
-  const { section, index, value, values } = param
+  const { index, value, values } = param
   const vals = values || []
+  const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.params[section]?.values[index] || value)
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const min = vals[0]
   const max = vals[vals.length - 1]
   const marks = {
@@ -98,16 +112,17 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
       min={min}
       max={max}
       step={step}
-      onAfterChange={e => setParam(section, index, e)}
+      onAfterChange={(e: any) => setParam(exampleId, index, e)}
     />
   )
 }
 
 const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
-  const { section, index, value, values } = param
+  const { index, value, values } = param
   const vals = values || []
+  const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.params[section]?.values[index] || value)
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   return (
     <Dropdown
       overlay={
@@ -118,7 +133,7 @@ const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
                 key={i}
                 title={c}
                 onClick={() => {
-                  setParam(section, index, c)
+                  setParam(exampleId, index, c)
                 }}
                 style={{
                   fontFamily: 'courier new',

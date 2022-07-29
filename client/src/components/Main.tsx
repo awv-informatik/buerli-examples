@@ -8,8 +8,8 @@ import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { CanvasContainer, ExampleLayout, Options, Spin } from '.'
 import { Code } from './Code'
-import { Parameters } from './Parameters'
 import { useStore } from '../store'
+import Params from './Params'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -26,7 +26,7 @@ export const Main: React.FC = () => {
     <ExampleLayout>
       <div style={{ display: 'grid' }}>
         <Options values={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
-        <Parameters />
+        <Params />
       </div>
       <CanvasContainer>
         <Canvas
@@ -54,14 +54,16 @@ export default Main
 
 const Part: React.FC = () => {
   const set = useStore(s => s.set)
-  const activeExample = useStore(s => s.activeExample)
+  const exampleId = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
-  const { update, create, params, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[activeExample])
+  const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[exampleId])
+  const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene, setScene] = React.useState<THREE.Scene | null>(null)
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
   const productOrSolidId = React.useRef<number>(0)
   const fit = useFit(f => f.fit)
+  const setAPI = useStore(s => s.setAPI)
 
   React.useEffect(() => {
     headlessApi.current = null
@@ -70,6 +72,7 @@ const Part: React.FC = () => {
     //set({ loading: true })
 
     cad.init(async api => {
+      setAPI(exampleId, api)
       headlessApi.current = api
       try {
         productOrSolidId.current = await create(api, params)

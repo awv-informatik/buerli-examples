@@ -1,67 +1,93 @@
 import { ApiHistory, ApiNoHistory, history, solid } from '@buerli.io/headless'
 import produce from 'immer'
 import create, { SetState } from 'zustand'
+import vanillaCreate from 'zustand/vanilla'
 
-const toc: { label: string; file: string }[] = [
-  { label: 'CreatePart', file: 'history/CreatePart_Example' },
-  { label: 'As1_Assembly', file: 'history/As1_Assembly' },
-  { label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
-  { label: 'Gripper_Example', file: 'history/Gripper_Example' },
-  { label: 'fish', file: 'solid/fish' },
-  { label: 'heart', file: 'solid/heart' },
-  { label: 'FlangePart', file: 'history/FlangePrt' },
-  { label: 'FlangeAsm', file: 'history/FlangeAsm' },
+const toc: { exampleId: string, label: string; file: string }[] = [
+  // { exampleId: 'CreatePart', label: 'Create Part', file: 'history/CreatePart_Example' },
+  // { label: 'As1_Assembly', file: 'history/As1_Assembly' },
+  // { label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
+  { exampleId: 'Gripper', label: 'Gripper', file: 'history/Gripper_Example' },
+  // { label: 'fish', file: 'solid/fish' },
+  // { label: 'heart', file: 'solid/heart' },
+  // { label: 'FlangePart', file: 'history/FlangePrt' },
+  // { label: 'FlangeAsm', file: 'history/FlangeAsm' },
 ]
 
 const exampleMap: Record<string, Example> = {}
 for (const t of toc) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const example = require(`./models/${t.file}`)
-  exampleMap[t.label] = {
+  exampleMap[t.exampleId] = {
     label: t.label,
-    // create: example.create,
-    // update: example.update,
     text: import(`!!raw-loader!./models/${t.file}.ts`),
-    params: example.paramsMap,
+    params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
     ...example
   }
 }
 
-const useStore = create<State>(set => ({
-  activeExample: toc[0].label,
+const storeApi = vanillaCreate<State>(set => ({
+  activeExample: toc[0].exampleId,
   examples: { ids: Object.keys(exampleMap), objs: exampleMap },
   set,
-  setParam: (exampleId: string, paramName: string, paramValue: number) => {
-    set(state => produce(state, draft => void (draft.examples.objs[exampleId].params[paramName] = paramValue)))
+  initParams: (exampleId: string, params: Param[]) => {
+    set(state =>
+      produce(state, draft => {
+        draft.examples.objs[exampleId].params = { lastUpdatedParam: -1, values: params.map(p => p.value) }
+      }),
+    )
   },
+  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => {
+    set(state => produce(state, draft => {
+      draft.examples.objs[exampleId].params.values[paramIndex] = paramValue
+      draft.examples.objs[exampleId].params.lastUpdatedParam = paramIndex
+    }))
+  },
+  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => {
+    set(state => produce(state, draft => {
+        if (!api) {
+          delete draft.examples.objs[exampleId].api
+        } else {
+          draft.examples.objs[exampleId].api = api
+        }
+      }),
+    )
+  }
 }))
 
-export { useStore }
+const useStore = create<State>(storeApi)
+
+export { useStore, storeApi }
 
 // *****************************************
-// *****************************************
 // TYPES
+// *****************************************
 
 type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
   set: SetState<State>
-  setParam: (exampleId: string, paramName: string, paramValue: number) => void
+  initParams: (exampleId: string, params: Param[]) => void
+  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => void
+  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
 }>
 
-export type ParamType = Record<string, number>
+export type Param = { index: number; name: string; type: string; value: any; values?: any[] }
 export type Create = (api: ApiHistory | ApiNoHistory, params?: any) => Promise<number>
+export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<any>
 
 export type Example = {
   label: string
   create: Create
-  update?: (api: ApiHistory | ApiNoHistory, partId: number, params?: ParamType) => any
+  update?: Update
   getScene?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
   getBufferGeom?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
-  params?: ParamType
+  params?: { lastUpdatedParam: number; values: any[] }
+  paramsMap?: Param[]
   cad?: history | solid
+  api?: ApiHistory | ApiNoHistory | null
 }
 
 
