@@ -16,7 +16,7 @@ export const HistoryApp: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.ids)
   const activeExample = useStore(s => s.activeExample)
-  const drawingId = useBuerli((state) => state.drawing.active)
+  const drawingId = useBuerli(state => state.drawing.active)
   const loading = useStore(s => s.loading)
 
   React.useEffect(() => {
@@ -38,9 +38,9 @@ export const HistoryApp: React.FC = () => {
           camera={{ position: [0, 0, 100], fov: 90 }}>
           <Controls makeDefault staticMoving rotateSpeed={2} />
           <Lights drawingId={drawingId} />
-          {/* <Fit> */}
+          <Fit>
             <Part />
-          {/* </Fit> */}
+          </Fit>
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
@@ -56,7 +56,7 @@ export default HistoryApp
 const Part: React.FC = () => {
   const set = useStore(s => s.set)
   const activeExample = useStore(s => s.activeExample)
-  const drawingId = useBuerli((state) => state.drawing.active)
+  const drawingId = useBuerli(state => state.drawing.active)
   const { update, create, params, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[activeExample])
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene, setScene] = React.useState<THREE.Scene | null>(null)
@@ -81,14 +81,11 @@ const Part: React.FC = () => {
           const tempScene = await getScene(productOrSolidId.current, api)
           setScene(tempScene)
         }
-        // setTimeout(() => {
-        //   fit()
-        // }, 2000);
-        
       } catch (error) {
         setMeshes([])
         console.error(JSON.stringify(error))
       } finally {
+        fit()
         //set({ loading: false })
       }
     })
@@ -96,7 +93,7 @@ const Part: React.FC = () => {
       buerliApi.getState().api.setActiveDrawing(null)
       cad.destroy()
     }
-  }, [create, set, headlessApi, fit])
+  }, [create, set, headlessApi, fit, cad, getBufferGeom, getScene])
 
   // React.useEffect(() => {
   //   const run = async () => {
