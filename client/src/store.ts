@@ -13,9 +13,12 @@ const toc: { exampleId: string, label: string; file: string }[] = [
   { exampleId: 'lego', label: 'Lego Configurator', file: 'solid/lego' },
   { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
+  { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator' },
   { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm' },
   { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly' },
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
+  { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
+  
 ]
 
 const exampleMap: Record<string, Example> = {}
@@ -70,7 +73,7 @@ type State = Readonly<{
 }>
 
 export type Param = { index: number; name: string; type: string; value: any; values?: any[] }
-export type Create = (api: ApiHistory | ApiNoHistory, params?: any) => Promise<number>
+export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 
 export type Example = {
