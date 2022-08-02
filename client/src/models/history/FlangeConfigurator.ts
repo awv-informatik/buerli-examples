@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/FlangePrt.of1'
+import arraybuffer from '../../resources/history/Flange/FlangePrt.of1'
 import { Create, Param, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [

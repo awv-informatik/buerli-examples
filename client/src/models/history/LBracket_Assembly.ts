@@ -1,8 +1,8 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory } from '@buerli.io/headless'
-import arraybuffer from '../../resources/Bolt.of1'
-import arraybuffer3 from '../../resources/LBracket.of1'
-import arraybuffer2 from '../../resources/Nut.of1'
+import arraybuffer from '../../resources/history/As1/Bolt.of1'
+import arraybuffer3 from '../../resources/history/As1/LBracket.of1'
+import arraybuffer2 from '../../resources/history/As1/Nut.of1'
 import { ParamType } from '../../store'
 
 export const create = async (api: ApiHistory, params?: ParamType) => {

@@ -1,7 +1,14 @@
-import { ApiNoHistory } from '@buerli.io/headless'
+import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
+import { Color } from 'three'
+import { Create, Param } from '../../store'
+import { setNodesColor } from '../../utils/utils'
 
-export const create = async (api: ApiNoHistory) => {
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiNoHistory
+
   const b0 = api.box(100, 100, 100)
   const b1 = api.offset(b0, 1)
   const b3 = api.box(80, 80, 80)
@@ -25,17 +32,22 @@ export const create = async (api: ApiNoHistory) => {
   api.slice(b1, [0, 0, 60], [0, 0, 1])
   api.slice(b1, [0, 0, -60], [0, 0, -1])
   api.slice(b1, [0, 60, 0], [0, 1, 0])
-  api.slice(b1, [0, -60, 0], [0, -1, 0])
-  const geom = await api.createBufferGeometry(b1)
-  const mesh = new THREE.Mesh(
-    geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 1,
-      color: new THREE.Color('rgb(47, 123, 236)'),
-    }),
-  )
-  return [mesh]
+  api.slice(b1, [0, -60, 0], [0, -1, 0]) 
+  return b1
 }
 
-export default create
+export const getScene = async (solidId: number, api: ApiNoHistory) => {
+  if (!api) return
+  const scene = await api.createScene(solidId)
+  scene && colorize(scene)
+  return scene
+}
+
+const colorize = (scene: THREE.Scene) => {
+  const customRed = new Color('rgb(203, 67, 22)')
+  setNodesColor('Solid', customRed, scene)
+}
+
+export const cad = new solid()
+
+export default { create, getScene, paramsMap, cad }

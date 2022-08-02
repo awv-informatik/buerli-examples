@@ -56,14 +56,6 @@ export const create: Create = async (apiType, params) => {
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flange2, pattern] )
     await api.createWorkCoordSystem(flange, WorkCoordSystemType.WCS_CUSTOM, [], [], holeOffset1Top, rotation, 0, false, 'WCSBoltHoleTop')
 
-    const dataOf1 = await api.save('of1')
-    if (dataOf1) {
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([dataOf1], { type: 'application/octet-stream' }))
-      link.download = `FlangePrt.of1`
-      link.click()
-    }
-
     return flange
   }
 }

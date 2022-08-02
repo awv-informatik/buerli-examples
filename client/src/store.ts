@@ -11,6 +11,8 @@ const toc: { exampleId: string, label: string; file: string }[] = [
   { exampleId: 'fish', label: 'Fish', file: 'solid/fish' },
   { exampleId: 'heart', label: 'Heart', file: 'solid/heart' },
   { exampleId: 'lego', label: 'Lego Configurator', file: 'solid/lego' },
+  { exampleId: 'StepImport', label: 'Step Import', file: 'solid/import-step' },
+  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
   { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
   { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator' },
