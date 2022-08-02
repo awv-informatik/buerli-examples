@@ -1,5 +1,6 @@
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
-import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
+import { BuerliGeometry, raycastFilter, useBuerli, } from '@buerli.io/react'
+import { api as buerliApi } from '@buerli.io/core'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
@@ -13,7 +14,7 @@ import Params from './Params'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
-  const exampleIds = useStore(s => s.examples.ids)
+  const exampleIds = useStore(s => s.examples.objs)
   const activeExample = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
   const loading = useStore(s => s.loading)
@@ -25,7 +26,7 @@ export const Main: React.FC = () => {
   return (
     <ExampleLayout>
       <div style={{ display: 'grid' }}>
-        <Options values={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        <Options examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
         <Params />
       </div>
       <CanvasContainer>
@@ -93,7 +94,14 @@ const Part: React.FC = () => {
       }
     })
     return () => {
-      // buerliApi.getState().api.setActiveDrawing(null)
+      // Remove inactive drawings
+      const activeDrawing = buerliApi.getState().drawing.active
+      const allDrawings = buerliApi.getState().drawing.ids
+      allDrawings.forEach(drawing => {
+        if (activeDrawing != drawing) {
+          buerliApi.getState().api.removeDrawing(drawing)
+        }
+      });
       // cad.destroy()
     }
   }, [create, set, headlessApi, fit, cad, getBufferGeom, getScene])

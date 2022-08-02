@@ -57,7 +57,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
       ) : type === 'button' ? (
         <button
           onClick={e => {
-            value(param, api)
+            value(api)
             setParam(exampleId, index, Date.now())
           }}
           style={{ cursor: 'pointer' }}>

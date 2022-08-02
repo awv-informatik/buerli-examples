@@ -1,23 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Example } from '../store'
 
 export const Options: React.FC<{
-  values: string[]
+  examples: Record<string, Example>
   active?: string | undefined
   onChange: (value: string) => void
-}> = ({ values, active, onChange }) => {
+}> = ({ examples, active, onChange }) => {
   return (
     <Container>
-      {values.map(value => (
-        <div
-          className={value === active ? 'active' : ''}
-          key={value}
-          onClick={e => {
-            onChange && onChange(value)
-          }}>
-          {value}
-        </div>
-      ))}
+      {Object.keys(examples).map(
+        key => (
+          <div
+            className={key === active ? 'active' : ''}
+            key={key}
+            onClick={e => {
+              onChange && onChange(key)
+            }}>
+            {examples[key].label}
+          </div>
+        )
+      )}
     </Container>
   )
 }
@@ -30,5 +33,8 @@ const Container = styled.div`
       opacity: 0.5;
       cursor: pointer;
     }
+  }
+  .active {
+    color: dodgerblue !important;
   }
 `

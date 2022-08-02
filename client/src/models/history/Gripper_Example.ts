@@ -1,6 +1,6 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/gripperV2.of1'
-import { Create, Param, storeApi, Update, useStore } from '../../store'
+import { Create, Param, Update } from '../../store'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Width', type: 'number', value: 60 },
@@ -27,14 +27,24 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
+  const updatedParamIndex = params.lastUpdatedParam
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
-  await api.setExpressions(
-    productId,
-    { name: 'W', value: params.values[0] },
-    { name: 'H', value: params.values[1] },
-    { name: 'D', value: params.values[2] },
-    { name: 'W1', value: params.values[3] },
-  )
+  if (check(paramsMap[0])) {
+    await api.setExpressions(productId, { name: 'W', value: params.values[0] })
+  }
+
+  if (check(paramsMap[1])) {
+    await api.setExpressions(productId, { name: 'H', value: params.values[1] })
+  }
+
+  if (check(paramsMap[2])) {
+    await api.setExpressions(productId, { name: 'D', value: params.values[2] })
+  }
+
+  if (check(paramsMap[3])) {
+    await api.setExpressions(productId, { name: 'W1', value: params.values[3] })
+  }
 }
 
 export const cad = new history()

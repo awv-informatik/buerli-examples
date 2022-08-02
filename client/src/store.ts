@@ -4,14 +4,17 @@ import create, { SetState } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 
 const toc: { exampleId: string, label: string; file: string }[] = [
-  { exampleId: 'CreatePart', label: 'Create Part', file: 'history/CreatePart_Example' },
-  { exampleId: 'As1_Assembly', label: 'As1_Assembly', file: 'history/As1_Assembly' },
-  { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
-  { exampleId: 'Gripper', label: 'Gripper', file: 'history/Gripper_Example' },
-  { exampleId: 'fish', label: 'fish', file: 'solid/fish' },
-  { exampleId: 'heart', label: 'heart', file: 'solid/heart' },
-  { exampleId: 'FlangePart', label: 'FlangePart', file: 'history/FlangePrt' },
-  { exampleId: 'FlangeAsm', label: 'FlangeAsm', file: 'history/FlangeAsm' },
+  { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart_Example' },
+  { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
+  { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly' },
+  { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
+  { exampleId: 'fish', label: 'Fish', file: 'solid/fish' },
+  { exampleId: 'heart', label: 'Heart', file: 'solid/heart' },
+  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
+  { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
+  { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm' },
+  { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly' },
+  { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
 ]
 
 const exampleMap: Record<string, Example> = {}
@@ -30,13 +33,6 @@ const storeApi = vanillaCreate<State>(set => ({
   activeExample: toc[0].exampleId,
   examples: { ids: Object.keys(exampleMap), objs: exampleMap },
   set,
-  initParams: (exampleId: string, params: Param[]) => {
-    set(state =>
-      produce(state, draft => {
-        draft.examples.objs[exampleId].params = { lastUpdatedParam: -1, values: params.map(p => p.value) }
-      }),
-    )
-  },
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => {
     set(state => produce(state, draft => {
       draft.examples.objs[exampleId].params.values[paramIndex] = paramValue
@@ -68,7 +64,6 @@ type State = Readonly<{
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
   set: SetState<State>
-  initParams: (exampleId: string, params: Param[]) => void
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
 }>
@@ -85,9 +80,9 @@ export type Example = {
   getBufferGeom?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
   params?: { lastUpdatedParam: number; values: any[] }
-  paramsMap?: Param[]
-  cad?: history | solid
-  api?: ApiHistory | ApiNoHistory | null
+  paramsMap: Param[]
+  cad: history | solid
+  api: ApiHistory | ApiNoHistory | null
 }
 
 
