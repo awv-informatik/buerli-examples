@@ -45,6 +45,8 @@ export const update: Update = async (apiType, productId, params) => {
   if (check(paramsMap[3])) {
     await api.setExpressions(productId, { name: 'W1', value: params.values[3] })
   }
+
+  return productId
 }
 
 export const cad = new history()

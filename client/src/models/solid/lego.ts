@@ -1,9 +1,17 @@
-import { ApiNoHistory } from '@buerli.io/headless'
+import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
+import { Create, Param, Update } from '../../store'
 
-export const create = async (api: ApiNoHistory) => {
-  const rows = 2
-  const columns = 4
+export const paramsMap: Param[] = [
+  { index: 0, name: 'Rows', type: 'number', value: 2  },
+  { index: 1, name: 'Colums', type: 'number', value: 5 },
+].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiNoHistory
+  
+  const rows = params.values[0]
+  const columns = params.values[1]
   const unitLength = 8
   const width = rows * unitLength
   const length = columns * unitLength
@@ -52,12 +60,29 @@ export const create = async (api: ApiNoHistory) => {
     }
     api.clearSolid(tube)
   }
-  const geom = await api.createBufferGeometry(basic)
+  return basic
+}
+
+export const update: Update = async (apiType, productId, params) => {
+  const api = apiType as ApiNoHistory
+  const updatedParamIndex = params.lastUpdatedParam
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+
+  if (check(paramsMap[0]) || check(paramsMap[1])) {
+    return create(api, params)
+  }
+}
+
+export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+  if (!api) return
+  const geom = await api.createBufferGeometry(solidId)
   const mesh = new THREE.Mesh(
     geom,
-    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(255, 0, 0)') }),
+    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(70, 0, 70)') }),
   )
   return [mesh]
 }
 
-export default create
+export const cad = new solid()
+
+export default { create, getBufferGeom, paramsMap, cad }

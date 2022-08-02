@@ -31,6 +31,7 @@ export const Main: React.FC = () => {
       </div>
       <CanvasContainer>
         <Canvas
+          shadows
           orthographic
           frameloop="demand"
           dpr={[1, 2]}
@@ -111,7 +112,7 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         //set({ loading: true })
         try {
-          await update(headlessApi.current, productOrSolidId.current, params)
+          productOrSolidId.current = await update(headlessApi.current, productOrSolidId.current, params)
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
             setMeshes(tempMeshes)
