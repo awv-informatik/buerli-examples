@@ -17,10 +17,10 @@ export const create: Create = async (apiType, params) => {
   // Set initial values
   await api.setExpressions(
     productId[0],
-    { name: 'W', value: params[0] },
-    { name: 'H', value: params[1] },
-    { name: 'D', value: params[2] },
-    { name: 'W1', value: params[3] },
+    { name: 'W', value: params.values[0] },
+    { name: 'H', value: params.values[1] },
+    { name: 'D', value: params.values[2] },
+    { name: 'W1', value: params.values[3] },
   )
   return productId[0]
 }
