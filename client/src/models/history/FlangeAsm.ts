@@ -4,12 +4,14 @@ import { ApiHistory, history } from '@buerli.io/headless'
 import flangeAB from '../../resources/FlangePrt.of1'
 import boltAB from '../../resources/Bolt_M22.of1'
 import nutAB from '../../resources/Nut_M22.of1'
-import { Create } from '../../store'
+import { Create, Param } from '../../store'
 
 const origin = { x: 0, y: 0, z: 0 }
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
 let zDir = { x: 0, y: 0, z: 1 }
+
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, param) => {
   const api = apiType as ApiHistory
@@ -107,4 +109,4 @@ export const create: Create = async (apiType, param) => {
 
 export const cad = new history()
 
-export default { create, cad }
+export default { create, paramsMap, cad }

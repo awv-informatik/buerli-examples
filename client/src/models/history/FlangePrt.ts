@@ -1,6 +1,8 @@
 import { ApiHistory, history } from "@buerli.io/headless"
 import { BooleanOperationType, BrepElemType, ChamferType, WorkAxisType, WorkCoordSystemType } from "@buerli.io/classcad"
-import { Create } from "../../store"
+import { Create, Param } from "../../store"
+
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -57,4 +59,4 @@ export const create: Create = async (apiType, params) => {
 
 export const cad = new history()
 
-export default { create, cad }
+export default { create, paramsMap, cad }

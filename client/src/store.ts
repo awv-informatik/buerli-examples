@@ -4,14 +4,14 @@ import create, { SetState } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 
 const toc: { exampleId: string, label: string; file: string }[] = [
-  // { exampleId: 'CreatePart', label: 'Create Part', file: 'history/CreatePart_Example' },
-  // { label: 'As1_Assembly', file: 'history/As1_Assembly' },
-  // { label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
+  { exampleId: 'CreatePart', label: 'Create Part', file: 'history/CreatePart_Example' },
+  { exampleId: 'As1_Assembly', label: 'As1_Assembly', file: 'history/As1_Assembly' },
+  { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt_Assembly', file: 'history/Nut-Bolt_Assembly' },
   { exampleId: 'Gripper', label: 'Gripper', file: 'history/Gripper_Example' },
-  // { label: 'fish', file: 'solid/fish' },
-  // { label: 'heart', file: 'solid/heart' },
-  // { label: 'FlangePart', file: 'history/FlangePrt' },
-  // { label: 'FlangeAsm', file: 'history/FlangeAsm' },
+  { exampleId: 'fish', label: 'fish', file: 'solid/fish' },
+  { exampleId: 'heart', label: 'heart', file: 'solid/heart' },
+  { exampleId: 'FlangePart', label: 'FlangePart', file: 'history/FlangePrt' },
+  { exampleId: 'FlangeAsm', label: 'FlangeAsm', file: 'history/FlangeAsm' },
 ]
 
 const exampleMap: Record<string, Example> = {}

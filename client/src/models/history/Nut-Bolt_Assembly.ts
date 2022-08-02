@@ -2,8 +2,10 @@ import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/Bolt.of1'
 import arraybuffer2 from '../../resources/Nut.of1'
-import { Create, ParamType } from '../../store'
+import { Create, Param } from '../../store'
 import * as THREE from 'three'
+
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -60,4 +62,4 @@ export const create: Create = async (apiType, params) => {
 
 export const cad = new history()
 
-export default { create, cad }
+export default { create, paramsMap, cad }

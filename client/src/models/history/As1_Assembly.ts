@@ -5,7 +5,9 @@ import arraybuffer3 from '../../resources/LBracket.of1'
 import arraybuffer2 from '../../resources/Nut.of1'
 import arraybuffer4 from '../../resources/Plate.of1'
 import arraybuffer5 from '../../resources/Rod.of1'
-import { Create } from '../../store'
+import { Create, Param } from '../../store'
+
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params?) => {
   const api = apiType as ApiHistory
@@ -396,4 +398,4 @@ export const create: Create = async (apiType, params?) => {
 
 export const cad = new history()
 
-export default { create, cad }
+export default { create, paramsMap, cad }

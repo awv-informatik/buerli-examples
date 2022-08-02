@@ -1,6 +1,8 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import { Create } from '../../store'
+import { Create, Param } from '../../store'
 import * as THREE from 'three'
+
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -22,4 +24,4 @@ export const getBufferGeom = async (productId: number, api: ApiHistory) => {
 
 export const cad = new history()
 
-export default { create,  getBufferGeom, cad }
+export default { create,  getBufferGeom, paramsMap, cad }
