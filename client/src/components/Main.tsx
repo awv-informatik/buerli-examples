@@ -1,15 +1,15 @@
-import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
-import { BuerliGeometry, raycastFilter, useBuerli, } from '@buerli.io/react'
 import { api as buerliApi } from '@buerli.io/core'
+import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
+import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
+import { CanvasContainer, ExampleLayout, Options, Spin } from '.'
+import { storeApi, useStore } from '../store'
 import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
-import { CanvasContainer, ExampleLayout, Options, Spin } from '.'
 import { Code } from './Code'
-import { useStore } from '../store'
 import Params from './Params'
 
 export const Main: React.FC = () => {
@@ -77,7 +77,8 @@ const Part: React.FC = () => {
       setAPI(exampleId, api)
       headlessApi.current = api
       try {
-        productOrSolidId.current = await create(api, params)
+        const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
+        productOrSolidId.current = await create(api, p)
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
           setMeshes(tempMeshes)
@@ -102,10 +103,10 @@ const Part: React.FC = () => {
         if (activeDrawing != drawing) {
           buerliApi.getState().api.removeDrawing(drawing)
         }
-      });
+      })
       // cad.destroy()
     }
-  }, [create, set, headlessApi, fit, cad, getBufferGeom, getScene])
+  }, [cad, create, exampleId, fit, getBufferGeom, getScene, setAPI])
 
   React.useEffect(() => {
     const run = async () => {
@@ -125,27 +126,29 @@ const Part: React.FC = () => {
           setScene(null)
           console.error(JSON.stringify(error))
         } finally {
-          fit()
           //set({ loading: false })
         }
       }
     }
     run()
-  }, [update, params, headlessApi, set])
+  }, [update, params, headlessApi, set, getBufferGeom, getScene, fit])
 
   if (getBufferGeom && meshes) {
-    return <group>
-      {meshes.map(m => ( <mesh key={m.uuid} {...m} /> ))}
-    </group>
-    
+    return (
+      <group>
+        {meshes.map(m => (
+          <mesh key={m.uuid} {...m} />
+        ))}
+      </group>
+    )
   } else if (getScene && scene) {
-    return <group>
-      <primitive object={scene} />
-    </group>
+    return (
+      <group>
+        <primitive object={scene} />
+      </group>
+    )
   } else {
-    return <group>
-      {drawingId && <BuerliGeometry drawingId={drawingId} />}
-    </group>
+    return <group>{drawingId && <BuerliGeometry drawingId={drawingId} />}</group>
   }
 }
 
