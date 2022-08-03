@@ -10,10 +10,10 @@ export const Params: React.FC = () => {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'min-content 200px', gap: '10px', alignItems: 'center' }}>
       {params.map(param => [
-        <label key={`1-${param.index}-${param.name}`} style={{ margin: '5px' }}>
+        <label key={`1-${param.index}-${param.name}-${exampleId}`} style={{ margin: '5px' }}>
           {param.name}
         </label>,
-        <ParamInput key={`2-${param.index}-${param.name}`} param={param} />,
+        <ParamInput key={`2-${param.index}-${param.name}-${exampleId}`} param={param} />,
       ])}
     </div>
   )
