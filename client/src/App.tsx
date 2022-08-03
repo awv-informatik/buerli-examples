@@ -46,13 +46,3 @@ const Content = styled.div`
   padding-bottom: 3rem;
   overflow: hidden;
 `
-
-const Options = styled.div`
-  a.active {
-    color: dodgerblue;
-  }
-  a:hover {
-    opacity: 0.5;
-    cursor: pointer;
-  }
-`
