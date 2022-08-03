@@ -20,7 +20,7 @@ export const Main: React.FC = () => {
   const loading = useStore(s => s.loading)
 
   React.useEffect(() => {
-    document.title = 'History'
+    document.title = 'buerli-examples'
   }, [])
 
   return (
