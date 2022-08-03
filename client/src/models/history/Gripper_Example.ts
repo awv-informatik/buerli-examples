@@ -1,12 +1,12 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/GripperTemplate.of1'
-import { Create, Param, Update } from '../../store'
+import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'Width', type: 'number', value: 60 },
-  { index: 1, name: 'Height', type: 'number', value: 170 },
-  { index: 2, name: 'Distance', type: 'number', value: 40 },
-  { index: 3, name: 'Taper', type: 'number', value: 50 },
+  { index: 0, name: 'Width', type: ParamType.Number, value: 60 },
+  { index: 1, name: 'Height', type: ParamType.Number, value: 170 },
+  { index: 2, name: 'Distance', type: ParamType.Number, value: 40 },
+  { index: 3, name: 'Taper', type: ParamType.Number, value: 50 },
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {

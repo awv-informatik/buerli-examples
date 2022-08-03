@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
 import templateSP from '../../resources/history/WirewayTemplate.of1'
-import { Create, Param, storeApi, Update } from '../../store'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const le = 0
 const he = 1
@@ -10,14 +10,14 @@ const pd = 3
 const pa = 4
 
 export const paramsMap: Param[] = [
-  { index: le, name: 'Length', type: 'slider', value: 200, values: [100, 400] },
-  { index: he, name: 'Height', type: 'slider', value: 40, values: [20, 80] },
-  { index: wi, name: 'Width', type: 'slider', value: 60, values: [20, 120] },
-  { index: pd, name: 'Position', type: 'slider', value: 0, values: [0, 100] },
+  { index: le, name: 'Length', type: ParamType.Slider, value: 200, values: [100, 400] },
+  { index: he, name: 'Height', type: ParamType.Slider, value: 40, values: [20, 80] },
+  { index: wi, name: 'Width', type: ParamType.Slider, value: 60, values: [20, 120] },
+  { index: pd, name: 'Position', type: ParamType.Slider, value: 0, values: [0, 100] },
   {
     index: pa,
     name: 'Produktauswahl',
-    type: 'dropdown',
+    type: ParamType.Dropdown,
     value: 'Wähle ein Produkt...',
     values: ['40x60', '60x80', '60x120'],
   },

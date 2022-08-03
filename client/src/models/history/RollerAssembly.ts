@@ -3,7 +3,7 @@ import { FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/
 import { PointMemValue } from '@buerli.io/core'
 import { ApiHistory, history, ConstraintType, Transform, DimensionType } from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.of1'
-import { Create, Param, storeApi, Update } from '../../store'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const wl = 0
 const ad = 1
@@ -13,15 +13,15 @@ const ns = 4
 const pp = 5
 
 export const paramsMap: Param[] = [
-  { index: wl, name: 'walzeLength', type: 'number', value: 800 },
-  { index: ad, name: 'arrowDirection', type: 'enum', value: 0, values: [0, 1, 2, 3] },
-  { index: wd, name: 'walzeDirection', type: 'enum', value: 0, values: [0, 1] },
-  { index: ss, name: 'segmentSize', type: 'number', value: 50 },
-  { index: ns, name: 'nofSegments', type: 'number', value: 0 },
-  { index: pp, name: 'plugPosition', type: 'enum', value: 0, values: [0, 1, 2, 3] },
-  { index: 901, name: 'saveAsOf1', type: 'button', value: saveOf1 },
-  { index: 902, name: 'exportDXF', type: 'button', value: exportDXF },
-  { index: 903, name: 'exportSVG', type: 'button', value: exportSVG },
+  { index: wl, name: 'walzeLength', type: ParamType.Number, value: 800 },
+  { index: ad, name: 'arrowDirection', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
+  { index: wd, name: 'walzeDirection', type: ParamType.Enum, value: 0, values: [0, 1] },
+  { index: ss, name: 'segmentSize', type: ParamType.Number, value: 50 },
+  { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
+  { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
+  { index: 901, name: 'saveAsOf1', type: ParamType.Button, value: saveOf1 },
+  { index: 902, name: 'exportDXF', type: ParamType.Button, value: exportDXF },
+  { index: 903, name: 'exportSVG', type: ParamType.Button, value: exportSVG },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },

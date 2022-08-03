@@ -5,7 +5,7 @@ import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/WallTemplate.of1'
-import { Create, Param, storeApi, Update } from '../../store'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type node = {
   productId: number
@@ -57,19 +57,19 @@ const hst = 8
 const aL = 9
 
 export const paramsMap: Param[] = [
-  { index: wl, name: 'Length', type: 'number', value: 1000 },
-  { index: wh, name: 'Height', type: 'number', value: 1000 },
-  { index: gt, name: 'Gipsplatte Thickness', type: 'slider', value: 13, values: [10, 20] },
-  { index: spt, name: 'Spanplatte Thickness', type: 'slider', value: 15, values: [10, 25] },
-  { index: bwt, name: 'Balkenwand Thickness', type: 'slider', value: 140, values: [100, 200] },
-  { index: dt, name: 'Daemmung Thickness', type: 'slider', value: 60, values: [40, 80] },
-  { index: hlt, name: 'Holzlattung Thickness', type: 'slider', value: 40, values: [20, 60] },
-  { index: hst, name: 'Holzschalung Thickness', type: 'slider', value: 25, values: [20, 30] },
-  { index: di, name: 'Exploded View', type: 'slider', value: 0, values: [0, 800] },
+  { index: wl, name: 'Length', type: ParamType.Number, value: 1000 },
+  { index: wh, name: 'Height', type: ParamType.Number, value: 1000 },
+  { index: gt, name: 'Gipsplatte Thickness', type: ParamType.Slider, value: 13, values: [10, 20] },
+  { index: spt, name: 'Spanplatte Thickness', type: ParamType.Slider, value: 15, values: [10, 25] },
+  { index: bwt, name: 'Balkenwand Thickness', type: ParamType.Slider, value: 140, values: [100, 200] },
+  { index: dt, name: 'Daemmung Thickness', type: ParamType.Slider, value: 60, values: [40, 80] },
+  { index: hlt, name: 'Holzlattung Thickness', type: ParamType.Slider, value: 40, values: [20, 60] },
+  { index: hst, name: 'Holzschalung Thickness', type: ParamType.Slider, value: 25, values: [20, 30] },
+  { index: di, name: 'Exploded View', type: ParamType.Slider, value: 0, values: [0, 800] },
   {
     index: aL,
     name: 'Add layer',
-    type: 'dropdown',
+    type: ParamType.Dropdown,
     value: 'Choose layer...',
     values: ['Gipsplatte', 'Spanplatte', 'Balkenwand', 'Daemmung', 'Holzlattung', 'Holzschalung'],
   },

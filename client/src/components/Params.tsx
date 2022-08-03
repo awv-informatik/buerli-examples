@@ -2,7 +2,7 @@ import { DownOutlined } from '@ant-design/icons'
 import { Dropdown, Menu, Slider } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-import { Param, useStore } from '../store'
+import { Param, ParamType, storeApi, useStore } from '../store'
 
 export const Params: React.FC = () => {
   const exampleId = useStore(s => s.activeExample)
@@ -27,34 +27,50 @@ export default Params
 
 const prs = Number.parseInt
 
+const setParamIfValChanged = (newVal: number | boolean | string, oldVal: number | boolean | string, index: number) => {
+  const exampleId = storeApi.getState().activeExample
+  const setParam = storeApi.getState().setParam
+  if (newVal !== oldVal) {
+    setParam(exampleId, index, newVal)
+  }
+}
+
 const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
   const { index, type, value } = param
   const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value) 
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const api = useStore(s => s.examples.objs[exampleId].api)
   return (
     <>
-      {type === 'number' ? (
+      {type === ParamType.Number ? (
         <NrInput
           type={'number'}
           defaultValue={val}
-          onBlur={e => setParam(exampleId, index, prs(e.target.value)) }
+          onBlur={(e: any) => {
+            setParamIfValChanged(prs(e.target.value), val, index)
+          }}
           onKeyDown={(e: any) => {
             if (e.key === 'Enter') {
-              setParam(exampleId, index, prs(e.target.value))
+              setParamIfValChanged(prs(e.target.value), val, index)
             }
           }}
         />
-      ) : type === 'boolean' ? (
-        <input type={'checkbox'} checked={val} onChange={e => setParam(exampleId, index, e.target.checked)} />
-      ) : type === 'enum' ? (
+      ) : type === ParamType.Checkbox ? (
+        <input
+          type={'checkbox'}
+          checked={val}
+          onChange={(e: any) => {
+            setParamIfValChanged(e.target.checked, val, index)
+          }}
+        />
+      ) : type === ParamType.Enum ? (
         <EnumParam param={param} />
-      ) : type === 'slider' ? (
+      ) : type === ParamType.Slider ? (
         <SliderParam param={param} />
-      ) : type === 'dropdown' ? (
+      ) : type === ParamType.Dropdown ? (
         <DropdownParam param={param} />
-      ) : type === 'button' ? (
+      ) : type === ParamType.Button ? (
         <button
           onClick={e => {
             value(api)
@@ -72,7 +88,6 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
-  const setParam = useStore(s => s.setParam)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const marks: any = {}
   for (let i = 0; i < vals.length; i++) {
@@ -87,7 +102,9 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
       min={min}
       max={max}
       step={1}
-      onAfterChange={(e: any) => setParam(exampleId, index, vals[e])}
+      onAfterChange={(e: any) => {
+        setParamIfValChanged(vals[e], val, index)
+      }}
     />
   )
 }
@@ -96,7 +113,6 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
-  const setParam = useStore(s => s.setParam)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const min = vals[0]
   const max = vals[vals.length - 1]
@@ -112,7 +128,9 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
       min={min}
       max={max}
       step={step}
-      onAfterChange={(e: any) => setParam(exampleId, index, e)}
+      onAfterChange={(e: any) => {
+        setParamIfValChanged(e, val, index)
+      }}
     />
   )
 }
@@ -121,7 +139,6 @@ const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
-  const setParam = useStore(s => s.setParam)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   return (
     <Dropdown
@@ -133,7 +150,7 @@ const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
                 key={i}
                 title={c}
                 onClick={() => {
-                  setParam(exampleId, index, c)
+                  setParamIfValChanged(c, val, index)
                 }}
                 style={{
                   fontFamily: 'courier new',

@@ -1,15 +1,15 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/ShadowboxTemplate.of1'
-import { Create, Param, storeApi, Update } from '../../store'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'Depth', type: 'number', value: 20 },
-  { index: 1, name: 'Height', type: 'number', value: 200 },
-  { index: 2, name: 'Width', type: 'number', value: 400 },
-  { index: 3, name: 'Min. Gap', type: 'number', value: 5 },
-  { index: 4, name: 'Hole Diameter', type: 'number', value: 35 },
-  { index: 5, name: 'Columns', type: 'number', value: 8 },
-  { index: 6, name: 'Rows', type: 'number', value: 4 },
+  { index: 0, name: 'Depth', type: ParamType.Number, value: 20 },
+  { index: 1, name: 'Height', type: ParamType.Number, value: 200 },
+  { index: 2, name: 'Width', type: ParamType.Number, value: 400 },
+  { index: 3, name: 'Min. Gap', type: ParamType.Number, value: 5 },
+  { index: 4, name: 'Hole Diameter', type: ParamType.Number, value: 35 },
+  { index: 5, name: 'Columns', type: ParamType.Number, value: 8 },
+  { index: 6, name: 'Rows', type: ParamType.Number, value: 4 },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },

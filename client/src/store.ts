@@ -3,6 +3,11 @@ import produce from 'immer'
 import create, { SetState } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 
+export enum ParamType { Number = 0, Checkbox = 1, Enum = 2, Slider = 3, Dropdown = 4, Button = 5 }
+export type Param = { index: number; name: string; type: ParamType; value: any; values?: any[] }
+export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
+export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
+
 const toc: { exampleId: string, label: string; file: string }[] = [
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart_Example' },
   { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
@@ -39,7 +44,7 @@ const storeApi = vanillaCreate<State>(set => ({
   activeExample: toc[0].exampleId,
   examples: { ids: Object.keys(exampleMap), objs: exampleMap },
   set,
-  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => {
+  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => {
     set(state => produce(state, draft => {
       draft.examples.objs[exampleId].params.values[paramIndex] = paramValue
       draft.examples.objs[exampleId].params.lastUpdatedParam = paramIndex
@@ -64,19 +69,14 @@ export { useStore, storeApi }
 // *****************************************
 // TYPES
 // *****************************************
-
 type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
   set: SetState<State>
-  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean) => void
+  setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
 }>
-
-export type Param = { index: number; name: string; type: string; value: any; values?: any[] }
-export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
-export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 
 export type Example = {
   label: string
