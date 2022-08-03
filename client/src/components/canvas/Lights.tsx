@@ -5,7 +5,6 @@ import React from 'react'
 export function Lights({ drawingId }: { drawingId: DrawingID }) {
   const bounds = useDrawing(drawingId, drawing => drawing.geometry.bounds)
   const factor = React.useMemo(() => (bounds ? bounds.radius : 25) * 4, [bounds])
-  console.log(factor, bounds)
   return factor ? (
     <>
       <ambientLight intensity={0.5} />
