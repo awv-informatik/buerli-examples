@@ -1,40 +1,28 @@
 import React from 'react'
-import styled from 'styled-components'
+import Collapse from 'antd/lib/collapse/Collapse';
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import { Example } from '../store'
+import Params from './Params'
 
+// TODO: How to color active header, how to avoid collapse if no params exist?
 export const Options: React.FC<{
   examples: Record<string, Example>
   active?: string | undefined
   onChange: (value: string) => void
 }> = ({ examples, active, onChange }) => {
   return (
-    <Container>
+    <Collapse accordion activeKey={active} ghost onChange={e => {
+        e && onChange && onChange(e as string)
+      }}>
       {Object.keys(examples).map(
         key => (
-          <div
-            className={key === active ? 'active' : ''}
-            key={key}
-            onClick={e => {
-              onChange && onChange(key)
-            }}>
-            {examples[key].label}
-          </div>
+          <CollapsePanel header={examples[key].label} key={key} showArrow={false}>
+            {examples[key].paramsMap.length > 0 && <Params />}
+          </CollapsePanel>
         )
-      )}
-    </Container>
+      )}  
+    </Collapse>
   )
 }
 
-const Container = styled.div`
-  div {
-    font-size: 15px;
-    padding: 0 0 5px 0;
-    :hover {
-      opacity: 0.5;
-      cursor: pointer;
-    }
-  }
-  .active {
-    color: dodgerblue !important;
-  }
-`
+export default Options

@@ -4,13 +4,13 @@ import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
-import { CanvasContainer, ExampleLayout, Options, Spin } from '.'
+import { CanvasContainer, ExampleLayout, Spin } from '.'
 import { storeApi, useStore } from '../store'
 import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
-import Params from './Params'
+import Options from './Options'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -27,7 +27,6 @@ export const Main: React.FC = () => {
     <ExampleLayout>
       <div style={{ display: 'grid' }}>
         <Options examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
-        <Params />
       </div>
       <CanvasContainer>
         <Canvas
