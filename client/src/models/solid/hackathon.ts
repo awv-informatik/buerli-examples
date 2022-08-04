@@ -1,7 +1,11 @@
-import { ApiNoHistory } from '@buerli.io/headless'
+import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
+import { Create, Param } from '../../store'
 
-export const create = async (api: ApiNoHistory) => {
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiNoHistory
   const shape = new THREE.Shape()
   shape.lineTo(100, 0)
   shape.lineTo(100, 20)
@@ -24,17 +28,19 @@ export const create = async (api: ApiNoHistory) => {
   api.rotateTo(cyl2, [Math.PI / 2, 0, 0])
   api.subtract(solid, false, cyl1, cyl2)
   const offset = api.offset(solid, 1)
-  const geom = await api.createBufferGeometry(offset)
+  return offset
+}
+
+export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+  if (!api) return
+  const geom = await api.createBufferGeometry(solidId)
   const mesh = new THREE.Mesh(
     geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 0.8,
-      color: new THREE.Color('rgb(237, 152, 47)'),
-    }),
+    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(150, 120, 255)') }),
   )
-
   return [mesh]
 }
 
-export default create
+export const cad = new solid()
+
+export default { create, paramsMap, cad }

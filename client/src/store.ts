@@ -9,18 +9,27 @@ export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedPara
 export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 
 const toc: { exampleId: string, label: string; file: string }[] = [
+
+  // solid example
+  { exampleId: 'Fish', label: 'Fish', file: 'solid/fish' },
+  { exampleId: 'Heart', label: 'Heart', file: 'solid/heart' },
+  { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego' },
+  { exampleId: 'StepImport', label: 'Step Import', file: 'solid/import-step' },
+  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
+  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
+  { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon' },
+  { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part' },
+  { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1' },
+  { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2' },
+  { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley' },
+
+  // history example
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
   { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly' },
   { exampleId: 'L-Bracket_Assembly', label: 'LBracket Assembler', file: 'history/LBracket_Assembly' },
   { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
   { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
-  { exampleId: 'fish', label: 'Fish', file: 'solid/fish' },
-  { exampleId: 'heart', label: 'Heart', file: 'solid/heart' },
-  { exampleId: 'lego', label: 'Lego Configurator', file: 'solid/lego' },
-  { exampleId: 'StepImport', label: 'Step Import', file: 'solid/import-step' },
-  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
-  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
   { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator' },
   { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm' },

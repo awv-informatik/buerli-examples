@@ -39,7 +39,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
   const { index, type, value } = param
   const exampleId = useStore(s => s.activeExample)
   const setParam = useStore(s => s.setParam)
-  const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
+  const val = useStore(s => s.examples.objs[exampleId].params.values[index])
   const api = useStore(s => s.examples.objs[exampleId].api)
   return (
     <>

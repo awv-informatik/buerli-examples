@@ -10,7 +10,7 @@ import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
-import Options from './Options'
+import { Sidebar } from './Sidebar'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -26,7 +26,7 @@ export const Main: React.FC = () => {
   return (
     <ExampleLayout>
       <div style={{ display: 'grid' }}>
-        <Options examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
       </div>
       <CanvasContainer>
         <Canvas
@@ -41,6 +41,7 @@ export const Main: React.FC = () => {
           <Fit>
             <Part />
           </Fit>
+          <axesHelper visible={true} />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>

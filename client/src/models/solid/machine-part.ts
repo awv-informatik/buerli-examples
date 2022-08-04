@@ -1,7 +1,12 @@
-import { ApiNoHistory, createPolyline, FilletPoint, Polyline } from '@buerli.io/headless'
+import { ApiNoHistory, solid, createPolyline, FilletPoint, Polyline } from '@buerli.io/headless'
 import * as THREE from 'three'
+import { Create, Param } from '../../store'
 
-export const create = async (api: ApiNoHistory) => {
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiNoHistory
+
   const width = 53
   const depth = 26
   const p1: FilletPoint = { point: new THREE.Vector3(0, 0, 0), radius: 0 }
@@ -35,12 +40,19 @@ export const create = async (api: ApiNoHistory) => {
     [-(width + 17) / 2, 13, 0],
   )
   api.fillet(2, edges2)
-  const geom = await api.createBufferGeometry(basicBody)
+  return basicBody
+}
+
+export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+  if (!api) return
+  const geom = await api.createBufferGeometry(solidId)
   const mesh = new THREE.Mesh(
     geom,
-    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(237, 152, 47)') }),
+    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(99, 120, 255)') }),
   )
   return [mesh]
 }
 
-export default create
+export const cad = new solid()
+
+export default { create,  getBufferGeom, paramsMap, cad }
