@@ -1,11 +1,14 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory } from '@buerli.io/headless'
+import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.of1'
 import arraybuffer3 from '../../resources/history/As1/LBracket.of1'
 import arraybuffer2 from '../../resources/history/As1/Nut.of1'
-import { ParamType } from '../../store'
+import { Create, Param } from '../../store'
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
@@ -164,4 +167,6 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   return lBracketAsm
 }
 
-export default create
+export const cad = new history()
+
+export default { create, paramsMap, cad }

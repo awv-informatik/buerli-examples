@@ -1,10 +1,11 @@
 import { ApiNoHistory, solid } from '@buerli.io/headless'
+import Paragraph from 'antd/lib/typography/Paragraph'
 import * as THREE from 'three'
-import { Create, Param, Update } from '../../store'
+import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'Rows', type: 'number', value: 2  },
-  { index: 1, name: 'Colums', type: 'number', value: 5 },
+  { index: 0, name: 'Rows', type: ParamType.Number, value: 2  },
+  { index: 1, name: 'Colums', type: ParamType.Number, value: 5 },
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {

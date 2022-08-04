@@ -218,12 +218,12 @@ export const create: Create = async (apiType, params?) => {
   const lBracketAsmRef2 = await api.addNode(lBracketAsm, as1Asm, [pt0, xDir, yDir])
 
   /* Set 1st lBracket-assembly on plate */
-  const constrLBracket1 = await api.createFastenedConstraint(
+  await api.createFastenedConstraint(
     as1Asm,
     { matePath: [plateRef], wcsId: wcsIdPlate2[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
       matePath: [lBracketAsmRef1],
-      wcsId: wcsIdBoltOrigin[0],
+      wcsId: wcsIdLBracket2Bottom[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
@@ -234,7 +234,7 @@ export const create: Create = async (apiType, params?) => {
   )
 
   /* Set 2nd lBracket-assembly on plate */
-  const constrLBracket2 = await api.createFastenedConstraint(
+  await api.createFastenedConstraint(
     as1Asm,
     { matePath: [plateRef], wcsId: wcsIdPlate5[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
     {
@@ -317,82 +317,6 @@ export const create: Create = async (apiType, params?) => {
     0,
     'FC9',
   )
-
-  type VID = Promise<number | null> | number
-  
-  const firstConstraint: {
-    constrId: VID
-    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
-    mate2: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrLBracket1,
-    mate1: {
-      matePath: [plateRef],
-      wcsId: wcsIdPlate2[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: [boltRefId, nutBoltAsmRef2, lBracketAsmRef1],
-      wcsId: wcsIdBoltOrigin[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: 0,
-  }
-
-  const secondConstraint: {
-    constrId: VID
-    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
-    mate2: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrLBracket2,
-    mate1: {
-      matePath: [plateRef],
-      wcsId: wcsIdPlate5[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: [boltRefId, nutBoltAsmRef2, lBracketAsmRef2],
-      wcsId: wcsIdBoltOrigin[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: 50,
-  }
-  //boltRefId, nutBoltAsmRef2, lBracketAsmRef1
-  await api.updateFastenedConstraints(firstConstraint, secondConstraint)
-
-  const thirdConstraint: {
-    constrId: VID
-    mate1: { matePath: VID[]; wcsId: VID; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrPlate,
-    mate1: {
-      matePath: [plateRef],
-      wcsId: wcsIdPlateBase[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: 50,
-    yOffset: 50,
-    zOffset: 0,
-  }
-  await api.updateFastenedOriginConstraints(thirdConstraint)
   return as1Asm
 }
 

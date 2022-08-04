@@ -1,11 +1,11 @@
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
-import { Create, Param, Update } from '../../store'
+import { Create, Param, ParamType, Update } from '../../store'
 import { setNodesColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'Thickness', type: 'number', value: 5 },
+  { index: 0, name: 'Thickness', type: ParamType.Number, value: 5 },
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {

@@ -1,8 +1,12 @@
 import { FlipType, ReorientedType, BooleanOperationType, WorkCoordSystemType } from '@buerli.io/classcad'
-import { ApiHistory } from '@buerli.io/headless'
-import { ParamType } from '../../store'
+import { ApiHistory, history } from '@buerli.io/headless'
+import { Create, Param } from '../../store'
 
-export const create = async (api: ApiHistory, params?: ParamType) => {
+export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+
+export const create: Create = async (apiType, params) => {
+  const api = apiType as ApiHistory
+  
   /* consts */
   const pt0 = { x: 0, y: 0, z: 0 }
   const pt1 = { x: 50, y: 0, z: 0 }
@@ -276,4 +280,6 @@ export const create = async (api: ApiHistory, params?: ParamType) => {
   return lBracketAsm
 }
 
-export default create
+export const cad = new history()
+
+export default { create, paramsMap, cad }

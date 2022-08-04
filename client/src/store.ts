@@ -9,9 +9,11 @@ export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedPara
 export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 
 const toc: { exampleId: string, label: string; file: string }[] = [
-  { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart_Example' },
-  { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
+  { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
+  { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
   { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly' },
+  { exampleId: 'L-Bracket_Assembly', label: 'LBracket Assembler', file: 'history/LBracket_Assembly' },
+  { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
   { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
   { exampleId: 'fish', label: 'Fish', file: 'solid/fish' },
   { exampleId: 'heart', label: 'Heart', file: 'solid/heart' },
