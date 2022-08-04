@@ -41,7 +41,6 @@ export const Main: React.FC = () => {
           <Fit>
             <Part />
           </Fit>
-          <axesHelper visible={true} />
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
