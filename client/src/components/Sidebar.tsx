@@ -15,14 +15,16 @@ export const Sidebar: React.FC<{
   const solidExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof solid)
   const historyExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof history)
   return (
-    <Tabs defaultActiveKey="1" onChange={e => console.log(e)}>
-      <TabPane tab="Solid" key="1">
-        <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
-      </TabPane>
-      <TabPane tab="History" key="2">
-        <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
-      </TabPane>
-    </Tabs>
+    <div>
+      <Tabs defaultActiveKey="1" onChange={e => console.log(e)}>
+        <TabPane tab="Solid" key="1">
+          <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
+        </TabPane>
+        <TabPane tab="History" key="2">
+          <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
+        </TabPane>
+      </Tabs>
+    </div>
   )
 }
 
