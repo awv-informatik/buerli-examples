@@ -16,7 +16,7 @@ export const Sidebar: React.FC<{
   const historyExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof history)
   return (
     <div>
-      <Tabs defaultActiveKey="1" onChange={e => console.log(e)}>
+      <Tabs defaultActiveKey="1" >
         <TabPane tab="Solid" key="1">
           <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
         </TabPane>
