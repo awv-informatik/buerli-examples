@@ -1,6 +1,7 @@
 import { api as buerliApi } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
 import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
+import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
@@ -41,6 +42,23 @@ export const Main: React.FC = () => {
           <Fit>
             <Part />
           </Fit>
+          <GizmoHelper renderPriority={0} alignment="top-right" margin={[80, 80]}>
+            <group scale={0.8}>
+              <group scale={2.25} position={[-30, -30, -30]} rotation={[0, 0, 0]}>
+                <GizmoViewport
+                  disabled
+                  axisScale={[0.8, 0.02, 0.02]}
+                  axisHeadScale={0.45}
+                  hideNegativeAxes
+                  labelColor="black"
+                />
+              </group>
+              <GizmoViewcube
+                font="24px Inter var, Arial, sans-serif"
+                faces={['Right', 'Left', 'Back', 'Front', 'Top', 'Bottom']}
+              />
+            </group>
+          </GizmoHelper>
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
