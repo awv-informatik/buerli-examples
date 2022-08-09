@@ -10,10 +10,10 @@ const pd = 3
 const pa = 4
 
 export const paramsMap: Param[] = [
-  { index: le, name: 'Length', type: ParamType.Slider, value: 200, values: [100, 400] },
-  { index: he, name: 'Height', type: ParamType.Slider, value: 40, values: [20, 80] },
-  { index: wi, name: 'Width', type: ParamType.Slider, value: 60, values: [20, 120] },
-  { index: pd, name: 'Position', type: ParamType.Slider, value: 0, values: [0, 100] },
+  { index: le, name: 'Length', type: ParamType.Slider, value: 200, step: 5, values: [100, 400] },
+  { index: he, name: 'Height', type: ParamType.Slider, value: 40, step: 5, values: [20, 80] },
+  { index: wi, name: 'Width', type: ParamType.Slider, value: 60, step: 5, values: [20, 120] },
+  { index: pd, name: 'Position', type: ParamType.Slider, value: 0, step: 5, values: [0, 100] },
   {
     index: pa,
     name: 'Produktauswahl',

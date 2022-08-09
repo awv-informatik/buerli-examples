@@ -5,7 +5,7 @@ import vanillaCreate from 'zustand/vanilla'
 
 // eslint-disable-next-line no-shadow
 export enum ParamType { Number = 0, Checkbox = 1, Enum = 2, Slider = 3, Dropdown = 4, Button = 5 }
-export type Param = { index: number; name: string; type: ParamType; value: any; values?: any[] }
+export type Param = { index: number; name: string; type: ParamType; value: any; step?: any; values?: any[] }
 export type Create = (api: ApiHistory | ApiNoHistory, params?: { lastUpdatedParam: number; values: any[] }, options?: any) => Promise<number>
 export type Update = (api: ApiHistory | ApiNoHistory, productId: number, params?: { lastUpdatedParam: number; values: any[] }) => Promise<number>
 

@@ -110,7 +110,7 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
 }
 
 const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
-  const { index, value, values } = param
+  const { index, value, step, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
@@ -120,14 +120,15 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
     [min]: min.toString(),
     [max]: max.toString(),
   }
-  const step = max / 100 < 1 ? 1 : Math.round(max / 100)
+
+  const defaultStep = (max - min) / 100
   return (
     <Slider
       marks={marks}
       defaultValue={val}
       min={min}
       max={max}
-      step={step}
+      step={step ? step : defaultStep}
       onAfterChange={(e: any) => {
         setParamIfValChanged(e, val, index)
       }}
