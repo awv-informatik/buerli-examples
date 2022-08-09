@@ -1,30 +1,29 @@
 import React from 'react'
-import Collapse from 'antd/lib/collapse/Collapse';
-import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
+import Collapse from 'antd/lib/collapse/Collapse'
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
 import { Example } from '../store'
 import Params from './Params'
-import Tabs from 'antd/lib/tabs';
-import TabPane from 'rc-tabs/lib/TabPanelList/TabPane';
+import Tabs from 'antd/lib/tabs'
+import TabPane from 'rc-tabs/lib/TabPanelList/TabPane'
 import { solid, history } from '@buerli.io/headless'
+import './../styles/custom.css'
 
 export const Sidebar: React.FC<{
   examples: Record<string, Example>
   active?: string | undefined
   onChange: (value: string) => void
-}> = ({examples, active, onChange}) => {
+}> = ({ examples, active, onChange }) => {
   const solidExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof solid)
   const historyExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof history)
   return (
-    <div>
-      <Tabs defaultActiveKey="1" >
-        <TabPane tab="Solid" key="1">
-          <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
-        </TabPane>
-        <TabPane tab="History" key="2">
-          <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
-        </TabPane>
-      </Tabs>
-    </div>
+    <Tabs defaultActiveKey="1">
+      <TabPane tab="Solid" key="1">
+        <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
+      </TabPane>
+      <TabPane tab="History" key="2">
+        <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
+      </TabPane>
+    </Tabs>
   )
 }
 
@@ -36,18 +35,23 @@ const Options: React.FC<{
   onChange: (value: string) => void
 }> = ({ examples, exampleKeys, active, onChange }) => {
   return (
-    <Collapse  accordion activeKey={active} ghost onChange={e => {
+    <Collapse
+      accordion
+      activeKey={active}
+      ghost
+      onChange={e => {
         e && onChange && onChange(e as string)
       }}>
-      {exampleKeys.map(
-        key => (
-          <CollapsePanel header={<div style={active === key ? activeStyle : {}}>{examples[key].label}</div>} key={key} showArrow={false}>
-            {examples[key].paramsMap.length > 0 && <Params />}
-          </CollapsePanel>
-        )
-      )}  
+      {exampleKeys.map(key => (
+        <CollapsePanel
+          header={<div style={active === key ? activeStyle : {}}>{examples[key].label}</div>}
+          key={key}
+          showArrow={false}>
+          <div style={{ paddingLeft: '20px' }}>{examples[key].paramsMap.length > 0 && <Params />}</div>
+        </CollapsePanel>
+      ))}
     </Collapse>
   )
 }
 
-const activeStyle = { color: 'dodgerblue', fontWeight: 'bold'}
+const activeStyle = { color: 'dodgerblue', fontWeight: 'bold' }

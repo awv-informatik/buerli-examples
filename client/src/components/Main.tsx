@@ -26,9 +26,7 @@ export const Main: React.FC = () => {
 
   return (
     <ExampleLayout>
-      <div style={{ display: 'grid' }}>
-        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
-      </div>
+      <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
       <CanvasContainer>
         <Canvas
           shadows
@@ -62,9 +60,7 @@ export const Main: React.FC = () => {
         </Canvas>
         {loading && <Spin />}
       </CanvasContainer>
-      <div>
-        <CodeWrapper />
-      </div>
+      <CodeWrapper />
     </ExampleLayout>
   )
 }
@@ -83,7 +79,7 @@ const Part: React.FC = () => {
   const productOrSolidId = React.useRef<number>(0)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
-  
+
   const onSelect = React.useCallback(() => {
     fit()
     set({ loading: false })
@@ -104,7 +100,7 @@ const Part: React.FC = () => {
       headlessApi.current = api
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidId.current = await create(api, p, { onSelect, onResume})
+        productOrSolidId.current = await create(api, p, { onSelect, onResume })
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
           setMeshes(tempMeshes)
