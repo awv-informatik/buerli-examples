@@ -36,12 +36,12 @@ const Options: React.FC<{
   onChange: (value: string) => void
 }> = ({ examples, exampleKeys, active, onChange }) => {
   return (
-    <Collapse accordion activeKey={active} ghost onChange={e => {
+    <Collapse  accordion activeKey={active} ghost onChange={e => {
         e && onChange && onChange(e as string)
       }}>
       {exampleKeys.map(
         key => (
-          <CollapsePanel header={examples[key].label} key={key} showArrow={false}>
+          <CollapsePanel header={<div style={active === key ? activeStyle : {}}>{examples[key].label}</div>} key={key} showArrow={false}>
             {examples[key].paramsMap.length > 0 && <Params />}
           </CollapsePanel>
         )
@@ -49,3 +49,5 @@ const Options: React.FC<{
     </Collapse>
   )
 }
+
+const activeStyle = { color: 'dodgerblue', fontWeight: 'bold'}
