@@ -83,19 +83,28 @@ const Part: React.FC = () => {
   const productOrSolidId = React.useRef<number>(0)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
+  
+  const onSelect = React.useCallback(() => {
+    fit()
+    set({ loading: false })
+  }, [fit, set])
+
+  const onResume = React.useCallback(() => {
+    set({ loading: true })
+  }, [set])
 
   React.useEffect(() => {
     headlessApi.current = null
     setMeshes([])
     setScene(null)
-    //set({ loading: true })
+    set({ loading: true })
 
     cad.init(async api => {
       setAPI(exampleId, api)
       headlessApi.current = api
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidId.current = await create(api, p)
+        productOrSolidId.current = await create(api, p, { onSelect, onResume})
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
           setMeshes(tempMeshes)
@@ -109,7 +118,7 @@ const Part: React.FC = () => {
         console.error(JSON.stringify(error))
       } finally {
         fit()
-        //set({ loading: false })
+        set({ loading: false })
       }
     })
     return () => {
@@ -123,12 +132,12 @@ const Part: React.FC = () => {
       })
       // cad.destroy()
     }
-  }, [cad, create, exampleId, fit, getBufferGeom, getScene, setAPI])
+  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, set, setAPI])
 
   React.useEffect(() => {
     const run = async () => {
       if (headlessApi.current && update && params) {
-        //set({ loading: true })
+        set({ loading: true })
         try {
           productOrSolidId.current = await update(headlessApi.current, productOrSolidId.current, params)
           if (getBufferGeom) {
@@ -143,7 +152,7 @@ const Part: React.FC = () => {
           setScene(null)
           console.error(JSON.stringify(error))
         } finally {
-          //set({ loading: false })
+          set({ loading: false })
         }
       }
     }
