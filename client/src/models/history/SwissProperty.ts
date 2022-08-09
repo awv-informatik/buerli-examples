@@ -112,14 +112,14 @@ let wallInsulationNodes: node[] = []
 let wallInsulationCustomNodes: node[] = []
 let allNodes: node[] = []
 
-let exampleId: string = ''
+let activeExampleId: string = ''
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
 
   if (!params) {
-    exampleId = storeApi.getState().activeExample
-    params = storeApi.getState().examples.objs[exampleId].params
+    activeExampleId = storeApi.getState().activeExample
+    params = storeApi.getState().examples.objs[activeExampleId].params
   }
 
   //*************************************************/
@@ -234,8 +234,8 @@ export const create: Create = async (apiType, params) => {
       thickness: paramsMap[hst].value,
     })
 
-    const exampleId = storeApi.getState().activeExample
-    store.getState().setLayers(exampleId, -1, layers)
+    activeExampleId = storeApi.getState().activeExample
+    store.getState().setLayers(activeExampleId, -1, layers)
 
     // Initial balkenwand configuration
     await updateBalkenwandSize(params.values[wl], params.values[wh], params.values, layers, api)
@@ -247,9 +247,9 @@ export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
-  exampleId = storeApi.getState().activeExample
+  activeExampleId = storeApi.getState().activeExample
 
-  const layers = store.getState().layers[exampleId]
+  const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
     await api.removeNode(layers.lastRemovedLayer, productId)
     await transformLayers(layers.layers, params.values, api)
@@ -646,7 +646,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
     tempLayers[i] = { ...tempLayers[i], posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance }
     await api.transformNode(tempLayers[i].refId, rootNode, [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir])
   }
-  store.getState().setLayers(exampleId, -1, tempLayers)
+  store.getState().setLayers(activeExampleId, -1, tempLayers)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -672,7 +672,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[gt],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
         }
       }
       break
@@ -692,7 +692,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[spt],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
         }
       }
       break
@@ -712,7 +712,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[bwt],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
           await updateWallSize(params[wl], params[wh], params, tempLayers, api)
         }
       }
@@ -733,7 +733,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[dt],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
         }
       }
       break
@@ -753,7 +753,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: 2 * params[hlt],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
         }
       }
       break
@@ -773,7 +773,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[hst],
           })
-          store.getState().setLayers(exampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, -1, tempLayers)
         }
       }
       break
