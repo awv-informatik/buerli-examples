@@ -27,7 +27,6 @@ const InnerLayout = styled.div`
   /* column-gap: 40px; */
   > div {
     padding: 10px;
-    margin-right: 8px;
     margin-bottom: 2px;
     align-self: stretch;
     justify-self: stretch;
@@ -44,7 +43,7 @@ const InnerLayout = styled.div`
     display: grid;
     height: 100%;
     width: 100%;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: minmax(190px, min-content) 1fr;
     grid-template-rows: 1fr;
     justify-items: center;
   }
@@ -52,14 +51,14 @@ const InnerLayout = styled.div`
     display: grid;
     height: 100%;
     width: 100%;
-    grid-template-columns: max-content 1fr 0.5fr;
+    grid-template-columns: minmax(190px, min-content) 1fr 0.5fr;
     grid-template-rows: 1fr;
   }
   &.four {
     display: grid;
     height: 100%;
     width: 100%;
-    grid-template-columns: max-content 1fr 0.5fr;
+    grid-template-columns: minmax(190px, min-content) 1fr 0.5fr;
     grid-template-rows: 1fr 1fr;
 
     > :nth-child(1) {
