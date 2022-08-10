@@ -8,7 +8,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "dev": "react-app-rewired start",
-    "lint": "eslint \"./src/**/*.ts?(x)\""
+    "lint": "eslint \"./src/**/*.ts?(x)\"",
+    "prettify": "prettier --write \"./{src,tests}/**/*.{js,jsx,ts,tsx,json}\""
   },
   "husky": {
     "hooks": {

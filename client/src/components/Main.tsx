@@ -127,8 +127,8 @@ const Part: React.FC = () => {
         setScene(null)
         console.error(JSON.stringify(error))
       } finally {
-        fit()
         set({ loading: false })
+        fit()
       }
     })
     return () => {
