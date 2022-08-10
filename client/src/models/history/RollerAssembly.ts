@@ -117,7 +117,8 @@ export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Update walze length
   if (check(paramsMap[wl])) {
@@ -140,8 +141,20 @@ export const update: Update = async (apiType, productId, params) => {
   }
 
   // Update number of segments
-  if (check(paramsMap[ns]) || check(paramsMap[wl]) || check(paramsMap[wd]) || check(paramsMap[ss])) {
-    await updateNofSegments(params.values[ns], params.values[ss], params.values[wl], params.values[wd], api, productId)
+  if (
+    check(paramsMap[ns]) ||
+    check(paramsMap[wl]) ||
+    check(paramsMap[wd]) ||
+    check(paramsMap[ss])
+  ) {
+    await updateNofSegments(
+      params.values[ns],
+      params.values[ss],
+      params.values[wl],
+      params.values[wd],
+      api,
+      productId,
+    )
   }
 
   // Update plug positions
@@ -249,7 +262,9 @@ async function updateNofSegments(
 ) {
   const z = nofSegments > 1 ? walzeLength / 2 - minGapFrameSegment - gapInFrame - segSize / 2 : 0
   const distanceBtSegments =
-    nofSegments > 1 ? (walzeLength - 2 * (minGapFrameSegment + gapInFrame) - segSize) / (nofSegments - 1) : 0
+    nofSegments > 1
+      ? (walzeLength - 2 * (minGapFrameSegment + gapInFrame) - segSize) / (nofSegments - 1)
+      : 0
 
   const segmentDir = { x: 0, y: 1, z: 0 }
 
@@ -515,7 +530,12 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    mate2: { matePath: constrLogo0[2][0], wcsId: constrLogo0[2][1], flip: FlipType.FLIP_Z, reoriented: reorientLogo0 },
+    mate2: {
+      matePath: constrLogo0[2][0],
+      wcsId: constrLogo0[2][1],
+      flip: FlipType.FLIP_Z,
+      reoriented: reorientLogo0,
+    },
     xOffset: constrLogo0[3],
     yOffset: constrLogo0[4],
     zOffset: constrLogo0[5],
@@ -536,13 +556,25 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    mate2: { matePath: constrLogo1[2][0], wcsId: constrLogo1[2][1], flip: FlipType.FLIP_Z, reoriented: reorientLogo1 },
+    mate2: {
+      matePath: constrLogo1[2][0],
+      wcsId: constrLogo1[2][1],
+      flip: FlipType.FLIP_Z,
+      reoriented: reorientLogo1,
+    },
     xOffset: constrLogo1[3],
     yOffset: constrLogo1[4],
     zOffset: constrLogo1[5],
   }
 
-  await api.updateFastenedConstraints(fcArrow0Out, fcArrow1Out, fcArrow0In, fcArrow1In, fcLogo0, fcLogo1)
+  await api.updateFastenedConstraints(
+    fcArrow0Out,
+    fcArrow1Out,
+    fcArrow0In,
+    fcArrow1In,
+    fcLogo0,
+    fcLogo1,
+  )
 
   // Frames (End)
   const focEnd1: {
@@ -649,12 +681,6 @@ async function prepareViews(api: ApiHistory) {
   }
 
   // Some consts
-  const wl = 0
-  const ad = 1
-  // const wd = 2
-  const ss = 3
-  const ns = 4
-  // const pp = 5
   const frameDepth = 60
   const frameWidth = 210
   const segmentDiameter = 150
@@ -719,7 +745,10 @@ async function prepareViews(api: ApiHistory) {
   // Segment width
   let segmentDiameter_D: DimensionType
   if (params.values[ns] > 0) {
-    z = params.values[ns] > 1 ? -params.values[wl] / 2 + minGapFrameSegment + gapInFrame + params.values[ss] / 2 : 0
+    z =
+      params.values[ns] > 1
+        ? -params.values[wl] / 2 + minGapFrameSegment + gapInFrame + params.values[ss] / 2
+        : 0
     switch (params.values[ad]) {
       case 0:
         dimStartPos = { x: -(segmentDiameter / 2), y: 0, z: z }

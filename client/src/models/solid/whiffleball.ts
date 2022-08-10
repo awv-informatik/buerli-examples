@@ -32,7 +32,7 @@ export const create: Create = async (apiType, params) => {
   api.slice(b1, [0, 0, 60], [0, 0, 1])
   api.slice(b1, [0, 0, -60], [0, 0, -1])
   api.slice(b1, [0, 60, 0], [0, 1, 0])
-  api.slice(b1, [0, -60, 0], [0, -1, 0]) 
+  api.slice(b1, [0, -60, 0], [0, -1, 0])
   return b1
 }
 

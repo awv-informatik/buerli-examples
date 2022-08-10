@@ -38,7 +38,11 @@ export const Main: React.FC = () => {
         </button>
       </div>
       <ExampleLayout>
-        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        <Sidebar
+          examples={exampleIds}
+          onChange={v => set({ activeExample: v })}
+          active={activeExample}
+        />
         <CanvasContainer>
           <Canvas
             shadows
@@ -149,7 +153,11 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidId.current = await update(headlessApi.current, productOrSolidId.current, params)
+          productOrSolidId.current = await update(
+            headlessApi.current,
+            productOrSolidId.current,
+            params,
+          )
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
             setMeshes(tempMeshes)

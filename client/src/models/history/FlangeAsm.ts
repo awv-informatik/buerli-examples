@@ -9,7 +9,6 @@ import { Create, Param } from '../../store'
 const origin = { x: 0, y: 0, z: 0 }
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
-let zDir = { x: 0, y: 0, z: 1 }
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -25,13 +24,12 @@ export const create: Create = async (apiType, param) => {
   const nut = await api.loadProduct(nutAB, 'of1')
 
   if (flange && bolt && nut) {
-
     // Get all necessary work coordinate systems
     const wcsCenter = await api.getWorkCoordSystem(flange[0], 'WCSCenter')
     const wcsHole1Top = await api.getWorkCoordSystem(flange[0], 'WCSBoltHoleTop')
     const wcsBoltHead = await api.getWorkCoordSystem(bolt[0], 'WCSHead')
     const wcsNut = await api.getWorkCoordSystem(nut[0], 'WCSNut')
-  
+
     // Add the products as nodes to the root assembly
     const flange1Node = await api.addNode(flange[0], root, [origin, xDir, yDir])
     const flange2Node = await api.addNode(flange[0], root, [origin, xDir, yDir])
@@ -67,7 +65,10 @@ export const create: Create = async (apiType, param) => {
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_180,
       },
-      0,0,0, 'FCFlange1Flange2'
+      0,
+      0,
+      0,
+      'FCFlange1Flange2',
     )
 
     await api.createFastenedConstraint(
@@ -84,7 +85,10 @@ export const create: Create = async (apiType, param) => {
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
-      0,0,0, 'FCFlange1Bolt'
+      0,
+      0,
+      0,
+      'FCFlange1Bolt',
     )
 
     await api.createFastenedConstraint(
@@ -101,7 +105,10 @@ export const create: Create = async (apiType, param) => {
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_0,
       },
-      0,0,0, 'FCFlange2Nut'
+      0,
+      0,
+      0,
+      'FCFlange2Nut',
     )
     return root
   }

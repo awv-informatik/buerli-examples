@@ -20,7 +20,7 @@ type node = {
 
 type Layer = { name: string; type: string; refId: number; thickness: number; posX: number }
 
-type StoreProps = Readonly<{ 
+type StoreProps = Readonly<{
   layers: Record<string, { lastRemovedLayer: number; layers: Layer[] }>
   setLayers: (exampleId: string, removedLayer: number, params: Layer[]) => void
 }>
@@ -44,7 +44,6 @@ const verticalBeamThickness: number = 100
 const horizontalBeamThickness: number = 60
 const wallInsulationWidth: number = 525
 
-
 const wl = 0
 const wh = 1
 const di = 2
@@ -59,12 +58,54 @@ const aL = 9
 export const paramsMap: Param[] = [
   { index: wl, name: 'Length', type: ParamType.Number, value: 1000 },
   { index: wh, name: 'Height', type: ParamType.Number, value: 1000 },
-  { index: gt, name: 'Gipsplatte Thickness', type: ParamType.Slider, value: 13, step: 1, values: [10, 20] },
-  { index: spt, name: 'Spanplatte Thickness', type: ParamType.Slider, value: 15, step: 1, values: [10, 25] },
-  { index: bwt, name: 'Balkenwand Thickness', type: ParamType.Slider, value: 140, step: 1, values: [100, 200] },
-  { index: dt, name: 'Daemmung Thickness', type: ParamType.Slider, value: 60, step: 1, values: [40, 80] },
-  { index: hlt, name: 'Holzlattung Thickness', type: ParamType.Slider, value: 40, step: 1, values: [20, 60] },
-  { index: hst, name: 'Holzschalung Thickness', type: ParamType.Slider, value: 25, step: 1, values: [20, 30] },
+  {
+    index: gt,
+    name: 'Gipsplatte Thickness',
+    type: ParamType.Slider,
+    value: 13,
+    step: 1,
+    values: [10, 20],
+  },
+  {
+    index: spt,
+    name: 'Spanplatte Thickness',
+    type: ParamType.Slider,
+    value: 15,
+    step: 1,
+    values: [10, 25],
+  },
+  {
+    index: bwt,
+    name: 'Balkenwand Thickness',
+    type: ParamType.Slider,
+    value: 140,
+    step: 1,
+    values: [100, 200],
+  },
+  {
+    index: dt,
+    name: 'Daemmung Thickness',
+    type: ParamType.Slider,
+    value: 60,
+    step: 1,
+    values: [40, 80],
+  },
+  {
+    index: hlt,
+    name: 'Holzlattung Thickness',
+    type: ParamType.Slider,
+    value: 40,
+    step: 1,
+    values: [20, 60],
+  },
+  {
+    index: hst,
+    name: 'Holzschalung Thickness',
+    type: ParamType.Slider,
+    value: 25,
+    step: 1,
+    values: [20, 30],
+  },
   { index: di, name: 'Exploded View', type: ParamType.Slider, value: 0, step: 1, values: [0, 800] },
   {
     index: aL,
@@ -84,9 +125,14 @@ const posXGipsplatte: number = 0
 const posXSpanplatte: number = paramsMap[gt].value
 const posXBalkenwand: number = paramsMap[gt].value + paramsMap[spt].value
 const posXDaemmung: number = paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value
-const posXHolzlattung: number = paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value
+const posXHolzlattung: number =
+  paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value
 const posXHolzschalung: number =
-  paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value + 2 * paramsMap[hlt].value
+  paramsMap[gt].value +
+  paramsMap[spt].value +
+  paramsMap[bwt].value +
+  paramsMap[dt].value +
+  2 * paramsMap[hlt].value
 
 let gipsplattePrt: number[] | null = null
 let spanplattePrt: number[] | null = null
@@ -246,7 +292,8 @@ export const create: Create = async (apiType, params) => {
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   activeExampleId = storeApi.getState().activeExample
 
   const layers = store.getState().layers[activeExampleId]
@@ -312,7 +359,13 @@ export default { create, update, paramsMap, cad }
 ///////////////////////////////////////////////////////////////
 
 /** Changes the whole wall size */
-async function updateWallSize(length: number, height: number, params: any[], layers: Layer[], api: ApiHistory) {
+async function updateWallSize(
+  length: number,
+  height: number,
+  params: any[],
+  layers: Layer[],
+  api: ApiHistory,
+) {
   if (gipsplattePrt && spanplattePrt && daemmungPrt && holzlattungPrt && holzschalungPrt) {
     await updateBalkenwandSize(length, height, params, layers, api)
     const exprSets: {
@@ -360,8 +413,20 @@ async function updateWallSize(length: number, height: number, params: any[], lay
 }
 
 /** Changes the size of the balkenwand subassembly */
-async function updateBalkenwandSize(length: number, height: number, params: any[], layers: Layer[], api: ApiHistory) {
-  if (balkenwandAsm && horizontalBeamPrt && verticalBeamPrt && wallInsulationPrt && wallInsulationCustomPrt) {
+async function updateBalkenwandSize(
+  length: number,
+  height: number,
+  params: any[],
+  layers: Layer[],
+  api: ApiHistory,
+) {
+  if (
+    balkenwandAsm &&
+    horizontalBeamPrt &&
+    verticalBeamPrt &&
+    wallInsulationPrt &&
+    wallInsulationCustomPrt
+  ) {
     const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
       partId: number
@@ -643,8 +708,15 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
     const posXOfLayerBefore = i - 1 >= 0 ? tempLayers[i - 1].posX : 0
     const thicknessOfLayerBefore = i - 1 >= 0 ? tempLayers[i - 1].thickness : 0
     const explodeDistance = i - 1 >= 0 ? params[di] : 0
-    tempLayers[i] = { ...tempLayers[i], posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance }
-    await api.transformNode(tempLayers[i].refId, rootNode, [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir])
+    tempLayers[i] = {
+      ...tempLayers[i],
+      posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
+    }
+    await api.transformNode(tempLayers[i].refId, rootNode, [
+      { x: tempLayers[i].posX, y: 0, z: 0 },
+      xDir,
+      yDir,
+    ])
   }
   store.getState().setLayers(activeExampleId, -1, tempLayers)
 }

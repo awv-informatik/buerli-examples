@@ -47,7 +47,9 @@ export const findObjectsByName = (name: string, scene: THREE.Scene): Object3D[] 
  */
 export const setNodesColor = (nameOrId: string | number, color: Color, scene: THREE.Scene) => {
   const nodes: Object3D[] =
-    typeof nameOrId === 'string' ? findObjectsByName(nameOrId, scene) : findObjectsById(nameOrId, scene)
+    typeof nameOrId === 'string'
+      ? findObjectsByName(nameOrId, scene)
+      : findObjectsById(nameOrId, scene)
   nodes.forEach(node => {
     if (node && node.children.length > 0 && node.children[0].type === 'Mesh') {
       node?.children.forEach(child => {
@@ -65,10 +67,16 @@ export const setNodesColor = (nameOrId: string | number, color: Color, scene: TH
  * @param transparency transparency (0 - 1) to set on the object which correspond to the node. 1 = completely transparent
  * @param scene scene where the objects will be set to transparency
  */
-export const setNodesTransparency = (nameOrId: string | number, transparency: number, scene: THREE.Scene) => {
+export const setNodesTransparency = (
+  nameOrId: string | number,
+  transparency: number,
+  scene: THREE.Scene,
+) => {
   if (transparency > 1 || transparency < 0) return
   const nodes: Object3D[] =
-    typeof nameOrId === 'string' ? findObjectsByName(nameOrId, scene) : findObjectsById(nameOrId, scene)
+    typeof nameOrId === 'string'
+      ? findObjectsByName(nameOrId, scene)
+      : findObjectsById(nameOrId, scene)
   nodes.forEach(node => {
     if (node && node.children.length > 0 && node.children[0].type === 'Mesh') {
       node?.children.forEach(child => {

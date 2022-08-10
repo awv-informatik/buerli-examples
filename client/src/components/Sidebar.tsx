@@ -14,14 +14,26 @@ export const Sidebar: React.FC<{
   onChange: (value: string) => void
 }> = ({ examples, active, onChange }) => {
   const solidExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof solid)
-  const historyExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof history)
+  const historyExampleKeys = Object.keys(examples).filter(
+    key => examples[key].cad instanceof history,
+  )
   return (
     <Tabs defaultActiveKey="1">
       <TabPane tab="Solid" key="1">
-        <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
+        <Options
+          examples={examples}
+          exampleKeys={solidExampleKeys}
+          active={active}
+          onChange={onChange}
+        />
       </TabPane>
       <TabPane tab="History" key="2">
-        <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
+        <Options
+          examples={examples}
+          exampleKeys={historyExampleKeys}
+          active={active}
+          onChange={onChange}
+        />
       </TabPane>
     </Tabs>
   )
@@ -47,7 +59,9 @@ const Options: React.FC<{
           header={<div style={active === key ? activeStyle : {}}>{examples[key].label}</div>}
           key={key}
           showArrow={false}>
-          <div style={{ paddingLeft: '20px' }}>{examples[key].paramsMap.length > 0 && <Params />}</div>
+          <div style={{ paddingLeft: '20px' }}>
+            {examples[key].paramsMap.length > 0 && <Params />}
+          </div>
         </CollapsePanel>
       ))}
     </Collapse>

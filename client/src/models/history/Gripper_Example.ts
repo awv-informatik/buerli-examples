@@ -28,7 +28,8 @@ export const create: Create = async (apiType, params) => {
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
     await api.setExpressions(productId, { name: 'W', value: params.values[0] })

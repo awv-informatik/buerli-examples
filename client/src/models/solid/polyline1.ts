@@ -8,7 +8,7 @@ export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
-  
+
   const fp0: FilletPoint = { point: new THREE.Vector3(0, 25, 0), radius: 0 }
   const fp1: FilletPoint = { point: new THREE.Vector3(75, 25, 0), radius: 0 }
   const fp2: FilletPoint = { point: new THREE.Vector3(75, 0, 0), radius: 10 }
@@ -19,7 +19,6 @@ export const create: Create = async (apiType, params) => {
   const fp7: FilletPoint = { point: new THREE.Vector3(0, 100, 0), radius: 0 }
   const polyline: Polyline = createPolyline([fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7])
   const extrusion = api.extrude([0, 0, 25], polyline)
-  const geom = await api.createBufferGeometry(extrusion)
   return extrusion
 }
 

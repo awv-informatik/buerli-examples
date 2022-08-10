@@ -3,7 +3,6 @@ import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.of1'
 import arraybuffer2 from '../../resources/history/As1/Nut.of1'
 import { Create, Param } from '../../store'
-import * as THREE from 'three'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -40,7 +39,12 @@ export const create: Create = async (apiType, params) => {
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
-    { matePath: [boltRefId], wcsId: wcsIdOrigin[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [boltRefId],
+      wcsId: wcsIdOrigin[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -50,8 +54,18 @@ export const create: Create = async (apiType, params) => {
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { matePath: [nutRefId], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { matePath: [boltRefId], wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [nutRefId],
+      wcsId: wcsIdNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [boltRefId],
+      wcsId: wcsIdBoltNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,

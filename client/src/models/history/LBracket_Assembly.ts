@@ -60,8 +60,18 @@ export const create: Create = async (apiType, params) => {
   /* Nut on Bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { matePath: [boltRefId], wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { matePath: [nutRefId], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [boltRefId],
+      wcsId: wcsIdBoltNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutRefId],
+      wcsId: wcsIdNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -77,7 +87,11 @@ export const create: Create = async (apiType, params) => {
     { name: 'Hole_Diameter', value: shaftDiameter },
   )
 
-  const lBracketRef1 = await api.addNode(lBracket[0], lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
+  const lBracketRef1 = await api.addNode(lBracket[0], lBracketAsm, [
+    { x: 0, y: 0, z: 0 },
+    xDir,
+    yDir,
+  ])
   const wcsIdLBracketOrigin = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Origin')
   const wcsIdLBracket1 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole1-Top')
   const wcsIdLBracket2Top = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Top')
@@ -98,9 +112,21 @@ export const create: Create = async (apiType, params) => {
     'FOC',
   )
 
-  const nutBoltAsmRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
-  const nutBoltAsmRef2 = await api.addNode(nutBoltAsm, lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
-  const nutBoltAsmRef3 = await api.addNode(nutBoltAsm, lBracketAsm, [{ x: 0, y: 0, z: 0 }, xDir, yDir])
+  const nutBoltAsmRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [
+    { x: 0, y: 0, z: 0 },
+    xDir,
+    yDir,
+  ])
+  const nutBoltAsmRef2 = await api.addNode(nutBoltAsm, lBracketAsm, [
+    { x: 0, y: 0, z: 0 },
+    xDir,
+    yDir,
+  ])
+  const nutBoltAsmRef3 = await api.addNode(nutBoltAsm, lBracketAsm, [
+    { x: 0, y: 0, z: 0 },
+    xDir,
+    yDir,
+  ])
 
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(

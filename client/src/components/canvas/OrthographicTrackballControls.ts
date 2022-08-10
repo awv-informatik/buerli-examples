@@ -144,7 +144,10 @@ export class OrthographicTrackballControls extends EventDispatcher {
       const vector = new Vector2()
 
       return function getMouseOnScreen(pageX, pageY) {
-        vector.set((pageX - _this.screen.left) / _this.screen.width, (pageY - _this.screen.top) / _this.screen.height)
+        vector.set(
+          (pageX - _this.screen.left) / _this.screen.width,
+          (pageY - _this.screen.top) / _this.screen.height,
+        )
 
         return vector
       }
@@ -191,7 +194,9 @@ export class OrthographicTrackballControls extends EventDispatcher {
       const quaternion = new Quaternion()
 
       return function rotateCamera() {
-        let angle = Math.acos(_rotateStart.dot(_rotateEnd) / _rotateStart.length() / _rotateEnd.length())
+        let angle = Math.acos(
+          _rotateStart.dot(_rotateEnd) / _rotateStart.length() / _rotateEnd.length(),
+        )
 
         if (angle) {
           axis.crossVectors(_rotateStart, _rotateEnd).normalize()
@@ -276,7 +281,9 @@ export class OrthographicTrackballControls extends EventDispatcher {
           if (_this.staticMoving) {
             _panStart.copy(_panEnd)
           } else {
-            _panStart.add(mouseChange.subVectors(_panEnd, _panStart).multiplyScalar(_this.dynamicDampingFactor))
+            _panStart.add(
+              mouseChange.subVectors(_panEnd, _panStart).multiplyScalar(_this.dynamicDampingFactor),
+            )
           }
 
           _changed = true

@@ -1,16 +1,15 @@
 import { ApiNoHistory, solid } from '@buerli.io/headless'
-import Paragraph from 'antd/lib/typography/Paragraph'
 import * as THREE from 'three'
 import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'Rows', type: ParamType.Number, value: 2  },
+  { index: 0, name: 'Rows', type: ParamType.Number, value: 2 },
   { index: 1, name: 'Colums', type: ParamType.Number, value: 5 },
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
-  
+
   const rows = params.values[0]
   const columns = params.values[1]
   const unitLength = 8
@@ -67,7 +66,8 @@ export const create: Create = async (apiType, params) => {
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiNoHistory
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0]) || check(paramsMap[1])) {
     return create(api, params)
@@ -79,7 +79,11 @@ export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
   const geom = await api.createBufferGeometry(solidId)
   const mesh = new THREE.Mesh(
     geom,
-    new THREE.MeshStandardMaterial({ transparent: true, opacity: 1, color: new THREE.Color('rgb(70, 0, 70)') }),
+    new THREE.MeshStandardMaterial({
+      transparent: true,
+      opacity: 1,
+      color: new THREE.Color('rgb(70, 0, 70)'),
+    }),
   )
   return [mesh]
 }

@@ -60,41 +60,47 @@ export const create: Create = async (apiType, params) => {
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   const activeExample = storeApi.getState().activeExample
 
   // Update length
   if (check(paramsMap[le])) {
-    deckelPrt && await api.setExpressions(deckelPrt, {
-      name: 'Laenge',
-      value: params.values[le],
-    })
+    deckelPrt &&
+      (await api.setExpressions(deckelPrt, {
+        name: 'Laenge',
+        value: params.values[le],
+      }))
 
-    kanalPrt && await api.setExpressions(kanalPrt, {
-      name: 'Laenge',
-      value: params.values[le],
-    })
+    kanalPrt &&
+      (await api.setExpressions(kanalPrt, {
+        name: 'Laenge',
+        value: params.values[le],
+      }))
   }
 
   // Update height
   if (check(paramsMap[he])) {
-    kanalPrt && await api.setExpressions(kanalPrt, {
-      name: 'Hoehe',
-      value: params.values[he],
-    })
+    kanalPrt &&
+      (await api.setExpressions(kanalPrt, {
+        name: 'Hoehe',
+        value: params.values[he],
+      }))
   }
 
   // Update width
   if (check(paramsMap[wi])) {
-    deckelPrt && await api.setExpressions(deckelPrt, {
-      name: 'Breite',
-      value: params.values[wi] + 3,
-    })
+    deckelPrt &&
+      (await api.setExpressions(deckelPrt, {
+        name: 'Breite',
+        value: params.values[wi] + 3,
+      }))
 
-    kanalPrt && await api.setExpressions(kanalPrt, {
-      name: 'Breite',
-      value: params.values[wi],
-    })
+    kanalPrt &&
+      (await api.setExpressions(kanalPrt, {
+        name: 'Breite',
+        value: params.values[wi],
+      }))
   }
 
   // Update pos
@@ -124,27 +130,29 @@ export const update: Update = async (apiType, productId, params) => {
       yOffset: constrDeckel[4],
       zOffset: params.values[pd],
     }
-  
+
     await api.updateFastenedConstraints(fcDeckel)
   }
 
   // Update produkt
   if (check(paramsMap[pa])) {
-    switch (params.values[pa]) { //'40x60', '60x80', '60x120'
+    switch (
+      params.values[pa] //'40x60', '60x80', '60x120'
+    ) {
       case '40x60':
         storeApi.getState().setParam(activeExample, he, 40)
         storeApi.getState().setParam(activeExample, wi, 60)
-        break;
+        break
       case '60x80':
         storeApi.getState().setParam(activeExample, he, 60)
         storeApi.getState().setParam(activeExample, wi, 80)
-        break;
+        break
       case '60x120':
         storeApi.getState().setParam(activeExample, he, 60)
         storeApi.getState().setParam(activeExample, wi, 120)
-        break;
+        break
       default:
-        break;
+        break
     }
   }
 
@@ -154,4 +162,3 @@ export const update: Update = async (apiType, productId, params) => {
 export const cad = new history()
 
 export default { create, update, paramsMap, cad }
-

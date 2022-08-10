@@ -12,7 +12,12 @@ export const Code: React.FC<{ data: Promise<{ default: any }> }> = ({ data }) =>
     apply()
   }, [data, setCode])
   return code ? (
-    <CodeMirror value={code} theme="dark" extensions={[javascript({ jsx: true, typescript: true })]} readOnly />
+    <CodeMirror
+      value={code}
+      theme="dark"
+      extensions={[javascript({ jsx: true, typescript: true })]}
+      readOnly
+    />
   ) : null
 }
 

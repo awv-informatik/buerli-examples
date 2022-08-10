@@ -21,10 +21,14 @@ export const getBufferGeom = async (productId: number, api: ApiHistory) => {
   if (!api) return
   const geoms = await api.createBufferGeometry(productId)
   return geoms.map(
-    geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') })),
+    geom =>
+      new THREE.Mesh(
+        geom,
+        new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') }),
+      ),
   )
 }
 
 export const cad = new history()
 
-export default { create,  getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap, cad }

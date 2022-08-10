@@ -11,7 +11,7 @@ export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params?) => {
   const api = apiType as ApiHistory
-  
+
   const pt0 = { x: 0, y: 0, z: 0 }
   const xDir = { x: 1, y: 0, z: 0 }
   const yDir = { x: 0, y: 1, z: 0 }
@@ -77,8 +77,18 @@ export const create: Create = async (apiType, params?) => {
   /* Set nut on bolt */
   await api.createFastenedConstraint(
     nutBoltAsm,
-    { matePath: [boltRefId], wcsId: wcsIdBoltNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { matePath: [nutRefId], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [boltRefId],
+      wcsId: wcsIdBoltNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutRefId],
+      wcsId: wcsIdNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -204,9 +214,14 @@ export const create: Create = async (apiType, params?) => {
   const wcsIdPlate5 = await api.getWorkCoordSystem(plateRef, 'WCS_Hole5-Top')
 
   /* Set plate to origin of as1-assembly */
-  const constrPlate = api.createFastenedOriginConstraint(
+  api.createFastenedOriginConstraint(
     as1Asm,
-    { matePath: [plateRef], wcsId: wcsIdPlateBase[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [plateRef],
+      wcsId: wcsIdPlateBase[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -220,7 +235,12 @@ export const create: Create = async (apiType, params?) => {
   /* Set 1st lBracket-assembly on plate */
   await api.createFastenedConstraint(
     as1Asm,
-    { matePath: [plateRef], wcsId: wcsIdPlate2[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [plateRef],
+      wcsId: wcsIdPlate2[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     {
       matePath: [lBracketAsmRef1],
       wcsId: wcsIdLBracket2Bottom[0],
@@ -236,7 +256,12 @@ export const create: Create = async (apiType, params?) => {
   /* Set 2nd lBracket-assembly on plate */
   await api.createFastenedConstraint(
     as1Asm,
-    { matePath: [plateRef], wcsId: wcsIdPlate5[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [plateRef],
+      wcsId: wcsIdPlate5[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     {
       matePath: [lBracketAsmRef2],
       wcsId: wcsIdLBracket2Bottom[0],
@@ -270,7 +295,12 @@ export const create: Create = async (apiType, params?) => {
   /* Set rod to origin of rod-assembly */
   await api.createFastenedOriginConstraint(
     rodAsm,
-    { matePath: [rodRefId], wcsId: wcsIdRodOrigin[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [rodRefId],
+      wcsId: wcsIdRodOrigin[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -280,8 +310,18 @@ export const create: Create = async (apiType, params?) => {
   /* Set 1st nut on rod */
   await api.createFastenedConstraint(
     rodAsm,
-    { matePath: [rodRefId], wcsId: wscIdRodLeft[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { matePath: [nutRefId1], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [rodRefId],
+      wcsId: wscIdRodLeft[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutRefId1],
+      wcsId: wcsIdNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -291,8 +331,18 @@ export const create: Create = async (apiType, params?) => {
   /* Set 2nd nut on rod */
   await api.createFastenedConstraint(
     rodAsm,
-    { matePath: [rodRefId], wcsId: wcsIdRodRight[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
-    { matePath: [nutRefId2], wcsId: wcsIdNut[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [rodRefId],
+      wcsId: wcsIdRodRight[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: [nutRefId2],
+      wcsId: wcsIdNut[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,
@@ -311,7 +361,12 @@ export const create: Create = async (apiType, params?) => {
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    { matePath: [rodAsmRef], wcsId: wscIdRodLeft[0], flip: FlipType.FLIP_Z, reoriented: ReorientedType.REORIENTED_0 },
+    {
+      matePath: [rodAsmRef],
+      wcsId: wscIdRodLeft[0],
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
     0,
     0,
     0,

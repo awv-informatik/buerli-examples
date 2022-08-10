@@ -16,7 +16,10 @@ export const App: React.FC = () => {
       <Home>
         <div className="menu left" style={{ marginTop: '-0.8rem' }}>
           <h1>
-            buerli.<span style={{ fontSize: '0.4em', verticalAlign: 'super', letterSpacing: 0 }}>BETA | EXAMPLES</span>
+            buerli.
+            <span style={{ fontSize: '0.4em', verticalAlign: 'super', letterSpacing: 0 }}>
+              BETA | EXAMPLES
+            </span>
           </h1>
         </div>
       </Home>

@@ -10,9 +10,9 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0  // product id
+  return 0 // product id
 }
 
-export const cad = new history() 
+export const cad = new history()
 
 export default { create, paramsMap, cad }

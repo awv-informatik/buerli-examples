@@ -8,7 +8,13 @@ export const Params: React.FC = () => {
   const exampleId = useStore(s => s.activeExample)
   const params: Param[] = useStore(s => s.examples.objs[exampleId]?.paramsMap)
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'min-content 150px', gap: '10px', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'min-content 150px',
+        gap: '10px',
+        alignItems: 'center',
+      }}>
       {params.map(param => [
         <label key={`1-${param.index}-${param.name}-${exampleId}`} style={{ margin: '5px' }}>
           {param.name}
@@ -27,7 +33,11 @@ export default Params
 
 const prs = Number.parseInt
 
-const setParamIfValChanged = (newVal: number | boolean | string, oldVal: number | boolean | string, index: number) => {
+const setParamIfValChanged = (
+  newVal: number | boolean | string,
+  oldVal: number | boolean | string,
+  index: number,
+) => {
   const exampleId = storeApi.getState().activeExample
   const setParam = storeApi.getState().setParam
   if (newVal !== oldVal) {

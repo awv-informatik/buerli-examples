@@ -51,7 +51,7 @@ const InnerLayout = styled.div`
     display: grid;
     height: 100%;
     width: 100%;
-    grid-template-columns: minmax(300px, min-content) 1fr 0.5fr;
+    grid-template-columns: minmax(300px, min-content) 1fr 850px;
     grid-template-rows: 1fr;
   }
 `

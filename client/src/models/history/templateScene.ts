@@ -13,7 +13,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0  // product id
+  return 0 // product id
 }
 
 export const getScene = async (productId: number, api: ApiHistory) => {
@@ -28,6 +28,6 @@ const colorize = (scene: THREE.Scene) => {
   setNodesColor('<Name of the node>', customRed, scene)
 }
 
-export const cad = new history() 
+export const cad = new history()
 
 export default { create, getScene, paramsMap, cad }

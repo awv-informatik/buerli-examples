@@ -4,7 +4,6 @@ import { Param, Create, Update, storeApi } from '../../store'
 export const paramsMap: Param[] = [
   // number example
   // { index: 0, name: 'Width', type: 'number', value: 60 },
-  
   // string example
   // { section, index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
 ].sort((a, b) => a.index - b.index)
@@ -21,22 +20,23 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0  // solid id
+  return 0 // solid id
 }
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiNoHistory
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) =>
+    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Start updating your model here...
   // ...
   // ...
 
-  return 0  // solid id
+  return 0 // solid id
 }
 
-export const cad = new solid() 
+export const cad = new solid()
 
 export default { create, update, paramsMap, cad }

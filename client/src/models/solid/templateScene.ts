@@ -13,7 +13,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0  // solid id
+  return 0 // solid id
 }
 
 export const getScene = async (solidId: number, api: ApiNoHistory) => {
@@ -28,6 +28,6 @@ const colorize = (scene: THREE.Scene) => {
   setNodesColor('Solid', customRed, scene)
 }
 
-export const cad = new solid() 
+export const cad = new solid()
 
 export default { create, getScene, paramsMap, cad }
