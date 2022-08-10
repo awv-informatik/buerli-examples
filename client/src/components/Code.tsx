@@ -1,7 +1,5 @@
 import CodeMirror from '@uiw/react-codemirror'
-import 'codemirror/keymap/sublime'
-import 'codemirror/theme/material.css'
-import 'codemirror/theme/monokai.css'
+import { javascript } from '@codemirror/lang-javascript'
 import React from 'react'
 
 export const Code: React.FC<{ data: Promise<{ default: any }> }> = ({ data }) => {
@@ -14,16 +12,7 @@ export const Code: React.FC<{ data: Promise<{ default: any }> }> = ({ data }) =>
     apply()
   }, [data, setCode])
   return code ? (
-    <CodeMirror
-      value={code}
-      options={{
-        folding: true,
-        readOnly: true,
-        theme: 'material',
-        keyMap: 'sublime',
-        mode: 'ts',
-      }}
-    />
+    <CodeMirror value={code} theme="dark" extensions={[javascript({ jsx: true, typescript: true })]} readOnly />
   ) : null
 }
 

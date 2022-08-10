@@ -7,6 +7,7 @@ import React from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, ExampleLayout, Spin } from '.'
 import { storeApi, useStore } from '../store'
+import AutoClear from './canvas/AutoClear'
 import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
@@ -19,49 +20,62 @@ export const Main: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
   const loading = useStore(s => s.loading)
+  const [visible, setVisible] = React.useState<boolean>(true)
 
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
 
   return (
-    <ExampleLayout>
-      <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
-      <CanvasContainer>
-        <Canvas
-          shadows
-          orthographic
-          frameloop="demand"
-          dpr={[1, 2]}
-          raycaster={{ filter: raycastFilter }}
-          camera={{ position: [0, 0, 100], fov: 90 }}>
-          <Controls makeDefault staticMoving rotateSpeed={2} />
-          <Lights drawingId={drawingId} />
-          <Fit>
-            <Part />
-          </Fit>
-          <GizmoHelper renderPriority={0} alignment="top-right" margin={[80, 80]}>
-            <group scale={0.8}>
-              <group scale={2.25} position={[-30, -30, -30]} rotation={[0, 0, 0]}>
-                <GizmoViewport
-                  disabled
-                  axisScale={[0.8, 0.02, 0.02]}
-                  axisHeadScale={0.45}
-                  hideNegativeAxes
-                  labelColor="black"
+    <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ position: 'absolute', right: 65, top: 80 }}>
+        <button
+          onClick={e => {
+            setVisible(!visible)
+          }}
+          style={{ cursor: 'pointer' }}>
+          {visible ? 'Hide Code' : 'Show Code'}
+        </button>
+      </div>
+      <ExampleLayout>
+        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        <CanvasContainer>
+          <Canvas
+            shadows
+            orthographic
+            frameloop="demand"
+            dpr={[1, 2]}
+            raycaster={{ filter: raycastFilter }}
+            camera={{ position: [0, 0, 100], fov: 90 }}>
+            <Controls makeDefault staticMoving rotateSpeed={2} />
+            <Lights drawingId={drawingId} />
+            <Fit>
+              <Part />
+            </Fit>
+            <AutoClear />
+            <GizmoHelper renderPriority={2} alignment="top-right" margin={[80, 80]}>
+              <group scale={0.8}>
+                <group scale={2.25} position={[-30, -30, -30]} rotation={[0, 0, 0]}>
+                  <GizmoViewport
+                    disabled
+                    axisScale={[0.8, 0.02, 0.02]}
+                    axisHeadScale={0.45}
+                    hideNegativeAxes
+                    labelColor="black"
+                  />
+                </group>
+                <GizmoViewcube
+                  font="24px Inter var, Arial, sans-serif"
+                  faces={['Right', 'Left', 'Back', 'Front', 'Top', 'Bottom']}
                 />
               </group>
-              <GizmoViewcube
-                font="24px Inter var, Arial, sans-serif"
-                faces={['Right', 'Left', 'Back', 'Front', 'Top', 'Bottom']}
-              />
-            </group>
-          </GizmoHelper>
-        </Canvas>
-        {loading && <Spin />}
-      </CanvasContainer>
-      <CodeWrapper />
-    </ExampleLayout>
+            </GizmoHelper>
+          </Canvas>
+          {loading && <Spin />}
+        </CanvasContainer>
+        {visible && <CodeWrapper />}
+      </ExampleLayout>
+    </div>
   )
 }
 
