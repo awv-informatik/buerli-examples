@@ -107,7 +107,7 @@ const Part: React.FC = () => {
   const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[exampleId])
   const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
-  const [scene, setScene] = React.useState<THREE.Scene | null>(null)
+  const [scene] = React.useState(() => new THREE.Scene())
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
   const productOrSolidId = React.useRef<number>(0)
   const fit = useFit(f => f.fit)
@@ -125,7 +125,6 @@ const Part: React.FC = () => {
   React.useEffect(() => {
     headlessApi.current = null
     setMeshes([])
-    setScene(null)
     set({ loading: true })
 
     cad.init(async api => {
@@ -138,12 +137,11 @@ const Part: React.FC = () => {
           const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
           setMeshes(tempMeshes)
         } else if (getScene) {
-          const tempScene = await getScene(productOrSolidId.current, api)
-          setScene(tempScene)
+          const createdScene = await getScene(productOrSolidId.current, api)
+          scene.copy(createdScene)
         }
       } catch (error) {
         setMeshes([])
-        setScene(null)
         console.error(JSON.stringify(error))
       } finally {
         set({ loading: false })
@@ -159,9 +157,10 @@ const Part: React.FC = () => {
           buerliApi.getState().api.removeDrawing(drawing)
         }
       })
+      scene.children = []
       // cad.destroy()
     }
-  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, set, setAPI])
+  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setAPI])
 
   React.useEffect(() => {
     const run = async () => {
@@ -177,12 +176,11 @@ const Part: React.FC = () => {
             const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
             setMeshes(tempMeshes)
           } else if (getScene) {
-            const tempScene = await getScene(productOrSolidId.current, headlessApi.current)
-            setScene(tempScene)
+            const updatedScene = await getScene(productOrSolidId.current, headlessApi.current)
+            scene.copy(updatedScene)
           }
         } catch (error) {
           setMeshes([])
-          setScene(null)
           console.error(JSON.stringify(error))
         } finally {
           set({ loading: false })
@@ -190,7 +188,7 @@ const Part: React.FC = () => {
       }
     }
     run()
-  }, [update, params, headlessApi, set, getBufferGeom, getScene, fit])
+  }, [update, params, headlessApi, set, getBufferGeom, getScene, fit, scene])
 
   if (getBufferGeom && meshes) {
     return (
