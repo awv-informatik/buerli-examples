@@ -5,8 +5,9 @@
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
   "jsxBracketSameLine": true,
+  "bracketSameLine": true,
   "jsxSingleQuote": false,
-  "printWidth": 120,
+  "printWidth": 100,
   "proseWrap": "preserve",
   "quoteProps": "as-needed",
   "requirePragma": false,
@@ -14,6 +15,5 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "all",
-  "useTabs": false,
-  "vueIndentScriptAndStyle": false
+  "useTabs": false
 }
