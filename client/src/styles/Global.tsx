@@ -34,15 +34,7 @@ const Global = styled.createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: rgb(107, 113, 119);
-
-    background: hsla(186, 33%, 94%, 1);
-    background: linear-gradient(90deg, hsla(186, 33%, 94%, 1) 0%, hsla(216, 41%, 79%, 1) 100%);
-    background: -moz-linear-gradient(90deg, hsla(186, 33%, 94%, 1) 0%, hsla(216, 41%, 79%, 1) 100%);
-    background: -webkit-linear-gradient(
-      90deg,
-      hsla(186, 33%, 94%, 1) 0%,
-      hsla(216, 41%, 79%, 1) 100%
-    );
+    background-color: #f0f0f0;
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#EBF4F5", endColorstr="#B5C6E0", GradientType=1 );
   }
 
