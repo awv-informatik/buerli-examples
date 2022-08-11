@@ -13,6 +13,7 @@ import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
 import { Sidebar } from './Sidebar'
+import { Resizer, useResizeStore } from './Resizer'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -22,6 +23,10 @@ export const Main: React.FC = () => {
   const loading = useStore(s => s.loading)
   const [visible, setVisible] = React.useState<boolean>(true)
 
+  const widthCodeStore = useResizeStore(500)
+  const widthCode = `${widthCodeStore[0]}px`
+  const rightResizer = `${widthCodeStore[0] + 50}px`
+  
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
@@ -77,7 +82,10 @@ export const Main: React.FC = () => {
           </Canvas>
           {loading && <Spin />}
         </CanvasContainer>
-        {visible && <CodeWrapper />}
+        {visible && <div style={{ width: widthCode}}>
+          <Resizer style={{ right: rightResizer, top: '120px' }} xStore={widthCodeStore} xRange={{ min: 500, max: 850 }} xDir='-'/>
+          <CodeWrapper />
+        </div>}
       </ExampleLayout>
     </div>
   )
