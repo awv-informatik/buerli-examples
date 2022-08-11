@@ -17,7 +17,6 @@ export type ControlsProps = ReactThreeFiber.Overwrite<
   }
 >
 
-// eslint-disable-next-line react/display-name
 export const Controls = React.forwardRef<OrthographicTrackballControls, ControlsProps>(
   ({ makeDefault, camera, domElement, regress, onChange, onStart, onEnd, ...restProps }, ref) => {
     const {
