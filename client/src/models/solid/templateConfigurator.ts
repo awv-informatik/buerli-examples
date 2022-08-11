@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import { Param, Create, Update, storeApi } from '../../store'
 

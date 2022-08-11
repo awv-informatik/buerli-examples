@@ -26,7 +26,7 @@ export const Main: React.FC = () => {
   const widthCodeStore = useResizeStore(500)
   const widthCode = `${widthCodeStore[0]}px`
   const rightResizer = `${widthCodeStore[0] + 50}px`
-  
+
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
@@ -82,10 +82,17 @@ export const Main: React.FC = () => {
           </Canvas>
           {loading && <Spin />}
         </CanvasContainer>
-        {visible && <div style={{ width: widthCode}}>
-          <Resizer style={{ right: rightResizer, top: '120px' }} xStore={widthCodeStore} xRange={{ min: 500, max: 850 }} xDir='-'/>
-          <CodeWrapper />
-        </div>}
+        {visible && (
+          <div style={{ width: widthCode }}>
+            <Resizer
+              style={{ right: rightResizer, top: '120px' }}
+              xStore={widthCodeStore}
+              xRange={{ min: 500, max: 850 }}
+              xDir="-"
+            />
+            <CodeWrapper />
+          </div>
+        )}
       </ExampleLayout>
     </div>
   )

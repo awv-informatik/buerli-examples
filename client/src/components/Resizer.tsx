@@ -26,10 +26,14 @@ export const Resizer: React.FC<{
     (e: MouseEvent) => {
       e.preventDefault()
       if (xStore) {
-        xStore[1](x => checkSize(x + (e.movementX / window.devicePixelRatio) * (xDir === '+' ? 1 : -1), xRange))
+        xStore[1](x =>
+          checkSize(x + (e.movementX / window.devicePixelRatio) * (xDir === '+' ? 1 : -1), xRange),
+        )
       }
       if (yStore) {
-        yStore[1](y => checkSize(y + (e.movementY / window.devicePixelRatio) * (yDir === '+' ? 1 : -1), yRange))
+        yStore[1](y =>
+          checkSize(y + (e.movementY / window.devicePixelRatio) * (yDir === '+' ? 1 : -1), yRange),
+        )
       }
     },
     [xDir, xRange, xStore, yDir, yRange, yStore],
