@@ -48,6 +48,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
 
   // history example
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
+  { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch' },
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
   {
     exampleId: 'Nut-Bolt_Assembly',
