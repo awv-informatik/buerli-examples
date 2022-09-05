@@ -14,6 +14,7 @@ import Lights from './canvas/Lights'
 import { Code } from './Code'
 import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
+import { Others, Room } from '../models/history/MultiUser_Helper'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -49,6 +50,8 @@ export const Main: React.FC = () => {
           active={activeExample}
         />
         <CanvasContainer>
+          <Room children={null} />
+          <Others />
           <Canvas
             shadows
             orthographic

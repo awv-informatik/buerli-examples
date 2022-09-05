@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@liveblocks/client": "^0.17.11",
+    "@liveblocks/zustand": "^0.17.11"
+  }
+}
