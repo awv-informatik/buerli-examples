@@ -46,7 +46,7 @@ _FILE_INFO_
 
 1
 2
-244
+289
 FileInfoVersion=1
 PlatformName=windows
 ClassCadVersion=0.0.0.0_00000000.0
@@ -58,7 +58,8 @@ IsClientServer=true
 IsState=true
 Entity=true
 Graphics=false
-TimeStamp=2022-07-05T09:20:18Z
+TimeStamp=2022-09-05T14:00:28Z
+StateId=f9bc179d-cf11-4e86-b7eb-0c6b4e3924bb
 
 
 6
@@ -222,7 +223,7 @@ smlibExpressUse
 8
 Bolt M22
 46
-Würth_005722 75_DIN 933 steel 8.8 zinc plated
+Wuerth_005722 75_DIN 933 steel 8.8 zinc plated
 0
 
 1
@@ -612,7 +613,7 @@ originalName
 1
 1641
 46
-Würth_005722 75_DIN 933 steel 8.8 zinc plated
+Wuerth_005722 75_DIN 933 steel 8.8 zinc plated
 
 6
 rm
@@ -642,7 +643,7 @@ stepProductId
 1
 1641
 46
-Würth_005722 75_DIN 933 steel 8.8 zinc plated
+Wuerth_005722 75_DIN 933 steel 8.8 zinc plated
 
 6
 rm
@@ -3964,7 +3965,7 @@ CC_SketchSet
 4096
 241
 1
-1
+0
 1
 1
 3
@@ -4139,7 +4140,7 @@ solidOperation
 6
 Solid0
 46
-Würth_005722 75_DIN 933 steel 8.8 zinc plated
+Wuerth_005722 75_DIN 933 steel 8.8 zinc plated
 0
 
 1
@@ -4193,7 +4194,7 @@ CC_Solid
 1
 271
 1639
-764
+702
 241
 1
 1
