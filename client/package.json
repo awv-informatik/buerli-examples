@@ -32,6 +32,8 @@
     "@buerli.io/headless": "0.3.0",
     "@buerli.io/react": "0.3.0",
     "@codemirror/lang-javascript": "^6.0.2",
+    "@liveblocks/client": "^0.17.11",
+    "@liveblocks/zustand": "^0.17.11",
     "@mdx-js/react": "2.1.0",
     "@react-three/drei": "8.20.1",
     "@react-three/fiber": "7.0.19",
