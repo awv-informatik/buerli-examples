@@ -31,6 +31,7 @@ export const update: Update = async (apiType, productId, params) => {
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
+    api.clearSolid(productId)
     return create(api, params)
   }
 }
