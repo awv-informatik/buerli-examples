@@ -1,7 +1,6 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.of1'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
-import { useStore } from './MultiUser_Helper'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Holes Count', type: ParamType.Slider, value: 6, step: 1, values: [2, 12] },
@@ -41,10 +40,8 @@ export const update: Update = async (apiType, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) =>
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
-  const setHolesCount = useStore(state => state.setHolesCount)
 
   if (check(paramsMap[0])) {
-    setHolesCount(params.values[0])
     await api.setExpressions(productId, { name: 'holeCount', value: params.values[0] })
   }
 

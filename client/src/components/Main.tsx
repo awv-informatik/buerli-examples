@@ -14,7 +14,14 @@ import Lights from './canvas/Lights'
 import { Code } from './Code'
 import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
-import { Others, Room } from '../models/history/MultiUser_Helper'
+import useStoreLiveblocks from '../models/history/MultiUser_Helper'
+
+const gravatars = [
+  'https://avatars.githubusercontent.com/u/2223602?v=4',
+  'https://avatars.githubusercontent.com/u/1035169?v=4',
+  'https://avatars.githubusercontent.com/u/1051509?v=4',
+  'https://avatars.githubusercontent.com/u/15867665?v=4',
+]
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -31,6 +38,14 @@ export const Main: React.FC = () => {
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
+
+  const { enterRoom } = useStoreLiveblocks(state => state.liveblocks.enterRoom)
+  const { leaveRoom } = useStoreLiveblocks(state => state.liveblocks.leaveRoom)
+
+  React.useEffect(() => {
+    enterRoom('buerli-meta-3', {})
+    return () => leaveRoom('buerli-meta-3')
+  }, [enterRoom, leaveRoom])
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
@@ -50,7 +65,7 @@ export const Main: React.FC = () => {
           active={activeExample}
         />
         <CanvasContainer>
-          <Room children={null} />
+          {/* <Room children={null} /> */}
           <Others />
           <Canvas
             shadows
@@ -216,4 +231,28 @@ const CodeWrapper: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const example = useStore(s => s.examples.objs[activeExample])
   return <Code data={example.text}></Code>
+}
+
+const Others: React.FC = () => {
+  const users = useStoreLiveblocks(state => state.liveblocks.others)
+  const othersCursors = users.map(user => user.presence?.cursor)
+  return othersCursors.map(
+    (obj: any[]) =>
+      obj && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            transform: `translate3d(${obj[0]}px,${obj[1]}px,0)`,
+            display: 'flex',
+            alignItems: 'center',
+          }}>
+          <img style={{ borderRadius: '50%', width: 22, height: 22 }} src={gravatars[0]} />
+          <div className="annotation" style={{ marginLeft: 5, padding: '6px 10px' }}>
+            xyz
+          </div>
+        </div>
+      ),
+  )
 }
