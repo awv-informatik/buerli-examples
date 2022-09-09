@@ -39,8 +39,8 @@ export const Main: React.FC = () => {
     document.title = 'buerli-examples'
   }, [])
 
-  const { enterRoom } = useStoreLiveblocks(state => state.liveblocks.enterRoom)
-  const { leaveRoom } = useStoreLiveblocks(state => state.liveblocks.leaveRoom)
+  const enterRoom = useStoreLiveblocks(state => state.liveblocks.enterRoom)
+  const leaveRoom = useStoreLiveblocks(state => state.liveblocks.leaveRoom)
 
   React.useEffect(() => {
     enterRoom('buerli-meta-3', {})

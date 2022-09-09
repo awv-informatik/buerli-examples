@@ -68,6 +68,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
+  { exampleId: 'MultiUser', label: 'MultiUser Example', file: 'history/MultiUser' },
 ]
 
 const exampleMap: Record<string, Example> = {}
