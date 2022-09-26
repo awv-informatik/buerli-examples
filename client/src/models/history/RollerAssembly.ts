@@ -20,6 +20,7 @@ export const paramsMap: Param[] = [
   { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
   { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
   { index: 901, name: 'saveAsOf1', type: ParamType.Button, value: saveOf1 },
+  { index: 902, name: 'create2DViews', type: ParamType.Button, value: prepareViews },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },

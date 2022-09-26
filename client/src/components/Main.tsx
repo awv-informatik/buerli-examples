@@ -14,6 +14,7 @@ import Lights from './canvas/Lights'
 import { Code } from './Code'
 import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
+import TwoDViews from './TwoDViews'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -60,6 +61,7 @@ export const Main: React.FC = () => {
             <Lights drawingId={drawingId} />
             <Fit>
               <Part />
+              <TwoDViews drawingId={drawingId} />
             </Fit>
             <AutoClear />
             <GizmoHelper renderPriority={2} alignment="top-right" margin={[80, 80]}>
