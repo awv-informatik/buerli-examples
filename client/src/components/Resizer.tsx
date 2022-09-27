@@ -15,6 +15,7 @@ export const Resizer: React.FC<{
   yStore?: ResizeStore
   yDir?: '+' | '-'
   yRange?: { min: number; max: number }
+  children?: React.ReactNode
 }> = props => {
   const { style, xStore, xRange, xDir = '+', yStore, yRange, yDir = '+' } = props
 
