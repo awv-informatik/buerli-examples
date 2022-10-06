@@ -2,7 +2,7 @@ import { api as buerliApi } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
 import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, events } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, ExampleLayout, Spin } from '.'
@@ -54,7 +54,7 @@ export const Main: React.FC = () => {
             orthographic
             frameloop="demand"
             dpr={[1, 2]}
-            raycaster={{ filter: raycastFilter }}
+            events={s => ({ ...events(s), filter: raycastFilter })}
             camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
@@ -194,7 +194,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m} />
+          <mesh key={m.uuid} {...m as any} />
         ))}
       </group>
     )
