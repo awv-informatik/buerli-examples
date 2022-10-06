@@ -33,7 +33,7 @@
     "@buerli.io/react": "0.3.0",
     "@codemirror/lang-javascript": "^6.0.2",
     "@mdx-js/react": "2.1.0",
-    "@react-three/drei": "9.29.1",
+    "@react-three/drei": "9.34.0",
     "@react-three/fiber": "8.7.1",
     "@uiw/react-codemirror": "^4.11.4",
     "antd": "^4.23.2",
