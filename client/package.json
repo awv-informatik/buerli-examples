@@ -36,7 +36,7 @@
     "@react-three/drei": "9.34.0",
     "@react-three/fiber": "8.7.1",
     "@uiw/react-codemirror": "^4.11.4",
-    "antd": "^4.23.2",
+    "antd": "^4.23.4",
     "arraybuffer-loader": "1.0.8",
     "immer": "9.0.5",
     "path-browserify": "^1.0.1",
