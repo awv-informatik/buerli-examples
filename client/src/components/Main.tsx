@@ -1,6 +1,6 @@
 import { api as buerliApi } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
-import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
+import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
@@ -12,8 +12,8 @@ import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
-import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
+import { Sidebar } from './Sidebar'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -54,7 +54,6 @@ export const Main: React.FC = () => {
             orthographic
             frameloop="demand"
             dpr={[1, 2]}
-            raycaster={{ filter: raycastFilter }}
             camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
