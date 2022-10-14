@@ -12,8 +12,8 @@ import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
-import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
+import { Sidebar } from './Sidebar'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
