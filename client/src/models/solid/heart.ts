@@ -15,22 +15,26 @@ export const create: Create = async (apiType, params) => {
   shape.bezierCurveTo(60, 77, 80, 55, 80, 35)
   shape.bezierCurveTo(80, 35, 80, 0, 50, 0)
   shape.bezierCurveTo(35, 0, 25, 25, 25, 25)
-  const basicBody = api.extrude([0, 0, 5], shape)
-  return basicBody
+  const basicBody = await api.extrude([0, 0, 5], shape)
+  return [basicBody]
 }
 
-export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const geom = await api.createBufferGeometry(solidId)
-  const mesh = new THREE.Mesh(
-    geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 1,
-      color: new THREE.Color('rgb(255, 120, 255)'),
-    }),
-  )
-  return [mesh]
+  const meshes: THREE.Mesh[] = []
+  for await (const solidId of solidIds) {
+    const geom = await api.createBufferGeometry(solidId)
+    const mesh = new THREE.Mesh(
+      geom,
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 1,
+        color: new THREE.Color('rgb(255, 120, 255)'),
+      }),
+    )
+    meshes.push(mesh)
+  }
+  return meshes
 }
 
 export const cad = new solid()

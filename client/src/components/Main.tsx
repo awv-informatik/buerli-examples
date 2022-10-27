@@ -1,5 +1,5 @@
 import { api as buerliApi } from '@buerli.io/core'
-import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
+import { ApiHistory, ApiNoHistory, solid } from '@buerli.io/headless'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
@@ -108,7 +108,7 @@ const Part: React.FC = () => {
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
-  const productOrSolidId = React.useRef<number>(0)
+  const productOrSolidIds = React.useRef<number | number[]>(0)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
 
@@ -131,12 +131,13 @@ const Part: React.FC = () => {
       headlessApi.current = api
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidId.current = await create(api, p, { onSelect, onResume })
+        const id = await create(api, p, { onSelect, onResume })
+        productOrSolidIds.current = cad instanceof solid ? id as number[] : id as number
         if (getBufferGeom) {
-          const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
+          const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
           setMeshes(tempMeshes)
         } else if (getScene) {
-          const createdScene = await getScene(productOrSolidId.current, api)
+          const createdScene = await getScene(productOrSolidIds.current, api)
           scene.copy(createdScene)
         }
       } catch (error) {
@@ -166,17 +167,21 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidId.current = await update(
+          productOrSolidIds.current = await update(
             headlessApi.current,
-            productOrSolidId.current,
+            cad instanceof solid ? productOrSolidIds.current as number : productOrSolidIds.current as number[],
             params,
           )
+          productOrSolidIds.current = cad instanceof solid ? productOrSolidIds.current as number : productOrSolidIds.current as number[]
           if (getBufferGeom) {
-            const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
+            const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
           } else if (getScene) {
-            const updatedScene = await getScene(productOrSolidId.current, headlessApi.current)
-            scene.copy(updatedScene)
+            const updatedScene = await getScene(productOrSolidIds.current, headlessApi.current)
+            if (updatedScene) {
+              scene.clear()
+              scene.copy(updatedScene)
+            }
           }
         } catch (error) {
           setMeshes([])

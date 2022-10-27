@@ -2,7 +2,7 @@ import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param, ParamType, Update } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setSolidsColor, setSolidsTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Thickness', type: ParamType.Number, value: 5 },
@@ -20,8 +20,8 @@ export const create: Create = async (apiType, params) => {
   shape.quadraticCurveTo(x + 115, y, x + 115, y + 40)
   shape.quadraticCurveTo(x + 100, y + 10, x + 90, y + 10)
   shape.quadraticCurveTo(x + 50, y + 80, x, y)
-  const basicBody = api.extrude([0, 0, params.values[0]], shape)
-  return basicBody
+  const basicBody = await api.extrude([0, 0, params.values[0]], shape)
+  return [basicBody]
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -31,21 +31,22 @@ export const update: Update = async (apiType, productId, params) => {
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
-    api.clearSolid(productId)
+    api.clearSolids()
     return create(api, params)
   }
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
+  const scene = await api.createScene(solidIds)
   scene && colorize(scene)
   return scene
 }
 
 const colorize = (scene: THREE.Scene) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setNodesColor('Solid', customRed, scene)
+  setSolidsColor('Solid0', customRed, scene)
+  setSolidsTransparency('Solid0', 0.5, scene)
 }
 
 export const cad = new solid()

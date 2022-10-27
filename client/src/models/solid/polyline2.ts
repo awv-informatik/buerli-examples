@@ -16,22 +16,26 @@ export const create: Create = async (apiType, params) => {
   const fp6 = { point: new THREE.Vector3(25, 100, 0), radius: 0 }
   const fp7 = { point: new THREE.Vector3(0, 100, 0), radius: 10 }
   const polyline = createPolyline([fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7])
-  const revolve = api.revolve([-10, 0, 0], [0, 1, 0], Math.PI, polyline)
-  return revolve
+  const revolve = await api.revolve([-10, 0, 0], [0, 1, 0], Math.PI, polyline)
+  return [revolve]
 }
 
-export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const geom = await api.createBufferGeometry(solidId)
-  const mesh = new THREE.Mesh(
-    geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 1,
-      color: new THREE.Color('rgb(255, 120, 106)'),
-    }),
-  )
-  return [mesh]
+  const meshes: THREE.Mesh[] = []
+  for await (const solidId of solidIds) {
+    const geom = await api.createBufferGeometry(solidId)
+    const mesh = new THREE.Mesh(
+      geom,
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 1,
+        color: new THREE.Color('rgb(255, 120, 106)'),
+      }),
+    )
+    meshes.push(mesh)
+  }
+  return meshes
 }
 
 export const cad = new solid()

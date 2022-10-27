@@ -24,12 +24,12 @@ export type Create = (
   api: ApiHistory | ApiNoHistory,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number>
+) => Promise<number | number[]>
 export type Update = (
   api: ApiHistory | ApiNoHistory,
-  productId: number,
+  productId: number | number[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number>
+) => Promise<number | number[]>
 
 const toc: { exampleId: string; label: string; file: string }[] = [
   // solid example
@@ -128,8 +128,8 @@ export type Example = {
   label: string
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
+  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]

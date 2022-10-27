@@ -2,6 +2,8 @@ import { ApiHistory, history } from '@buerli.io/headless'
 import { Create, Param } from '../../store'
 import * as THREE from 'three'
 import { ChamferType } from '@buerli.io/classcad'
+import { setNodesColor, setNodesTransparency } from '../../utils/utils'
+import { Color } from 'three'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -17,18 +19,31 @@ export const create: Create = async (apiType, params) => {
   return part
 }
 
-export const getBufferGeom = async (productId: number, api: ApiHistory) => {
+// export const getBufferGeom = async (productId: number, api: ApiHistory) => {
+//   if (!api) return
+//   const geoms = await api.createBufferGeometry(productId)
+//   return geoms.map(
+//     geom =>
+//       new THREE.Mesh(
+//         geom,
+//         new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') }),
+//       ),
+//   )
+// }
+
+export const getScene = async (productId: number, api: ApiHistory) => {
   if (!api) return
-  const geoms = await api.createBufferGeometry(productId)
-  return geoms.map(
-    geom =>
-      new THREE.Mesh(
-        geom,
-        new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') }),
-      ),
-  )
+  const scene = await api.createScene(productId)
+  scene && colorize(scene)
+  return scene
 }
+
+const colorize = (scene: THREE.Scene) => {
+  const customRed = new Color('rgb(203, 67, 22)')
+  setNodesColor('Part', customRed, scene)
+  setNodesTransparency('Part', 0.5, scene)
+} 
 
 export const cad = new history()
 
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getScene, paramsMap, cad }

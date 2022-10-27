@@ -2,7 +2,7 @@ import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setSolidsColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -33,19 +33,19 @@ export const create: Create = async (apiType, params) => {
   api.slice(b1, [0, 0, -60], [0, 0, -1])
   api.slice(b1, [0, 60, 0], [0, 1, 0])
   api.slice(b1, [0, -60, 0], [0, -1, 0])
-  return b1
+  return [await b1]
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
+  const scene = await api.createScene(solidIds)
   scene && colorize(scene)
   return scene
 }
 
 const colorize = (scene: THREE.Scene) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setNodesColor('Solid', customRed, scene)
+  setSolidsColor('Solid0', customRed, scene)
 }
 
 export const cad = new solid()

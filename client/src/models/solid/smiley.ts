@@ -41,7 +41,7 @@ export const create: Create = async (apiType, params) => {
     smileyMouthPathBody,
   )
   api.rotateTo(basicBody, [Math.PI, 0, 0])
-  return basicBody
+  return [await basicBody]
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -51,23 +51,27 @@ export const update: Update = async (apiType, productId, params) => {
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
-    api.clearSolid(productId)
+    api.clearSolids()
     return create(api, params)
   }
 }
 
-export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const geom = await api.createBufferGeometry(solidId)
-  const mesh = new THREE.Mesh(
-    geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 1,
-      color: new THREE.Color('rgb(252, 252, 45)'),
-    }),
-  )
-  return [mesh]
+  const meshes: THREE.Mesh[] = []
+  for await (const solidId of solidIds) {
+    const geom = await api.createBufferGeometry(solidId)
+    const mesh = new THREE.Mesh(
+      geom,
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 1,
+        color: new THREE.Color('rgb(252, 252, 45)'),
+      }),
+    )
+    meshes.push(mesh)
+  }
+  return meshes
 }
 
 export const cad = new solid()

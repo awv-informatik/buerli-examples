@@ -1,7 +1,7 @@
 import { ApiNoHistory, solid, createPolyline, Polyline } from '@buerli.io/headless'
 import { Color, Vector3 } from 'three'
 import { Create, Param } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setSolidsColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -30,19 +30,19 @@ export const create: Create = async (apiType, params) => {
     api.union(extrusion, true, copy)
   }
   api.clearSolid(copy)
-  return extrusion
+  return [await extrusion]
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
+  const scene = await api.createScene(solidIds)
   scene && colorize(scene)
   return scene
 }
 
 const colorize = (scene: THREE.Scene) => {
   const customRed = new Color('rgb(203, 67, 188)')
-  setNodesColor('Solid', customRed, scene)
+  setSolidsColor('Solid0', customRed, scene)
 }
 
 export const cad = new solid()

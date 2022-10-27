@@ -14,12 +14,12 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0 // solid id
+  return [0] // solid ids
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
+  const scene = await api.createScene(solidIds)
   scene && colorize(scene)
   return scene
 }
