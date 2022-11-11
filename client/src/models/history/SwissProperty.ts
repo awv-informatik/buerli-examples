@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-import { PointMemValue } from '@buerli.io/core'
 import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
@@ -370,7 +369,7 @@ async function updateWallSize(
     await updateBalkenwandSize(length, height, params, layers, api)
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: gipsplattePrt[0],
@@ -430,7 +429,7 @@ async function updateBalkenwandSize(
     const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: horizontalBeamPrt[0],
@@ -641,7 +640,7 @@ async function updateLayer(
         }
         const exprSets: {
           partId: number
-          members: { name: string; value: number | PointMemValue | string }[]
+          members: { name: string; value: number | string }[]
         }[] = [
           {
             partId: horizontalBeamPrt[0],
