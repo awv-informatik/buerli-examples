@@ -70,6 +70,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
   { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/RobotArm' },
+  { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
 
 ]
 
