@@ -8,7 +8,7 @@ const {
 } = require('customize-cra')
 
 const customizeCra = override(
-  addWebpackModuleRule({ test: /\.(of1|stp)$/, use: 'arraybuffer-loader' }),
+  addWebpackModuleRule({ test: /\.(ofb|stp)$/, use: 'arraybuffer-loader' }),
   disableEsLint(),
   removeModuleScopePlugin(),
   fixBabelImports('import', { libraryName: 'antd', libraryDirectory: 'es', style: true }),

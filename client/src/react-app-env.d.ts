@@ -1,6 +1,6 @@
 /// <reference types="react-scripts" />
 
-declare module '*.of1'
+declare module '*.ofb'
 declare module '*.stp'
 declare module '*.ts'
 declare module '*.tsx'
