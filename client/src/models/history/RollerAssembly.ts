@@ -909,7 +909,7 @@ async function saveOfb(api: ApiHistory) {
   if (data) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
-    link.download = `RollerAssembly.of1`
+    link.download = `RollerAssembly.ofb`
     link.click()
   }
 }
