@@ -2,6 +2,7 @@
 
 declare module '*.ofb'
 declare module '*.stp'
+declare module '*.step'
 declare module '*.ts'
 declare module '*.tsx'
 
