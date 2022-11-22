@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/ShadowboxTemplate.of1'
+import arraybuffer from '../../resources/history/ShadowboxTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -23,7 +23,7 @@ export const create: Create = async (apiType, params) => {
     params = storeApi.getState().examples.objs[activeExample].params
   }
 
-  const productId = await api.load(arraybuffer, 'of1')
+  const productId = await api.load(arraybuffer, 'ofb')
 
   // Set initial values
   const minGap = params.values[3]

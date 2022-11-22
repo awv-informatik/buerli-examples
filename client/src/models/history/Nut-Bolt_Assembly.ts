@@ -1,7 +1,7 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/As1/Bolt.of1'
-import arraybuffer2 from '../../resources/history/As1/Nut.of1'
+import arraybuffer from '../../resources/history/As1/Bolt.ofb'
+import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -18,7 +18,7 @@ export const create: Create = async (apiType, params) => {
   const nutBoltAsm = await api.createRootAssembly('NutBolt_Asm')
 
   /* Bolt */
-  const bolt = await api.loadProduct(arraybuffer, 'of1')
+  const bolt = await api.loadProduct(arraybuffer, 'ofb')
 
   api.setExpressions(
     bolt[0],
@@ -31,7 +31,7 @@ export const create: Create = async (apiType, params) => {
   const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
 
   /* Nut */
-  const nut = await api.loadProduct(arraybuffer2, 'of1')
+  const nut = await api.loadProduct(arraybuffer2, 'ofb')
   api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
   const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
