@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/Flange/FlangePrt.of1'
+import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -21,7 +21,7 @@ export const create: Create = async (apiType, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const productId = await api.load(arraybuffer, 'of1')
+  const productId = await api.load(arraybuffer, 'ofb')
 
   // Set initial values
   const holesCount = params.values[0]
