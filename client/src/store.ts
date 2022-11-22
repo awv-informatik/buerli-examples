@@ -71,7 +71,8 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
   { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/RobotArm' },
   { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
-
+  { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
+  { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
 ]
 
 const exampleMap: Record<string, Example> = {}
