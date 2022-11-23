@@ -3,7 +3,7 @@ import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import templateSP from '../../resources/history/WallTemplate.of1'
+import templateSP from '../../resources/history/WallTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type node = {
@@ -172,7 +172,7 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'of1')
+  const root = await api.load(templateSP, 'ofb')
   rootNode = root ? root[0] : null
 
   if (rootNode !== null) {

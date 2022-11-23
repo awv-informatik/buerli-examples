@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/GripperTemplate.of1'
+import arraybuffer from '../../resources/history/GripperTemplate.ofb'
 import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -12,7 +12,7 @@ export const paramsMap: Param[] = [
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
 
-  const productId = await api.load(arraybuffer, 'of1')
+  const productId = await api.load(arraybuffer, 'ofb')
 
   // Set initial values
   await api.setExpressions(

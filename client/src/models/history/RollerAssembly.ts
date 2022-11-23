@@ -2,7 +2,7 @@
 import { FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
 import { PointMemValue } from '@buerli.io/core'
 import { ApiHistory, history, ConstraintType, Transform, DimensionType } from '@buerli.io/headless'
-import templateAB from '../../resources/history/RollerTemplate.of1'
+import templateAB from '../../resources/history/RollerTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const wl = 0
@@ -19,7 +19,7 @@ export const paramsMap: Param[] = [
   { index: ss, name: 'segmentSize', type: ParamType.Number, value: 50 },
   { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
   { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
-  { index: 901, name: 'saveAsOf1', type: ParamType.Button, value: saveOf1 },
+  { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
@@ -70,7 +70,7 @@ export const create: Create = async (apiType, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const root = await api.load(templateAB, 'of1')
+  const root = await api.load(templateAB, 'ofb')
   const rootAsm = root ? root[0] : null
   segmentPrt = await api.getPartFromContainer('Segment')
 
@@ -904,12 +904,12 @@ async function exportSVG(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOf1(api: ApiHistory) {
-  const data = await api.save('of1')
+async function saveOfb(api: ApiHistory) {
+  const data = await api.save('ofb')
   if (data) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
-    link.download = `RollerAssembly.of1`
+    link.download = `RollerAssembly.ofb`
     link.click()
   }
 }

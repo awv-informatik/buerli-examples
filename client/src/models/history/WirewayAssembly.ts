@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
-import templateSP from '../../resources/history/WirewayTemplate.of1'
+import templateSP from '../../resources/history/WirewayTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const le = 0
@@ -41,7 +41,7 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'of1')
+  const root = await api.load(templateSP, 'ofb')
   rootNode = root ? root[0] : null
 
   if (rootNode !== null) {
