@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 ubuntu:18.04
+FROM ubuntu:18.04
 
 # Use this for M1 Macs
 # FROM --platform=linux/amd64 dokken/ubuntu-18.04
