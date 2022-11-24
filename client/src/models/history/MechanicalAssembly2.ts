@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, ConstraintType, history } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import mechAsm from '../../resources/history/MechanicalAssembly2.of1'
+import mechAsm from '../../resources/history/MechanicalAssembly2.ofb'
 
 
 export const paramsMap: Param[] = [
@@ -17,7 +17,7 @@ export const create: Create = async (apiType, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const root = await api.load(mechAsm, 'of1')
+  const root = await api.load(mechAsm, 'ofb')
   const rootAsm = root ? root[0] : null
 
   if (rootAsm !== null) {
