@@ -1,4 +1,3 @@
-import '@buerli.io/react/build/middleware/batchedUpdates'
 import 'antd/dist/antd.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
