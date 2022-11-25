@@ -34,7 +34,7 @@ const store = vanillaCreate<StoreProps>(set => ({
     )
   },
 }))
-createStore.default<StoreProps>(store)
+createStore.default(store)
 
 ///////////////////////////////////////////////////////////////
 
