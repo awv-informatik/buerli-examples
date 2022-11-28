@@ -29,8 +29,8 @@
   ],
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@buerli.io/headless": "0.4.1",
-    "@buerli.io/react": "0.4.1",
+    "@buerli.io/headless": "0.5.0-beta.1",
+    "@buerli.io/react": "0.5.0-beta.1",
     "@codemirror/lang-javascript": "^6.0.2",
     "@mdx-js/react": "2.1.0",
     "@react-three/drei": "9.34.1",
@@ -44,8 +44,7 @@
     "react-dom": "18.0.0",
     "react-router-dom": "5.2.0",
     "styled-components": "5.3.1",
-    "three": "0.143",
-    "zustand": "4.1.4"
+    "three": "0.143"
   },
   "devDependencies": {
     "@mdx-js/loader": "2.1.0",
