@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, ConstraintType, history } from '@buerli.io/headless'
+import { ApiHistory, history, RevoluteConstraintType, SliderConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import mechAsm from '../../resources/history/MechanicalAssembly.ofb'
 
@@ -11,8 +11,8 @@ export const paramsMap: Param[] = [
   { index: a1, name: 'Lever', type: ParamType.Slider, value: 305, step: 5, values: [285, 335] },
 ].sort((a, b) => a.index - b.index)
 
-let constrSlider: ConstraintType
-let constrRevolute: ConstraintType
+let constrSlider: SliderConstraintType
+let constrRevolute: RevoluteConstraintType
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -25,8 +25,8 @@ export const create: Create = async (apiType, params) => {
   const rootAsm = root ? root[0] : null
 
   if (rootAsm !== null) {
-    constrSlider = await api.getConstraint(rootAsm, 'Slider')
-    constrRevolute = await api.getConstraint(rootAsm, 'Revolute')
+    constrSlider = await api.getSliderConstraint(rootAsm, 'Slider')
+    constrRevolute = await api.getRevoluteConstraint(rootAsm, 'Revolute')
   }
 
   return rootAsm
@@ -53,12 +53,12 @@ export const update: Update = async (apiType, productId, params) => {
 }
 
 async function updateSlider(paramValues: number[], api: ApiHistory) {
-  await api.update3dConstraintValue(constrSlider[0], 'zOffsetValue', paramValues[a0])
+  await api.update3dConstraintValue(constrSlider.constrId, 'zOffsetValue', paramValues[a0])
 }
 
 async function updateRevolute(paramValues: number[], api: ApiHistory) {
   const angleInRadian = (paramValues[a1] / 180) * Math.PI
-  await api.update3dConstraintValue(constrRevolute[0], 'zRotationValue', angleInRadian)
+  await api.update3dConstraintValue(constrRevolute.constrId, 'zRotationValue', angleInRadian)
 }
 
 export const cad = new history()

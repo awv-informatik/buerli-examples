@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
-import { FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
+import { CCClasses, FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
 import { PointMemValue } from '@buerli.io/core'
-import { ApiHistory, history, ConstraintType, Transform, DimensionType } from '@buerli.io/headless'
+import { ApiHistory, history, ConstraintType, Transform, DimensionType, FastenedConstraintType } from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -37,7 +37,7 @@ let electricPlug: [number[], number]
 let pneumaticPlug: [number[], number]
 let frame0: number[]
 let frame1: number[]
-let constrElectricPlug: ConstraintType
+let constrElectricPlug: FastenedConstraintType
 let constrPneumaticPlug: ConstraintType
 let wcsEPlugFrame0Left: number[]
 let wcsEPlugFrame0Right: number[]
@@ -80,11 +80,11 @@ export const create: Create = async (apiType, params) => {
 
   // Template
   if (rootAsm !== null) {
-    constrElectricPlug = await api.getConstraint(rootAsm, 'Fastened_ElectricPlug')
+    constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
     constrPneumaticPlug = await api.getConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
     frame0 = await api.getAssemblyNode(rootAsm, 'Frame0')
-    wcsEPlugFrame0Left = await api.getWorkCoordSystem(frame0[0], 'Plug_csys')
+    wcsEPlugFrame0Left = await api.getWorkGeometry(frame0[0], CCClasses.CCWorkCoordSystem, 'Plug_csys')
     wcsEPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Plug2_csys')
     wcsPPlugFrame0Left = await api.getWorkCoordSystem(frame0[0], 'Screw_csys')
     wcsPPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Screw2_csys')
@@ -219,30 +219,18 @@ async function updatePlugPos(plugPos: number, api: ApiHistory) {
     zOffset: constrPneumaticPlug[5],
   }
 
-  const fcElectricPlug: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrElectricPlug[0],
+  const fcElectricPlug: FastenedConstraintType = {
+    constrId: constrElectricPlug.constrId,
     mate1: {
       matePath: electricPlug[0],
       wcsId: electricPlug[1],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    mate2: {
-      matePath: constrElectricPlug[2][0],
-      wcsId: constrElectricPlug[2][1],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: constrElectricPlug[3],
-    yOffset: constrElectricPlug[4],
-    zOffset: constrElectricPlug[5],
+    mate2: constrElectricPlug.mate2,
+    xOffset: constrElectricPlug.xOffset,
+    yOffset: constrElectricPlug.yOffset,
+    zOffset: constrElectricPlug.zOffset,
   }
 
   await api.updateFastenedConstraints(fcPneumaticPlug, fcElectricPlug)
