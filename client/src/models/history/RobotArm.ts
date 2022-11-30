@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, ConstraintType, history } from '@buerli.io/headless'
-import * as THREE from 'three'
+import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import robotArm from '../../resources/history/RobotArm.ofb'
-import { ConstraintValueParam } from '@buerli.io/classcad'
+import { LimitedValue } from '@buerli.io/classcad'
 
 const a0 = 0 // axis 0
 const a1 = 1 // axis 1
@@ -15,9 +14,9 @@ export const paramsMap: Param[] = [
   { index: a2, name: 'Axis2', type: ParamType.Slider, value: -60, step: 1, values: [-135, 135] },
 ].sort((a, b) => a.index - b.index)
 
-let constrAxis0: ConstraintType
-let constrAxis1: ConstraintType
-let constrAxis2: ConstraintType
+let constrAxis0: RevoluteConstraintType
+let constrAxis1: RevoluteConstraintType
+let constrAxis2: RevoluteConstraintType
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -30,9 +29,9 @@ export const create: Create = async (apiType, params) => {
   const rootAsm = root ? root[0] : null
 
   if (rootAsm !== null) {
-    constrAxis0 = await api.getConstraint(rootAsm, 'Axis0')
-    constrAxis1 = await api.getConstraint(rootAsm, 'Axis1')
-    constrAxis2 = await api.getConstraint(rootAsm, 'Axis2')
+    constrAxis0 = await api.getRevoluteConstraint(rootAsm, 'Axis0')
+    constrAxis1 = await api.getRevoluteConstraint(rootAsm, 'Axis1')
+    constrAxis2 = await api.getRevoluteConstraint(rootAsm, 'Axis2')
   }
 
   return rootAsm
@@ -66,11 +65,11 @@ export const update: Update = async (apiType, productId, params) => {
 async function updateAxis0(paramValues: number[], api: ApiHistory) {
   
   const aIR0 = (paramValues[a0] / 180) * Math.PI
-  const cv0: ConstraintValueParam = { constrId: constrAxis0[0], limitValue: 'zRotationValue', value: aIR0}
+  const cv0 = { constrId: constrAxis0.constrId, limitValue: 'zRotationValue' as LimitedValue, value: aIR0}
   const aIR1 = (paramValues[a1]/ 180) * Math.PI
-  const cv1: ConstraintValueParam = { constrId: constrAxis1[0], limitValue: 'zRotationValue', value: aIR1}
+  const cv1 = { constrId: constrAxis1.constrId, limitValue: 'zRotationValue' as LimitedValue, value: aIR1}
   const aIR2 = (paramValues[a2]/ 180) * Math.PI
-  const cv2: ConstraintValueParam = { constrId: constrAxis2[0], limitValue: 'zRotationValue', value: aIR2}
+  const cv2 = { constrId: constrAxis2.constrId, limitValue: 'zRotationValue' as LimitedValue, value: aIR2}
 
   await api.update3dConstraintValues(cv0, cv1, cv2)
 }
@@ -78,16 +77,16 @@ async function updateAxis0(paramValues: number[], api: ApiHistory) {
 async function updateAxis1(paramValues: number[], api: ApiHistory) {
   
   const aIR1 = (paramValues[a1]/ 180) * Math.PI
-  const cv1: ConstraintValueParam = { constrId: constrAxis1[0], limitValue: 'zRotationValue', value: aIR1}
+  const cv1 = { constrId: constrAxis1.constrId, limitValue: 'zRotationValue' as LimitedValue, value: aIR1}
   const aIR2 = (paramValues[a2]/ 180) * Math.PI
-  const cv2: ConstraintValueParam = { constrId: constrAxis2[0], limitValue: 'zRotationValue', value: aIR2}
+  const cv2 = { constrId: constrAxis2.constrId, limitValue: 'zRotationValue' as LimitedValue, value: aIR2}
 
   await api.update3dConstraintValues(cv1, cv2)
 }
 
 async function updateAxis2(angle: number, api: ApiHistory) {
   const angleInRadian = (angle / 180) * Math.PI
-  await api.update3dConstraintValue(constrAxis2[0], 'zRotationValue', angleInRadian)
+  await api.update3dConstraintValue(constrAxis2.constrId, 'zRotationValue' as LimitedValue, angleInRadian)
 }
 
 export const cad = new history()
