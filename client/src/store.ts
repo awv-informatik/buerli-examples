@@ -69,7 +69,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
-  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/RobotArm' },
+  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis' },
   { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
   { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
