@@ -1,5 +1,5 @@
 import { api as buerliApi } from '@buerli.io/core'
-import { ApiHistory, ApiNoHistory, solid } from '@buerli.io/headless'
+import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
@@ -131,8 +131,7 @@ const Part: React.FC = () => {
       headlessApi.current = api
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        const id = await create(api, p, { onSelect, onResume })
-        productOrSolidIds.current = cad instanceof solid ? id as number[] : id as number
+        productOrSolidIds.current = await create(api, p, { onSelect, onResume })
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
           setMeshes(tempMeshes)
@@ -169,10 +168,9 @@ const Part: React.FC = () => {
         try {
           productOrSolidIds.current = await update(
             headlessApi.current,
-            cad instanceof solid ? productOrSolidIds.current as number : productOrSolidIds.current as number[],
+            productOrSolidIds.current,
             params,
           )
-          productOrSolidIds.current = cad instanceof solid ? productOrSolidIds.current as number : productOrSolidIds.current as number[]
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
