@@ -1,9 +1,9 @@
 /* eslint-disable max-lines */
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import flangeAB from '../../resources/history/Flange/FlangePrt.of1'
-import boltAB from '../../resources/history/Flange/Bolt_M22.of1'
-import nutAB from '../../resources/history/Flange/Nut_M22.of1'
+import flangeAB from '../../resources/history/Flange/FlangePrt.ofb'
+import boltAB from '../../resources/history/Flange/Bolt_M22.ofb'
+import nutAB from '../../resources/history/Flange/Nut_M22.ofb'
 import { Create, Param } from '../../store'
 
 const origin = { x: 0, y: 0, z: 0 }
@@ -19,9 +19,9 @@ export const create: Create = async (apiType, param) => {
   const root = await api.createRootAssembly('FlangeAsm')
 
   // Load all needed products
-  const flange = await api.loadProduct(flangeAB, 'of1')
-  const bolt = await api.loadProduct(boltAB, 'of1')
-  const nut = await api.loadProduct(nutAB, 'of1')
+  const flange = await api.loadProduct(flangeAB, 'ofb')
+  const bolt = await api.loadProduct(boltAB, 'ofb')
+  const nut = await api.loadProduct(nutAB, 'ofb')
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
