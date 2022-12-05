@@ -13,6 +13,8 @@ export const create: Create = async (apiType, params) => {
 
   const x = 25
   const y = 25
+  const origin = [0,0,0]
+  const normal = [1,0,0]
   const shape = new THREE.Shape()
   shape.moveTo(x, y)
   shape.quadraticCurveTo(x + 50, y - 80, x + 90, y - 10)
@@ -20,8 +22,10 @@ export const create: Create = async (apiType, params) => {
   shape.quadraticCurveTo(x + 115, y, x + 115, y + 40)
   shape.quadraticCurveTo(x + 100, y + 10, x + 90, y + 10)
   shape.quadraticCurveTo(x + 50, y + 80, x, y)
-  const basicBody = await api.extrude([0, 0, params.values[0]], shape)
-  return [basicBody]
+  const fish1 = await api.extrude([0, 0, params.values[0]], shape)
+  const fish2 = await api.extrude([0, 0, params.values[0]], shape)
+  await api.mirror(fish2, origin, normal)
+  return [fish1, fish2]
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -46,6 +50,7 @@ export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
 const colorize = (scene: THREE.Scene) => {
   const customRed = new Color('rgb(203, 67, 22)')
   setSolidsColor('Solid0', customRed, scene)
+  setSolidsColor('Solid1', new Color('rgb(198, 55, 189)'), scene)
   setSolidsTransparency('Solid0', 0.5, scene)
 }
 
