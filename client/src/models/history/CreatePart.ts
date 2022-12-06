@@ -19,18 +19,6 @@ export const create: Create = async (apiType, params) => {
   return part
 }
 
-// export const getBufferGeom = async (productId: number, api: ApiHistory) => {
-//   if (!api) return
-//   const geoms = await api.createBufferGeometry(productId)
-//   return geoms.map(
-//     geom =>
-//       new THREE.Mesh(
-//         geom,
-//         new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') }),
-//       ),
-//   )
-// }
-
 export const getScene = async (productId: number, api: ApiHistory) => {
   if (!api) return
   const scene = await api.createScene(productId)
