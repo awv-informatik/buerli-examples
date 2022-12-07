@@ -13,8 +13,8 @@ export const create: Create = async (apiType, params) => {
 
   const x = 25
   const y = 25
-  const origin = [0,0,0]
-  const normal = [1,0,0]
+  const origin = [0, 0, 0]
+  const normal = [1, 0, 0]
   const shape = new THREE.Shape()
   shape.moveTo(x, y)
   shape.quadraticCurveTo(x + 50, y - 80, x + 90, y - 10)
@@ -42,16 +42,15 @@ export const update: Update = async (apiType, productId, params) => {
 
 export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidIds)
-  scene && colorize(scene)
+  const { scene, solids } = await api.createScene(solidIds, { meshPerFace: true})
+  scene && colorize(scene, solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene) => {
-  const customRed = new Color('rgb(203, 67, 22)')
-  setSolidsColor('Solid0', customRed, scene)
-  setSolidsColor('Solid1', new Color('rgb(198, 55, 189)'), scene)
-  setSolidsTransparency('Solid0', 0.5, scene)
+const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
+  setSolidsColor(solids[0].name, new Color('rgb(50, 2, 22)'), scene)
+  setSolidsColor(solids[1].name, new Color('rgb(198, 55, 189)'), scene)
+  setSolidsTransparency(solids[1].name, 0.5, scene)
 }
 
 export const cad = new solid()

@@ -72,10 +72,12 @@ export const setSolidsColor = (nameOrId: string | number, color: Color, scene: T
     typeof nameOrId === 'string'
       ? findObjectsByName(nameOrId, scene)
       : findObjectsById(nameOrId, scene)
-      solids.forEach(solid => {
-    if (solid && solid.type === 'Mesh') {
-      const mat = (solid as Mesh).material as MeshStandardMaterial
-      mat.color = color
+  solids.forEach(solid => {
+    if (solid && solid.children.length > 0 && solid.children[0].type === 'Mesh') {
+      solid.children.forEach(child => {
+        const mat = (child as Mesh).material as MeshStandardMaterial
+        mat.color = color
+      })
     }
   })
 }
@@ -126,10 +128,12 @@ export const setSolidsTransparency = (
       ? findObjectsByName(nameOrId, scene)
       : findObjectsById(nameOrId, scene)
   solids.forEach(solid => {
-    if (solid && solid.type === 'Mesh') {
-      const mat = (solid as Mesh).material as MeshStandardMaterial
-      mat.transparent = transparency > 0
+    if (solid && solid.children.length > 0 && solid.children[0].type === 'Mesh') {
+      solid.children.forEach(child => {
+        const mat = (child as Mesh).material as MeshStandardMaterial
+        mat.transparent = transparency > 0
       mat.opacity = 1 - transparency
+      })
     }
   })
 }
