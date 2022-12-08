@@ -2,7 +2,7 @@ import { ApiNoHistory, solid, createPolyline, FilletPoint, Polyline } from '@bue
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param } from '../../store'
-import { setSolidsColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -31,7 +31,7 @@ export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
 
 const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setSolidsColor(solids[0].name, customRed, scene)
+  setObjectColor(solids[0].name, customRed, scene)
 }
 
 export const cad = new solid()

@@ -10,8 +10,8 @@ HeaderVersion=1
 KernelId=1001
 KernelInfo=8.12.1.2
 PlatformName=windows
-StateId=0923e563-2b99-43bc-8d67-5cf0d9473713
-TimeStamp=2022-11-22T09:28:40Z
+StateId=2aa3e951-c17c-4062-93fc-0da80dea9083
+TimeStamp=2022-12-08T08:45:50Z
 hdend
 233
 10
@@ -59,7 +59,7 @@ ClassCAD_File_Header
 10
 48088
 4
-Part
+Bolt
 7
 CC_Part
 0
@@ -7374,7 +7374,7 @@ CC_Circle
 1
 271
 48134
-638
+2670
 241
 1
 1
@@ -8079,7 +8079,7 @@ CC_Circle
 1
 271
 48140
-638
+2670
 241
 1
 1
@@ -8767,7 +8767,7 @@ CC_Solid
 1
 271
 48147
-638
+2670
 241
 1
 1
@@ -9059,7 +9059,7 @@ CC_Solid
 1
 271
 48150
-638
+2670
 241
 1
 1
@@ -10772,7 +10772,7 @@ AllObjects
 
 213
 4
-Part
+Bolt
 0
 0
 1

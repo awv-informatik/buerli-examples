@@ -1,11 +1,13 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
+import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
 import arraybuffer4 from '../../resources/history/As1/Plate.ofb'
 import arraybuffer5 from '../../resources/history/As1/Rod.ofb'
 import { Create, Param } from '../../store'
+import { setObjectColor, setObjectTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -375,6 +377,23 @@ export const create: Create = async (apiType, params?) => {
   return as1Asm
 }
 
+export const getScene = async (productId: number, api: ApiHistory) => {
+  if (!api) return
+  const { scene } = await api.createScene(productId, { meshPerFace: true})
+  scene && colorize(scene)
+  return scene
+}
+
+const colorize = (scene: THREE.Scene) => {
+  setObjectColor('Bolt', new Color('rgb(203, 67, 22)'), scene)
+  setObjectColor('Nut', new Color('rgb(23, 67, 180)'), scene)
+  setObjectColor('Nut0', new Color('rgb(23, 67, 180)'), scene)
+  setObjectColor('LBracket', new Color('rgb(220, 150, 20)'), scene)
+  setObjectColor('Plate', new Color('rgb(120, 80, 79)'), scene)
+  setObjectColor('Rod', new Color('rgb(178, 0, 13)'), scene)
+  setObjectTransparency('Plate', 0.3, scene)
+} 
+
 export const cad = new history()
 
-export default { create, paramsMap, cad }
+export default { create, getScene, paramsMap, cad }

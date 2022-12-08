@@ -10,8 +10,8 @@ HeaderVersion=1
 KernelId=1001
 KernelInfo=8.12.1.2
 PlatformName=windows
-StateId=6d5d9589-ba92-421f-a082-7a1587c64db2
-TimeStamp=2022-11-22T09:29:28Z
+StateId=0f03e4f9-ff99-40c7-984b-3e87f5d6e85b
+TimeStamp=2022-12-08T08:47:44Z
 hdend
 233
 10
@@ -58,8 +58,8 @@ ClassCAD_File_Header
 233
 10
 57904
-4
-Part
+3
+Rod
 7
 CC_Part
 0
@@ -6194,7 +6194,7 @@ CC_Solid
 1
 271
 57944
-650
+2681
 241
 1
 1
@@ -7458,8 +7458,8 @@ AllObjects
 3
 
 213
-4
-Part
+3
+Rod
 0
 0
 1

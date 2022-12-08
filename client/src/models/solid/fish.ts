@@ -2,7 +2,7 @@ import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param, ParamType, Update } from '../../store'
-import { setSolidsColor, setSolidsTransparency } from '../../utils/utils'
+import { setObjectColor, setObjectTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Thickness', type: ParamType.Number, value: 5 },
@@ -42,15 +42,15 @@ export const update: Update = async (apiType, productId, params) => {
 
 export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const { scene, solids } = await api.createScene(solidIds, { meshPerFace: true})
+  const { scene, solids } = await api.createScene(solidIds, { meshPerGeometrie: true})
   scene && colorize(scene, solids)
   return scene
 }
 
 const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
-  setSolidsColor(solids[0].name, new Color('rgb(50, 2, 22)'), scene)
-  setSolidsColor(solids[1].name, new Color('rgb(198, 55, 189)'), scene)
-  setSolidsTransparency(solids[1].name, 0.5, scene)
+  setObjectColor(solids[0].name, new Color('rgb(50, 2, 22)'), scene)
+  setObjectColor(solids[1].name, new Color('rgb(198, 55, 189)'), scene)
+  setObjectTransparency(solids[1].name, 0.5, scene)
 }
 
 export const cad = new solid()
