@@ -1,10 +1,9 @@
 /* eslint-disable max-lines */
-import { PointMemValue } from '@buerli.io/core'
 import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import templateSP from '../../resources/history/WallTemplate.of1'
+import templateSP from '../../resources/history/WallTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type node = {
@@ -35,7 +34,7 @@ const store = vanillaCreate<StoreProps>(set => ({
     )
   },
 }))
-createStore.default<StoreProps>(store)
+createStore.default(store)
 
 ///////////////////////////////////////////////////////////////
 
@@ -173,7 +172,7 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'of1')
+  const root = await api.load(templateSP, 'ofb')
   rootNode = root ? root[0] : null
 
   if (rootNode !== null) {
@@ -370,7 +369,7 @@ async function updateWallSize(
     await updateBalkenwandSize(length, height, params, layers, api)
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: gipsplattePrt[0],
@@ -430,7 +429,7 @@ async function updateBalkenwandSize(
     const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: horizontalBeamPrt[0],
@@ -641,7 +640,7 @@ async function updateLayer(
         }
         const exprSets: {
           partId: number
-          members: { name: string; value: number | PointMemValue | string }[]
+          members: { name: string; value: number | string }[]
         }[] = [
           {
             partId: horizontalBeamPrt[0],
