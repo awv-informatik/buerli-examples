@@ -5,7 +5,7 @@
 import React from 'react'
 
 type State = { hasError?: boolean }
-type Props = { inCanvas?: boolean }
+type Props = { inCanvas?: boolean; children?: React.ReactNode }
 
 export class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
