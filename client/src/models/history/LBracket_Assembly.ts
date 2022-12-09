@@ -193,6 +193,13 @@ export const create: Create = async (apiType, params) => {
   return lBracketAsm
 }
 
+export const getScene = async (productId: number, api: ApiHistory) => {
+  if (!api) return
+  const { scene } = await api.createScene(productId, { meshPerGeometry: false})
+  console.info(scene)
+  return scene
+}
+
 export const cad = new history()
 
 export default { create, paramsMap, cad }

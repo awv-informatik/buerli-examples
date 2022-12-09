@@ -42,7 +42,7 @@ export const update: Update = async (apiType, productId, params) => {
 
 export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const { scene, solids } = await api.createScene(solidIds, { meshPerGeometrie: true})
+  const { scene, solids } = await api.createScene(solidIds, { meshPerGeometry: true})
   scene && colorize(scene, solids)
   return scene
 }

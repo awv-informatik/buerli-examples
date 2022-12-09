@@ -21,7 +21,7 @@ export const create: Create = async (apiType, params) => {
 
 export const getScene = async (productId: number, api: ApiHistory) => {
   if (!api) return
-  const { scene, nodes } = await api.createScene(productId, { meshPerFace: true})
+  const { scene, nodes } = await api.createScene(productId, { meshPerGeometry: true})
   scene && colorize(scene, nodes)
   return scene
 }
