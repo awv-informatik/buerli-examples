@@ -1,6 +1,6 @@
 import { ApiHistory, ApiNoHistory, history, solid } from '@buerli.io/headless'
 import produce from 'immer'
-import create, { SetState } from 'zustand'
+import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 
 // eslint-disable-next-line no-shadow
@@ -113,7 +113,7 @@ const storeApi = vanillaCreate<State>(set => ({
   },
 }))
 
-const useStore = create<State>(storeApi)
+const useStore = create(storeApi)
 
 export { useStore, storeApi }
 
@@ -124,7 +124,7 @@ type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
-  set: SetState<State>
+  set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
 }>

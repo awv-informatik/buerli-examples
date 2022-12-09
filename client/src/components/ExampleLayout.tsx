@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const classes: Record<number, string> = { 1: 'one', 2: 'two', 3: 'three' }
 
-export const ExampleLayout: React.FC = ({ children }) => {
+export const ExampleLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const count = React.useMemo(() => {
     const filtered: any[] = []
     React.Children.forEach(children, c => {

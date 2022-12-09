@@ -193,7 +193,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m} />
+          <mesh key={m.uuid} {...m as any} />
         ))}
       </group>
     )
