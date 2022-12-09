@@ -48,8 +48,8 @@ export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
 }
 
 const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
-  setObjectColor(solids[0].name, new Color('rgb(50, 2, 22)'), scene)
-  setObjectColor(solids[1].name, new Color('rgb(198, 55, 189)'), scene)
+  setObjectColor(solids[0].name, new Color('rgb(88, 55, 99)'), scene)
+  setObjectColor(solids[1].name, new Color('rgb(166, 55, 112)'), scene)
   setObjectTransparency(solids[1].name, 0.5, scene)
 }
 
