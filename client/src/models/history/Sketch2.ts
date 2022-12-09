@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history } from '@buerli.io/headless'
 import { Param, Create } from '../../store'
-import sketches from '../../resources/history/SketchesTemplate.ofb'
+import sketches from '../../resources/history/SuspensionBracket.ofb'
 import { ExtrusionType, WorkAxisType, WorkPlaneType } from '@buerli.io/classcad'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -31,10 +31,8 @@ export const create: Create = async (apiType, params) => {
     'WA',
   )
   const sketch = await api.loadSketch(part, sketches, wp)
-  const sketch2 = await api.copySketch(part, sketch, wp)
-  const sketchRegions = await api.getSketchRegion(part)
-  //await api.extrusion(part, sketchRegions, ExtrusionType.UP, 0, 20, 0, { x: 0, y: 0, z: 1 }, 1)
-  await api.revolve(part, sketchRegions, [axis], 0, 360, 0)
+  const sketchRegion = await api.getSketchRegion(part, 'Outer')
+  await api.extrusion(part, sketchRegion, ExtrusionType.UP, 0, 20, 0, { x: 0, y: 0, z: 1 }, 1)
 
   return part
 }
