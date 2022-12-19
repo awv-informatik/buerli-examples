@@ -59,7 +59,9 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
-
+  if (Array.isArray(productId)) {
+    return undefined
+  }
   const minGap = params.values[3]
   const holeDiameter = params.values[4]
   let columns = params.values[5]

@@ -166,11 +166,14 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidIds.current = await update(
+          const updatedProduct = await update(
             headlessApi.current,
             productOrSolidIds.current,
             params,
           )
+          if (updatedProduct) {
+            productOrSolidIds.current = updatedProduct
+          }
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)

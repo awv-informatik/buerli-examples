@@ -113,6 +113,9 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
+  if (Array.isArray(productId)) {
+    return undefined
+  }
   const updatedParamIndex = params.lastUpdatedParam
 
   const check = (param: Param) =>

@@ -37,7 +37,9 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
-
+  if (Array.isArray(productId)) {
+    return undefined
+  }
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
 
