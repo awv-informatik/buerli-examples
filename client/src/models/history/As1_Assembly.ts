@@ -7,7 +7,7 @@ import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
 import arraybuffer4 from '../../resources/history/As1/Plate.ofb'
 import arraybuffer5 from '../../resources/history/As1/Rod.ofb'
 import { Create, Param } from '../../store'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -385,13 +385,27 @@ export const getScene = async (productId: number, api: ApiHistory) => {
 }
 
 const colorize = (scene: THREE.Scene) => {
-  setObjectColor('Bolt', new Color('rgb(203, 67, 22)'), scene)
-  setObjectColor('Nut', new Color('rgb(23, 67, 180)'), scene)
-  setObjectColor('Nut0', new Color('rgb(23, 67, 180)'), scene)
-  setObjectColor('LBracket', new Color('rgb(220, 150, 20)'), scene)
-  setObjectColor('Plate', new Color('rgb(120, 80, 79)'), scene)
-  setObjectColor('Rod', new Color('rgb(178, 0, 13)'), scene)
-  setObjectTransparency('Plate', 0.3, scene)
+  // Color the first found object with name = 'Bolt'
+  const [boltObj] = findObjectsByName('Bolt', scene)
+  setObjectColor(boltObj, new Color('rgb(203, 67, 22)'))
+  // Color all objects with name = 'Nut'
+  const nutObjs = findObjectsByName('Nut', scene)
+  nutObjs.forEach(nutObj => {
+    setObjectColor(nutObj, new Color('rgb(23, 67, 180)'))
+  })
+  // Color a subassembly object with all its children
+  const nutBoltObjs = findObjectsByName('NutBolt_Asm', scene)
+  setObjectColor(nutBoltObjs[1], new Color('rgb(27, 196, 44)'))
+  // ...
+  const [lBracketObj] = findObjectsByName('LBracket', scene)
+  setObjectColor(lBracketObj, new Color('rgb(220, 150, 20)'))
+  // Set color and transparency on the first found object with name = 'Plate'
+  const [plateObj] = findObjectsByName('Plate', scene)
+  setObjectColor(plateObj, new Color('rgb(120, 80, 79)'))
+  setObjectTransparency(plateObj, 0.3)
+  // ...
+  const [rodObj] = findObjectsByName('Rod', scene)
+  setObjectColor(rodObj, new Color('rgb(178, 0, 13)'))
 } 
 
 export const cad = new history()

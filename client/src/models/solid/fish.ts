@@ -43,14 +43,14 @@ export const update: Update = async (apiType, productId, params) => {
 export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
   const { scene, solids } = await api.createScene(solidIds, { meshPerGeometry: true})
-  scene && colorize(scene, solids)
+  scene && colorize(solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
-  setObjectColor(solids[0].name, new Color('rgb(88, 55, 99)'), scene)
-  setObjectColor(solids[1].name, new Color('rgb(166, 55, 112)'), scene)
-  setObjectTransparency(solids[1].name, 0.5, scene)
+const colorize = (solids: THREE.Group[]) => {
+  setObjectColor(solids[0], new Color('rgb(88, 55, 99)'))
+  setObjectColor(solids[1], new Color('rgb(166, 55, 112)'))
+  setObjectTransparency(solids[1], 0.5)
 }
 
 export const cad = new solid()

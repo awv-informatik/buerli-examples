@@ -22,14 +22,15 @@ export const create: Create = async (apiType, params) => {
 export const getScene = async (productId: number, api: ApiHistory) => {
   if (!api) return
   const { scene, nodes } = await api.createScene(productId, { meshPerGeometry: true})
-  scene && colorize(scene, nodes)
+  scene && colorize(nodes)
   return scene
 }
 
-const colorize = (scene: THREE.Scene, nodes: THREE.Group[]) => {
+const colorize = (nodes: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setObjectColor(nodes[0].name, customRed, scene)
-  setObjectTransparency(nodes[0].name, 0.5, scene)
+  // Color and set transparency on first found node
+  setObjectColor(nodes[0], customRed)
+  setObjectTransparency(nodes[0], 0.5)
 } 
 
 export const cad = new history()

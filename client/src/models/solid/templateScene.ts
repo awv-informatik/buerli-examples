@@ -20,13 +20,13 @@ export const create: Create = async (apiType, params) => {
 export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
   const { scene, solids } = await api.createScene(solidIds)
-  scene && colorize(scene, solids)
+  scene && colorize(solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene, solids: THREE.Group[]) => {
+const colorize = (solids: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setObjectColor(solids[0].name, customRed, scene)
+  setObjectColor(solids[0], customRed)
 }
 
 export const cad = new solid()
