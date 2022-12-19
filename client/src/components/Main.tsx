@@ -141,7 +141,7 @@ const Part: React.FC = () => {
         }
       } catch (error) {
         setMeshes([])
-        console.error(JSON.stringify(error))
+        console.error(error)
       } finally {
         set({ loading: false })
         fit()
@@ -166,14 +166,11 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          const updatedProduct = await update(
+          productOrSolidIds.current = await update(
             headlessApi.current,
             productOrSolidIds.current,
             params,
           )
-          if (updatedProduct) {
-            productOrSolidIds.current = updatedProduct
-          }
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
@@ -186,7 +183,7 @@ const Part: React.FC = () => {
           }
         } catch (error) {
           setMeshes([])
-          console.error(JSON.stringify(error))
+          console.error(error)
         } finally {
           set({ loading: false })
         }
