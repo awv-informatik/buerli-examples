@@ -1,17 +1,17 @@
 import { Color, Mesh, MeshStandardMaterial, Object3D } from 'three'
 
 /**
- * Traverses over the whole scene and looks for all objects with id === object.userData.
+ * Traverses over the whole object and looks for all objects with id === object.userData.
  * @param id id of the object to look for
- * @param scene scene where to look for the objects
+ * @param object object where to look for the id
  * @returns array of all found objects
  */
-export const findObjectsById = (id: number, scene: THREE.Scene): Object3D[] => {
+export const findObjectsById = (id: number, object: THREE.Object3D): Object3D[] => {
   const foundObjects: Object3D[] = []
-  scene.traverse(object => {
-    if (object.userData['id'] === id) {
+  object.traverse(obj => {
+    if (obj.userData['id'] === id) {
       const foundChild: Object3D = new Mesh()
-      foundChild.copy(object)
+      foundChild.copy(obj)
       foundObjects.push(foundChild)
       return
     }
@@ -20,17 +20,17 @@ export const findObjectsById = (id: number, scene: THREE.Scene): Object3D[] => {
 }
 
 /**
- * Traverses over the whole scene and looks for all objects with name === object.name.
+ * Traverses over the whole object and looks for all objects with name === object.name.
  * @param name name of the object to look for
- * @param scene scene where to look for the objects
+ * @param object object where to look for the name
  * @returns array of all found objects
  */
-export const findObjectsByName = (name: string, scene: THREE.Scene): Object3D[] => {
+export const findObjectsByName = (name: string, object: THREE.Object3D): Object3D[] => {
   const foundObjects: Object3D[] = []
-  scene.traverse(object => {
-    if (object.name === name) {
+  object.traverse(obj => {
+    if (obj.name === name) {
       const foundChild: Object3D = new Mesh()
-      foundChild.copy(object, true)
+      foundChild.copy(obj, true)
       foundObjects.push(foundChild)
       return
     }
@@ -39,51 +39,49 @@ export const findObjectsByName = (name: string, scene: THREE.Scene): Object3D[] 
 }
 
 /**
- * Sets the color for all objects in the scene, which correspond to the node with name or id = nameOrId.
- * If multiple nodes have the same name, all objects will be colored
- * @param nameOrId name or id of the node to set color on
- * @param color color to set on the object which correspond to the node
- * @param scene scene where to color the objects
+ * Sets the color for the object and all its children.
+ * @param object object to set color on
+ * @param color color to set on the object and its children
  */
-export const setNodesColor = (nameOrId: string | number, color: Color, scene: THREE.Scene) => {
-  const nodes: Object3D[] =
-    typeof nameOrId === 'string'
-      ? findObjectsByName(nameOrId, scene)
-      : findObjectsById(nameOrId, scene)
-  nodes.forEach(node => {
-    if (node && node.children.length > 0 && node.children[0].type === 'Mesh') {
-      node?.children.forEach(child => {
+export const setObjectColor = (
+  object: THREE.Object3D,
+  color: Color,
+) => {
+  if (object && object.children.length > 0) {
+    if (object.children[0].type === 'Group') {
+      object.children.forEach(child => {
+        setObjectColor(child, color)
+      })
+    } else if (object.children[0].type === 'Mesh') {
+      object.children.forEach(child => {
         const mat = (child as Mesh).material as MeshStandardMaterial
         mat.color = color
       })
     }
-  })
+  }
 }
 
 /**
- * Sets the transparency for all objects in the scene, which correspond to the node with name or id = nameOrId.
- * If multiple nodes have the same name, all objects will set to transparent.
- * @param nameOrId name or id of the node to set color on
- * @param transparency transparency (0 - 1) to set on the object which correspond to the node. 1 = completely transparent
- * @param scene scene where the objects will be set to transparency
+ * Sets the transparency for the object and all its children.
+ * @param object object to set color on
+ * @param transparency transparency (0 - 1) to set on the object and its children
  */
-export const setNodesTransparency = (
-  nameOrId: string | number,
+export const setObjectTransparency = (
+  object: THREE.Object3D,
   transparency: number,
-  scene: THREE.Scene,
 ) => {
   if (transparency > 1 || transparency < 0) return
-  const nodes: Object3D[] =
-    typeof nameOrId === 'string'
-      ? findObjectsByName(nameOrId, scene)
-      : findObjectsById(nameOrId, scene)
-  nodes.forEach(node => {
-    if (node && node.children.length > 0 && node.children[0].type === 'Mesh') {
-      node?.children.forEach(child => {
+  if (object && object.children.length > 0) {
+    if (object.children[0].type === 'Group') {
+      object.children.forEach(child => {
+        setObjectTransparency(child, transparency)
+      })
+    } else if (object.children[0].type === 'Mesh') {
+      object.children.forEach(child => {
         const mat = (child as Mesh).material as MeshStandardMaterial
         mat.transparent = transparency > 0
         mat.opacity = 1 - transparency
       })
     }
-  })
+  }
 }

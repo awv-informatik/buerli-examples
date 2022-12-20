@@ -24,19 +24,20 @@ export type Create = (
   api: ApiHistory | ApiNoHistory,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number>
+) => Promise<number | number[]>
 export type Update = (
   api: ApiHistory | ApiNoHistory,
-  productId: number,
+  productId: number | number[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number>
+) => Promise<number | number[]>
 
 const toc: { exampleId: string; label: string; file: string }[] = [
   // solid example
   { exampleId: 'Fish', label: 'Fish', file: 'solid/fish' },
   { exampleId: 'Heart', label: 'Heart', file: 'solid/heart' },
   { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego' },
-  { exampleId: 'StepImport', label: 'Step Import', file: 'solid/import-step' },
+  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step' },
+  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2' },
   { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
   { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
   { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon' },
@@ -128,8 +129,8 @@ export type Example = {
   label: string
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
+  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
