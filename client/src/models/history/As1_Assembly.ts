@@ -1,11 +1,13 @@
 import { FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
+import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
 import arraybuffer4 from '../../resources/history/As1/Plate.ofb'
 import arraybuffer5 from '../../resources/history/As1/Rod.ofb'
 import { Create, Param } from '../../store'
+import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -375,6 +377,37 @@ export const create: Create = async (apiType, params?) => {
   return as1Asm
 }
 
+export const getScene = async (productId: number, api: ApiHistory) => {
+  if (!api) return
+  const { scene } = await api.createScene(productId, { meshPerGeometry: true})
+  scene && colorize(scene)
+  return scene
+}
+
+const colorize = (scene: THREE.Scene) => {
+  // Color the first found object with name = 'Bolt'
+  const [boltObj] = findObjectsByName('Bolt', scene)
+  setObjectColor(boltObj, new Color('rgb(203, 67, 22)'))
+  // Color all objects with name = 'Nut'
+  const nutObjs = findObjectsByName('Nut', scene)
+  nutObjs.forEach(nutObj => {
+    setObjectColor(nutObj, new Color('rgb(23, 67, 180)'))
+  })
+  // Color a subassembly object with all its children
+  const nutBoltObjs = findObjectsByName('NutBolt_Asm', scene)
+  setObjectColor(nutBoltObjs[1], new Color('rgb(27, 196, 44)'))
+  // ...
+  const [lBracketObj] = findObjectsByName('LBracket', scene)
+  setObjectColor(lBracketObj, new Color('rgb(220, 150, 20)'))
+  // Set color and transparency on the first found object with name = 'Plate'
+  const [plateObj] = findObjectsByName('Plate', scene)
+  setObjectColor(plateObj, new Color('rgb(120, 80, 79)'))
+  setObjectTransparency(plateObj, 0.3)
+  // ...
+  const [rodObj] = findObjectsByName('Rod', scene)
+  setObjectColor(rodObj, new Color('rgb(178, 0, 13)'))
+} 
+
 export const cad = new history()
 
-export default { create, paramsMap, cad }
+export default { create, getScene, paramsMap, cad }

@@ -1,17 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiNoHistory, solid } from '@buerli.io/headless'
-import { Param, Create } from '../../store'
+import data from '../../resources/solid/AWVLogoCube.stp'
+import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
 
-  // Start creating your model here...
-  // ...
-  // ...
-
-  return [0] // solid ids
+  const importedIds = await api.import(data)
+  return importedIds
 }
 
 export const cad = new solid()

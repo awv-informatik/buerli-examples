@@ -23,7 +23,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0 // solid id
+  return [0] // solid ids
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -37,7 +37,7 @@ export const update: Update = async (apiType, productId, params) => {
   // ...
   // ...
 
-  return 0 // solid id
+  return [0] // solid ids
 }
 
 export const cad = new solid()

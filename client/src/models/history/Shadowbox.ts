@@ -59,7 +59,9 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
-
+  if (Array.isArray(productId)) {
+    throw new Error("Calling update does not support multiple product ids. Use a single product id only.")
+  }
   const minGap = params.values[3]
   const holeDiameter = params.values[4]
   let columns = params.values[5]

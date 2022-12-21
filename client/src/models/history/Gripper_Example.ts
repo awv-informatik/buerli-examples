@@ -27,6 +27,9 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
+  if (Array.isArray(productId)) {
+    throw new Error("Calling update does not support multiple product ids. Use a single product id only.")
+  }
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) =>
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex

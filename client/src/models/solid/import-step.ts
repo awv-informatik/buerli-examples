@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { Color } from 'three'
 import data from '../../resources/solid/Ventil.stp'
 import { Create, Param } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -11,19 +11,19 @@ export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
 
   const importedIds = await api.import(data)
-  return importedIds[0]
+  return importedIds
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
-  scene && colorize(scene)
+  const { scene, solids } = await api.createScene(solidIds)
+  scene && colorize(solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene) => {
+const colorize = (solids: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 159, 22)')
-  setNodesColor('Solid', customRed, scene)
+  setObjectColor(solids[0], customRed)
 }
 
 export const cad = new solid()
