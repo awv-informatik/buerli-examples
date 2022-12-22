@@ -28,7 +28,11 @@ export const create: Create = async (apiType, params) => {
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
-  const boltRefId = await api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
+  const [boltRefId] = await api.addNodes({
+    productId: bolt[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdBoltHeadShaft = await api.getWorkCoordSystem(boltRefId, 'WCS_Head-Shaft')
@@ -39,7 +43,11 @@ export const create: Create = async (apiType, params) => {
 
   api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
 
-  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
+  const [nutRefId] = await api.addNodes({
+    productId: nut[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
   /* Set bolt to origin of nut-bolt-assembly */
@@ -87,11 +95,11 @@ export const create: Create = async (apiType, params) => {
     { name: 'Hole_Diameter', value: shaftDiameter },
   )
 
-  const lBracketRef1 = await api.addNode(lBracket[0], lBracketAsm, [
-    { x: 0, y: 0, z: 0 },
-    xDir,
-    yDir,
-  ])
+  const [lBracketRef1] = await api.addNodes({
+    productId: lBracket[0],
+    ownerId: lBracketAsm,
+    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+  })
   const wcsIdLBracketOrigin = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Origin')
   const wcsIdLBracket1 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole1-Top')
   const wcsIdLBracket2Top = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Top')
@@ -112,21 +120,21 @@ export const create: Create = async (apiType, params) => {
     'FOC',
   )
 
-  const nutBoltAsmRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [
-    { x: 0, y: 0, z: 0 },
-    xDir,
-    yDir,
-  ])
-  const nutBoltAsmRef2 = await api.addNode(nutBoltAsm, lBracketAsm, [
-    { x: 0, y: 0, z: 0 },
-    xDir,
-    yDir,
-  ])
-  const nutBoltAsmRef3 = await api.addNode(nutBoltAsm, lBracketAsm, [
-    { x: 0, y: 0, z: 0 },
-    xDir,
-    yDir,
-  ])
+  const [nutBoltAsmRef1] = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+  })
+  const [nutBoltAsmRef2] = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+  })
+  const [nutBoltAsmRef3] = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+  })
 
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
@@ -195,7 +203,7 @@ export const create: Create = async (apiType, params) => {
 
 export const getScene = async (productId: number, api: ApiHistory) => {
   if (!api) return
-  const { scene } = await api.createScene(productId, { meshPerGeometry: false})
+  const { scene } = await api.createScene(productId, { meshPerGeometry: false })
   console.info(scene)
   return scene
 }

@@ -1,7 +1,14 @@
 /* eslint-disable max-lines */
 import { CCClasses, FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
 import { PointMemValue } from '@buerli.io/core'
-import { ApiHistory, history, ConstraintType, Transform, DimensionType, FastenedConstraintType } from '@buerli.io/headless'
+import {
+  ApiHistory,
+  history,
+  ConstraintType,
+  Transform,
+  DimensionType,
+  FastenedConstraintType,
+} from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -84,7 +91,11 @@ export const create: Create = async (apiType, params) => {
     constrPneumaticPlug = await api.getConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
     frame0 = await api.getAssemblyNode(rootAsm, 'Frame0')
-    wcsEPlugFrame0Left = await api.getWorkGeometry(frame0[0], CCClasses.CCWorkCoordSystem, 'Plug_csys')
+    wcsEPlugFrame0Left = await api.getWorkGeometry(
+      frame0[0],
+      CCClasses.CCWorkCoordSystem,
+      'Plug_csys',
+    )
     wcsEPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Plug2_csys')
     wcsPPlugFrame0Left = await api.getWorkCoordSystem(frame0[0], 'Screw_csys')
     wcsPPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Screw2_csys')
@@ -114,7 +125,9 @@ export const create: Create = async (apiType, params) => {
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   if (Array.isArray(productId)) {
-    throw new Error("Calling update does not support multiple product ids. Use a single product id only.")
+    throw new Error(
+      'Calling update does not support multiple product ids. Use a single product id only.',
+    )
   }
   const updatedParamIndex = params.lastUpdatedParam
 
@@ -327,18 +340,18 @@ async function updateWalzeDir(api: ApiHistory) {
   }
   constrWalzeOrigin[1][2] = flipWalze
 
-  await api.updateFastenedOriginConstraint(
-    constrWalzeOrigin[0],
-    {
+  await api.updateFastenedOriginConstraints({
+    constrId: constrWalzeOrigin[0],
+    mate1: {
       matePath: constrWalzeOrigin[1][0],
       wcsId: constrWalzeOrigin[1][1],
       flip: flipWalze,
       reoriented: constrWalzeOrigin[1][3],
     },
-    constrWalzeOrigin[3],
-    constrWalzeOrigin[4],
-    constrWalzeOrigin[5],
-  )
+    xOffset: constrWalzeOrigin[3],
+    yOffset: constrWalzeOrigin[4],
+    zOffset: constrWalzeOrigin[5],
+  })
 }
 
 ///////////////////////////////////////////////////////////////

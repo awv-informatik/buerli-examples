@@ -15,9 +15,23 @@ export const paramsMap: Param[] = [
   { index: a1, name: 'Axis Base/J1', type: ParamType.Slider, value: 0, step: 5, values: [0, 360] },
   { index: a2, name: 'Axis J1/J2', type: ParamType.Slider, value: -0, step: 1, values: [-60, 160] },
   { index: a3, name: 'Axis J2/J3', type: ParamType.Slider, value: -0, step: 1, values: [-230, 45] },
-  { index: a4, name: 'Axis J3/J4', type: ParamType.Slider, value: -0, step: 1, values: [-180, 180] },
+  {
+    index: a4,
+    name: 'Axis J3/J4',
+    type: ParamType.Slider,
+    value: -0,
+    step: 1,
+    values: [-180, 180],
+  },
   { index: a5, name: 'Axis J4/J5', type: ParamType.Slider, value: -0, step: 1, values: [-90, 90] },
-  { index: a6, name: 'Axis J5/J6', type: ParamType.Slider, value: -0, step: 1, values: [-180, 180] },
+  {
+    index: a6,
+    name: 'Axis J5/J6',
+    type: ParamType.Slider,
+    value: -0,
+    step: 1,
+    values: [-180, 180],
+  },
 ].sort((a, b) => a.index - b.index)
 
 let constraints: RevoluteConstraintType[] = []
@@ -82,11 +96,15 @@ export const update: Update = async (apiType, productId, params) => {
 }
 
 async function updateAxis(paramValues: number[], axis: number, api: ApiHistory) {
-  const constrValues: {constrId: number, limitValue: LimitedValue, value: number }[] = []
+  const constrValues: { constrId: number; paramName: LimitedValue; value: number }[] = []
   for (let index = axis; index < 6; index++) {
     const angleInRadian = (paramValues[index] / 180) * Math.PI
-    const constrValue = { constrId: await constraints[index].constrId, limitValue: 'zRotationValue' as LimitedValue, value: angleInRadian}
-    constrValues.push(constrValue)   
+    const constrValue = {
+      constrId: await constraints[index].constrId,
+      paramName: 'zRotationValue' as LimitedValue,
+      value: angleInRadian,
+    }
+    constrValues.push(constrValue)
   }
   await api.update3dConstraintValues(...constrValues)
 }
