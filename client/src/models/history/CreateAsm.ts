@@ -203,13 +203,21 @@ export const create: Create = async (apiType, params) => {
 
   /* nut-bolt assembly */
   const nutBoltAsm = await api.createAssemblyAsTemplate('Nut_Bolt_Assembly')
-  const nutRef = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
-  const boltRef = await api.addNode(bolt, nutBoltAsm, [pt0, xDir, yDir])
+  const nutRef = await api.addNodes({
+    productId: nut,
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
+  const boltRef = await api.addNodes({
+    productId: bolt,
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
 
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
     {
-      matePath: [boltRef],
+      matePath: boltRef,
       wcsId: mate1Bolt,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -223,13 +231,13 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedConstraint(
     nutBoltAsm,
     {
-      matePath: [nutRef],
+      matePath: nutRef,
       wcsId: mate1Nut,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: [boltRef],
+      matePath: boltRef,
       wcsId: mate1Bolt,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -241,14 +249,30 @@ export const create: Create = async (apiType, params) => {
   )
 
   /* l-bracket assembly */
-  const nutBoltRef0 = await api.addNode(nutBoltAsm, lBracketAsm, [pt0, xDir, yDir])
-  const nutBoltRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [pt1, xDir, yDir])
-  const nutBoltRef2 = await api.addNode(nutBoltAsm, lBracketAsm, [pt2, xDir, yDir])
-  const lBracketRef = await api.addNode(lBracket, lBracketAsm, [pt3, xDir, yDir])
+  const nutBoltRef0 = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [pt0, xDir, yDir],
+  })
+  const nutBoltRef1 = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [pt1, xDir, yDir],
+  })
+  const nutBoltRef2 = await api.addNodes({
+    productId: nutBoltAsm,
+    ownerId: lBracketAsm,
+    transformation: [pt2, xDir, yDir],
+  })
+  const lBracketRef = await api.addNodes({
+    productId: lBracket,
+    ownerId: lBracketAsm,
+    transformation: [pt3, xDir, yDir],
+  })
   await api.createFastenedOriginConstraint(
     lBracketAsm,
     {
-      matePath: [lBracketRef],
+      matePath: lBracketRef,
       wcsId: mate1LBracket,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -262,13 +286,13 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedConstraint(
     lBracketAsm,
     {
-      matePath: [lBracketRef],
+      matePath: lBracketRef,
       wcsId: mate1LBracket,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: [nutBoltRef0],
+      matePath: nutBoltRef0,
       wcsId: wcsShaftBolt,
       flip: FlipType.FLIP_Z_INV,
       reoriented: ReorientedType.REORIENTED_0,
@@ -282,13 +306,13 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedConstraint(
     lBracketAsm,
     {
-      matePath: [lBracketRef],
+      matePath: lBracketRef,
       wcsId: mate2LBracket,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: [nutBoltRef1],
+      matePath: nutBoltRef1,
       wcsId: wcsShaftBolt,
       flip: FlipType.FLIP_Z_INV,
       reoriented: ReorientedType.REORIENTED_0,
@@ -301,13 +325,13 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedConstraint(
     lBracketAsm,
     {
-      matePath: [lBracketRef],
+      matePath: lBracketRef,
       wcsId: mate3LBracket,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: [nutBoltRef2],
+      matePath: nutBoltRef2,
       wcsId: wcsShaftBolt,
       flip: FlipType.FLIP_Z_INV,
       reoriented: ReorientedType.REORIENTED_0,
