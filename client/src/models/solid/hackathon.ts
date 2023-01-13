@@ -35,21 +35,25 @@ export const create: Create = async (apiType, params) => {
   api.rotateTo(cyl2, [Math.PI / 2, 0, 0])
   api.subtract(basicBody, false, cyl1, cyl2)
   const offset = api.offset(basicBody, 1)
-  return offset
+  return [await offset]
 }
 
-export const getBufferGeom = async (solidId: number, api: ApiNoHistory) => {
+export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const geom = await api.createBufferGeometry(solidId)
-  const mesh = new THREE.Mesh(
-    geom,
-    new THREE.MeshStandardMaterial({
-      transparent: true,
-      opacity: 1,
-      color: new THREE.Color('rgb(150, 120, 255)'),
-    }),
-  )
-  return [mesh]
+  const meshes: THREE.Mesh[] = []
+  for await (const solidId of solidIds) {
+    const geom = await api.createBufferGeometry(solidId)
+    const mesh = new THREE.Mesh(
+      geom,
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 1,
+        color: new THREE.Color('rgb(150, 120, 255)'),
+      }),
+    )
+    meshes.push(mesh)
+  }
+  return meshes
 }
 
 export const cad = new solid()

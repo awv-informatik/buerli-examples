@@ -45,7 +45,7 @@ export const update: Update = async (apiType, productId, params) => {
 
 async function updateRevolute(paramValues: number[], api: ApiHistory) {
   const angleInRadian = (paramValues[0] / 180) * Math.PI
-  await api.update3dConstraintValue(constrRevolute[0], 'zRotationValue', angleInRadian)
+  await api.update3dConstraintValues({constrId: constrRevolute[0], paramName: 'zRotationValue', value: angleInRadian})
 }
 
 export const cad = new history()

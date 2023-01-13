@@ -11,7 +11,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0 // solid id
+  return [0] // solid ids
 }
 
 export const cad = new solid()

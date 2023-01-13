@@ -2,7 +2,7 @@ import { ApiNoHistory, solid, createPolyline, FilletPoint, Polyline } from '@bue
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -18,20 +18,20 @@ export const create: Create = async (apiType, params) => {
   const fp6: FilletPoint = { point: new THREE.Vector3(25, 100, 0), radius: 0 }
   const fp7: FilletPoint = { point: new THREE.Vector3(0, 100, 0), radius: 0 }
   const polyline: Polyline = createPolyline([fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7])
-  const extrusion = api.extrude([0, 0, 25], polyline)
-  return extrusion
+  const extrusion = await api.extrude([0, 0, 25], polyline)
+  return [extrusion]
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
-  scene && colorize(scene)
+  const { scene, solids } = await api.createScene(solidIds)
+  scene && colorize(solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene) => {
+const colorize = (solids: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setNodesColor('Solid', customRed, scene)
+  setObjectColor(solids[0], customRed)
 }
 
 export const cad = new solid()

@@ -25,7 +25,11 @@ export const create: Create = async (apiType, params) => {
     { name: 'Shaft_Length', value: shaftLength },
     { name: 'Shaft_Diameter', value: shaftDiameter },
   )
-  const boltRefId = api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
+  const [boltRefId] = await api.addNodes({
+    productId: bolt[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
 
   const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
   const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
@@ -33,7 +37,11 @@ export const create: Create = async (apiType, params) => {
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
   api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
-  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
+  const [nutRefId] = await api.addNodes({
+    productId: nut[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
   const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
 
   /* Bolt at origin */
