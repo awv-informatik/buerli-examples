@@ -23,11 +23,13 @@ export const create: Create = async (apiType, params) => {
   /* Bolt */
   const bolt = await api.loadProduct(arraybuffer, 'ofb')
 
-  api.setExpressions(
-    bolt[0],
-    { name: 'Shaft_Length', value: shaftLength },
-    { name: 'Shaft_Diameter', value: shaftDiameter },
-  )
+  api.setExpressions({
+    partId: bolt[0],
+    members: [
+      { name: 'Shaft_Length', value: shaftLength },
+      { name: 'Shaft_Diameter', value: shaftDiameter },
+    ],
+  })
   const [boltRefId] = await api.addNodes({
     productId: bolt[0],
     ownerId: nutBoltAsm,
@@ -41,7 +43,7 @@ export const create: Create = async (apiType, params) => {
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
 
-  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
   const [nutRefId] = await api.addNodes({
     productId: nut[0],
@@ -89,11 +91,13 @@ export const create: Create = async (apiType, params) => {
   /* LBracket */
   const lBracket = await api.loadProduct(arraybuffer3, 'ofb')
 
-  api.setExpressions(
-    lBracket[0],
-    { name: 'Rod_Hole_Diameter', value: rodDiameter },
-    { name: 'Hole_Diameter', value: shaftDiameter },
-  )
+  api.setExpressions({
+    partId: lBracket[0],
+    members: [
+      { name: 'Rod_Hole_Diameter', value: rodDiameter },
+      { name: 'Hole_Diameter', value: shaftDiameter },
+    ],
+  })
 
   const [lBracketRef1] = await api.addNodes({
     productId: lBracket[0],

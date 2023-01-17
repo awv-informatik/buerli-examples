@@ -15,39 +15,55 @@ export const create: Create = async (apiType, params) => {
   const productId = await api.load(arraybuffer, 'ofb')
 
   // Set initial values
-  await api.setExpressions(
-    productId[0],
-    { name: 'W', value: params.values[0] },
-    { name: 'H', value: params.values[1] },
-    { name: 'D', value: params.values[2] },
-    { name: 'W1', value: params.values[3] },
-  )
+  await api.setExpressions({
+    partId: productId[0],
+    members: [
+      { name: 'W', value: params.values[0] },
+      { name: 'H', value: params.values[1] },
+      { name: 'D', value: params.values[2] },
+      { name: 'W1', value: params.values[3] },
+    ],
+  })
   return productId[0]
 }
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   if (Array.isArray(productId)) {
-    throw new Error("Calling update does not support multiple product ids. Use a single product id only.")
+    throw new Error(
+      'Calling update does not support multiple product ids. Use a single product id only.',
+    )
   }
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) =>
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
-    await api.setExpressions(productId, { name: 'W', value: params.values[0] })
+    await api.setExpressions({
+      partId: productId,
+      members: [{ name: 'W', value: params.values[0] }],
+    })
   }
 
   if (check(paramsMap[1])) {
-    await api.setExpressions(productId, { name: 'H', value: params.values[1] })
+    await api.setExpressions({
+      partId: productId,
+      members: [{ name: 'H', value: params.values[1] }],
+    })
   }
 
   if (check(paramsMap[2])) {
-    await api.setExpressions(productId, { name: 'D', value: params.values[2] })
+    await api.setExpressions({
+      partId: productId,
+      members: [{ name: 'D', value: params.values[2] }],
+    })
   }
 
   if (check(paramsMap[3])) {
-    await api.setExpressions(productId, { name: 'W1', value: params.values[3] })
+    await api.setExpressions({
+      partId: productId,
+      members: [{ name: 'W1', value: params.values[3] }],
+    })
   }
 
   return productId

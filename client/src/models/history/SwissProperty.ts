@@ -412,7 +412,7 @@ async function updateWallSize(
         ],
       },
     ]
-    await api.setExpressionSets(...exprSets)
+    await api.setExpressions(...exprSets)
   }
 }
 
@@ -455,12 +455,12 @@ async function updateBalkenwandSize(
     ]
     if (balkenwandNodeId) {
       await api.setCurrentNode(balkenwandNodeId)
-      await api.setExpressionSets(...exprSets)
+      await api.setExpressions(...exprSets)
       await updateBalkenwandBeams(balkenwandNodeId, length, api)
       await api.setCurrentNode(balkenwandNodeId)
     } else {
       await api.setCurrentProduct(balkenwandAsm[0])
-      await api.setExpressionSets(...exprSets)
+      await api.setExpressions(...exprSets)
     }
     await api.setCurrentNode(rootNode)
   }
@@ -504,9 +504,14 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
       wallInsulationCustomWidth = (remainFillLength - verticalBeamThickness) / 2
     }
     // Configure custom wall insulation part
-    await api.setExpressions(wallInsulationCustomPrt[0], {
-      name: 'insulationLength',
-      value: wallInsulationCustomWidth,
+    await api.setExpressions({
+      partId: wallInsulationCustomPrt[0],
+      members: [
+        {
+          name: 'insulationLength',
+          value: wallInsulationCustomWidth,
+        },
+      ],
     })
   }
 
@@ -620,7 +625,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(gipsplattePrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: gipsplattePrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -632,7 +640,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(spanplattePrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: spanplattePrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -664,7 +675,7 @@ async function updateLayer(
             members: [{ name: 'insulationThickness', value: newThickness }],
           },
         ]
-        await api.setExpressionSets(...exprSets)
+        await api.setExpressions(...exprSets)
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -675,7 +686,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(daemmungPrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: daemmungPrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -686,7 +700,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: 2 * newThickness }
           }
         }
-        await api.setExpressions(holzlattungPrt[0], { name: 'latchThickness', value: newThickness })
+        await api.setExpressions({
+          partId: holzlattungPrt[0],
+          members: [{ name: 'latchThickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -697,7 +714,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(holzschalungPrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: holzschalungPrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break

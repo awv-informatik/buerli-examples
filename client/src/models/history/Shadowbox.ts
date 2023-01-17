@@ -45,22 +45,26 @@ export const create: Create = async (apiType, params) => {
       ? rows
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
-  await api.setExpressions(
-    productId[0],
-    { name: 'Columns', value: columns },
-    { name: 'Rows', value: rows },
-    { name: 'HoleDiameter', value: holeDiameter },
-    { name: 'FoamDepth', value: foamDepth },
-    { name: 'FoamHeight', value: foamHeight },
-    { name: 'FoamWidth', value: foamWidth },
-  )
+  await api.setExpressions({
+    partId: productId[0],
+    members: [
+      { name: 'Columns', value: columns },
+      { name: 'Rows', value: rows },
+      { name: 'HoleDiameter', value: holeDiameter },
+      { name: 'FoamDepth', value: foamDepth },
+      { name: 'FoamHeight', value: foamHeight },
+      { name: 'FoamWidth', value: foamWidth },
+    ],
+  })
   return productId[0]
 }
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
   if (Array.isArray(productId)) {
-    throw new Error("Calling update does not support multiple product ids. Use a single product id only.")
+    throw new Error(
+      'Calling update does not support multiple product ids. Use a single product id only.',
+    )
   }
   const minGap = params.values[3]
   const holeDiameter = params.values[4]
@@ -81,15 +85,17 @@ export const update: Update = async (apiType, productId, params) => {
       ? rows
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
-  api.setExpressions(
-    productId,
-    { name: 'Columns', value: columns },
-    { name: 'Rows', value: rows },
-    { name: 'HoleDiameter', value: holeDiameter },
-    { name: 'FoamDepth', value: foamDepth },
-    { name: 'FoamHeight', value: foamHeight },
-    { name: 'FoamWidth', value: foamWidth },
-  )
+  api.setExpressions({
+    partId: productId,
+    members: [
+      { name: 'Columns', value: columns },
+      { name: 'Rows', value: rows },
+      { name: 'HoleDiameter', value: holeDiameter },
+      { name: 'FoamDepth', value: foamDepth },
+      { name: 'FoamHeight', value: foamHeight },
+      { name: 'FoamWidth', value: foamWidth },
+    ],
+  })
   return productId
 }
 
