@@ -323,7 +323,7 @@ async function updateNofSegments(
 async function updateSegmentSize(segSize: number, api: ApiHistory) {
   // Set length of walze in expression set
   const segment = await api.getPartFromContainer('Segment')
-  await api.setExpressions(segment[0], { name: 'W', value: segSize })
+  await api.setExpressions({ partId: segment[0], members: [{ name: 'W', value: segSize }] })
 }
 
 ///////////////////////////////////////////////////////////////
@@ -625,7 +625,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
 async function updateWalze(walzeLength: number, api: ApiHistory) {
   // Set length of walze in expression set
   const walze = await api.getPartFromContainer('Walze')
-  await api.setExpressions(walze[0], { name: 'L', value: walzeLength })
+  await api.setExpressions({ partId: walze[0], members: [{ name: 'L', value: walzeLength }] })
 
   // Set offset in z-Dir for frame0
   const focEnd1: {
