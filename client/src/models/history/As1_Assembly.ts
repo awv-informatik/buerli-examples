@@ -35,11 +35,13 @@ export const create: Create = async (apiType, params?) => {
   const bolt = await api.loadProduct(arraybuffer, 'ofb')
 
   /* Set expressions on bolt part (optional) */
-  api.setExpressions(
-    bolt[0],
-    { name: 'Shaft_Length', value: shaftLength },
-    { name: 'Shaft_Diameter', value: shaftDiameter },
-  )
+  api.setExpressions({
+    partId: bolt[0],
+    members: [
+      { name: 'Shaft_Length', value: shaftLength },
+      { name: 'Shaft_Diameter', value: shaftDiameter },
+    ],
+  })
 
   /* Add bolt to nut-bolt assembly template */
   const [boltRefId] = await api.addNodes({
@@ -57,7 +59,7 @@ export const create: Create = async (apiType, params?) => {
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
 
   /* Set expressions on bolt part (optional) */
-  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
   /* Add nut to nut-bolt-assembly template */
   const [nutRefId] = await api.addNodes({
@@ -109,11 +111,13 @@ export const create: Create = async (apiType, params?) => {
   const lBracket = await api.loadProduct(arraybuffer3, 'ofb')
 
   /* Set expressions on lBracket part (optional) */
-  api.setExpressions(
-    lBracket[0],
-    { name: 'Rod_Hole_Diameter', value: rodDiameter },
-    { name: 'Hole_Diameter', value: shaftDiameter },
-  )
+  api.setExpressions({
+    partId: lBracket[0],
+    members: [
+      { name: 'Rod_Hole_Diameter', value: rodDiameter },
+      { name: 'Hole_Diameter', value: shaftDiameter },
+    ],
+  })
 
   /* Add lBracket to lbracket-assembly template */
   const [lBracketRef1] = await api.addNodes({
@@ -229,7 +233,10 @@ export const create: Create = async (apiType, params?) => {
   const plate = await api.loadProduct(arraybuffer4, 'ofb')
 
   /* Set expressions on plate part (optional) */
-  api.setExpressions(plate[0], { name: 'Hole_Diameter', value: shaftDiameter })
+  api.setExpressions({
+    partId: plate[0],
+    members: [{ name: 'Hole_Diameter', value: shaftDiameter }],
+  })
 
   /* Add nut to nut-bolt assembly template */
   const [plateRef] = await api.addNodes({
@@ -316,7 +323,7 @@ export const create: Create = async (apiType, params?) => {
   const rod = await api.loadProduct(arraybuffer5, 'ofb')
 
   /* Set expressions on rod part (optional) */
-  api.setExpressions(rod[0], { name: 'Rod_Diameter', value: rodDiameter })
+  api.setExpressions({ partId: rod[0], members: [{ name: 'Rod_Diameter', value: rodDiameter }] })
 
   /* Add nut to nut-bolt assembly template */
   const [rodRefId] = await api.addNodes({
