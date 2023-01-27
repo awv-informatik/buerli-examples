@@ -19,40 +19,36 @@ export const create: Create = async (apiType, param) => {
   const root = await api.createRootAssembly('FlangeAsm')
 
   // Load all needed products
-  const flange = await api.loadProduct(flangeAB, 'ofb')
-  const bolt = await api.loadProduct(boltAB, 'ofb')
-  const nut = await api.loadProduct(nutAB, 'ofb')
+  const [flange] = await api.loadProduct(flangeAB, 'ofb')
+  const [bolt] = await api.loadProduct(boltAB, 'ofb')
+  const [nut] = await api.loadProduct(nutAB, 'ofb')
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
-    const wcsCenter = await api.getWorkGeometry(flange[0], CCClasses.CCWorkCoordSystem, 'WCSCenter')
-    const wcsHole1Top = await api.getWorkGeometry(
-      flange[0],
-      CCClasses.CCWorkCoordSystem,
-      'WCSBoltHoleTop',
-    )
-    const wcsBoltHead = await api.getWorkGeometry(bolt[0], CCClasses.CCWorkCoordSystem, 'WCSHead')
-    const wcsNut = await api.getWorkGeometry(nut[0], CCClasses.CCWorkCoordSystem, 'WCSNut')
+    const [wcsCenter] = await api.getWorkGeometry(flange, CCClasses.CCWorkCoordSystem, 'WCSCenter')
+    const [wcsHole1Top] = await api.getWorkGeometry(flange, CCClasses.CCWorkCoordSystem, 'WCSBoltHoleTop')
+    const [wcsBoltHead] = await api.getWorkGeometry(bolt, CCClasses.CCWorkCoordSystem, 'WCSHead')
+    const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCoordSystem, 'WCSNut')
 
     // Add the products as nodes to the root assembly
     const [flange1Node, flange2Node, boltNode, nutNode] = await api.addNodes(
       {
-        productId: flange[0],
+        productId: flange,
         ownerId: root,
         transformation: [origin, xDir, yDir],
       },
       {
-        productId: flange[0],
+        productId: flange,
         ownerId: root,
         transformation: [origin, xDir, yDir],
       },
       {
-        productId: bolt[0],
+        productId: bolt,
         ownerId: root,
         transformation: [origin, xDir, yDir],
       },
       {
-        productId: nut[0],
+        productId: nut,
         ownerId: root,
         transformation: [origin, xDir, yDir],
       },
@@ -63,7 +59,7 @@ export const create: Create = async (apiType, param) => {
       root,
       {
         matePath: [flange1Node],
-        wcsId: wcsCenter[0],
+        wcsId: wcsCenter,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
@@ -77,13 +73,13 @@ export const create: Create = async (apiType, param) => {
       root,
       {
         matePath: [flange1Node],
-        wcsId: wcsCenter[0],
+        wcsId: wcsCenter,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
         matePath: [flange2Node],
-        wcsId: wcsCenter[0],
+        wcsId: wcsCenter,
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_180,
       },
@@ -97,13 +93,13 @@ export const create: Create = async (apiType, param) => {
       root,
       {
         matePath: [flange1Node],
-        wcsId: wcsHole1Top[0],
+        wcsId: wcsHole1Top,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
         matePath: [boltNode],
-        wcsId: wcsBoltHead[0],
+        wcsId: wcsBoltHead,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
@@ -117,13 +113,13 @@ export const create: Create = async (apiType, param) => {
       root,
       {
         matePath: [flange2Node],
-        wcsId: wcsHole1Top[0],
+        wcsId: wcsHole1Top,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
         matePath: [nutNode],
-        wcsId: wcsNut[0],
+        wcsId: wcsNut,
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_0,
       },
