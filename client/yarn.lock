@@ -1108,12 +1108,12 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@buerli.io/classcad@0.5.0-beta.4":
-  version "0.5.0-beta.4"
-  resolved "https://nexus001.ntb.ch/repository/blexon-npm-group/@buerli.io/classcad/-/classcad-0.5.0-beta.4.tgz#859fa98a36d350c57e363bcaf5c2f404fa6d09c7"
-  integrity sha512-IMpBArGFaZajtdUuCa8J6R9v0HONqMqu1AlxCcbZTM2KjtEgi17CQa5QibufX+7hl8C9L0xN58Aj57GmIcQ93Q==
+"@buerli.io/classcad@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.5.0.tgz#871663548436aad52e5dafa05d1aa199f9e962d2"
+  integrity sha512-e8tSom+VY3+jydGjHMRk1e3Cp3z8+C0c7q797yp51aEzzJbUDKLqCdpUha9jn3QZr+fqKfBkCupBEIVa7XC7Pw==
   dependencies:
-    "@buerli.io/core" "0.5.0-beta.4"
+    "@buerli.io/core" "0.5.0"
     "@types/events" "^3.0.0"
     base64-arraybuffer "^0.2.0"
     comlink "^4.3.1"
@@ -1126,31 +1126,31 @@
     uuid "^3.3.2"
     xmlhttprequest-ssl "^2.0.0"
 
-"@buerli.io/core@0.5.0-beta.4":
-  version "0.5.0-beta.4"
-  resolved "https://nexus001.ntb.ch/repository/blexon-npm-group/@buerli.io/core/-/core-0.5.0-beta.4.tgz#43f44d498683da22b3a0755f74ca69561c3936fe"
-  integrity sha512-sTWej8k3iMy3ReWHyW1XMj97IjXTqXZOzZALVOstHZdt1cyWjgqLSu+AgGpHOBDnEHTrBMX6V5uP1Z4bfIGhWA==
+"@buerli.io/core@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.5.0.tgz#3cc3e2bbf28bd64783afd44a63470041431d1654"
+  integrity sha512-m2IN3U1yCkWA6e3OdC8OCmZmt2baXqt6WQF8LKbIMuI5Lk8wMMNW38p4cdcHITqOOcdC7bjDm18oXPtcoJQMGQ==
   dependencies:
     fast-json-patch "^3.1.1"
     jsonpatch "^3.1.0"
     uuid "^3.3.2"
     zustand "^4.1.4"
 
-"@buerli.io/headless@0.5.0-beta.4":
-  version "0.5.0-beta.4"
-  resolved "https://nexus001.ntb.ch/repository/blexon-npm-group/@buerli.io/headless/-/headless-0.5.0-beta.4.tgz#cba7cda124e8a308dbeeba8effa50ca72c5d7f9f"
-  integrity sha512-fpurzwgmBtPrqMWdVxsVF+euHVENgibf+GU486HgapIPzpTn5JzCvaeYKybcmqdtm7oh+00vcqUTRn504/rzRg==
+"@buerli.io/headless@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.5.0.tgz#667fb8db93c27463f8f16533eab2912749e2877f"
+  integrity sha512-5tDiDiM1n0DiJKh24Ugsbel+kcYMTSSev+TFo8Tl1SmLTb/RiDYGFmgea0WyuTl3BCD1lCEm53x6LdcnffZE+Q==
   dependencies:
-    "@buerli.io/classcad" "0.5.0-beta.4"
+    "@buerli.io/classcad" "0.5.0"
     flat-promise "^1.0.3"
 
-"@buerli.io/react@0.5.0-beta.4":
-  version "0.5.0-beta.4"
-  resolved "https://nexus001.ntb.ch/repository/blexon-npm-group/@buerli.io/react/-/react-0.5.0-beta.4.tgz#7c4f0c414973adcbe68a35e9db89e4d4450400ab"
-  integrity sha512-+6t/DHXCzKi5w3tfoF2XJzZ4ttb7aSCcd4EZsTVL9Sa3uPNM0Jb/I4FV6PRPPsRs4uLV65q1I76FmqYYXkT+cg==
+"@buerli.io/react@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.5.0.tgz#e41da570dc08e3f6a814635c9fda4bcd27de3b6b"
+  integrity sha512-MvKXCKZZSu9K1G1a/2xCAa6F7Emlq7evB75998BIZ7a2sMHC8G7ssUb21cgwZonhY1h2b4SRveGtqd5i09J1ew==
   dependencies:
     "@ant-design/icons" "^4.7.0"
-    "@buerli.io/core" "0.5.0-beta.4"
+    "@buerli.io/core" "0.5.0"
     antd "^4.23.4"
     deepmerge "^4.2.2"
     lodash-es "^4.17.15"
