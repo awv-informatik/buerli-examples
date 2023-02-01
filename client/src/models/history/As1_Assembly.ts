@@ -1,4 +1,4 @@
-import { FlipType, ReorientedType } from '@buerli.io/classcad'
+import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
 import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb'
@@ -127,25 +127,23 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of lBracket */
-  const wcsIdLBracket1 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole1-Top')
-  const wcsIdLBracket2Top = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Top')
-  const wcsIdLBracket2Bottom = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole2-Bottom')
-  const wcsIdLBracket3 = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Hole3-Top')
-  const wcsIdLBracketRod = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Rod')
-  const wcsIdLBracketOrigin = await api.getWorkCoordSystem(lBracketRef1, 'WCS_Origin')
+  const wcsIdLBracket1 = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole1-Top')
+  const wcsIdLBracket2Top = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Top')
+  const wcsIdLBracket2Bottom = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Bottom')
+  const wcsIdLBracket3 = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole3-Top')
+  const wcsIdLBracketRod = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Rod')
+  const wcsIdLBracketOrigin = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
 
   /* Add nut-bolt assembly three times to lBracket-assembly template */
-  const nutBoltAsmRef1 = await api.addNodes({
+  const nutBoltAsmRefs = await api.addNodes({
     productId: nutBoltAsm,
     ownerId: lBracketAsm,
     transformation: [pt0, xDir, yDir],
-  })
-  const nutBoltAsmRef2 = await api.addNodes({
+  }, {
     productId: nutBoltAsm,
     ownerId: lBracketAsm,
     transformation: [pt0, xDir, yDir],
-  })
-  const nutBoltAsmRef3 = await api.addNodes({
+  }, {
     productId: nutBoltAsm,
     ownerId: lBracketAsm,
     transformation: [pt0, xDir, yDir],
@@ -176,7 +174,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: nutBoltAsmRef1,
+      matePath: [nutBoltAsmRefs[0]],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -197,7 +195,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: nutBoltAsmRef2,
+      matePath: [nutBoltAsmRefs[1]],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -218,7 +216,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: nutBoltAsmRef3,
+      matePath: [nutBoltAsmRefs[2]],
       wcsId: wcsIdBoltHeadShaft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -246,9 +244,9 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of plate */
-  const wcsIdPlateBase = await api.getWorkCoordSystem(plateRef, 'WCS_Origin')
-  const wcsIdPlate2 = await api.getWorkCoordSystem(plateRef, 'WCS_Hole2-Top')
-  const wcsIdPlate5 = await api.getWorkCoordSystem(plateRef, 'WCS_Hole5-Top')
+  const wcsIdPlateBase = await api.getWorkGeometry(plateRef, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdPlate2 = await api.getWorkGeometry(plateRef, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Top')
+  const wcsIdPlate5 = await api.getWorkGeometry(plateRef, CCClasses.CCWorkCoordSystem, 'WCS_Hole5-Top')
 
   /* Set plate to origin of as1-assembly */
   api.createFastenedOriginConstraint(
@@ -266,12 +264,11 @@ export const create: Create = async (apiType, params?) => {
   )
 
   /* Add nut to nut-bolt assembly template */
-  const lBracketAsmRef1 = await api.addNodes({
+  const lBracketAsmRefs = await api.addNodes({
     productId: lBracketAsm,
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
-  })
-  const lBracketAsmRef2 = await api.addNodes({
+  }, {
     productId: lBracketAsm,
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
@@ -287,7 +284,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: lBracketAsmRef1,
+      matePath: [lBracketAsmRefs[0]],
       wcsId: wcsIdLBracket2Bottom[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -308,7 +305,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: lBracketAsmRef2,
+      matePath: [lBracketAsmRefs[1]],
       wcsId: wcsIdLBracket2Bottom[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -333,17 +330,16 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of rod */
-  const wscIdRodLeft = await api.getWorkCoordSystem(rodRefId, 'WCS_Nut_Left')
-  const wcsIdRodRight = await api.getWorkCoordSystem(rodRefId, 'WCS_Nut_Right')
-  const wcsIdRodOrigin = await api.getWorkCoordSystem(rodRefId, 'WCS_Origin')
+  const wscIdRodLeft = await api.getWorkGeometry(rodRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut_Left')
+  const wcsIdRodRight = await api.getWorkGeometry(rodRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut_Right')
+  const wcsIdRodOrigin = await api.getWorkGeometry(rodRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
 
   /* Add nut to nut-bolt assembly template */
-  const nutRefId1 = await api.addNodes({
+  const nutRefIds = await api.addNodes({
     productId: nut[0],
     ownerId: rodAsm,
     transformation: [pt0, xDir, yDir],
-  })
-  const nutRefId2 = await api.addNodes({
+  }, {
     productId: nut[0],
     ownerId: rodAsm,
     transformation: [pt0, xDir, yDir],
@@ -374,7 +370,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: nutRefId1,
+      matePath: [nutRefIds[0]],
       wcsId: wcsIdNut[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -395,7 +391,7 @@ export const create: Create = async (apiType, params?) => {
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: nutRefId2,
+      matePath: [nutRefIds[1]],
       wcsId: wcsIdNut[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -407,7 +403,7 @@ export const create: Create = async (apiType, params?) => {
   )
 
   /* Add nut to nut-bolt assembly template */
-  const rodAsmRef = await api.addNodes({
+  const [rodAsmRef] = await api.addNodes({
     productId: rodAsm,
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
@@ -417,13 +413,13 @@ export const create: Create = async (apiType, params?) => {
   await api.createFastenedConstraint(
     as1Asm,
     {
-      matePath: lBracketAsmRef1,
+      matePath: [lBracketAsmRefs[0]],
       wcsId: wcsIdLBracketRod[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     {
-      matePath: rodAsmRef,
+      matePath: [rodAsmRef],
       wcsId: wscIdRodLeft[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
