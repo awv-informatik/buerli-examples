@@ -203,8 +203,18 @@ export const create: Create = async (apiType, params) => {
 
   /* nut-bolt assembly */
   const nutBoltAsm = await api.createAssemblyAsTemplate('Nut_Bolt_Assembly')
-  const nutRef = await api.addNode(nut, nutBoltAsm, [pt0, xDir, yDir])
-  const boltRef = await api.addNode(bolt, nutBoltAsm, [pt0, xDir, yDir])
+  const [nutRef, boltRef] = await api.addNodes(
+    {
+      productId: nut,
+      ownerId: nutBoltAsm,
+      transformation: [pt0, xDir, yDir],
+    },
+    {
+      productId: bolt,
+      ownerId: nutBoltAsm,
+      transformation: [pt0, xDir, yDir],
+    },
+  )
 
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
@@ -241,10 +251,28 @@ export const create: Create = async (apiType, params) => {
   )
 
   /* l-bracket assembly */
-  const nutBoltRef0 = await api.addNode(nutBoltAsm, lBracketAsm, [pt0, xDir, yDir])
-  const nutBoltRef1 = await api.addNode(nutBoltAsm, lBracketAsm, [pt1, xDir, yDir])
-  const nutBoltRef2 = await api.addNode(nutBoltAsm, lBracketAsm, [pt2, xDir, yDir])
-  const lBracketRef = await api.addNode(lBracket, lBracketAsm, [pt3, xDir, yDir])
+  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = await api.addNodes(
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [pt0, xDir, yDir],
+    },
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [pt1, xDir, yDir],
+    },
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [pt2, xDir, yDir],
+    },
+    {
+      productId: lBracket,
+      ownerId: lBracketAsm,
+      transformation: [pt3, xDir, yDir],
+    },
+  )
   await api.createFastenedOriginConstraint(
     lBracketAsm,
     {

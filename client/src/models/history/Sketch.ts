@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history } from '@buerli.io/headless'
 import { Param, Create } from '../../store'
-import sketches from '../../resources/history/SketchesTemplate.of1'
+import sketches from '../../resources/history/SketchesTemplate.ofb'
 import { ExtrusionType, WorkPlaneType } from '@buerli.io/classcad'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)

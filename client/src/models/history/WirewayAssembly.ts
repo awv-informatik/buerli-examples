@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
-import templateSP from '../../resources/history/WirewayTemplate.of1'
+import templateSP from '../../resources/history/WirewayTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const le = 0
@@ -41,7 +41,7 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'of1')
+  const root = await api.load(templateSP, 'ofb')
   rootNode = root ? root[0] : null
 
   if (rootNode !== null) {
@@ -67,40 +67,67 @@ export const update: Update = async (apiType, productId, params) => {
   // Update length
   if (check(paramsMap[le])) {
     deckelPrt &&
-      (await api.setExpressions(deckelPrt, {
-        name: 'Laenge',
-        value: params.values[le],
-      }))
-
-    kanalPrt &&
-      (await api.setExpressions(kanalPrt, {
-        name: 'Laenge',
-        value: params.values[le],
-      }))
+      kanalPrt &&
+      (await api.setExpressions(
+        {
+          partId: deckelPrt,
+          members: [
+            {
+              name: 'Laenge',
+              value: params.values[le],
+            },
+          ],
+        },
+        {
+          partId: kanalPrt,
+          members: [
+            {
+              name: 'Laenge',
+              value: params.values[le],
+            },
+          ],
+        },
+      ))
   }
 
   // Update height
   if (check(paramsMap[he])) {
     kanalPrt &&
-      (await api.setExpressions(kanalPrt, {
-        name: 'Hoehe',
-        value: params.values[he],
+      (await api.setExpressions({
+        partId: kanalPrt,
+        members: [
+          {
+            name: 'Hoehe',
+            value: params.values[he],
+          },
+        ],
       }))
   }
 
   // Update width
   if (check(paramsMap[wi])) {
     deckelPrt &&
-      (await api.setExpressions(deckelPrt, {
-        name: 'Breite',
-        value: params.values[wi] + 3,
-      }))
-
-    kanalPrt &&
-      (await api.setExpressions(kanalPrt, {
-        name: 'Breite',
-        value: params.values[wi],
-      }))
+      kanalPrt &&
+      (await api.setExpressions(
+        {
+          partId: deckelPrt,
+          members: [
+            {
+              name: 'Breite',
+              value: params.values[wi] + 3,
+            },
+          ],
+        },
+        {
+          partId: kanalPrt,
+          members: [
+            {
+              name: 'Breite',
+              value: params.values[wi],
+            },
+          ],
+        },
+      ))
   }
 
   // Update pos

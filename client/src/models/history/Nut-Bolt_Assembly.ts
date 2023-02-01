@@ -1,7 +1,7 @@
-import { FlipType, ReorientedType } from '@buerli.io/classcad'
+import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/As1/Bolt.of1'
-import arraybuffer2 from '../../resources/history/As1/Nut.of1'
+import arraybuffer from '../../resources/history/As1/Bolt.ofb'
+import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -18,23 +18,33 @@ export const create: Create = async (apiType, params) => {
   const nutBoltAsm = await api.createRootAssembly('NutBolt_Asm')
 
   /* Bolt */
-  const bolt = await api.loadProduct(arraybuffer, 'of1')
+  const bolt = await api.loadProduct(arraybuffer, 'ofb')
 
-  api.setExpressions(
-    bolt[0],
-    { name: 'Shaft_Length', value: shaftLength },
-    { name: 'Shaft_Diameter', value: shaftDiameter },
-  )
-  const boltRefId = api.addNode(bolt[0], nutBoltAsm, [pt0, xDir, yDir])
+  api.setExpressions({
+    partId: bolt[0],
+    members: [
+      { name: 'Shaft_Length', value: shaftLength },
+      { name: 'Shaft_Diameter', value: shaftDiameter },
+    ],
+  })
+  const [boltRefId] = await api.addNodes({
+    productId: bolt[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
 
-  const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
-  const wcsIdOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
+  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
+  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
 
   /* Nut */
-  const nut = await api.loadProduct(arraybuffer2, 'of1')
-  api.setExpressions(nut[0], { name: 'Hole_Diameter', value: shaftDiameter })
-  const nutRefId = await api.addNode(nut[0], nutBoltAsm, [pt0, xDir, yDir])
-  const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
+  const nut = await api.loadProduct(arraybuffer2, 'ofb')
+  api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
+  const [nutRefId] = await api.addNodes({
+    productId: nut[0],
+    ownerId: nutBoltAsm,
+    transformation: [pt0, xDir, yDir],
+  })
+  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCoordSystem, 'WCS_Hole_Top')
 
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(

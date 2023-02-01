@@ -5,7 +5,6 @@ FROM ubuntu:18.04
 
 # Install linux dependencies
 RUN apt-get update && apt-get install -y \
-    libicu60 \
     libglu1-mesa-dev \
     ocl-icd-opencl-dev \
     locales
@@ -17,20 +16,21 @@ ENV LC_ALL C
 
 # Install node and npm
 RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get install -y nodejs
 
 # Install ClassCAD
-ENV SERVER_DIR /buerli
+ENV SERVER_DIR /classcad
 RUN mkdir -p $SERVER_DIR
 WORKDIR $SERVER_DIR
 
 RUN npm init -y
-RUN npm i @classcad/linux-x64@0.0.0-beta.14
-RUN chmod +x ./node_modules/@classcad/linux-x64/ClassCADInstance
+RUN npm i @classcad/linux-x64@0.0.1
+RUN chmod +x /classcad/node_modules/@classcad/linux-x64/ClassCADInstance
 
 # Copy runtimes to libs
-RUN cp ./node_modules/@classcad/linux-x64/libboost_thread.so.1.65.1 /lib/x86_64-linux-gnu
+RUN cp /classcad/node_modules/@classcad/linux-x64/libboost_thread.so.1.65.1 /lib/x86_64-linux-gnu
+RUN cp /classcad/node_modules/@classcad/linux-x64/libicu* /lib/x86_64-linux-gnu
 
 # Copy the .ccapp downloaded from buerli.io.
 COPY ./FreeBaseModeling.ccapp modeling.ccapp

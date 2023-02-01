@@ -2,50 +2,53 @@ import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param } from '../../store'
-import { setNodesColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
+  const lOuterBox = 90
+  const lInnerBox = 80
+  const dHole = 55
 
-  const b0 = api.box(100, 100, 100)
-  const b1 = api.offset(b0, 1)
-  const b3 = api.box(80, 80, 80)
-  const b2 = api.offset(b3, 5)
-  api.subtract(b1, false, b2)
-  const cyl1 = api.cylinder(200, 50)
-  api.subtract(b1, false, cyl1)
-  const cyl2 = api.cylinder(200, 50)
+  // Create boxes and cylinders and subtract them
+  const b0 = api.box(lOuterBox, lOuterBox, lOuterBox)
+  const b3 = api.box(lInnerBox, lInnerBox, lInnerBox)
+  api.subtract(b0, false, b3)
+  const cyl1 = api.cylinder(2 * lOuterBox, dHole)
+  api.subtract(b0, false, cyl1)
+  const cyl2 = api.cylinder(2 * lOuterBox, dHole)
   api.rotateTo(cyl2, [0, Math.PI / 2, 0])
-  api.subtract(b1, false, cyl2)
-  const cyl3 = api.cylinder(200, 50)
+  api.subtract(b0, false, cyl2)
+  const cyl3 = api.cylinder(2 * lOuterBox, dHole)
   api.rotateTo(cyl3, [Math.PI / 2, 0, 0])
-  api.subtract(b1, false, cyl3)
-  api.rotateTo(b1, [Math.PI / 4, Math.PI / 4, 0])
-  api.slice(b1, [0, 0, 60], [0, 0, 1])
-  api.slice(b1, [0, 0, -60], [0, 0, -1])
-  api.slice(b1, [0, 60, 0], [0, 1, 0])
-  api.slice(b1, [0, -60, 0], [0, -1, 0])
-  api.offset(b1, 2)
-  api.rotateTo(b1, [-Math.PI / 4, Math.PI / 4, 0])
-  api.slice(b1, [0, 0, 60], [0, 0, 1])
-  api.slice(b1, [0, 0, -60], [0, 0, -1])
-  api.slice(b1, [0, 60, 0], [0, 1, 0])
-  api.slice(b1, [0, -60, 0], [0, -1, 0])
-  return b1
+  api.subtract(b0, false, cyl3)
+
+  // Slice lower corners
+  api.slice(b0, [-45, -45, -15.556], [-0.5, -0.5, -0.707])
+  api.slice(b0, [45, -45, -15.556], [0.5, -0.5, -0.707])
+  api.slice(b0, [45, 45, -15.556], [0.5, 0.5, -0.707])
+  api.slice(b0, [-45, 45, -15.556], [-0.5, 0.5, -0.707])
+
+  // Slice upper corners
+  api.slice(b0, [-45, -45, 15.556], [-0.5, -0.5, 0.707])
+  api.slice(b0, [45, -45, 15.556], [0.5, -0.5, 0.707])
+  api.slice(b0, [45, 45, 15.556], [0.5, 0.5, 0.707])
+  api.slice(b0, [-45, 45, 15.556], [-0.5, 0.5, 0.707])
+  return [await b0]
 }
 
-export const getScene = async (solidId: number, api: ApiNoHistory) => {
+export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
   if (!api) return
-  const scene = await api.createScene(solidId)
-  scene && colorize(scene)
+  const { scene, solids } = await api.createScene(solidIds)
+  scene && colorize(solids)
   return scene
 }
 
-const colorize = (scene: THREE.Scene) => {
+const colorize = (solids: THREE.Group[]) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  setNodesColor('Solid', customRed, scene)
+  setObjectColor(solids[0], customRed)
 }
 
 export const cad = new solid()

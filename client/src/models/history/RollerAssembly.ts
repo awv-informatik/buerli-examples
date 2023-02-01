@@ -1,8 +1,15 @@
 /* eslint-disable max-lines */
-import { FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
-import { PointMemValue } from '@buerli.io/core'
-import { ApiHistory, history, ConstraintType, Transform, DimensionType } from '@buerli.io/headless'
-import templateAB from '../../resources/history/RollerTemplate.of1'
+import { CCClasses, FlipType, OrientationType, ReorientedType, ViewType } from '@buerli.io/classcad'
+import { ObjectID, PointMemValue } from '@buerli.io/core'
+import {
+  ApiHistory,
+  history,
+  Transform,
+  DimensionType,
+  FastenedConstraintType,
+  FastenedOriginConstraintType,
+} from '@buerli.io/headless'
+import templateAB from '../../resources/history/RollerTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const wl = 0
@@ -19,7 +26,7 @@ export const paramsMap: Param[] = [
   { index: ss, name: 'segmentSize', type: ParamType.Number, value: 50 },
   { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
   { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
-  { index: 901, name: 'saveAsOf1', type: ParamType.Button, value: saveOf1 },
+  { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
@@ -33,32 +40,32 @@ export const minGapFrameSegment = 20
 export const gapInFrame = 20
 let segmentPrt: number[] | null = null
 
-let electricPlug: [number[], number]
-let pneumaticPlug: [number[], number]
-let frame0: number[]
-let frame1: number[]
-let constrElectricPlug: ConstraintType
-let constrPneumaticPlug: ConstraintType
-let wcsEPlugFrame0Left: number[]
-let wcsEPlugFrame0Right: number[]
-let wcsPPlugFrame0Left: number[]
-let wcsPPlugFrame0Right: number[]
+let electricPlug: { matePath: ObjectID[], wcsId: ObjectID}
+let pneumaticPlug: { matePath: ObjectID[], wcsId: ObjectID}
+let frame0: ObjectID
+let frame1: ObjectID
+let constrElectricPlug: FastenedConstraintType
+let constrPneumaticPlug: FastenedConstraintType
+let wcsEPlugFrame0Left: ObjectID
+let wcsEPlugFrame0Right: ObjectID
+let wcsPPlugFrame0Left: ObjectID
+let wcsPPlugFrame0Right: ObjectID
 
-let wcsEPlugFrame1Left: number[]
-let wcsEPlugFrame1Right: number[]
-let wcsPPlugFrame1Left: number[]
-let wcsPPlugFrame1Right: number[]
+let wcsEPlugFrame1Left: ObjectID
+let wcsEPlugFrame1Right: ObjectID
+let wcsPPlugFrame1Left: ObjectID
+let wcsPPlugFrame1Right: ObjectID
 
-let constrArrow0Out: ConstraintType
-let constrArrow1Out: ConstraintType
-let constrArrow0In: ConstraintType
-let constrArrow1In: ConstraintType
-let constrLogo0: ConstraintType
-let constrLogo1: ConstraintType
+let constrArrow0Out: FastenedConstraintType
+let constrArrow1Out: FastenedConstraintType
+let constrArrow0In: FastenedConstraintType
+let constrArrow1In: FastenedConstraintType
+let constrLogo0: FastenedConstraintType
+let constrLogo1: FastenedConstraintType
 
-let constrEnd1: ConstraintType
-let constrEnd2: ConstraintType
-let constrWalzeOrigin: ConstraintType
+let constrEnd1: FastenedOriginConstraintType
+let constrEnd2: FastenedOriginConstraintType
+let constrWalzeOrigin: FastenedOriginConstraintType
 
 let currSegmentNodes: number[] = []
 let currDimensions: number[] = []
@@ -70,7 +77,7 @@ export const create: Create = async (apiType, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const root = await api.load(templateAB, 'of1')
+  const root = await api.load(templateAB, 'ofb')
   const rootAsm = root ? root[0] : null
   segmentPrt = await api.getPartFromContainer('Segment')
 
@@ -80,31 +87,31 @@ export const create: Create = async (apiType, params) => {
 
   // Template
   if (rootAsm !== null) {
-    constrElectricPlug = await api.getConstraint(rootAsm, 'Fastened_ElectricPlug')
-    constrPneumaticPlug = await api.getConstraint(rootAsm, 'Fastened_PneumaticPlug')
+    constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
+    constrPneumaticPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
-    frame0 = await api.getAssemblyNode(rootAsm, 'Frame0')
-    wcsEPlugFrame0Left = await api.getWorkCoordSystem(frame0[0], 'Plug_csys')
-    wcsEPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Plug2_csys')
-    wcsPPlugFrame0Left = await api.getWorkCoordSystem(frame0[0], 'Screw_csys')
-    wcsPPlugFrame0Right = await api.getWorkCoordSystem(frame0[0], 'Screw2_csys')
+    ;[frame0] = await api.getAssemblyNode(rootAsm, 'Frame0')
+    ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Plug_csys')
+    ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Plug2_csys')
+    ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Screw_csys')
+    ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Screw2_csys')
 
-    frame1 = await api.getAssemblyNode(rootAsm, 'Frame1')
-    wcsEPlugFrame1Left = await api.getWorkCoordSystem(frame1[0], 'Plug_csys')
-    wcsEPlugFrame1Right = await api.getWorkCoordSystem(frame1[0], 'Plug2_csys')
-    wcsPPlugFrame1Left = await api.getWorkCoordSystem(frame1[0], 'Screw_csys')
-    wcsPPlugFrame1Right = await api.getWorkCoordSystem(frame1[0], 'Screw2_csys')
+    ;[frame1] = await api.getAssemblyNode(rootAsm, 'Frame1')
+    ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Plug_csys')
+    ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Plug2_csys')
+    ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Screw_csys')
+    ;[wcsPPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Screw2_csys')
 
-    constrWalzeOrigin = await api.getConstraint(rootAsm, 'Fastened_Origin_Walze')
-    constrEnd1 = await api.getConstraint(rootAsm, 'Fastened_Origin_End1')
-    constrEnd2 = await api.getConstraint(rootAsm, 'Fastened_Origin_End2')
+    constrWalzeOrigin = await api.getFastenedOriginConstraint(rootAsm, 'Fastened_Origin_Walze')
+    constrEnd1 = await api.getFastenedOriginConstraint(rootAsm, 'Fastened_Origin_End1')
+    constrEnd2 = await api.getFastenedOriginConstraint(rootAsm, 'Fastened_Origin_End2')
 
-    constrArrow0Out = await api.getConstraint(rootAsm, 'Fastened_Arrow0_Out')
-    constrArrow1Out = await api.getConstraint(rootAsm, 'Fastened_Arrow1_Out')
-    constrArrow0In = await api.getConstraint(rootAsm, 'Fastened_Arrow0_In')
-    constrArrow1In = await api.getConstraint(rootAsm, 'Fastened_Arrow1_In')
-    constrLogo0 = await api.getConstraint(rootAsm, 'Fastened_Logo0')
-    constrLogo1 = await api.getConstraint(rootAsm, 'Fastened_Logo1')
+    constrArrow0Out = await api.getFastenedConstraint(rootAsm, 'Fastened_Arrow0_Out')
+    constrArrow1Out = await api.getFastenedConstraint(rootAsm, 'Fastened_Arrow1_Out')
+    constrArrow0In = await api.getFastenedConstraint(rootAsm, 'Fastened_Arrow0_In')
+    constrArrow1In = await api.getFastenedConstraint(rootAsm, 'Fastened_Arrow1_In')
+    constrLogo0 = await api.getFastenedConstraint(rootAsm, 'Fastened_Logo0')
+    constrLogo1 = await api.getFastenedConstraint(rootAsm, 'Fastened_Logo1')
 
     await update(api, rootAsm, { lastUpdatedParam: undefined, values: params.values })
   }
@@ -113,6 +120,11 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
+  if (Array.isArray(productId)) {
+    throw new Error(
+      'Calling update does not support multiple product ids. Use a single product id only.',
+    )
+  }
   const updatedParamIndex = params.lastUpdatedParam
 
   const check = (param: Param) =>
@@ -173,76 +185,57 @@ export default { create, update, paramsMap, cad }
 async function updatePlugPos(plugPos: number, api: ApiHistory) {
   switch (plugPos) {
     case 0: // frame 0 right
-      electricPlug = [frame0, wcsEPlugFrame0Right[0]]
-      pneumaticPlug = [frame0, wcsPPlugFrame0Right[0]]
+      electricPlug = { matePath: [frame0], wcsId: wcsEPlugFrame0Right }
+      pneumaticPlug = { matePath: [frame0], wcsId: wcsPPlugFrame0Right }
       break
     case 1: // frame 0 left
-      electricPlug = [frame0, wcsEPlugFrame0Left[0]]
-      pneumaticPlug = [frame0, wcsPPlugFrame0Left[0]]
+      electricPlug = { matePath: [frame0], wcsId: wcsEPlugFrame0Left }
+      pneumaticPlug = { matePath: [frame0], wcsId: wcsPPlugFrame0Left }
       break
     case 2: // frame 1 right
-      electricPlug = [frame1, wcsEPlugFrame1Right[0]]
-      pneumaticPlug = [frame1, wcsPPlugFrame1Right[0]]
+      electricPlug = { matePath: [frame1], wcsId: wcsEPlugFrame1Right }
+      pneumaticPlug = { matePath: [frame1], wcsId: wcsPPlugFrame1Right }
       break
     case 3: // frame 1 left
-      electricPlug = [frame1, wcsEPlugFrame1Left[0]]
-      pneumaticPlug = [frame1, wcsPPlugFrame1Left[0]]
+      electricPlug = { matePath: [frame1], wcsId: wcsEPlugFrame1Left }
+      pneumaticPlug = { matePath: [frame1], wcsId: wcsPPlugFrame1Left }
       break
     default:
       break
   }
 
   // Electric and pneumatic plug
-  const fcPneumaticPlug: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrPneumaticPlug[0],
+  const fcPneumaticPlug: FastenedConstraintType = {
+    constrId: constrPneumaticPlug.constrId,
     mate1: {
-      matePath: pneumaticPlug[0],
-      wcsId: pneumaticPlug[1],
+      matePath: pneumaticPlug.matePath,
+      wcsId: pneumaticPlug.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrPneumaticPlug[2][0],
-      wcsId: constrPneumaticPlug[2][1],
+      matePath: constrPneumaticPlug.mate2.matePath,
+      wcsId: constrPneumaticPlug.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    xOffset: constrPneumaticPlug[3],
-    yOffset: constrPneumaticPlug[4],
-    zOffset: constrPneumaticPlug[5],
+    xOffset: constrPneumaticPlug.xOffset,
+    yOffset: constrPneumaticPlug.yOffset,
+    zOffset: constrPneumaticPlug.zOffset,
   }
 
-  const fcElectricPlug: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrElectricPlug[0],
+  const fcElectricPlug: FastenedConstraintType = {
+    constrId: constrElectricPlug.constrId,
     mate1: {
-      matePath: electricPlug[0],
-      wcsId: electricPlug[1],
+      matePath: electricPlug.matePath,
+      wcsId: electricPlug.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
-    mate2: {
-      matePath: constrElectricPlug[2][0],
-      wcsId: constrElectricPlug[2][1],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: constrElectricPlug[3],
-    yOffset: constrElectricPlug[4],
-    zOffset: constrElectricPlug[5],
+    mate2: constrElectricPlug.mate2,
+    xOffset: constrElectricPlug.xOffset,
+    yOffset: constrElectricPlug.yOffset,
+    zOffset: constrElectricPlug.zOffset,
   }
 
   await api.updateFastenedConstraints(fcPneumaticPlug, fcElectricPlug)
@@ -318,15 +311,15 @@ async function updateNofSegments(
 
 async function updateSegmentSize(segSize: number, api: ApiHistory) {
   // Set length of walze in expression set
-  const segment = await api.getPartFromContainer('Segment')
-  await api.setExpressions(segment[0], { name: 'W', value: segSize })
+  const [segment] = await api.getPartFromContainer('Segment')
+  await api.setExpressions({ partId: segment, members: [{ name: 'W', value: segSize }] })
 }
 
 ///////////////////////////////////////////////////////////////
 
 async function updateWalzeDir(api: ApiHistory) {
   let flipWalze = FlipType.FLIP_X_INV
-  switch (constrWalzeOrigin[1][2]) {
+  switch (constrWalzeOrigin.mate1.flip) {
     case 0:
       flipWalze = FlipType.FLIP_X_INV
       break
@@ -334,20 +327,20 @@ async function updateWalzeDir(api: ApiHistory) {
       flipWalze = FlipType.FLIP_X
       break
   }
-  constrWalzeOrigin[1][2] = flipWalze
+  constrWalzeOrigin.mate1.flip = flipWalze
 
-  await api.updateFastenedOriginConstraint(
-    constrWalzeOrigin[0],
-    {
-      matePath: constrWalzeOrigin[1][0],
-      wcsId: constrWalzeOrigin[1][1],
+  await api.updateFastenedOriginConstraints({
+    constrId: constrWalzeOrigin.constrId,
+    mate1: {
+      matePath: constrWalzeOrigin.mate1.matePath,
+      wcsId: constrWalzeOrigin.mate1.wcsId,
       flip: flipWalze,
-      reoriented: constrWalzeOrigin[1][3],
+      reoriented: constrWalzeOrigin.mate1.reoriented,
     },
-    constrWalzeOrigin[3],
-    constrWalzeOrigin[4],
-    constrWalzeOrigin[5],
-  )
+    xOffset: constrWalzeOrigin.xOffset,
+    yOffset: constrWalzeOrigin.yOffset,
+    zOffset: constrWalzeOrigin.zOffset,
+  })
 }
 
 ///////////////////////////////////////////////////////////////
@@ -408,161 +401,119 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
   }
 
   // Arrows
-  const fcArrow0Out: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrArrow0Out[0],
+  const fcArrow0Out: FastenedConstraintType = {
+    constrId: constrArrow0Out.constrId,
     mate1: {
-      matePath: constrArrow0Out[1][0],
-      wcsId: constrArrow0Out[1][1],
+      matePath: constrArrow0Out.mate1.matePath,
+      wcsId: constrArrow0Out.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrArrow0Out[2][0],
-      wcsId: constrArrow0Out[2][1],
+      matePath: constrArrow0Out.mate2.matePath,
+      wcsId: constrArrow0Out.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientArrow0Out,
     },
-    xOffset: constrArrow0Out[3],
-    yOffset: constrArrow0Out[4],
-    zOffset: constrArrow0Out[5],
+    xOffset: constrArrow0Out.xOffset,
+    yOffset: constrArrow0Out.yOffset,
+    zOffset: constrArrow0Out.zOffset,
   }
 
-  const fcArrow1Out: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrArrow1Out[0],
+  const fcArrow1Out: FastenedConstraintType = {
+    constrId: constrArrow1Out.constrId,
     mate1: {
-      matePath: constrArrow1Out[1][0],
-      wcsId: constrArrow1Out[1][1],
+      matePath: constrArrow1Out.mate1.matePath,
+      wcsId: constrArrow1Out.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrArrow1Out[2][0],
-      wcsId: constrArrow1Out[2][1],
+      matePath: constrArrow1Out.mate2.matePath,
+      wcsId: constrArrow1Out.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientArrow1Out,
     },
-    xOffset: constrArrow1Out[3],
-    yOffset: constrArrow1Out[4],
-    zOffset: constrArrow1Out[5],
+    xOffset: constrArrow1Out.xOffset,
+    yOffset: constrArrow1Out.yOffset,
+    zOffset: constrArrow1Out.zOffset,
   }
 
-  const fcArrow0In: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrArrow0In[0],
+  const fcArrow0In: FastenedConstraintType = {
+    constrId: constrArrow0In.constrId,
     mate1: {
-      matePath: constrArrow0In[1][0],
-      wcsId: constrArrow0In[1][1],
+      matePath: constrArrow0In.mate1.matePath,
+      wcsId: constrArrow0In.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrArrow0In[2][0],
-      wcsId: constrArrow0In[2][1],
+      matePath: constrArrow0In.mate2.matePath,
+      wcsId: constrArrow0In.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientArrow0In,
     },
-    xOffset: constrArrow0In[3],
-    yOffset: constrArrow0In[4],
-    zOffset: constrArrow0In[5],
+    xOffset: constrArrow0In.xOffset,
+    yOffset: constrArrow0In.yOffset,
+    zOffset: constrArrow0In.zOffset,
   }
 
-  const fcArrow1In: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrArrow1In[0],
+  const fcArrow1In: FastenedConstraintType = {
+    constrId: constrArrow1In.constrId,
     mate1: {
-      matePath: constrArrow1In[1][0],
-      wcsId: constrArrow1In[1][1],
+      matePath: constrArrow1In.mate1.matePath,
+      wcsId: constrArrow1In.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrArrow1In[2][0],
-      wcsId: constrArrow1In[2][1],
+      matePath: constrArrow1In.mate2.matePath,
+      wcsId: constrArrow1In.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientArrow1In,
     },
-    xOffset: constrArrow1In[3],
-    yOffset: constrArrow1In[4],
-    zOffset: constrArrow1In[5],
+    xOffset: constrArrow1In.xOffset,
+    yOffset: constrArrow1In.yOffset,
+    zOffset: constrArrow1In.zOffset,
   }
 
   // Logos
-  const fcLogo0: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrLogo0[0],
+  const fcLogo0: FastenedConstraintType = {
+    constrId: constrLogo0.constrId,
     mate1: {
-      matePath: constrLogo0[1][0],
-      wcsId: constrLogo0[1][1],
+      matePath: constrLogo0.mate1.matePath,
+      wcsId: constrLogo0.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrLogo0[2][0],
-      wcsId: constrLogo0[2][1],
+      matePath: constrLogo0.mate2.matePath,
+      wcsId: constrLogo0.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientLogo0,
     },
-    xOffset: constrLogo0[3],
-    yOffset: constrLogo0[4],
-    zOffset: constrLogo0[5],
+    xOffset: constrLogo0.xOffset,
+    yOffset: constrLogo0.yOffset,
+    zOffset: constrLogo0.zOffset,
   }
 
-  const fcLogo1: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrLogo1[0],
+  const fcLogo1: FastenedConstraintType = {
+    constrId: constrLogo1.constrId,
     mate1: {
-      matePath: constrLogo1[1][0],
-      wcsId: constrLogo1[1][1],
+      matePath: constrLogo1.mate1.matePath,
+      wcsId: constrLogo1.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
     mate2: {
-      matePath: constrLogo1[2][0],
-      wcsId: constrLogo1[2][1],
+      matePath: constrLogo1.mate2.matePath,
+      wcsId: constrLogo1.mate2.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientLogo1,
     },
-    xOffset: constrLogo1[3],
-    yOffset: constrLogo1[4],
-    zOffset: constrLogo1[5],
+    xOffset: constrLogo1.xOffset,
+    yOffset: constrLogo1.yOffset,
+    zOffset: constrLogo1.zOffset,
   }
 
   await api.updateFastenedConstraints(
@@ -575,17 +526,11 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
   )
 
   // Frames (End)
-  const focEnd1: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrEnd1[0],
+  const focEnd1: FastenedOriginConstraintType = {
+    constrId: constrEnd1.constrId,
     mate1: {
-      matePath: constrEnd1[1][0],
-      wcsId: constrEnd1[1][1],
+      matePath: constrEnd1.mate1.matePath,
+      wcsId: constrEnd1.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: reorientEnd1,
     },
@@ -594,17 +539,11 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     zOffset: -walzeLength / 2,
   }
 
-  const focEnd2: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrEnd2[0],
+  const focEnd2: FastenedOriginConstraintType = {
+    constrId: constrEnd2.constrId,
     mate1: {
-      matePath: constrEnd2[1][0],
-      wcsId: constrEnd2[1][1],
+      matePath: constrEnd2.mate1.matePath,
+      wcsId: constrEnd2.mate1.wcsId,
       flip: FlipType.FLIP_Z_INV,
       reoriented: reorientEnd2,
     },
@@ -621,20 +560,14 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
 async function updateWalze(walzeLength: number, api: ApiHistory) {
   // Set length of walze in expression set
   const walze = await api.getPartFromContainer('Walze')
-  await api.setExpressions(walze[0], { name: 'L', value: walzeLength })
+  await api.setExpressions({ partId: walze[0], members: [{ name: 'L', value: walzeLength }] })
 
   // Set offset in z-Dir for frame0
-  const focEnd1: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrEnd1[0],
+  const focEnd1: FastenedOriginConstraintType = {
+    constrId: constrEnd1.constrId,
     mate1: {
-      matePath: constrEnd1[1][0],
-      wcsId: constrEnd1[1][1],
+      matePath: constrEnd1.mate1.matePath,
+      wcsId: constrEnd1.mate1.wcsId,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
@@ -644,17 +577,11 @@ async function updateWalze(walzeLength: number, api: ApiHistory) {
   }
 
   // Set offset in z-Dir for frame1
-  const focEnd2: {
-    constrId: number
-    mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-    xOffset: number
-    yOffset: number
-    zOffset: number
-  } = {
-    constrId: constrEnd2[0],
+  const focEnd2: FastenedOriginConstraintType = {
+    constrId: constrEnd2.constrId,
     mate1: {
-      matePath: constrEnd2[1][0],
-      wcsId: constrEnd2[1][1],
+      matePath: constrEnd2.mate1.matePath,
+      wcsId: constrEnd2.mate1.wcsId,
       flip: FlipType.FLIP_Z_INV,
       reoriented: ReorientedType.REORIENTED_180,
     },
@@ -904,12 +831,12 @@ async function exportSVG(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOf1(api: ApiHistory) {
-  const data = await api.save('of1')
+async function saveOfb(api: ApiHistory) {
+  const data = await api.save('ofb')
   if (data) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
-    link.download = `RollerAssembly.of1`
+    link.download = `RollerAssembly.ofb`
     link.click()
   }
 }

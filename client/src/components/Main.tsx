@@ -1,6 +1,6 @@
 import { api as buerliApi } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
-import { BuerliGeometry, raycastFilter, useBuerli } from '@buerli.io/react'
+import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
@@ -12,8 +12,8 @@ import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { Code } from './Code'
-import { Sidebar } from './Sidebar'
 import { Resizer, useResizeStore } from './Resizer'
+import { Sidebar } from './Sidebar'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -54,7 +54,6 @@ export const Main: React.FC = () => {
             orthographic
             frameloop="demand"
             dpr={[1, 2]}
-            raycaster={{ filter: raycastFilter }}
             camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
@@ -109,7 +108,7 @@ const Part: React.FC = () => {
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
-  const productOrSolidId = React.useRef<number>(0)
+  const productOrSolidIds = React.useRef<number | number[]>(0)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
 
@@ -132,17 +131,17 @@ const Part: React.FC = () => {
       headlessApi.current = api
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidId.current = await create(api, p, { onSelect, onResume })
+        productOrSolidIds.current = await create(api, p, { onSelect, onResume })
         if (getBufferGeom) {
-          const tempMeshes = await getBufferGeom(productOrSolidId.current, api)
+          const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
           setMeshes(tempMeshes)
         } else if (getScene) {
-          const createdScene = await getScene(productOrSolidId.current, api)
+          const createdScene = await getScene(productOrSolidIds.current, api)
           scene.copy(createdScene)
         }
       } catch (error) {
         setMeshes([])
-        console.error(JSON.stringify(error))
+        console.error(error)
       } finally {
         set({ loading: false })
         fit()
@@ -167,21 +166,24 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidId.current = await update(
+          productOrSolidIds.current = await update(
             headlessApi.current,
-            productOrSolidId.current,
+            productOrSolidIds.current,
             params,
           )
           if (getBufferGeom) {
-            const tempMeshes = await getBufferGeom(productOrSolidId.current, headlessApi.current)
+            const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
           } else if (getScene) {
-            const updatedScene = await getScene(productOrSolidId.current, headlessApi.current)
-            scene.copy(updatedScene)
+            const updatedScene = await getScene(productOrSolidIds.current, headlessApi.current)
+            if (updatedScene) {
+              scene.clear()
+              scene.copy(updatedScene)
+            }
           }
         } catch (error) {
           setMeshes([])
-          console.error(JSON.stringify(error))
+          console.error(error)
         } finally {
           set({ loading: false })
         }
@@ -194,7 +196,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m} />
+          <mesh key={m.uuid} {...m as any} />
         ))}
       </group>
     )

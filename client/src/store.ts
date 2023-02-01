@@ -1,6 +1,6 @@
 import { ApiHistory, ApiNoHistory, history, solid } from '@buerli.io/headless'
 import produce from 'immer'
-import create, { SetState } from 'zustand'
+import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 
 // eslint-disable-next-line no-shadow
@@ -24,19 +24,20 @@ export type Create = (
   api: ApiHistory | ApiNoHistory,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number>
+) => Promise<number | number[]>
 export type Update = (
   api: ApiHistory | ApiNoHistory,
-  productId: number,
+  productId: number | number[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number>
+) => Promise<number | number[]>
 
 const toc: { exampleId: string; label: string; file: string }[] = [
   // solid example
   { exampleId: 'Fish', label: 'Fish', file: 'solid/fish' },
   { exampleId: 'Heart', label: 'Heart', file: 'solid/heart' },
   { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego' },
-  { exampleId: 'StepImport', label: 'Step Import', file: 'solid/import-step' },
+  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step' },
+  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2' },
   { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
   { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
   { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon' },
@@ -49,6 +50,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   // history example
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
   { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch' },
+  { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2' },
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
   {
     exampleId: 'Nut-Bolt_Assembly',
@@ -69,6 +71,11 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
+  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis' },
+  { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
+  { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
+  { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
+  { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
 ]
 
 const exampleMap: Record<string, Example> = {}
@@ -108,7 +115,7 @@ const storeApi = vanillaCreate<State>(set => ({
   },
 }))
 
-const useStore = create<State>(storeApi)
+const useStore = create(storeApi)
 
 export { useStore, storeApi }
 
@@ -119,7 +126,7 @@ type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
   loading?: boolean
-  set: SetState<State>
+  set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
 }>
@@ -128,8 +135,8 @@ export type Example = {
   label: string
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number, api: ApiHistory | ApiNoHistory) => any
+  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]

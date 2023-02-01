@@ -1,10 +1,9 @@
 /* eslint-disable max-lines */
-import { PointMemValue } from '@buerli.io/core'
 import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import templateSP from '../../resources/history/WallTemplate.of1'
+import templateSP from '../../resources/history/WallTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type node = {
@@ -35,7 +34,7 @@ const store = vanillaCreate<StoreProps>(set => ({
     )
   },
 }))
-createStore.default<StoreProps>(store)
+createStore.default(store)
 
 ///////////////////////////////////////////////////////////////
 
@@ -173,7 +172,7 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'of1')
+  const root = await api.load(templateSP, 'ofb')
   rootNode = root ? root[0] : null
 
   if (rootNode !== null) {
@@ -291,6 +290,11 @@ export const create: Create = async (apiType, params) => {
 
 export const update: Update = async (apiType, productId, params) => {
   const api = apiType as ApiHistory
+  if (Array.isArray(productId)) {
+    throw new Error(
+      'Calling update does not support multiple product ids. Use a single product id only.',
+    )
+  }
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) =>
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
@@ -298,7 +302,7 @@ export const update: Update = async (apiType, productId, params) => {
 
   const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
-    await api.removeNode(layers.lastRemovedLayer, productId)
+    await api.removeNodes({ referenceId: layers.lastRemovedLayer, ownerId: productId })
     await transformLayers(layers.layers, params.values, api)
   }
 
@@ -370,7 +374,7 @@ async function updateWallSize(
     await updateBalkenwandSize(length, height, params, layers, api)
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: gipsplattePrt[0],
@@ -408,7 +412,7 @@ async function updateWallSize(
         ],
       },
     ]
-    await api.setExpressionSets(...exprSets)
+    await api.setExpressions(...exprSets)
   }
 }
 
@@ -430,7 +434,7 @@ async function updateBalkenwandSize(
     const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
       partId: number
-      members: { name: string; value: number | PointMemValue | string }[]
+      members: { name: string; value: number | string }[]
     }[] = [
       {
         partId: horizontalBeamPrt[0],
@@ -451,12 +455,12 @@ async function updateBalkenwandSize(
     ]
     if (balkenwandNodeId) {
       await api.setCurrentNode(balkenwandNodeId)
-      await api.setExpressionSets(...exprSets)
+      await api.setExpressions(...exprSets)
       await updateBalkenwandBeams(balkenwandNodeId, length, api)
       await api.setCurrentNode(balkenwandNodeId)
     } else {
       await api.setCurrentProduct(balkenwandAsm[0])
-      await api.setExpressionSets(...exprSets)
+      await api.setExpressions(...exprSets)
     }
     await api.setCurrentNode(rootNode)
   }
@@ -500,9 +504,14 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
       wallInsulationCustomWidth = (remainFillLength - verticalBeamThickness) / 2
     }
     // Configure custom wall insulation part
-    await api.setExpressions(wallInsulationCustomPrt[0], {
-      name: 'insulationLength',
-      value: wallInsulationCustomWidth,
+    await api.setExpressions({
+      partId: wallInsulationCustomPrt[0],
+      members: [
+        {
+          name: 'insulationLength',
+          value: wallInsulationCustomWidth,
+        },
+      ],
     })
   }
 
@@ -616,7 +625,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(gipsplattePrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: gipsplattePrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -628,7 +640,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(spanplattePrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: spanplattePrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -641,7 +656,7 @@ async function updateLayer(
         }
         const exprSets: {
           partId: number
-          members: { name: string; value: number | PointMemValue | string }[]
+          members: { name: string; value: number | string }[]
         }[] = [
           {
             partId: horizontalBeamPrt[0],
@@ -660,7 +675,7 @@ async function updateLayer(
             members: [{ name: 'insulationThickness', value: newThickness }],
           },
         ]
-        await api.setExpressionSets(...exprSets)
+        await api.setExpressions(...exprSets)
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -671,7 +686,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(daemmungPrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: daemmungPrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -682,7 +700,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: 2 * newThickness }
           }
         }
-        await api.setExpressions(holzlattungPrt[0], { name: 'latchThickness', value: newThickness })
+        await api.setExpressions({
+          partId: holzlattungPrt[0],
+          members: [{ name: 'latchThickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -693,7 +714,10 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions(holzschalungPrt[0], { name: 'thickness', value: newThickness })
+        await api.setExpressions({
+          partId: holzschalungPrt[0],
+          members: [{ name: 'thickness', value: newThickness }],
+        })
         await transformLayers(tempLayers, params, api)
       }
       break
@@ -735,7 +759,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(gipsplattePrt[0], rootNode, transformation, layerName)
+        const [addedNode] = await api.addNodes({
+          productId: gipsplattePrt[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerName,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,
@@ -755,7 +784,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(spanplattePrt[0], rootNode, transformation, layerName)
+        const [addedNode] = await api.addNodes({
+          productId: spanplattePrt[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerName,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,
@@ -775,7 +809,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(balkenwandAsm[0], rootNode, transformation, layerType)
+        const [addedNode] = await api.addNodes({
+          productId: balkenwandAsm[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerType,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,
@@ -796,7 +835,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(daemmungPrt[0], rootNode, transformation, layerType)
+        const [addedNode] = await api.addNodes({
+          productId: daemmungPrt[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerType,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,
@@ -816,7 +860,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(holzlattungPrt[0], rootNode, transformation, layerType)
+        const [addedNode] = await api.addNodes({
+          productId: holzlattungPrt[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerType,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,
@@ -836,7 +885,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const addedNode = await api.addNode(holzschalungPrt[0], rootNode, transformation, layerType)
+        const [addedNode] = await api.addNodes({
+          productId: holzschalungPrt[0],
+          ownerId: rootNode,
+          transformation,
+          name: layerType,
+        })
         if (addedNode) {
           tempLayers.push({
             name: layerName,

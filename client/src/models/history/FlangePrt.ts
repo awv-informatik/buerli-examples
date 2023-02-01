@@ -21,8 +21,6 @@ export const create: Create = async (apiType, params, options) => {
   const thickness = 30
   const upperCylDiam = 190
   const holeOffset = upperCylDiam / 2 + thickness
-  // const holeOffset1Bottom = '{ 0, ExpressionSet.holeOffset, 0 }'
-  // const holeOffset1Top = '{ 0, ExpressionSet.holeOffset, ExpressionSet.thickness }'
   const holeOffset1Bottom = { x: 0, y: holeOffset, z: 0 }
   const holeOffset1Top = { x: 0, y: holeOffset, z: thickness }
 
