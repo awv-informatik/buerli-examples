@@ -1,6 +1,7 @@
 classcad
 Version=10
-Application=BuerliDemoApp
+ApplicationClass=BuerliDemoApp
+ApplicationExec=ClassCADInstance
 ApplicationStringEncoding=UTF-8
 ClassCadVersion=0.0.0.0_00000000.0
 ClassFileVersion=
@@ -12,18 +13,17 @@ HeaderVersion=1
 KernelId=1001
 KernelInfo=8.12.1.5
 PlatformName=windows
-StateId=db7217ff-e876-43df-b24b-fb4e3155bf75
-TimeStamp=2023-01-12T17:14:47Z
+StringEndTag=1
+TimeStamp=2023-02-01T06:21:38Z
 hdend
 233
 10
-2
-20
-ClassCAD_File_Header
-20
-ClassCAD_File_Header
+1
+10
+AllObjects
+10
+AllObjects
 0
-
 0
 0
 0
@@ -40,33 +40,123 @@ ClassCAD_File_Header
 0
 241
 1
-0
+1
 1
 1
 3
 254
 1
-0
+0
 0
 6
 ri
 
 0
+2
+
+213
+10
+BM_Manager
+10
+BM_Manager
 0
+1
+1
+17096
+
+6
+rm
+
+213
+3
+Rod
+3
+Rod
+0
+1
+1
+17042
+
+6
+rm
 
 6
 ro
 
 233
 10
-57904
+17096
+10
+BM_Manager
+10
+BM_Manager
+0
+1
+0
+0
+0
+1
+0
+0
+0
+1
+0
+0
+0
+1
+0
+241
+1
+1
+1
+1
 3
-Rod
-7
-CC_Part
+254
+1
+0
+0
+6
+ri
+
+0
+2
+
+218
+14
+currentProduct
+0
+0
+1
+17096
+17042
+
+6
+rm
+
+207
+21
+isFastReadingGeometry
+0
+0
+1
+17096
 0
 
-57966
+6
+rm
+
+6
+ro
+
+233
+10
+17042
+3
+Rod
+7
+CC_Part
+0
+1
 0
 0
 0
@@ -90,7 +180,7 @@ CC_Part
 8
 0
 1
-0
+0
 0
 6
 ri
@@ -100,24 +190,24 @@ CC_Part
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57904
+17042
 17
-3/2021_9_13_15:30
+3/2021_9_13_15:30
 
 6
 rm
 
 207
 4
-unit
+unit
 0
 0
 1
-57904
+17042
 0
 
 6
@@ -125,91 +215,91 @@ unit
 
 213
 13
-ExpressionSet
+ExpressionSet
 13
-ExpressionSet
+ExpressionSet
 0
 1
-57904
-57905
+17042
+17043
 
 6
 rm
 
 213
 12
-DimensionSet
+DimensionSet
 12
-DimensionSet
+DimensionSet
 0
 1
-57904
-57906
+17042
+17044
 
 6
 rm
 
 213
 11
-GeometrySet
+GeometrySet
 11
-GeometrySet
+GeometrySet
 0
 1
-57904
-57907
+17042
+17045
 
 6
 rm
 
 213
 12
-ReferenceSet
+ReferenceSet
 12
-ReferenceSet
+ReferenceSet
 0
 1
-57904
-57939
+17042
+17077
 
 6
 rm
 
 213
 9
-SketchSet
+SketchSet
 9
-SketchSet
+SketchSet
 0
 1
-57904
-57940
+17042
+17078
 
 6
 rm
 
 213
 8
-SolidSet
+SolidSet
 8
-SolidSet
+SolidSet
 0
 1
-57904
-57941
+17042
+17079
 
 6
 rm
 
 213
 17
-OperationSequence
+OperationSequence
 17
-OperationSequence
+OperationSequence
 0
 1
-57904
-57945
+17042
+17083
 
 6
 rm
@@ -219,14 +309,13 @@ OperationSequence
 
 233
 10
-57905
+17043
 13
-ExpressionSet
+ExpressionSet
 16
-CC_ExpressionSet
+CC_ExpressionSet
 0
-
-57904
+17042
 0
 0
 0
@@ -248,7 +337,7 @@ CC_ExpressionSet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -258,24 +347,24 @@ CC_ExpressionSet
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57905
+17043
 18
-0/2003_11_25_10:10
+0/2003_11_25_10:10
 
 6
 rm
 
 207
 10
-Rod_Length
+Rod_Length
 0
 0
 1
-57905
+17043
 200
 
 6
@@ -283,11 +372,11 @@ Rod_Length
 
 207
 12
-Rod_Diameter
+Rod_Diameter
 0
 0
 1
-57905
+17043
 10
 
 6
@@ -295,11 +384,11 @@ Rod_Diameter
 
 207
 2
-PI
+PI
 0
 0
 1
-57905
+17043
 3.14159265359
 
 6
@@ -307,11 +396,11 @@ PI
 
 207
 10
-Nut_Offset
+Nut_Offset
 0
 0
 1
-57905
+17043
 15
 
 6
@@ -319,12 +408,12 @@ Nut_Offset
 
 207
 16
-Nut_Offset_Right
+Nut_Offset_Right
 21
-Rod_Length-Nut_Offset
+Rod_Length-Nut_Offset
 0
 1
-57905
+17043
 185
 
 6
@@ -332,12 +421,12 @@ Rod_Length-Nut_Offset
 
 207
 10
-Rotation90
+Rotation90
 9
-PI/180*90
+PI/180*90
 0
 1
-57905
+17043
 1.570796326795
 
 6
@@ -348,14 +437,13 @@ PI/180*90
 
 233
 10
-57906
+17044
 12
-DimensionSet
+DimensionSet
 15
-CC_DimensionSet
+CC_DimensionSet
 0
-
-57904
+17042
 0
 0
 0
@@ -377,7 +465,7 @@ CC_DimensionSet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -387,11 +475,11 @@ CC_DimensionSet
 
 207
 6
-offset
+offset
 0
 0
 1
-57906
+17044
 15
 
 6
@@ -399,11 +487,11 @@ offset
 
 206
 5
-bbMin
+bbMin
 0
 0
 1
-57906
+17044
 0
 0
 0
@@ -413,11 +501,11 @@ bbMin
 
 206
 5
-bbMax
+bbMax
 0
 0
 1
-57906
+17044
 0
 0
 0
@@ -427,11 +515,11 @@ bbMax
 
 207
 7
-isReady
+isReady
 0
 0
 1
-57906
+17044
 0
 
 6
@@ -439,11 +527,11 @@ isReady
 
 207
 8
-textSize
+textSize
 0
 0
 1
-57906
+17044
 0
 
 6
@@ -451,13 +539,13 @@ textSize
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57906
+17044
 17
-1/2011_5_27_12:14
+1/2011_5_27_12:14
 
 6
 rm
@@ -467,14 +555,13 @@ _VERSION
 
 233
 10
-57907
+17045
 11
-GeometrySet
+GeometrySet
 14
-CC_GeometrySet
+CC_GeometrySet
 0
-
-57904
+17042
 0
 0
 0
@@ -496,7 +583,7 @@ CC_GeometrySet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -506,25 +593,25 @@ CC_GeometrySet
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57907
+17045
 18
-0/2003_11_25_10:10
+0/2003_11_25_10:10
 
 6
 rm
 
 207
 6
-csSize
+csSize
 0
 118
-Default size for coordinateSystems. If value >= 0 a GeometrySet will also have the value csSize and the size member in
+Default size for coordinateSystems. If value >= 0 a GeometrySet will also have the value csSize and the size member in
 1
-57907
+17045
 20
 
 6
@@ -532,130 +619,130 @@ Default size for coordinateSystems. If value >= 0 a GeometrySet will also have t
 
 213
 6
-Origin
+Origin
 6
-Origin
+Origin
 0
 1
-57907
-57908
-
-6
-rm
-
-213
-5
-XAxis
-5
-XAxis
-0
-1
-57907
-57909
+17045
+17046
 
 6
 rm
 
 213
 5
-YAxis
+XAxis
 5
-YAxis
+XAxis
 0
 1
-57907
-57910
+17045
+17047
 
 6
 rm
 
 213
 5
-ZAxis
+YAxis
 5
-ZAxis
+YAxis
 0
 1
-57907
-57911
+17045
+17048
+
+6
+rm
+
+213
+5
+ZAxis
+5
+ZAxis
+0
+1
+17045
+17049
 
 6
 rm
 
 213
 3
-Top
+Top
 3
-Top
+Top
 0
 1
-57907
-57912
+17045
+17050
 
 6
 rm
 
 213
 5
-Front
+Front
 5
-Front
+Front
 0
 1
-57907
-57913
+17045
+17051
 
 6
 rm
 
 213
 5
-Right
+Right
 5
-Right
+Right
 0
 1
-57907
-57914
+17045
+17052
 
 6
 rm
 
 213
 10
-WCS_Origin
+WCS_Origin
 15
-WorkCoordSystem
+WorkCoordSystem
 0
 1
-57907
-57915
+17045
+17053
 
 6
 rm
 
 213
 12
-WCS_Nut_Left
+WCS_Nut_Left
 15
-WorkCoordSystem
+WorkCoordSystem
 0
 1
-57907
-57923
+17045
+17061
 
 6
 rm
 
 213
 13
-WCS_Nut_Right
+WCS_Nut_Right
 15
-WorkCoordSystem
+WorkCoordSystem
 0
 1
-57907
-57931
+17045
+17069
 
 6
 rm
@@ -665,14 +752,13 @@ WorkCoordSystem
 
 233
 10
-57908
+17046
 6
-Origin
+Origin
 12
-CC_WorkPoint
+CC_WorkPoint
 0
-
-57907
+17045
 0
 0
 0
@@ -694,7 +780,7 @@ CC_WorkPoint
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -704,24 +790,24 @@ CC_WorkPoint
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57908
+17046
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57908
+17046
 0
 
 
@@ -730,11 +816,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57908
+17046
 1
 
 6
@@ -742,11 +828,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57908
+17046
 0
 0
 0
@@ -756,11 +842,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57908
+17046
 1
 
 6
@@ -771,14 +857,13 @@ Defined
 
 233
 10
-57909
+17047
 5
-XAxis
+XAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57907
+17045
 0
 0
 0
@@ -800,7 +885,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -810,11 +895,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57909
+17047
 1
 0
 0
@@ -824,11 +909,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57909
+17047
 50
 
 6
@@ -836,11 +921,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57909
+17047
 0
 
 6
@@ -848,24 +933,24 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57909
+17047
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57909
+17047
 0
 
 
@@ -874,11 +959,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57909
+17047
 1
 
 6
@@ -886,11 +971,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57909
+17047
 0
 0
 0
@@ -900,11 +985,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57909
+17047
 1
 
 6
@@ -915,14 +1000,13 @@ Defined
 
 233
 10
-57910
+17048
 5
-YAxis
+YAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57907
+17045
 0
 0
 0
@@ -944,7 +1028,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -954,11 +1038,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57910
+17048
 0
 1
 0
@@ -968,11 +1052,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57910
+17048
 50
 
 6
@@ -980,11 +1064,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57910
+17048
 0
 
 6
@@ -992,24 +1076,24 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57910
+17048
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57910
+17048
 0
 
 
@@ -1018,11 +1102,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57910
+17048
 1
 
 6
@@ -1030,11 +1114,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57910
+17048
 0
 0
 0
@@ -1044,11 +1128,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57910
+17048
 1
 
 6
@@ -1059,14 +1143,13 @@ Defined
 
 233
 10
-57911
+17049
 5
-ZAxis
+ZAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57907
+17045
 0
 0
 0
@@ -1088,7 +1171,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -1098,11 +1181,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57911
+17049
 0
 0
 1
@@ -1112,11 +1195,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57911
+17049
 50
 
 6
@@ -1124,11 +1207,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57911
+17049
 0
 
 6
@@ -1136,24 +1219,24 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57911
+17049
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57911
+17049
 0
 
 
@@ -1162,11 +1245,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57911
+17049
 1
 
 6
@@ -1174,11 +1257,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57911
+17049
 0
 0
 0
@@ -1188,11 +1271,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57911
+17049
 1
 
 6
@@ -1203,14 +1286,13 @@ Defined
 
 233
 10
-57912
+17050
 3
-Top
+Top
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57907
+17045
 0
 0
 0
@@ -1232,7 +1314,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -1242,11 +1324,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57912
+17050
 0
 
 6
@@ -1254,11 +1336,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57912
+17050
 0
 0
 1
@@ -1268,11 +1350,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57912
+17050
 200
 
 6
@@ -1280,11 +1362,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57912
+17050
 0
 
 6
@@ -1292,11 +1374,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57912
+17050
 0
 
 6
@@ -1304,11 +1386,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57912
+17050
 0
 0
 0
@@ -1318,24 +1400,24 @@ curPosition
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57912
+17050
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57912
+17050
 0
 
 
@@ -1344,11 +1426,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57912
+17050
 4
 
 6
@@ -1356,11 +1438,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57912
+17050
 0
 0
 0
@@ -1370,11 +1452,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57912
+17050
 1
 
 6
@@ -1385,14 +1467,13 @@ Defined
 
 233
 10
-57913
+17051
 5
-Front
+Front
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57907
+17045
 0
 0
 0
@@ -1414,7 +1495,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -1424,11 +1505,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57913
+17051
 0
 
 6
@@ -1436,11 +1517,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57913
+17051
 0
 1
 0
@@ -1450,11 +1531,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57913
+17051
 200
 
 6
@@ -1462,11 +1543,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57913
+17051
 0
 
 6
@@ -1474,11 +1555,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57913
+17051
 0
 
 6
@@ -1486,11 +1567,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57913
+17051
 0
 0
 0
@@ -1500,24 +1581,24 @@ curPosition
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57913
+17051
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57913
+17051
 0
 
 
@@ -1526,11 +1607,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57913
+17051
 4
 
 6
@@ -1538,11 +1619,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57913
+17051
 0
 0
 0
@@ -1552,11 +1633,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57913
+17051
 1
 
 6
@@ -1567,14 +1648,13 @@ Defined
 
 233
 10
-57914
+17052
 5
-Right
+Right
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57907
+17045
 0
 0
 0
@@ -1596,7 +1676,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -1606,11 +1686,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57914
+17052
 0
 
 6
@@ -1618,11 +1698,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57914
+17052
 1
 0
 0
@@ -1632,11 +1712,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57914
+17052
 200
 
 6
@@ -1644,11 +1724,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57914
+17052
 0
 
 6
@@ -1656,11 +1736,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57914
+17052
 0
 
 6
@@ -1668,11 +1748,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57914
+17052
 0
 0
 0
@@ -1682,24 +1762,24 @@ curPosition
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57914
+17052
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57914
+17052
 0
 
 
@@ -1708,11 +1788,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57914
+17052
 4
 
 6
@@ -1720,11 +1800,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57914
+17052
 0
 0
 0
@@ -1734,11 +1814,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57914
+17052
 1
 
 6
@@ -1749,14 +1829,13 @@ Defined
 
 233
 10
-57915
+17053
 10
-WCS_Origin
+WCS_Origin
 18
-CC_WorkCoordSystem
+CC_WorkCoordSystem
 0
-
-57907
+17045
 0
 0
 0
@@ -1778,7 +1857,7 @@ CC_WorkCoordSystem
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -1788,11 +1867,11 @@ CC_WorkCoordSystem
 
 206
 6
-Offset
+Offset
 0
 0
 1
-57915
+17053
 0
 0
 0
@@ -1802,11 +1881,11 @@ Offset
 
 206
 8
-Rotation
+Rotation
 0
 0
 1
-57915
+17053
 0
 0
 0
@@ -1816,11 +1895,11 @@ Rotation
 
 207
 11
-rotateFirst
+rotateFirst
 0
 0
 1
-57915
+17053
 0
 
 6
@@ -1828,11 +1907,11 @@ rotateFirst
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57915
+17053
 0
 
 6
@@ -1840,149 +1919,146 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57915
+17053
 17
-1/2020_4_14_17:35
+1/2020_4_14_17:35
 
 6
 rm
 
 213
 6
-origin
+origin
 6
-origin
+origin
 0
 1
-57915
-57916
-
-6
-rm
-
-213
-5
-xAxis
-5
-xAxis
-0
-1
-57915
-57917
+17053
+17054
 
 6
 rm
 
 213
 5
-yAxis
+xAxis
 5
-yAxis
+xAxis
 0
 1
-57915
-57918
+17053
+17055
 
 6
 rm
 
 213
 5
-zAxis
+yAxis
 5
-zAxis
+yAxis
 0
 1
-57915
-57919
+17053
+17056
+
+6
+rm
+
+213
+5
+zAxis
+5
+zAxis
+0
+1
+17053
+17057
 
 6
 rm
 
 213
 7
-xyPlane
+xyPlane
 7
-xyPlane
+xyPlane
 0
 1
-57915
-57920
+17053
+17058
 
 6
 rm
 
 213
 7
-xzPlane
+xzPlane
 7
-xzPlane
+xzPlane
 0
 1
-57915
-57921
+17053
+17059
 
 6
 rm
 
 213
 7
-yzPlane
+yzPlane
 7
-yzPlane
+yzPlane
 0
 1
-57915
-57922
+17053
+17060
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57915
+17053
 3
 
 218
 0
-
 0
 0
 1
 0
-57908
+17046
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57909
+17047
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57910
+17048
 
 6
 rm
@@ -1993,11 +2069,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57915
+17053
 2
 
 6
@@ -2005,11 +2081,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57915
+17053
 0
 0
 0
@@ -2019,11 +2095,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57915
+17053
 1
 
 6
@@ -2034,14 +2110,13 @@ Defined
 
 233
 10
-57916
+17054
 6
-origin
+origin
 12
-CC_WorkPoint
+CC_WorkPoint
 0
-
-57915
+17053
 0
 0
 0
@@ -2063,7 +2138,7 @@ CC_WorkPoint
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2073,11 +2148,11 @@ CC_WorkPoint
 
 217
 10
-References
+References
 0
 0
 1
-57916
+17054
 0
 
 
@@ -2086,11 +2161,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57916
+17054
 1
 
 6
@@ -2098,11 +2173,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57916
+17054
 0
 0
 0
@@ -2112,11 +2187,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57916
+17054
 0
 
 6
@@ -2124,13 +2199,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57916
+17054
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -2140,14 +2215,13 @@ _VERSION
 
 233
 10
-57917
+17055
 5
-xAxis
+xAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57915
+17053
 0
 0
 0
@@ -2169,7 +2243,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2179,11 +2253,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57917
+17055
 1
 0
 0
@@ -2193,11 +2267,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57917
+17055
 30
 
 6
@@ -2205,11 +2279,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57917
+17055
 0
 
 6
@@ -2217,11 +2291,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57917
+17055
 0
 
 
@@ -2230,11 +2304,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57917
+17055
 1
 
 6
@@ -2242,11 +2316,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57917
+17055
 0
 0
 0
@@ -2256,11 +2330,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57917
+17055
 1
 
 6
@@ -2268,13 +2342,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57917
+17055
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -2284,14 +2358,13 @@ _VERSION
 
 233
 10
-57918
+17056
 5
-yAxis
+yAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57915
+17053
 0
 0
 0
@@ -2313,7 +2386,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2323,11 +2396,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57918
+17056
 0
 1
 0
@@ -2337,11 +2410,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57918
+17056
 30
 
 6
@@ -2349,11 +2422,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57918
+17056
 0
 
 6
@@ -2361,11 +2434,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57918
+17056
 0
 
 
@@ -2374,11 +2447,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57918
+17056
 1
 
 6
@@ -2386,11 +2459,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57918
+17056
 0
 0
 0
@@ -2400,11 +2473,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57918
+17056
 1
 
 6
@@ -2412,13 +2485,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57918
+17056
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -2428,14 +2501,13 @@ _VERSION
 
 233
 10
-57919
+17057
 5
-zAxis
+zAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57915
+17053
 0
 0
 0
@@ -2457,7 +2529,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2467,11 +2539,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57919
+17057
 0
 0
 1
@@ -2481,11 +2553,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57919
+17057
 30
 
 6
@@ -2493,11 +2565,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57919
+17057
 0
 
 6
@@ -2505,11 +2577,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57919
+17057
 0
 
 
@@ -2518,11 +2590,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57919
+17057
 1
 
 6
@@ -2530,11 +2602,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57919
+17057
 0
 0
 0
@@ -2544,11 +2616,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57919
+17057
 1
 
 6
@@ -2556,13 +2628,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57919
+17057
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -2572,14 +2644,13 @@ _VERSION
 
 233
 10
-57920
+17058
 7
-xyPlane
+xyPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57915
+17053
 0
 0
 0
@@ -2601,7 +2672,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2611,11 +2682,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57920
+17058
 0
 
 6
@@ -2623,11 +2694,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57920
+17058
 0
 0
 1
@@ -2637,11 +2708,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57920
+17058
 30
 
 6
@@ -2649,11 +2720,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57920
+17058
 0
 
 6
@@ -2661,11 +2732,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57920
+17058
 0
 
 6
@@ -2673,11 +2744,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57920
+17058
 0
 0
 0
@@ -2687,11 +2758,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57920
+17058
 0
 
 
@@ -2700,11 +2771,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57920
+17058
 4
 
 6
@@ -2712,11 +2783,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57920
+17058
 0
 0
 0
@@ -2726,11 +2797,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57920
+17058
 1
 
 6
@@ -2738,13 +2809,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57920
+17058
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -2754,14 +2825,13 @@ _VERSION
 
 233
 10
-57921
+17059
 7
-xzPlane
+xzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57915
+17053
 0
 0
 0
@@ -2783,7 +2853,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2793,11 +2863,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57921
+17059
 0
 
 6
@@ -2805,11 +2875,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57921
+17059
 0
 1
 0
@@ -2819,11 +2889,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57921
+17059
 30
 
 6
@@ -2831,11 +2901,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57921
+17059
 0
 
 6
@@ -2843,11 +2913,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57921
+17059
 0
 
 6
@@ -2855,11 +2925,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57921
+17059
 0
 0
 0
@@ -2869,11 +2939,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57921
+17059
 0
 
 
@@ -2882,11 +2952,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57921
+17059
 4
 
 6
@@ -2894,11 +2964,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57921
+17059
 0
 0
 0
@@ -2908,11 +2978,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57921
+17059
 1
 
 6
@@ -2920,13 +2990,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57921
+17059
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -2936,14 +3006,13 @@ _VERSION
 
 233
 10
-57922
+17060
 7
-yzPlane
+yzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57915
+17053
 0
 0
 0
@@ -2965,7 +3034,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -2975,11 +3044,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57922
+17060
 0
 
 6
@@ -2987,11 +3056,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57922
+17060
 1
 0
 0
@@ -3001,11 +3070,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57922
+17060
 30
 
 6
@@ -3013,11 +3082,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57922
+17060
 0
 
 6
@@ -3025,11 +3094,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57922
+17060
 0
 
 6
@@ -3037,11 +3106,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57922
+17060
 0
 0
 0
@@ -3051,11 +3120,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57922
+17060
 0
 
 
@@ -3064,11 +3133,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57922
+17060
 4
 
 6
@@ -3076,11 +3145,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57922
+17060
 0
 0
 0
@@ -3090,11 +3159,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57922
+17060
 1
 
 6
@@ -3102,13 +3171,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57922
+17060
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -3118,14 +3187,13 @@ _VERSION
 
 233
 10
-57923
+17061
 12
-WCS_Nut_Left
+WCS_Nut_Left
 18
-CC_WorkCoordSystem
+CC_WorkCoordSystem
 0
-
-57907
+17045
 0
 0
 0
@@ -3147,7 +3215,7 @@ CC_WorkCoordSystem
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3157,12 +3225,12 @@ CC_WorkCoordSystem
 
 206
 6
-Offset
+Offset
 32
-{0, 0, ExpressionSet.Nut_Offset}
+{0, 0, ExpressionSet.Nut_Offset}
 0
 1
-57923
+17061
 0
 0
 15
@@ -3172,11 +3240,11 @@ Offset
 
 206
 8
-Rotation
+Rotation
 0
 0
 1
-57923
+17061
 0
 0
 0
@@ -3186,11 +3254,11 @@ Rotation
 
 207
 11
-rotateFirst
+rotateFirst
 0
 0
 1
-57923
+17061
 0
 
 6
@@ -3198,11 +3266,11 @@ rotateFirst
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57923
+17061
 0
 
 6
@@ -3210,149 +3278,146 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57923
+17061
 17
-1/2020_4_14_17:35
+1/2020_4_14_17:35
 
 6
 rm
 
 213
 6
-origin
+origin
 6
-origin
+origin
 0
 1
-57923
-57924
-
-6
-rm
-
-213
-5
-xAxis
-5
-xAxis
-0
-1
-57923
-57925
+17061
+17062
 
 6
 rm
 
 213
 5
-yAxis
+xAxis
 5
-yAxis
+xAxis
 0
 1
-57923
-57926
+17061
+17063
 
 6
 rm
 
 213
 5
-zAxis
+yAxis
 5
-zAxis
+yAxis
 0
 1
-57923
-57927
+17061
+17064
+
+6
+rm
+
+213
+5
+zAxis
+5
+zAxis
+0
+1
+17061
+17065
 
 6
 rm
 
 213
 7
-xyPlane
+xyPlane
 7
-xyPlane
+xyPlane
 0
 1
-57923
-57928
+17061
+17066
 
 6
 rm
 
 213
 7
-xzPlane
+xzPlane
 7
-xzPlane
+xzPlane
 0
 1
-57923
-57929
+17061
+17067
 
 6
 rm
 
 213
 7
-yzPlane
+yzPlane
 7
-yzPlane
+yzPlane
 0
 1
-57923
-57930
+17061
+17068
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57923
+17061
 3
 
 218
 0
-
 0
 0
 1
 0
-57908
+17046
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57909
+17047
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57910
+17048
 
 6
 rm
@@ -3363,11 +3428,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57923
+17061
 2
 
 6
@@ -3375,11 +3440,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57923
+17061
 0
 0
 15
@@ -3389,11 +3454,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57923
+17061
 1
 
 6
@@ -3404,14 +3469,13 @@ Defined
 
 233
 10
-57924
+17062
 6
-origin
+origin
 12
-CC_WorkPoint
+CC_WorkPoint
 0
-
-57923
+17061
 0
 0
 0
@@ -3433,7 +3497,7 @@ CC_WorkPoint
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3443,11 +3507,11 @@ CC_WorkPoint
 
 217
 10
-References
+References
 0
 0
 1
-57924
+17062
 0
 
 
@@ -3456,11 +3520,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57924
+17062
 1
 
 6
@@ -3468,11 +3532,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57924
+17062
 0
 0
 15
@@ -3482,11 +3546,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57924
+17062
 0
 
 6
@@ -3494,13 +3558,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57924
+17062
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -3510,14 +3574,13 @@ _VERSION
 
 233
 10
-57925
+17063
 5
-xAxis
+xAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57923
+17061
 0
 0
 0
@@ -3539,7 +3602,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3549,11 +3612,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57925
+17063
 1
 0
 0
@@ -3563,11 +3626,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57925
+17063
 30
 
 6
@@ -3575,11 +3638,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57925
+17063
 0
 
 6
@@ -3587,11 +3650,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57925
+17063
 0
 
 
@@ -3600,11 +3663,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57925
+17063
 1
 
 6
@@ -3612,11 +3675,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57925
+17063
 0
 0
 15
@@ -3626,11 +3689,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57925
+17063
 1
 
 6
@@ -3638,13 +3701,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57925
+17063
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -3654,14 +3717,13 @@ _VERSION
 
 233
 10
-57926
+17064
 5
-yAxis
+yAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57923
+17061
 0
 0
 0
@@ -3683,7 +3745,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3693,11 +3755,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57926
+17064
 0
 1
 0
@@ -3707,11 +3769,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57926
+17064
 30
 
 6
@@ -3719,11 +3781,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57926
+17064
 0
 
 6
@@ -3731,11 +3793,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57926
+17064
 0
 
 
@@ -3744,11 +3806,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57926
+17064
 1
 
 6
@@ -3756,11 +3818,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57926
+17064
 0
 0
 15
@@ -3770,11 +3832,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57926
+17064
 1
 
 6
@@ -3782,13 +3844,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57926
+17064
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -3798,14 +3860,13 @@ _VERSION
 
 233
 10
-57927
+17065
 5
-zAxis
+zAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57923
+17061
 0
 0
 0
@@ -3827,7 +3888,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3837,11 +3898,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57927
+17065
 0
 0
 1
@@ -3851,11 +3912,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57927
+17065
 30
 
 6
@@ -3863,11 +3924,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57927
+17065
 0
 
 6
@@ -3875,11 +3936,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57927
+17065
 0
 
 
@@ -3888,11 +3949,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57927
+17065
 1
 
 6
@@ -3900,11 +3961,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57927
+17065
 0
 0
 15
@@ -3914,11 +3975,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57927
+17065
 1
 
 6
@@ -3926,13 +3987,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57927
+17065
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -3942,14 +4003,13 @@ _VERSION
 
 233
 10
-57928
+17066
 7
-xyPlane
+xyPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57923
+17061
 0
 0
 0
@@ -3971,7 +4031,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -3981,11 +4041,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57928
+17066
 0
 
 6
@@ -3993,11 +4053,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57928
+17066
 0
 0
 1
@@ -4007,11 +4067,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57928
+17066
 30
 
 6
@@ -4019,11 +4079,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57928
+17066
 0
 
 6
@@ -4031,11 +4091,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57928
+17066
 0
 
 6
@@ -4043,11 +4103,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57928
+17066
 0
 0
 15
@@ -4057,11 +4117,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57928
+17066
 0
 
 
@@ -4070,11 +4130,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57928
+17066
 4
 
 6
@@ -4082,11 +4142,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57928
+17066
 0
 0
 15
@@ -4096,11 +4156,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57928
+17066
 1
 
 6
@@ -4108,13 +4168,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57928
+17066
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -4124,14 +4184,13 @@ _VERSION
 
 233
 10
-57929
+17067
 7
-xzPlane
+xzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57923
+17061
 0
 0
 0
@@ -4153,7 +4212,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -4163,11 +4222,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57929
+17067
 0
 
 6
@@ -4175,11 +4234,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57929
+17067
 0
 1
 0
@@ -4189,11 +4248,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57929
+17067
 30
 
 6
@@ -4201,11 +4260,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57929
+17067
 0
 
 6
@@ -4213,11 +4272,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57929
+17067
 0
 
 6
@@ -4225,11 +4284,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57929
+17067
 0
 0
 15
@@ -4239,11 +4298,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57929
+17067
 0
 
 
@@ -4252,11 +4311,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57929
+17067
 4
 
 6
@@ -4264,11 +4323,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57929
+17067
 0
 0
 15
@@ -4278,11 +4337,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57929
+17067
 1
 
 6
@@ -4290,13 +4349,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57929
+17067
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -4306,14 +4365,13 @@ _VERSION
 
 233
 10
-57930
+17068
 7
-yzPlane
+yzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57923
+17061
 0
 0
 0
@@ -4335,7 +4393,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -4345,11 +4403,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57930
+17068
 0
 
 6
@@ -4357,11 +4415,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57930
+17068
 1
 0
 0
@@ -4371,11 +4429,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57930
+17068
 30
 
 6
@@ -4383,11 +4441,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57930
+17068
 0
 
 6
@@ -4395,11 +4453,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57930
+17068
 0
 
 6
@@ -4407,11 +4465,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57930
+17068
 0
 0
 15
@@ -4421,11 +4479,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57930
+17068
 0
 
 
@@ -4434,11 +4492,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57930
+17068
 4
 
 6
@@ -4446,11 +4504,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57930
+17068
 0
 0
 15
@@ -4460,11 +4518,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57930
+17068
 1
 
 6
@@ -4472,13 +4530,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57930
+17068
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -4488,14 +4546,13 @@ _VERSION
 
 233
 10
-57931
+17069
 13
-WCS_Nut_Right
+WCS_Nut_Right
 18
-CC_WorkCoordSystem
+CC_WorkCoordSystem
 0
-
-57907
+17045
 0
 0
 0
@@ -4517,7 +4574,7 @@ CC_WorkCoordSystem
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -4527,12 +4584,12 @@ CC_WorkCoordSystem
 
 206
 6
-Offset
+Offset
 38
-{0, 0, ExpressionSet.Nut_Offset_Right}
+{0, 0, ExpressionSet.Nut_Offset_Right}
 0
 1
-57931
+17069
 0
 0
 185
@@ -4542,12 +4599,12 @@ Offset
 
 206
 8
-Rotation
+Rotation
 24
-{0, ExpressionSet.PI, 0}
+{0, ExpressionSet.PI, 0}
 0
 1
-57931
+17069
 0
 3.14159265359
 0
@@ -4557,11 +4614,11 @@ Rotation
 
 207
 11
-rotateFirst
+rotateFirst
 0
 0
 1
-57931
+17069
 0
 
 6
@@ -4569,11 +4626,11 @@ rotateFirst
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57931
+17069
 0
 
 6
@@ -4581,149 +4638,146 @@ Inverted
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57931
+17069
 17
-1/2020_4_14_17:35
+1/2020_4_14_17:35
 
 6
 rm
 
 213
 6
-origin
+origin
 6
-origin
+origin
 0
 1
-57931
-57932
-
-6
-rm
-
-213
-5
-xAxis
-5
-xAxis
-0
-1
-57931
-57933
+17069
+17070
 
 6
 rm
 
 213
 5
-yAxis
+xAxis
 5
-yAxis
+xAxis
 0
 1
-57931
-57934
+17069
+17071
 
 6
 rm
 
 213
 5
-zAxis
+yAxis
 5
-zAxis
+yAxis
 0
 1
-57931
-57935
+17069
+17072
+
+6
+rm
+
+213
+5
+zAxis
+5
+zAxis
+0
+1
+17069
+17073
 
 6
 rm
 
 213
 7
-xyPlane
+xyPlane
 7
-xyPlane
+xyPlane
 0
 1
-57931
-57936
+17069
+17074
 
 6
 rm
 
 213
 7
-xzPlane
+xzPlane
 7
-xzPlane
+xzPlane
 0
 1
-57931
-57937
+17069
+17075
 
 6
 rm
 
 213
 7
-yzPlane
+yzPlane
 7
-yzPlane
+yzPlane
 0
 1
-57931
-57938
+17069
+17076
 
 6
 rm
 
 217
 10
-References
+References
 0
 0
 1
-57931
+17069
 3
 
 218
 0
-
 0
 0
 1
 0
-57908
+17046
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57909
+17047
 
 6
 rm
 
 218
 0
-
 0
 0
 1
 0
-57910
+17048
 
 6
 rm
@@ -4734,11 +4788,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57931
+17069
 2
 
 6
@@ -4746,11 +4800,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57931
+17069
 0
 0
 185
@@ -4760,11 +4814,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57931
+17069
 1
 
 6
@@ -4775,14 +4829,13 @@ Defined
 
 233
 10
-57932
+17070
 6
-origin
+origin
 12
-CC_WorkPoint
+CC_WorkPoint
 0
-
-57931
+17069
 0
 0
 0
@@ -4804,7 +4857,7 @@ CC_WorkPoint
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -4814,11 +4867,11 @@ CC_WorkPoint
 
 217
 10
-References
+References
 0
 0
 1
-57932
+17070
 0
 
 
@@ -4827,11 +4880,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57932
+17070
 1
 
 6
@@ -4839,11 +4892,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57932
+17070
 0
 0
 185
@@ -4853,11 +4906,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57932
+17070
 0
 
 6
@@ -4865,13 +4918,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57932
+17070
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -4881,14 +4934,13 @@ _VERSION
 
 233
 10
-57933
+17071
 5
-xAxis
+xAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57931
+17069
 0
 0
 0
@@ -4910,7 +4962,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -4920,11 +4972,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57933
+17071
 -1
 0
 2.068231071102144e-13
@@ -4934,11 +4986,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57933
+17071
 30
 
 6
@@ -4946,11 +4998,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57933
+17071
 0
 
 6
@@ -4958,11 +5010,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57933
+17071
 0
 
 
@@ -4971,11 +5023,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57933
+17071
 1
 
 6
@@ -4983,11 +5035,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57933
+17071
 0
 0
 185
@@ -4997,11 +5049,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57933
+17071
 1
 
 6
@@ -5009,13 +5061,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57933
+17071
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -5025,14 +5077,13 @@ _VERSION
 
 233
 10
-57934
+17072
 5
-yAxis
+yAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57931
+17069
 0
 0
 0
@@ -5054,7 +5105,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5064,11 +5115,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57934
+17072
 0
 1
 0
@@ -5078,11 +5129,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57934
+17072
 30
 
 6
@@ -5090,11 +5141,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57934
+17072
 0
 
 6
@@ -5102,11 +5153,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57934
+17072
 0
 
 
@@ -5115,11 +5166,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57934
+17072
 1
 
 6
@@ -5127,11 +5178,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57934
+17072
 0
 0
 185
@@ -5141,11 +5192,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57934
+17072
 1
 
 6
@@ -5153,13 +5204,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57934
+17072
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -5169,14 +5220,13 @@ _VERSION
 
 233
 10
-57935
+17073
 5
-zAxis
+zAxis
 11
-CC_WorkAxis
+CC_WorkAxis
 0
-
-57931
+17069
 0
 0
 0
@@ -5198,7 +5248,7 @@ CC_WorkAxis
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5208,11 +5258,11 @@ CC_WorkAxis
 
 206
 9
-Direction
+Direction
 0
 0
 1
-57935
+17073
 -2.068231071102144e-13
 0
 -1
@@ -5222,11 +5272,11 @@ Direction
 
 207
 6
-Length
+Length
 0
 0
 1
-57935
+17073
 30
 
 6
@@ -5234,11 +5284,11 @@ Length
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57935
+17073
 0
 
 6
@@ -5246,11 +5296,11 @@ Inverted
 
 217
 10
-References
+References
 0
 0
 1
-57935
+17073
 0
 
 
@@ -5259,11 +5309,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57935
+17073
 1
 
 6
@@ -5271,11 +5321,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57935
+17073
 0
 0
 185
@@ -5285,11 +5335,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57935
+17073
 1
 
 6
@@ -5297,13 +5347,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57935
+17073
 17
-1/2018_10_9_13:37
+1/2018_10_9_13:37
 
 6
 rm
@@ -5313,14 +5363,13 @@ _VERSION
 
 233
 10
-57936
+17074
 7
-xyPlane
+xyPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57931
+17069
 0
 0
 0
@@ -5342,7 +5391,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5352,11 +5401,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57936
+17074
 0
 
 6
@@ -5364,11 +5413,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57936
+17074
 -2.068231071102144e-13
 0
 -1
@@ -5378,11 +5427,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57936
+17074
 30
 
 6
@@ -5390,11 +5439,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57936
+17074
 0
 
 6
@@ -5402,11 +5451,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57936
+17074
 0
 
 6
@@ -5414,11 +5463,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57936
+17074
 0
 0
 185
@@ -5428,11 +5477,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57936
+17074
 0
 
 
@@ -5441,11 +5490,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57936
+17074
 4
 
 6
@@ -5453,11 +5502,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57936
+17074
 0
 0
 185
@@ -5467,11 +5516,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57936
+17074
 1
 
 6
@@ -5479,13 +5528,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57936
+17074
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -5495,14 +5544,13 @@ _VERSION
 
 233
 10
-57937
+17075
 7
-xzPlane
+xzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57931
+17069
 0
 0
 0
@@ -5524,7 +5572,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5534,11 +5582,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57937
+17075
 0
 
 6
@@ -5546,11 +5594,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57937
+17075
 0
 1
 0
@@ -5560,11 +5608,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57937
+17075
 30
 
 6
@@ -5572,11 +5620,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57937
+17075
 0
 
 6
@@ -5584,11 +5632,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57937
+17075
 0
 
 6
@@ -5596,11 +5644,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57937
+17075
 0
 0
 185
@@ -5610,11 +5658,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57937
+17075
 0
 
 
@@ -5623,11 +5671,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57937
+17075
 4
 
 6
@@ -5635,11 +5683,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57937
+17075
 0
 0
 185
@@ -5649,11 +5697,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57937
+17075
 1
 
 6
@@ -5661,13 +5709,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57937
+17075
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -5677,14 +5725,13 @@ _VERSION
 
 233
 10
-57938
+17076
 7
-yzPlane
+yzPlane
 12
-CC_WorkPlane
+CC_WorkPlane
 0
-
-57931
+17069
 0
 0
 0
@@ -5706,7 +5753,7 @@ CC_WorkPlane
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5716,11 +5763,11 @@ CC_WorkPlane
 
 207
 6
-Offset
+Offset
 0
 0
 1
-57938
+17076
 0
 
 6
@@ -5728,11 +5775,11 @@ Offset
 
 206
 6
-Normal
+Normal
 0
 0
 1
-57938
+17076
 -1
 0
 2.068231071102144e-13
@@ -5742,11 +5789,11 @@ Normal
 
 207
 4
-Size
+Size
 0
 0
 1
-57938
+17076
 30
 
 6
@@ -5754,11 +5801,11 @@ Size
 
 207
 8
-Inverted
+Inverted
 0
 0
 1
-57938
+17076
 0
 
 6
@@ -5766,11 +5813,11 @@ Inverted
 
 207
 5
-Angle
+Angle
 0
 0
 1
-57938
+17076
 0
 
 6
@@ -5778,11 +5825,11 @@ Angle
 
 206
 11
-curPosition
+curPosition
 0
 0
 1
-57938
+17076
 0
 0
 185
@@ -5792,11 +5839,11 @@ curPosition
 
 217
 10
-References
+References
 0
 0
 1
-57938
+17076
 0
 
 
@@ -5805,11 +5852,11 @@ References
 
 207
 4
-Type
+Type
 0
 0
 1
-57938
+17076
 4
 
 6
@@ -5817,11 +5864,11 @@ Type
 
 206
 8
-Position
+Position
 0
 0
 1
-57938
+17076
 0
 0
 185
@@ -5831,11 +5878,11 @@ Position
 
 207
 7
-Defined
+Defined
 0
 0
 1
-57938
+17076
 1
 
 6
@@ -5843,13 +5890,13 @@ Defined
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57938
+17076
 18
-2/2020_11_17_17:00
+2/2020_11_17_17:00
 
 6
 rm
@@ -5859,14 +5906,13 @@ _VERSION
 
 233
 10
-57939
+17077
 12
-ReferenceSet
+ReferenceSet
 15
-CC_ReferenceSet
+CC_ReferenceSet
 0
-
-57904
+17042
 0
 0
 0
@@ -5888,7 +5934,7 @@ CC_ReferenceSet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5901,14 +5947,13 @@ CC_ReferenceSet
 
 233
 10
-57940
+17078
 9
-SketchSet
+SketchSet
 12
-CC_SketchSet
+CC_SketchSet
 0
-
-57904
+17042
 0
 0
 0
@@ -5930,7 +5975,7 @@ CC_SketchSet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5940,13 +5985,13 @@ CC_SketchSet
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57940
+17078
 18
-0/2003_11_25_10:10
+0/2003_11_25_10:10
 
 6
 rm
@@ -5956,14 +6001,13 @@ _VERSION
 
 233
 10
-57941
+17079
 8
-SolidSet
+SolidSet
 11
-CC_SolidSet
+CC_SolidSet
 0
-
-57904
+17042
 0
 0
 0
@@ -5985,7 +6029,7 @@ CC_SolidSet
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -5995,26 +6039,26 @@ CC_SolidSet
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57941
+17079
 18
-0/2003_11_25_10:10
+0/2003_11_25_10:10
 
 6
 rm
 
 213
 8
-Cylinder
+Cylinder
 8
-Cylinder
+Cylinder
 0
 1
-57941
-57942
+17079
+17080
 
 6
 rm
@@ -6024,14 +6068,13 @@ Cylinder
 
 233
 10
-57942
+17080
 8
-Cylinder
+Cylinder
 11
-CC_Cylinder
+CC_Cylinder
 0
-
-57941
+17079
 0
 0
 0
@@ -6055,7 +6098,7 @@ CC_Cylinder
 8
 0
 1
-0
+0
 0
 6
 ri
@@ -6065,12 +6108,12 @@ CC_Cylinder
 
 207
 6
-height
+height
 24
-ExpressionSet.Rod_Length
+ExpressionSet.Rod_Length
 0
 1
-57942
+17080
 200
 
 6
@@ -6078,25 +6121,25 @@ ExpressionSet.Rod_Length
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57942
+17080
 15
-0/2001_4_2_13:7
+0/2001_4_2_13:7
 
 6
 rm
 
 207
 8
-diameter
+diameter
 26
-ExpressionSet.Rod_Diameter
+ExpressionSet.Rod_Diameter
 0
 1
-57942
+17080
 10
 
 6
@@ -6104,21 +6147,20 @@ ExpressionSet.Rod_Diameter
 
 217
 10
-references
+references
 0
 0
 1
-57942
+17080
 1
 
 218
 0
-
 0
 0
 1
 0
-57915
+17053
 
 6
 rm
@@ -6129,11 +6171,11 @@ references
 
 207
 14
-solidOperation
+solidOperation
 0
 0
 0
-57942
+17080
 0
 
 6
@@ -6141,13 +6183,13 @@ solidOperation
 
 213
 6
-Solid0
+Solid0
 6
-Solid0
+Solid0
 0
 1
-57942
-57943
+17080
+17081
 
 6
 rm
@@ -6157,14 +6199,13 @@ Solid0
 
 233
 10
-57943
+17081
 6
-Solid0
+Solid0
 8
-CC_Solid
+CC_Solid
 0
-
-57942
+17080
 0
 0
 0
@@ -6188,15 +6229,15 @@ CC_Solid
 4
 0
 1
-0
+0
 0
 6
 ri
 
 1
 271
-57979
-933
+17082
+384
 241
 1
 1
@@ -6207,7 +6248,7 @@ CC_Solid
 4
 0
 1
-0
+0
 0
 6
 ri
@@ -6218,7 +6259,7 @@ CC_Solid
 1
 1
 11656
-gN6AAgAAAACAlpgAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAQAAAAAAAADxaOOItfjkPgEAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF44VSl6aj9AAAAAAAAAAAAAAAAAAABpQPFo44i1+OQ+AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAADwP/Fo44i1+OQ+AQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAADwP/Fo44i1+OQ+AgAAAAAAAAACAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAABgAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABQAAAAAAAAABAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////3/////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAP7/////////+/////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAD8//////////r/////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAABgAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABQAAAAAAAAABAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////3/////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAP7/////////+/////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAD8//////////r/////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAAAAAAAAALpCAAAAAAAAQZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAADAs9BAAAAAAAAAAABBnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAC00EAAAAAAAAAAAEGcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAQLLQQAAAAAAAAAAAQZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAACAstBAAAAAAAAAAABBnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAMCy0EAAAAAAAAAAAEGcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAABFwAAAAAAAAAAAQZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgEXAAAAAAAAAAABBnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAARsAAAAAAAAAAAEGcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAALPQQAAAAAAAAAAAQZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAs9BAAAAAAAAAAABBnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAICz0EAAAAAAAAAAAA==
 6
 re
 6
@@ -6227,11 +6268,11 @@ gN6AAgAAAACAlpgAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAQAAAAAAAADxaOOI
 
 207
 8
-consumed
+consumed
 0
 0
 1
-57943
+17081
 0
 
 6
@@ -6239,13 +6280,13 @@ consumed
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 0
-57943
+17081
 18
-0/2003_11_25_10:10
+0/2003_11_25_10:10
 
 6
 rm
@@ -6255,14 +6296,13 @@ _VERSION
 
 233
 10
-57945
+17083
 17
-OperationSequence
+OperationSequence
 20
-CC_OperationSequence
+CC_OperationSequence
 0
-
-57904
+17042
 0
 0
 0
@@ -6284,7 +6324,7 @@ CC_OperationSequence
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6294,24 +6334,24 @@ CC_OperationSequence
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57945
+17083
 17
-2/2020_3_12_11:41
+2/2020_3_12_11:41
 
 6
 rm
 
 207
 7
-isDirty
+isDirty
 0
 0
 1
-57945
+17083
 0
 
 6
@@ -6319,11 +6359,11 @@ isDirty
 
 207
 16
-editFeatureIndex
+editFeatureIndex
 0
 0
 1
-57945
+17083
 -1
 
 6
@@ -6331,156 +6371,156 @@ editFeatureIndex
 
 213
 9
-OriginRef
+OriginRef
 9
-OriginRef
+OriginRef
 0
 1
-57945
-57946
+17083
+17084
 
 6
 rm
 
 213
 8
-XAxisRef
+XAxisRef
 8
-XAxisRef
+XAxisRef
 0
 1
-57945
-57947
+17083
+17085
 
 6
 rm
 
 213
 8
-YAxisRef
+YAxisRef
 8
-YAxisRef
+YAxisRef
 0
 1
-57945
-57948
+17083
+17086
 
 6
 rm
 
 213
 8
-ZAxisRef
+ZAxisRef
 8
-ZAxisRef
+ZAxisRef
 0
 1
-57945
-57949
+17083
+17087
 
 6
 rm
 
 213
 6
-TopRef
+TopRef
 6
-TopRef
+TopRef
 0
 1
-57945
-57950
-
-6
-rm
-
-213
-8
-FrontRef
-8
-FrontRef
-0
-1
-57945
-57951
+17083
+17088
 
 6
 rm
 
 213
 8
-RightRef
+FrontRef
 8
-RightRef
+FrontRef
 0
 1
-57945
-57952
+17083
+17089
+
+6
+rm
+
+213
+8
+RightRef
+8
+RightRef
+0
+1
+17083
+17090
 
 6
 rm
 
 213
 18
-WorkCoordSystemRef
+WorkCoordSystemRef
 18
-WorkCoordSystemRef
+WorkCoordSystemRef
 0
 1
-57945
-57953
+17083
+17091
 
 6
 rm
 
 213
 11
-CylinderRef
+CylinderRef
 11
-CylinderRef
+CylinderRef
 0
 1
-57945
-57954
+17083
+17092
 
 6
 rm
 
 213
 19
-WorkCoordSystemRef0
+WorkCoordSystemRef0
 19
-WorkCoordSystemRef0
+WorkCoordSystemRef0
 0
 1
-57945
-57955
+17083
+17093
 
 6
 rm
 
 213
 19
-WorkCoordSystemRef1
+WorkCoordSystemRef1
 19
-WorkCoordSystemRef1
+WorkCoordSystemRef1
 0
 1
-57945
-57956
+17083
+17094
 
 6
 rm
 
 213
 11
-RollbackBar
+RollbackBar
 11
-RollbackBar
+RollbackBar
 0
 1
-57945
-57957
+17083
+17095
 
 6
 rm
@@ -6490,14 +6530,13 @@ RollbackBar
 
 233
 10
-57946
+17084
 9
-OriginRef
+OriginRef
 21
-CC_WorkPointReference
+CC_WorkPointReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6519,7 +6558,7 @@ CC_WorkPointReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6529,25 +6568,25 @@ CC_WorkPointReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57946
+17084
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57946
-57908
+17084
+17046
 
 6
 rm
@@ -6557,14 +6596,13 @@ refObj
 
 233
 10
-57947
+17085
 8
-XAxisRef
+XAxisRef
 20
-CC_WorkAxisReference
+CC_WorkAxisReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6586,7 +6624,7 @@ CC_WorkAxisReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6596,25 +6634,25 @@ CC_WorkAxisReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57947
+17085
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57947
-57909
+17085
+17047
 
 6
 rm
@@ -6624,14 +6662,13 @@ refObj
 
 233
 10
-57948
+17086
 8
-YAxisRef
+YAxisRef
 20
-CC_WorkAxisReference
+CC_WorkAxisReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6653,7 +6690,7 @@ CC_WorkAxisReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6663,25 +6700,25 @@ CC_WorkAxisReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57948
+17086
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57948
-57910
+17086
+17048
 
 6
 rm
@@ -6691,14 +6728,13 @@ refObj
 
 233
 10
-57949
+17087
 8
-ZAxisRef
+ZAxisRef
 20
-CC_WorkAxisReference
+CC_WorkAxisReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6720,7 +6756,7 @@ CC_WorkAxisReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6730,25 +6766,25 @@ CC_WorkAxisReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57949
+17087
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57949
-57911
+17087
+17049
 
 6
 rm
@@ -6758,14 +6794,13 @@ refObj
 
 233
 10
-57950
+17088
 6
-TopRef
+TopRef
 21
-CC_WorkPlaneReference
+CC_WorkPlaneReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6787,7 +6822,7 @@ CC_WorkPlaneReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6797,25 +6832,25 @@ CC_WorkPlaneReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57950
+17088
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57950
-57912
+17088
+17050
 
 6
 rm
@@ -6825,14 +6860,13 @@ refObj
 
 233
 10
-57951
+17089
 8
-FrontRef
+FrontRef
 21
-CC_WorkPlaneReference
+CC_WorkPlaneReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6854,7 +6888,7 @@ CC_WorkPlaneReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6864,25 +6898,25 @@ CC_WorkPlaneReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57951
+17089
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57951
-57913
+17089
+17051
 
 6
 rm
@@ -6892,14 +6926,13 @@ refObj
 
 233
 10
-57952
+17090
 8
-RightRef
+RightRef
 21
-CC_WorkPlaneReference
+CC_WorkPlaneReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6921,7 +6954,7 @@ CC_WorkPlaneReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6931,25 +6964,25 @@ CC_WorkPlaneReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57952
+17090
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57952
-57914
+17090
+17052
 
 6
 rm
@@ -6959,14 +6992,13 @@ refObj
 
 233
 10
-57953
+17091
 18
-WorkCoordSystemRef
+WorkCoordSystemRef
 27
-CC_WorkCoordSystemReference
+CC_WorkCoordSystemReference
 0
-
-57945
+17083
 0
 0
 0
@@ -6988,7 +7020,7 @@ CC_WorkCoordSystemReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -6998,25 +7030,25 @@ CC_WorkCoordSystemReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57953
+17091
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57953
-57915
+17091
+17053
 
 6
 rm
@@ -7026,14 +7058,13 @@ refObj
 
 233
 10
-57954
+17092
 11
-CylinderRef
+CylinderRef
 21
-CC_OperationReference
+CC_OperationReference
 0
-
-57945
+17083
 0
 0
 0
@@ -7055,7 +7086,7 @@ CC_OperationReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -7065,25 +7096,25 @@ CC_OperationReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57954
+17092
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57954
-57942
+17092
+17080
 
 6
 rm
@@ -7093,14 +7124,13 @@ refObj
 
 233
 10
-57955
+17093
 19
-WorkCoordSystemRef0
+WorkCoordSystemRef0
 27
-CC_WorkCoordSystemReference
+CC_WorkCoordSystemReference
 0
-
-57945
+17083
 0
 0
 0
@@ -7122,7 +7152,7 @@ CC_WorkCoordSystemReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -7132,25 +7162,25 @@ CC_WorkCoordSystemReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57955
+17093
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57955
-57923
+17093
+17061
 
 6
 rm
@@ -7160,14 +7190,13 @@ refObj
 
 233
 10
-57956
+17094
 19
-WorkCoordSystemRef1
+WorkCoordSystemRef1
 27
-CC_WorkCoordSystemReference
+CC_WorkCoordSystemReference
 0
-
-57945
+17083
 0
 0
 0
@@ -7189,7 +7218,7 @@ CC_WorkCoordSystemReference
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -7199,25 +7228,25 @@ CC_WorkCoordSystemReference
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57956
+17094
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57956
-57931
+17094
+17069
 
 6
 rm
@@ -7227,14 +7256,13 @@ refObj
 
 233
 10
-57957
+17095
 11
-RollbackBar
+RollbackBar
 14
-CC_RollbackBar
+CC_RollbackBar
 0
-
-57945
+17083
 0
 0
 0
@@ -7256,7 +7284,7 @@ CC_RollbackBar
 3
 254
 1
-0
+0
 0
 6
 ri
@@ -7266,195 +7294,25 @@ CC_RollbackBar
 
 205
 8
-_VERSION
+_VERSION
 0
 0
 1
-57957
+17095
 18
-0/2005_08_24_11:47
+0/2005_08_24_11:47
 
 6
 rm
 
 218
 6
-refObj
+refObj
 0
 0
 1
-57957
-57957
-
-6
-rm
-
-6
-ro
-
-233
-10
-57966
-10
-AllObjects
-10
-AllObjects
-0
-
-0
-0
-0
-0
-1
-0
-0
-0
-1
-0
-0
-0
-1
-0
-241
-1
-1
-1
-1
-3
-254
-1
-0
-0
-6
-ri
-
-0
-3
-
-213
-3
-Rod
-0
-0
-1
-57966
-57904
-
-6
-rm
-
-217
-14
-facetingParams
-0
-0
-1
-57966
-2
-
-207
-0
-
-0
-0
-1
-0
-0
-
-6
-rm
-
-207
-0
-
-0
-0
-1
-0
-0.1
-
-6
-rm
-
-
-6
-rm
-
-213
-10
-BM_Manager
-10
-BM_Manager
-0
-1
-57966
-57968
-
-6
-rm
-
-6
-ro
-
-233
-10
-57968
-10
-BM_Manager
-10
-BM_Manager
-0
-
-57966
-0
-0
-0
-1
-0
-0
-0
-1
-0
-0
-0
-1
-0
-241
-1
-1
-1
-1
-3
-254
-1
-0
-0
-6
-ri
-
-0
-2
-
-218
-14
-currentProduct
-0
-0
-1
-57968
-57904
-
-6
-rm
-
-207
-21
-isFastReadingGeometry
-0
-0
-1
-57968
-0
+17095
+17095
 
 6
 rm
@@ -7465,14 +7323,14 @@ isFastReadingGeometry
 278
 10
 11
-CCDbFaceRef
-57971
+CCDbFaceRef
+17097
 1
 -1
-57942
+17080
 101
 0
-57904
+17042
 0
 0
 6
@@ -7481,14 +7339,14 @@ CCDbFaceRef
 278
 10
 11
-CCDbFaceRef
-57972
+CCDbFaceRef
+17098
 1
 -1
-57942
+17080
 102
 0
-57904
+17042
 0
 0
 6
@@ -7497,14 +7355,14 @@ CCDbFaceRef
 278
 10
 11
-CCDbFaceRef
-57973
+CCDbFaceRef
+17099
 1
 -1
-57942
+17080
 103
 0
-57904
+17042
 0
 0
 6
@@ -7513,14 +7371,14 @@ CCDbFaceRef
 279
 10
 11
-CCDbEdgeRef
-57974
+CCDbEdgeRef
+17100
 1
 -1
-57942
+17080
 121
 0
-57904
+17042
 0
 0
 6
@@ -7529,14 +7387,14 @@ CCDbEdgeRef
 279
 10
 11
-CCDbEdgeRef
-57975
+CCDbEdgeRef
+17101
 1
 -1
-57942
+17080
 122
 0
-57904
+17042
 0
 0
 6
@@ -7545,14 +7403,14 @@ CCDbEdgeRef
 279
 10
 11
-CCDbEdgeRef
-57976
+CCDbEdgeRef
+17102
 1
 -1
-57942
+17080
 123
 0
-57904
+17042
 0
 0
 6
@@ -7561,14 +7419,14 @@ CCDbEdgeRef
 280
 10
 13
-CCDbVertexRef
-57977
+CCDbVertexRef
+17103
 1
 -1
-57942
+17080
 141
 0
-57904
+17042
 0
 0
 6
@@ -7577,14 +7435,14 @@ CCDbVertexRef
 280
 10
 13
-CCDbVertexRef
-57978
+CCDbVertexRef
+17104
 1
 -1
-57942
+17080
 142
 0
-57904
+17042
 0
 0
 6
