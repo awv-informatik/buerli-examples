@@ -1,4 +1,4 @@
-import { api as buerliApi } from '@buerli.io/core'
+import { api as buerliApi, NOID, ObjectID } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
@@ -108,7 +108,7 @@ const Part: React.FC = () => {
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
-  const productOrSolidIds = React.useRef<number | number[]>(0)
+  const productOrSolidIds = React.useRef<ObjectID | ObjectID[]>(NOID)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
 
@@ -196,7 +196,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m as any} />
+          <mesh key={m.uuid} {...(m as any)} />
         ))}
       </group>
     )

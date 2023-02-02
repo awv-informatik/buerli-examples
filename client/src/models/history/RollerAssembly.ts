@@ -3,11 +3,11 @@ import { CCClasses, FlipType, OrientationType, ReorientedType, ViewType } from '
 import { ObjectID, PointMemValue } from '@buerli.io/core'
 import {
   ApiHistory,
-  history,
-  Transform,
   DimensionType,
   FastenedConstraintType,
   FastenedOriginConstraintType,
+  history,
+  Transform,
 } from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
@@ -38,10 +38,10 @@ export const paramsMap: Param[] = [
 let zDir = { x: 0, y: 0, z: 1 }
 export const minGapFrameSegment = 20
 export const gapInFrame = 20
-let segmentPrt: number[] | null = null
+let segmentPrt: ObjectID[] | null = null
 
-let electricPlug: { matePath: ObjectID[], wcsId: ObjectID}
-let pneumaticPlug: { matePath: ObjectID[], wcsId: ObjectID}
+let electricPlug: { matePath: ObjectID[]; wcsId: ObjectID }
+let pneumaticPlug: { matePath: ObjectID[]; wcsId: ObjectID }
 let frame0: ObjectID
 let frame1: ObjectID
 let constrElectricPlug: FastenedConstraintType
@@ -67,8 +67,8 @@ let constrEnd1: FastenedOriginConstraintType
 let constrEnd2: FastenedOriginConstraintType
 let constrWalzeOrigin: FastenedOriginConstraintType
 
-let currSegmentNodes: number[] = []
-let currDimensions: number[] = []
+let currSegmentNodes: ObjectID[] = []
+let currDimensions: ObjectID[] = []
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -89,18 +89,48 @@ export const create: Create = async (apiType, params) => {
   if (rootAsm !== null) {
     constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
     constrPneumaticPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_PneumaticPlug')
-
     ;[frame0] = await api.getAssemblyNode(rootAsm, 'Frame0')
-    ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Plug_csys')
-    ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Plug2_csys')
-    ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Screw_csys')
-    ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCoordSystem, 'Screw2_csys')
-
+    ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(
+      frame0,
+      CCClasses.CCWorkCoordSystem,
+      'Plug_csys',
+    )
+    ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(
+      frame0,
+      CCClasses.CCWorkCoordSystem,
+      'Plug2_csys',
+    )
+    ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(
+      frame0,
+      CCClasses.CCWorkCoordSystem,
+      'Screw_csys',
+    )
+    ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(
+      frame0,
+      CCClasses.CCWorkCoordSystem,
+      'Screw2_csys',
+    )
     ;[frame1] = await api.getAssemblyNode(rootAsm, 'Frame1')
-    ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Plug_csys')
-    ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Plug2_csys')
-    ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Screw_csys')
-    ;[wcsPPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCoordSystem, 'Screw2_csys')
+    ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(
+      frame1,
+      CCClasses.CCWorkCoordSystem,
+      'Plug_csys',
+    )
+    ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(
+      frame1,
+      CCClasses.CCWorkCoordSystem,
+      'Plug2_csys',
+    )
+    ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(
+      frame1,
+      CCClasses.CCWorkCoordSystem,
+      'Screw_csys',
+    )
+    ;[wcsPPlugFrame1Right] = await api.getWorkGeometry(
+      frame1,
+      CCClasses.CCWorkCoordSystem,
+      'Screw2_csys',
+    )
 
     constrWalzeOrigin = await api.getFastenedOriginConstraint(rootAsm, 'Fastened_Origin_Walze')
     constrEnd1 = await api.getFastenedOriginConstraint(rootAsm, 'Fastened_Origin_End1')
@@ -249,7 +279,7 @@ async function updateNofSegments(
   walzeLength: number,
   walzeDir: number,
   api: ApiHistory,
-  productId: number,
+  productId: ObjectID,
 ) {
   const z = nofSegments > 1 ? walzeLength / 2 - minGapFrameSegment - gapInFrame - segSize / 2 : 0
   const distanceBtSegments =
@@ -276,8 +306,8 @@ async function updateNofSegments(
   }
 
   const nodes: {
-    productId: number
-    ownerId: number
+    productId: ObjectID
+    ownerId: ObjectID
     transformation: Transform
     name?: string
   }[] = []

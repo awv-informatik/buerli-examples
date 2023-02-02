@@ -1,3 +1,4 @@
+import { ObjectID } from '@buerli.io/core'
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
@@ -39,7 +40,7 @@ export const create: Create = async (apiType, params) => {
   return [await b0]
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
+export const getScene = async (solidIds: ObjectID[], api: ApiNoHistory) => {
   if (!api) return
   const { scene, solids } = await api.createScene(solidIds)
   scene && colorize(solids)

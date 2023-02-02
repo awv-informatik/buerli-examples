@@ -1,3 +1,4 @@
+import { ObjectID } from '@buerli.io/core'
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Create, Param, ParamType, Update } from '../../store'
@@ -56,7 +57,7 @@ export const update: Update = async (apiType, productId, params) => {
   }
 }
 
-export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
+export const getBufferGeom = async (solidIds: ObjectID[], api: ApiNoHistory) => {
   if (!api) return
   const meshes: THREE.Mesh[] = []
   for await (const solidId of solidIds) {

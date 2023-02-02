@@ -1,3 +1,4 @@
+import { ObjectID } from '@buerli.io/core'
 import { ApiHistory, ApiNoHistory, history, solid } from '@buerli.io/headless'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
@@ -24,12 +25,12 @@ export type Create = (
   api: ApiHistory | ApiNoHistory,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
 export type Update = (
   api: ApiHistory | ApiNoHistory,
-  productId: number | number[],
+  productId: ObjectID | ObjectID[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
 
 const toc: { exampleId: string; label: string; file: string }[] = [
   // solid example
@@ -72,9 +73,21 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
   { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis' },
-  { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
-  { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
-  { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
+  {
+    exampleId: 'MechanicalAssembly',
+    label: 'Mechanical Simulation',
+    file: 'history/MechanicalAssembly',
+  },
+  {
+    exampleId: 'MechanicalAssembly2',
+    label: 'Mechanical Simulation 2',
+    file: 'history/MechanicalAssembly2',
+  },
+  {
+    exampleId: 'MechanicalAssembly3',
+    label: 'Mechanical Simulation 3',
+    file: 'history/MechanicalAssembly3',
+  },
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
 ]
 
@@ -135,8 +148,8 @@ export type Example = {
   label: string
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getScene?: (productOrSolidId: ObjectID | ObjectID[], api: ApiHistory | ApiNoHistory) => any
+  getBufferGeom?: (productOrSolidId: ObjectID | ObjectID[], api: ApiHistory | ApiNoHistory) => any
   text?: Promise<{ default: any }>
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]

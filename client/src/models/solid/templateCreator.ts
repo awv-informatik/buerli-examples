@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { NOID } from '@buerli.io/core'
 import { ApiNoHistory, solid } from '@buerli.io/headless'
-import { Param, Create } from '../../store'
+import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -11,7 +12,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return [0] // solid ids
+  return [NOID] // solid ids
 }
 
 export const cad = new solid()

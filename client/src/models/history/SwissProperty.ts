@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+import { NOID, ObjectID } from '@buerli.io/core'
 import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
@@ -7,8 +8,8 @@ import templateSP from '../../resources/history/WallTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type node = {
-  productId: number
-  ownerId: number
+  productId: ObjectID
+  ownerId: ObjectID
   transformation: Transform
   name?: string
 }
@@ -17,16 +18,16 @@ type node = {
 // INTERNAL STORE
 ///////////////////////////////////////////////////////////////
 
-type Layer = { name: string; type: string; refId: number; thickness: number; posX: number }
+type Layer = { name: string; type: string; refId: ObjectID; thickness: number; posX: number }
 
 type StoreProps = Readonly<{
-  layers: Record<string, { lastRemovedLayer: number; layers: Layer[] }>
-  setLayers: (exampleId: string, removedLayer: number, params: Layer[]) => void
+  layers: Record<string, { lastRemovedLayer: ObjectID; layers: Layer[] }>
+  setLayers: (exampleId: string, removedLayer: ObjectID, params: Layer[]) => void
 }>
 
 const store = vanillaCreate<StoreProps>(set => ({
   layers: {},
-  setLayers: (exampleId: string, removedLayer: number, layers: Layer[]) => {
+  setLayers: (exampleId: string, removedLayer: ObjectID, layers: Layer[]) => {
     set(state =>
       produce(state, draft => {
         draft.layers[exampleId] = { lastRemovedLayer: removedLayer, layers }
@@ -117,8 +118,8 @@ export const paramsMap: Param[] = [
 
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
-let rootNode: number | null
-let currNodes: number[] = []
+let rootNode: ObjectID | null
+let currNodes: ObjectID[] = []
 
 const posXGipsplatte: number = 0
 const posXSpanplatte: number = paramsMap[gt].value
@@ -133,23 +134,23 @@ const posXHolzschalung: number =
   paramsMap[dt].value +
   2 * paramsMap[hlt].value
 
-let gipsplattePrt: number[] | null = null
-let spanplattePrt: number[] | null = null
-let daemmungPrt: number[] | null = null
-let verticalBeamPrt: number[] | null = null
-let horizontalBeamPrt: number[] | null = null
-let wallInsulationPrt: number[] | null = null
-let wallInsulationCustomPrt: number[] | null = null
-let holzlattungPrt: number[] | null = null
-let holzschalungPrt: number[] | null = null
-let balkenwandAsm: number[] | null = null
+let gipsplattePrt: ObjectID[] | null = null
+let spanplattePrt: ObjectID[] | null = null
+let daemmungPrt: ObjectID[] | null = null
+let verticalBeamPrt: ObjectID[] | null = null
+let horizontalBeamPrt: ObjectID[] | null = null
+let wallInsulationPrt: ObjectID[] | null = null
+let wallInsulationCustomPrt: ObjectID[] | null = null
+let holzlattungPrt: ObjectID[] | null = null
+let holzschalungPrt: ObjectID[] | null = null
+let balkenwandAsm: ObjectID[] | null = null
 
-let gipsplatteNode: number | null = null
-let spanplatteNode: number | null = null
-let daemmungNode: number | null = null
-let holzlattungNode: number | null = null
-let holzschalungNode: number | null = null
-let balkenwandNode: number | null = null
+let gipsplatteNode: ObjectID | null = null
+let spanplatteNode: ObjectID | null = null
+let daemmungNode: ObjectID | null = null
+let holzlattungNode: ObjectID | null = null
+let holzschalungNode: ObjectID | null = null
+let balkenwandNode: ObjectID | null = null
 
 let beamNodes: node[] = []
 let beamCustomNodes: node[] = []
@@ -280,7 +281,7 @@ export const create: Create = async (apiType, params) => {
     })
 
     activeExampleId = storeApi.getState().activeExample
-    store.getState().setLayers(activeExampleId, -1, layers)
+    store.getState().setLayers(activeExampleId, NOID, layers)
 
     // Initial balkenwand configuration
     await updateBalkenwandSize(params.values[wl], params.values[wh], params.values, layers, api)
@@ -301,7 +302,7 @@ export const update: Update = async (apiType, productId, params) => {
   activeExampleId = storeApi.getState().activeExample
 
   const layers = store.getState().layers[activeExampleId]
-  if (layers.lastRemovedLayer > 0) {
+  if (layers.lastRemovedLayer !== NOID) {
     await api.removeNodes({ referenceId: layers.lastRemovedLayer, ownerId: productId })
     await transformLayers(layers.layers, params.values, api)
   }
@@ -373,7 +374,7 @@ async function updateWallSize(
   if (gipsplattePrt && spanplattePrt && daemmungPrt && holzlattungPrt && holzschalungPrt) {
     await updateBalkenwandSize(length, height, params, layers, api)
     const exprSets: {
-      partId: number
+      partId: ObjectID
       members: { name: string; value: number | string }[]
     }[] = [
       {
@@ -433,7 +434,7 @@ async function updateBalkenwandSize(
   ) {
     const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
-      partId: number
+      partId: ObjectID
       members: { name: string; value: number | string }[]
     }[] = [
       {
@@ -467,7 +468,7 @@ async function updateBalkenwandSize(
 }
 
 /** Adds beams and wall insulations depending on the wall length */
-async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api: ApiHistory) {
+async function updateBalkenwandBeams(ownerNode: ObjectID, wallLength: number, api: ApiHistory) {
   const distanceBtSegments = verticalBeamThickness + wallInsulationWidth
   let nofBeams = 0
   let nofBeamsCustom = 0
@@ -655,7 +656,7 @@ async function updateLayer(
           }
         }
         const exprSets: {
-          partId: number
+          partId: ObjectID
           members: { name: string; value: number | string }[]
         }[] = [
           {
@@ -742,7 +743,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       yDir,
     ])
   }
-  store.getState().setLayers(activeExampleId, -1, tempLayers)
+  store.getState().setLayers(activeExampleId, NOID, tempLayers)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -773,7 +774,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[gt],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
         }
       }
       break
@@ -798,7 +799,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[spt],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
         }
       }
       break
@@ -823,7 +824,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[bwt],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
           await updateWallSize(params[wl], params[wh], params, tempLayers, api)
         }
       }
@@ -849,7 +850,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[dt],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
         }
       }
       break
@@ -874,7 +875,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: 2 * params[hlt],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
         }
       }
       break
@@ -899,7 +900,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[hst],
           })
-          store.getState().setLayers(activeExampleId, -1, tempLayers)
+          store.getState().setLayers(activeExampleId, NOID, tempLayers)
         }
       }
       break
@@ -917,7 +918,7 @@ async function explodeWall(params: any[], layers: Layer[], api: ApiHistory) {
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeNodes(nodes: number[], ownerNode: number, api: ApiHistory) {
+async function removeNodes(nodes: ObjectID[], ownerNode: ObjectID, api: ApiHistory) {
   if (nodes.length > 0) {
     const nodesToRemove = nodes.map(nodeId => ({
       referenceId: nodeId,
@@ -931,8 +932,8 @@ async function createNodes(
   nof: number,
   firstPos: { x: number; y: number; z: number },
   distance: number,
-  productId: number,
-  ownerNode: number,
+  productId: ObjectID,
+  ownerNode: ObjectID,
   name: string,
 ) {
   const nodesToAdd: node[] = []

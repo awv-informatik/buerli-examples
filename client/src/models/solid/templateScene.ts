@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { NOID, ObjectID } from '@buerli.io/core'
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
-import { Param, Create } from '../../store'
+import { Create, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -14,10 +15,10 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return [0] // solid ids
+  return [NOID] // solid ids
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
+export const getScene = async (solidIds: ObjectID[], api: ApiNoHistory) => {
   if (!api) return
   const { scene, solids } = await api.createScene(solidIds)
   scene && colorize(solids)

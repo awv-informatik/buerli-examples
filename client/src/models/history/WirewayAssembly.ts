@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
-import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
+import { ObjectID } from '@buerli.io/core'
+import { ApiHistory, ConstraintType, history } from '@buerli.io/headless'
 import templateSP from '../../resources/history/WirewayTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -23,9 +24,9 @@ export const paramsMap: Param[] = [
   },
 ].sort((a, b) => a.index - b.index)
 
-let rootNode: number | null
-let deckelPrt: number | null = null
-let kanalPrt: number | null = null
+let rootNode: ObjectID | null
+let deckelPrt: ObjectID | null = null
+let kanalPrt: ObjectID | null = null
 let constrDeckel: ConstraintType
 
 export const create: Create = async (apiType, params) => {
@@ -133,9 +134,9 @@ export const update: Update = async (apiType, productId, params) => {
   // Update pos
   if (check(paramsMap[pd])) {
     const fcDeckel: {
-      constrId: number
-      mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-      mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
+      constrId: ObjectID
+      mate1: { matePath: ObjectID[]; wcsId: ObjectID; flip: number; reoriented: number }
+      mate2: { matePath: ObjectID[]; wcsId: ObjectID; flip: number; reoriented: number }
       xOffset: number
       yOffset: number
       zOffset: number

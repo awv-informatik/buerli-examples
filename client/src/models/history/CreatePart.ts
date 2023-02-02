@@ -1,9 +1,10 @@
-import { ApiHistory, history } from '@buerli.io/headless'
-import { Create, Param } from '../../store'
-import * as THREE from 'three'
 import { ChamferType } from '@buerli.io/classcad'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { ObjectID } from '@buerli.io/core'
+import { ApiHistory, history } from '@buerli.io/headless'
+import * as THREE from 'three'
 import { Color } from 'three'
+import { Create, Param } from '../../store'
+import { setObjectColor, setObjectTransparency } from '../../utils/utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -19,9 +20,9 @@ export const create: Create = async (apiType, params) => {
   return part
 }
 
-export const getScene = async (productId: number, api: ApiHistory) => {
+export const getScene = async (productId: ObjectID, api: ApiHistory) => {
   if (!api) return
-  const { scene, nodes } = await api.createScene(productId, { meshPerGeometry: true})
+  const { scene, nodes } = await api.createScene(productId, { meshPerGeometry: true })
   scene && colorize(nodes)
   return scene
 }
@@ -31,7 +32,7 @@ const colorize = (nodes: THREE.Group[]) => {
   // Color and set transparency on first found node
   setObjectColor(nodes[0], customRed)
   setObjectTransparency(nodes[0], 0.5)
-} 
+}
 
 export const cad = new history()
 

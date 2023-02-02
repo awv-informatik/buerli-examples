@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { NOID } from '@buerli.io/core'
 import { ApiHistory, history } from '@buerli.io/headless'
-import { Param, Create, Update, storeApi } from '../../store'
+import { Create, Param, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [
   // number example
@@ -23,7 +24,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return 0 // product id
+  return NOID // product id
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -37,7 +38,7 @@ export const update: Update = async (apiType, productId, params) => {
   // ...
   // ...
 
-  return 0 // product id
+  return NOID // product id
 }
 
 export const cad = new history()

@@ -1,4 +1,5 @@
-import { ApiNoHistory, solid, createPolyline, FilletPoint, Polyline } from '@buerli.io/headless'
+import { ObjectID } from '@buerli.io/core'
+import { ApiNoHistory, createPolyline, FilletPoint, Polyline, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, Param } from '../../store'
@@ -22,7 +23,7 @@ export const create: Create = async (apiType, params) => {
   return [extrusion]
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
+export const getScene = async (solidIds: ObjectID[], api: ApiNoHistory) => {
   if (!api) return
   const { scene, solids } = await api.createScene(solidIds)
   scene && colorize(solids)

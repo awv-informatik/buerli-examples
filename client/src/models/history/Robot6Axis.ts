@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import robotArm from '../../resources/history/Robot6Axis.ofb'
 import { LimitedValue } from '@buerli.io/classcad'
+import { ObjectID } from '@buerli.io/core'
+import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
+import robotArm from '../../resources/history/Robot6Axis.ofb'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const a1 = 0 // axis 1
 const a2 = 1 // axis 2
@@ -96,7 +97,7 @@ export const update: Update = async (apiType, productId, params) => {
 }
 
 async function updateAxis(paramValues: number[], axis: number, api: ApiHistory) {
-  const constrValues: { constrId: number; paramName: LimitedValue; value: number }[] = []
+  const constrValues: { constrId: ObjectID; paramName: LimitedValue; value: number }[] = []
   for (let index = axis; index < 6; index++) {
     const angleInRadian = (paramValues[index] / 180) * Math.PI
     const constrValue = {

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { NOID } from '@buerli.io/core'
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import { Param, Create, Update, storeApi } from '../../store'
 
@@ -23,7 +24,7 @@ export const create: Create = async (apiType, params) => {
   // ...
   // ...
 
-  return [0] // solid ids
+  return [NOID] // solid ids
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -37,7 +38,7 @@ export const update: Update = async (apiType, productId, params) => {
   // ...
   // ...
 
-  return [0] // solid ids
+  return [NOID] // solid ids
 }
 
 export const cad = new solid()

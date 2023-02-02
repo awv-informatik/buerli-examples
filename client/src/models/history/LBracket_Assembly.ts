@@ -1,4 +1,5 @@
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
+import { ObjectID } from '@buerli.io/core'
 import { ApiHistory, history } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb'
@@ -37,8 +38,16 @@ export const create: Create = async (apiType, params) => {
   })
 
   const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
-  const wcsIdBoltHeadShaft = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Head-Shaft')
-  const wcsIdBoltOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdBoltHeadShaft = await api.getWorkGeometry(
+    boltRefId,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Head-Shaft',
+  )
+  const wcsIdBoltOrigin = await api.getWorkGeometry(
+    boltRefId,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Origin',
+  )
 
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
@@ -104,10 +113,26 @@ export const create: Create = async (apiType, params) => {
     ownerId: lBracketAsm,
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
   })
-  const wcsIdLBracketOrigin = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
-  const wcsIdLBracket1 = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole1-Top')
-  const wcsIdLBracket2Top = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Top')
-  const wcsIdLBracket3 = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole3-Top')
+  const wcsIdLBracketOrigin = await api.getWorkGeometry(
+    lBracketRef1,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Origin',
+  )
+  const wcsIdLBracket1 = await api.getWorkGeometry(
+    lBracketRef1,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Hole1-Top',
+  )
+  const wcsIdLBracket2Top = await api.getWorkGeometry(
+    lBracketRef1,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Hole2-Top',
+  )
+  const wcsIdLBracket3 = await api.getWorkGeometry(
+    lBracketRef1,
+    CCClasses.CCWorkCoordSystem,
+    'WCS_Hole3-Top',
+  )
 
   /* LBracket at origin */
   await api.createFastenedOriginConstraint(
@@ -124,19 +149,23 @@ export const create: Create = async (apiType, params) => {
     'FOC',
   )
 
-  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = await api.addNodes({
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
-    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
-  }, {
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
-    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
-  }, {
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
-    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
-  })
+  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = await api.addNodes(
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    },
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    },
+    {
+      productId: nutBoltAsm,
+      ownerId: lBracketAsm,
+      transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    },
+  )
 
   /* NutBoltAsm on LBracket */
   await api.createFastenedConstraint(
@@ -203,7 +232,7 @@ export const create: Create = async (apiType, params) => {
   return lBracketAsm
 }
 
-export const getScene = async (productId: number, api: ApiHistory) => {
+export const getScene = async (productId: ObjectID, api: ApiHistory) => {
   if (!api) return
   const { scene } = await api.createScene(productId, { meshPerGeometry: false })
   console.info(scene)
