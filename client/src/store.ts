@@ -62,6 +62,26 @@ const toc: { exampleId: string; label: string; file: string }[] = [
     label: 'LBracket Assembler',
     file: 'history/LBracket_Assembly',
   },
+  {
+    exampleId: 'NutBolt_Assembly_With_Idents',
+    label: 'Nut-Bolt Assembler Idents',
+    file: 'history/NutBolt_Assembly_With_Idents',
+  },
+  {
+    exampleId: 'L-Bracket_Assembly_With_Idents',
+    label: 'LBracket Assembler Idents',
+    file: 'history/LBracket_Assembly_With_Idents',
+  },
+  {
+    exampleId: 'L-Bracket_Assembly_With_Idents_Loaded',
+    label: 'LBracket Assembler Idents Loaded',
+    file: 'history/LBracket_Assembly_With_Idents_Loaded',
+  },
+  {
+    exampleId: 'L-Bracket_Assembly_With_Idents_Unordered',
+    label: 'LBracket Assembler Idents Unordered',
+    file: 'history/LBracket_Assembly_With_Idents_Unordered',
+  },
   { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
   { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
