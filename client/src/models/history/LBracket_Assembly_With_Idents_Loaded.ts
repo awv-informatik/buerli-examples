@@ -18,7 +18,7 @@ export const create: Create = async (apiType, params) => {
   const lBracketAsm = await api.createRootAssembly('LBracket_Asm', { ident: 'LBracketRoot'})
 
   /* NutBoltAsm */
-  const [nutBoltAsm] = await api.loadProduct(arraybuffer, 'ofb', { ident: 'NutBoltProduct'})
+  await api.loadProduct(arraybuffer, 'ofb', { ident: 'NutBoltProduct'})
 
   api.setExpressions({
     partId: 'BoltProduct',
@@ -31,7 +31,7 @@ export const create: Create = async (apiType, params) => {
   api.setExpressions({ partId: 'NutProduct', members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
   /* LBracket */
-  const lBracket = await api.loadProduct(arraybuffer2, 'ofb', { ident: 'LBracketProduct'})
+  await api.loadProduct(arraybuffer2, 'ofb', { ident: 'LBracketProduct'})
 
   api.setExpressions({
     partId: 'LBracketProduct',
@@ -42,18 +42,21 @@ export const create: Create = async (apiType, params) => {
   })
 
   const [lBracketRef1] = await api.addNodes({
-    productId: lBracket[0],
-    ownerId: lBracketAsm,
+    productId: 'LBracketProduct',
+    ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
   })
-  const wcsIdLBracketOrigin = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const [wcsIdLBracketOrigin] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const [wcsIdLBracket1] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole1-Top')
+  const [wcsIdLBracket2] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Top')
+  const [wcsIdLBracket3] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole3-Top')
 
   /* LBracket at origin */
   await api.createFastenedOriginConstraint(
     lBracketAsm,
     {
       matePath: [lBracketRef1],
-      wcsId: wcsIdLBracketOrigin[0],
+      wcsId: wcsIdLBracketOrigin,
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
@@ -63,19 +66,92 @@ export const create: Create = async (apiType, params) => {
     'FOC',
   )
 
-  await api.addNodes({
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
+  const [nutBoltNode1, nutBoltNode2, nutBoltNode3] = await api.addNodes({
+    productId: 'NutBoltProduct',
+    ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    options: { ident: 'NutBoltNode1'}
   }, {
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
-    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    productId: 'NutBoltProduct',
+    ownerId: 'LBracketRoot',
+    transformation: [{ x: 50, y: 0, z: 0 }, xDir, yDir],
+    options: { ident: 'NutBoltNode2'}
   }, {
-    productId: nutBoltAsm,
-    ownerId: lBracketAsm,
-    transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    productId: 'NutBoltProduct',
+    ownerId: 'LBracketRoot',
+    transformation: [{ x: 100, y: 0, z: 0 }, xDir, yDir],
+    options: { ident: 'NutBoltNode3'}
   })
+
+  const [boltNode1] = await api.getAssemblyNode(nutBoltNode1, 'Bolt')
+  const [boltNode2] = await api.getAssemblyNode(nutBoltNode2, 'Bolt')
+  const [boltNode3] = await api.getAssemblyNode(nutBoltNode3, 'Bolt')
+  const [wcsIdBoltHeadShaft] = await api.getWorkGeometry(boltNode1, CCClasses.CCWorkCoordSystem, 'WCS_Head-Shaft')
+
+  /* NutBolt1 on LBracket */
+  await api.createFastenedConstraint(
+    lBracketAsm,
+    {
+      matePath: [lBracketRef1],
+      wcsId: wcsIdLBracket1,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: await api.getMatePath(boltNode1),
+      wcsId: wcsIdBoltHeadShaft,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    0,
+    0,
+    0,
+    'FC1',
+  )
+
+  /* NutBolt2 on LBracket */
+  await api.createFastenedConstraint(
+    lBracketAsm,
+    {
+      matePath: [lBracketRef1],
+      wcsId: wcsIdLBracket2,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: await api.getMatePath(boltNode2),
+      wcsId: wcsIdBoltHeadShaft,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    0,
+    0,
+    0,
+    'FC2',
+  )
+
+  /* NutBolt3 on LBracket */
+  await api.createFastenedConstraint(
+    lBracketAsm,
+    {
+      matePath: [lBracketRef1],
+      wcsId: wcsIdLBracket3,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    {
+      matePath: await api.getMatePath(boltNode3),
+      wcsId: wcsIdBoltHeadShaft,
+      flip: FlipType.FLIP_Z,
+      reoriented: ReorientedType.REORIENTED_0,
+    },
+    0,
+    0,
+    0,
+    'FC3',
+  )
+
+
 
   return lBracketAsm
 }
