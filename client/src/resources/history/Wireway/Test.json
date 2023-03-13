@@ -19,8 +19,8 @@
       "params": {
         "nodes": [
           {
-            "productId": "Product",
-            "ownerId": "Root",
+            "productIdent": "Product",
+            "ownerIdent": "Root",
             "transformation": [
               {
                 "x": -5.08,
@@ -47,7 +47,7 @@
       "params": {
         "expressions": [
           {
-            "partId": "Product",
+            "partIdent": "Product",
             "members": [
               {
                 "name": "depth",

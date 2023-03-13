@@ -27,7 +27,7 @@ export const create: Create = async (apiType, params) => {
   for (const command of data.buerli) {
     switch (command.method) {
       case 'createRootAssembly':
-        root = await api.createRootAssembly('Root', { ident: command.params.ident })
+        root = await api.createRootAssembly('Assembly', { ident: command.params.ident })
         break;
       case 'loadProductFromUrl':
         await api.loadProductFromUrl(command.params.url, 'ofb', { ident: command.params.ident})
@@ -36,8 +36,8 @@ export const create: Create = async (apiType, params) => {
       const nodesToAdd: Node[] = []
         for (const node of command.params.nodes) {
           nodesToAdd.push({
-            productId: node.productId,
-            ownerId: node.ownerId,
+            productId: node.productIdent,
+            ownerId: node.ownerIdent,
             transformation: [
               node.transformation[0],
               node.transformation[1],
@@ -51,7 +51,7 @@ export const create: Create = async (apiType, params) => {
         const expressionsToAdd: Expression[] = []
         for (const expression of command.params.expressions) {
           expressionsToAdd.push({
-            partId: expression.partId,
+            partId: expression.partIdent,
             members: expression.members.map(mem => ({ name: mem.name, value: mem.value}))
           })
         }
