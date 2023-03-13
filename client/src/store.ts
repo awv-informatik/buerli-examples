@@ -90,6 +90,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly' },
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
   { exampleId: 'WirewaySelection', label: 'Wireway Selection', file: 'history/Wireway_Selection' },
+  { exampleId: 'Wemonte', label: 'Wemonte Testcase', file: 'history/Wemonte_Testcase' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
   { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis' },

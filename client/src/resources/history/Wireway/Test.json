@@ -1,0 +1,62 @@
+{
+  "buerli": [
+    {
+      "method": "createRootAssembly",
+      "params": {
+        "ident": "Root"
+      }
+    },
+    {
+      "method": "loadProductFromUrl",
+      "params": {
+        "url": "https://raw.githubusercontent.com/wemonte/cad-test/main/test.ofb",
+        "type": "ofb",
+        "ident": "Product"
+      }
+    },
+    {
+      "method": "addNodes",
+      "params": {
+        "nodes": [
+          {
+            "productId": "Product",
+            "ownerId": "Root",
+            "transformation": [
+              {
+                "x": -5.08,
+                "y": 10.16,
+                "z": 50
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "z": -50
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "z": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "setExpressions",
+      "params": {
+        "expressions": [
+          {
+            "partId": "Product",
+            "members": [
+              {
+                "name": "depth",
+                "value": 10
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
