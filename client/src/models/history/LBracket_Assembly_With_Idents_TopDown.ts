@@ -51,6 +51,7 @@ export const create: Create = async (apiType, params) => {
     productId: 'BoltProduct',
     ownerId: 'NutBoltNode2',
     transformation: [pt0, xDir, yDir],
+    options: { ident: 'BoltNode'}
   })
 
   const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
@@ -204,6 +205,7 @@ export const create: Create = async (apiType, params) => {
     0,
     'FC4',
   )
+  //await api.removeNodes({ referenceId: 'NutBoltNode2'})
   return lBracketAsm
 }
 

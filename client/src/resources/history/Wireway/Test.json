@@ -14,6 +14,14 @@
         "ident": "Product"
       }
     },
+	{
+      "method": "loadProductFromUrl",
+      "params": {
+        "url": "https://raw.githubusercontent.com/wemonte/cad-test/main/test.ofb",
+        "type": "ofb",
+        "ident": "Product2"
+      }
+    },
     {
       "method": "addNodes",
       "params": {
@@ -24,6 +32,27 @@
             "transformation": [
               {
                 "x": -5.08,
+                "y": 10.16,
+                "z": 50
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "z": -50
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "z": 0
+              }
+            ]
+          },
+		  {
+            "productIdent": "Product2",
+            "ownerIdent": "Root",
+            "transformation": [
+              {
+                "x": 50,
                 "y": 10.16,
                 "z": 50
               },
@@ -52,6 +81,15 @@
               {
                 "name": "depth",
                 "value": 10
+              }
+            ]
+          },
+		  {
+            "partIdent": "Product2",
+            "members": [
+              {
+                "name": "depth",
+                "value": 30
               }
             ]
           }
