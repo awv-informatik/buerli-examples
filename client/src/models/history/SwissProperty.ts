@@ -302,7 +302,7 @@ export const update: Update = async (apiType, productId, params) => {
 
   const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
-    await api.removeNodes({ referenceId: layers.lastRemovedLayer, ownerId: productId })
+    await api.removeNodes({ referenceId: layers.lastRemovedLayer })
     await transformLayers(layers.layers, params.values, api)
   }
 
@@ -522,7 +522,7 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
   allNodes = []
 
   // If any added nodes already exist, remove them
-  await removeNodes(currNodes, ownerNode, api)
+  await removeNodes(currNodes, api)
 
   // Create standard vertical beam nodes
   if (verticalBeamPrt) {
@@ -917,11 +917,10 @@ async function explodeWall(params: any[], layers: Layer[], api: ApiHistory) {
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeNodes(nodes: number[], ownerNode: number, api: ApiHistory) {
+async function removeNodes(nodes: number[], api: ApiHistory) {
   if (nodes.length > 0) {
     const nodesToRemove = nodes.map(nodeId => ({
       referenceId: nodeId,
-      ownerId: ownerNode,
     }))
     await api.removeNodes(...nodesToRemove)
   }
