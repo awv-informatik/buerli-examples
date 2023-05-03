@@ -51,9 +51,9 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of bolt */
-  const wcsIdBoltNut = await api.getWorkCoordSystem(boltRefId, 'WCS_Nut')
-  const wcsIdBoltHeadShaft = await api.getWorkCoordSystem(boltRefId, 'WCS_Head-Shaft')
-  const wcsIdBoltOrigin = await api.getWorkCoordSystem(boltRefId, 'WCS_Origin')
+  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
+  const wcsIdBoltHeadShaft = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Head-Shaft')
+  const wcsIdBoltOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
 
   /* Load Nut part */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
@@ -69,7 +69,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of nut */
-  const wcsIdNut = await api.getWorkCoordSystem(nutRefId, 'WCS_Hole_Top')
+  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCoordSystem, 'WCS_Hole_Top')
 
   /* Set bolt to origin of nut-bolt-assembly */
   await api.createFastenedOriginConstraint(
