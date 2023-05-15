@@ -26,11 +26,11 @@ export const getScene = async (productId: number, api: ApiHistory) => {
   return scene
 }
 
-const colorize = (nodes: THREE.Group[]) => {
+const colorize = (nodes: { [key: string]: THREE.Object3D }) => {
   const customRed = new Color('rgb(203, 67, 22)')
-  // Color and set transparency on first found node
-  setObjectColor(nodes[0], customRed)
-  setObjectTransparency(nodes[0], 0.5)
+  // Color and set transparency on part node
+  setObjectColor(nodes.Part, customRed)
+  setObjectTransparency(nodes.Part, 0.5)
 } 
 
 export const cad = new history()

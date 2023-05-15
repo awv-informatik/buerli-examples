@@ -48,7 +48,7 @@ export const create: Create = async (apiType, params, options) => {
       [],
       offset,
       rotation,
-      0,
+      false,
       false,
       'WCSCenter',
     )
@@ -85,7 +85,7 @@ export const create: Create = async (apiType, params, options) => {
       [],
       holeOffset1Bottom,
       rotation,
-      0,
+      false,
       false,
       'WCSBoltHoleBottom',
     )
@@ -118,7 +118,7 @@ export const create: Create = async (apiType, params, options) => {
       [],
       holeOffset1Top,
       rotation,
-      0,
+      false,
       false,
       'WCSBoltHoleTop',
     )

@@ -42,7 +42,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsNut.boxPos,
     wcsNut.boxRot,
-    0,
+    false,
     false,
     'wcsBoxNut',
   )
@@ -53,7 +53,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsNut.cylPos,
     wcsNut.cylRot,
-    0,
+    false,
     false,
     'wcsCylNut',
   )
@@ -64,7 +64,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsNut.mate1Pos,
     wcsNut.mate1Rot,
-    0,
+    false,
     false,
     'mate1Nut',
   )
@@ -89,7 +89,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsBolt.shaftPos,
     wcsBolt.shaftRot,
-    0,
+    false,
     false,
     'wcsShaftBolt',
   )
@@ -100,7 +100,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsBolt.headPos,
     wcsBolt.headRot,
-    0,
+    false,
     false,
     'wcsHeadBolt',
   )
@@ -111,7 +111,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsBolt.mate1Pos,
     wcsBolt.mate1Rot,
-    0,
+    false,
     false,
     'mate1Bolt',
   )
@@ -140,7 +140,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsLBracket.basePos,
     wcsLBracket.baseRot,
-    0,
+    false,
     false,
     'wcsBaseBracket',
   )
@@ -151,7 +151,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsLBracket.subPos,
     wcsLBracket.subRot,
-    0,
+    false,
     false,
     'wcsSubBracket',
   )
@@ -164,7 +164,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsLBracket.mate1Pos,
     wcsLBracket.mate1Rot,
-    0,
+    false,
     false,
     'mate1LBracket',
   )
@@ -175,7 +175,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsLBracket.mate2Pos,
     wcsLBracket.mate2Rot,
-    0,
+    false,
     false,
     'mate2LBracket',
   )
@@ -186,7 +186,7 @@ export const create: Create = async (apiType, params) => {
     [],
     wcsLBracket.mate3Pos,
     wcsLBracket.mate3Rot,
-    0,
+    false,
     false,
     'mate3LBracket',
   )
