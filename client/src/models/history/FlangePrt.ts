@@ -45,10 +45,8 @@ export const create: Create = async (apiType, params, options) => {
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       offset,
       rotation,
-      false,
       false,
       'WCSCenter',
     )
@@ -82,10 +80,8 @@ export const create: Create = async (apiType, params, options) => {
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       holeOffset1Bottom,
       rotation,
-      false,
       false,
       'WCSBoltHoleBottom',
     )
@@ -115,10 +111,8 @@ export const create: Create = async (apiType, params, options) => {
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       holeOffset1Top,
       rotation,
-      false,
       false,
       'WCSBoltHoleTop',
     )
