@@ -33,8 +33,8 @@ export const create: Create = async (apiType, params) => {
     transformation: [pt0, xDir, yDir],
   })
 
-  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
-  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Nut')
+  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Origin')
 
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
@@ -44,7 +44,7 @@ export const create: Create = async (apiType, params) => {
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
   })
-  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCoordSystem, 'WCS_Hole_Top')
+  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCSys, 'WCS_Hole_Top')
 
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(

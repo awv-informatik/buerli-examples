@@ -25,10 +25,10 @@ export const create: Create = async (apiType, param) => {
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
-    const [wcsCenter] = await api.getWorkGeometry(flange, CCClasses.CCWorkCoordSystem, 'WCSCenter')
-    const [wcsHole1Top] = await api.getWorkGeometry(flange, CCClasses.CCWorkCoordSystem, 'WCSBoltHoleTop')
-    const [wcsBoltHead] = await api.getWorkGeometry(bolt, CCClasses.CCWorkCoordSystem, 'WCSHead')
-    const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCoordSystem, 'WCSNut')
+    const [wcsCenter] = await api.getWorkGeometry(flange, CCClasses.CCWorkCSys, 'WCSCenter')
+    const [wcsHole1Top] = await api.getWorkGeometry(flange, CCClasses.CCWorkCSys, 'WCSBoltHoleTop')
+    const [wcsBoltHead] = await api.getWorkGeometry(bolt, CCClasses.CCWorkCSys, 'WCSHead')
+    const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCSys, 'WCSNut')
 
     // Add the products as nodes to the root assembly
     const [flange1Node, flange2Node, boltNode, nutNode] = await api.addNodes(
