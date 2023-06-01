@@ -1,12 +1,12 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import {
   BooleanOperationType,
-  BrepElemType,
   ChamferType,
   WorkAxisType,
   WorkCoordSystemType,
 } from '@buerli.io/classcad'
 import { Create, Param } from '../../store'
+import { GraphicType } from '@buerli.io/core'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -74,9 +74,9 @@ export const create: Create = async (apiType, params, options) => {
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flangeSolid1, subCylFlange])
 
     options?.onSelect()
-    const edges1 = await api.findOrSelect(flange, BrepElemType.EDGE, 2, null)
+    const selection = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
     options?.onResume()
-    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, edges1, 2, 2, 45)
+    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, [selection.graphicId], 2, 2, 45)
 
     const wcsHole1Bottom = api.createWorkCoordSystem(
       flange,
@@ -92,12 +92,12 @@ export const create: Create = async (apiType, params, options) => {
     const subCylHole1 = await api.cylinder(flange, [wcsHole1Bottom], 30, 50)
 
     options?.onSelect()
-    const edgeId8 = await api.findOrSelect(flange, BrepElemType.EDGE, 1, null)
+    const selection2 = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
     options?.onResume()
     const waCenter = await api.createWorkAxis(
       flange,
       WorkAxisType.WA_CURVE,
-      edgeId8,
+      [selection2.graphicId],
       origin,
       zDir,
       false,
