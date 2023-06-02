@@ -74,9 +74,9 @@ export const create: Create = async (apiType, params, options) => {
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flangeSolid1, subCylFlange])
 
     options?.onSelect()
-    const selection = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
+    const selections = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE], 2)
     options?.onResume()
-    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, [selection.graphicId], 2, 2, 45)
+    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, selections.map(sel => sel.graphicId), 2, 2, 45)
 
     const wcsHole1Bottom = api.createWorkCoordSystem(
       flange,
@@ -92,12 +92,12 @@ export const create: Create = async (apiType, params, options) => {
     const subCylHole1 = await api.cylinder(flange, [wcsHole1Bottom], 30, 50)
 
     options?.onSelect()
-    const selection2 = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
+    const selections2 = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
     options?.onResume()
     const waCenter = await api.createWorkAxis(
       flange,
       WorkAxisType.WA_CURVE,
-      [selection2.graphicId],
+      selections2.map(sel => sel.graphicId),
       origin,
       zDir,
       false,
