@@ -286,7 +286,6 @@ async function updateNofSegments(
   if (currSegmentNodes.length > 0) {
     const nodesToRemove = currSegmentNodes.map(node => ({
       referenceId: node,
-      ownerId: productId,
     }))
     await api.removeNodes(...nodesToRemove)
   }

@@ -207,7 +207,7 @@ const Part: React.FC = () => {
       </group>
     )
   } else {
-    return <group>{drawingId && <BuerliGeometry drawingId={drawingId} />}</group>
+    return <group>{drawingId && <BuerliGeometry selection/>}</group>
   }
 }
 
