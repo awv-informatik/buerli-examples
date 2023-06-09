@@ -82,6 +82,11 @@ const toc: { exampleId: string; label: string; file: string }[] = [
     label: 'LBracket Assembler Idents Top Down',
     file: 'history/LBracket_Assembly_With_Idents_TopDown',
   },
+  {
+    exampleId: 'As1_Assembly_With_Idents',
+    label: 'As1 Assembler Idents',
+    file: 'history/As1_Assembly_With_Idents',
+  },
   { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
   { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
