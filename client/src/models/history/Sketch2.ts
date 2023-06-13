@@ -4,11 +4,10 @@ import { Param, Create } from '../../store'
 import sketches from '../../resources/history/SuspensionBracket.ofb'
 import {
   BooleanOperationType,
-  BrepElemType,
   ExtrusionType,
-  WorkAxisType,
   WorkPlaneType,
 } from '@buerli.io/classcad'
+import { GraphicType } from '@buerli.io/core'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -102,7 +101,7 @@ export const create: Create = async (apiType, params, options) => {
     [{ x: 30.135, y: 10.764, z: 5 }],
     [{ x: 28.016, y: 20.318, z: 5 }],
   ]
-  const edges = await api.findOrSelect(part, BrepElemType.EDGE, 36, positions)
+  const edges = await api.findGeometry(part, GraphicType.ARC, positions)
   await api.fillet(part, edges, 1)
 
   return part
