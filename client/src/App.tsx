@@ -24,13 +24,21 @@ export const App: React.FC = () => {
         </div>
       </Home>
       <Content>
-        <Main />
+        <Child />
       </Content>
     </Container>
   )
 }
 
 export default App
+
+function Child() {
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const actExmpl = urlParams.get('id') !== null ? urlParams.get('id') : ''
+
+  return <Main actExmpl={actExmpl} />
+}
 
 const Container = styled.div`
   width: 100%;

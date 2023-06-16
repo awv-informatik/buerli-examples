@@ -15,7 +15,7 @@ import { Code } from './Code'
 import { Resizer, useResizeStore } from './Resizer'
 import { Sidebar } from './Sidebar'
 
-export const Main: React.FC = () => {
+export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.objs)
   const activeExample = useStore(s => s.activeExample)
@@ -27,27 +27,35 @@ export const Main: React.FC = () => {
   const widthCode = `${widthCodeStore[0]}px`
   const rightResizer = `${widthCodeStore[0] + 50}px`
 
+  if (actExmpl) {
+    set({ activeExample: actExmpl })
+  }
+
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
-      <div style={{ position: 'absolute', right: 65, top: 80 }}>
-        <button
-          onClick={e => {
-            setVisible(!visible)
-          }}
-          style={{ cursor: 'pointer' }}>
-          {visible ? 'Hide Code' : 'Show Code'}
-        </button>
-      </div>
+      {actExmpl === '' && (
+        <div style={{ position: 'absolute', right: 65, top: 80 }}>
+          <button
+            onClick={e => {
+              setVisible(!visible)
+            }}
+            style={{ cursor: 'pointer' }}>
+            {visible ? 'Hide Code' : 'Show Code'}
+          </button>
+        </div>
+      )}
       <ExampleLayout>
-        <Sidebar
-          examples={exampleIds}
-          onChange={v => set({ activeExample: v })}
-          active={activeExample}
-        />
+        {actExmpl === '' && (
+          <Sidebar
+            examples={exampleIds}
+            onChange={v => set({ activeExample: v })}
+            active={activeExample}
+          />
+        )}
         <CanvasContainer>
           <Canvas
             shadows
@@ -81,7 +89,7 @@ export const Main: React.FC = () => {
           </Canvas>
           {loading && <Spin />}
         </CanvasContainer>
-        {visible && (
+        {visible && actExmpl === '' && (
           <div style={{ width: widthCode }}>
             <Resizer
               style={{ right: rightResizer, top: '120px' }}
@@ -100,6 +108,8 @@ export const Main: React.FC = () => {
 export default Main
 
 const Part: React.FC = () => {
+  const setParam = storeApi.getState().setParam
+
   const set = useStore(s => s.set)
   const exampleId = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
@@ -111,6 +121,18 @@ const Part: React.FC = () => {
   const productOrSolidIds = React.useRef<number | number[]>(0)
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
+      const configuration = e.data.args
+      const features = configuration.steps[0].features
+      for (let index = 0; index < features.length; index++) {
+        if (params.values[index] !== features[index].value) {
+          setParam(exampleId, index, features[index].value)
+        }
+      }
+    }
+  })
 
   const onSelect = React.useCallback(() => {
     fit()
@@ -196,7 +218,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m as any} />
+          <mesh key={m.uuid} {...(m as any)} />
         ))}
       </group>
     )
@@ -207,7 +229,7 @@ const Part: React.FC = () => {
       </group>
     )
   } else {
-    return <group>{drawingId && <BuerliGeometry selection/>}</group>
+    return <group>{drawingId && <BuerliGeometry selection />}</group>
   }
 }
 
