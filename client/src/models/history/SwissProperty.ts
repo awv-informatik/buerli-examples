@@ -736,11 +736,11 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await api.transformNode(tempLayers[i].refId, rootNode, [
+    await api.transformNodes({ referenceId: tempLayers[i].refId, transformation: [
       { x: tempLayers[i].posX, y: 0, z: 0 },
       xDir,
       yDir,
-    ])
+    ]})
   }
   store.getState().setLayers(activeExampleId, -1, tempLayers)
 }
