@@ -181,7 +181,7 @@ export const create: Create = async (apiType, params) => {
 
   /* nut-bolt assembly */
   const nutBoltAsm = await api.createAssemblyAsTemplate('Nut_Bolt_Assembly')
-  const [nutRef, boltRef] = await api.addNodes(
+  const [nutRef, boltRef] = await api.addInstances(
     {
       productId: nut,
       ownerId: nutBoltAsm,
@@ -229,7 +229,7 @@ export const create: Create = async (apiType, params) => {
   )
 
   /* l-bracket assembly */
-  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = await api.addNodes(
+  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = await api.addInstances(
     {
       productId: nutBoltAsm,
       ownerId: lBracketAsm,

@@ -90,13 +90,13 @@ export const create: Create = async (apiType, params) => {
     constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
     constrPneumaticPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
-    ;[frame0] = await api.getAssemblyNode(rootAsm, 'Frame0')
+    ;[frame0] = await api.getInstance(rootAsm, 'Frame0')
     ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw_csys')
     ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw2_csys')
 
-    ;[frame1] = await api.getAssemblyNode(rootAsm, 'Frame1')
+    ;[frame1] = await api.getInstance(rootAsm, 'Frame1')
     ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Screw_csys')
@@ -285,9 +285,9 @@ async function updateNofSegments(
   // If any nodes already exist, remove them
   if (currSegmentNodes.length > 0) {
     const nodesToRemove = currSegmentNodes.map(node => ({
-      referenceId: node,
+      id: node,
     }))
-    await api.removeNodes(...nodesToRemove)
+    await api.removeInstances(...nodesToRemove)
   }
 
   // Add segments as nodes to productId (owner/root)
@@ -303,7 +303,7 @@ async function updateNofSegments(
       firstPos.z += i * distanceBtSegments
     }
   }
-  currSegmentNodes = await api.addNodes(...nodes)
+  currSegmentNodes = await api.addInstances(...nodes)
 }
 
 ///////////////////////////////////////////////////////////////

@@ -31,7 +31,7 @@ export const create: Create = async (apiType, param) => {
     const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCSys, 'WCSNut')
 
     // Add the products as nodes to the root assembly
-    const [flange1Node, flange2Node, boltNode, nutNode] = await api.addNodes(
+    const [flange1Node, flange2Node, boltNode, nutNode] = await api.addInstances(
       {
         productId: flange,
         ownerId: root,

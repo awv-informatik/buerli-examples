@@ -227,7 +227,7 @@ export const create: Create = async (apiType, params) => {
         name: 'Holzschalung',
       },
     ]
-    const addedNodes = await api.addNodes(...defaultNodes)
+    const addedNodes = await api.addInstances(...defaultNodes)
     gipsplatteNode = addedNodes[0]
     spanplatteNode = addedNodes[1]
     balkenwandNode = addedNodes[2]
@@ -302,7 +302,7 @@ export const update: Update = async (apiType, productId, params) => {
 
   const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
-    await api.removeNodes({ referenceId: layers.lastRemovedLayer })
+    await api.removeInstances({ id: layers.lastRemovedLayer })
     await transformLayers(layers.layers, params.values, api)
   }
 
@@ -603,7 +603,7 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
     allNodes.push(...nodes)
   }
   // Add all created nodes at once
-  currNodes = await api.addNodes(...allNodes)
+  currNodes = await api.addInstances(...allNodes)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -736,7 +736,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await api.transformNodes({ referenceId: tempLayers[i].refId, transformation: [
+    await api.transformInstances({ id: tempLayers[i].refId, transformation: [
       { x: tempLayers[i].posX, y: 0, z: 0 },
       xDir,
       yDir,
@@ -759,7 +759,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: gipsplattePrt[0],
           ownerId: rootNode,
           transformation,
@@ -784,7 +784,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: spanplattePrt[0],
           ownerId: rootNode,
           transformation,
@@ -809,7 +809,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: balkenwandAsm[0],
           ownerId: rootNode,
           transformation,
@@ -835,7 +835,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: daemmungPrt[0],
           ownerId: rootNode,
           transformation,
@@ -860,7 +860,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: holzlattungPrt[0],
           ownerId: rootNode,
           transformation,
@@ -885,7 +885,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedNode] = await api.addInstances({
           productId: holzschalungPrt[0],
           ownerId: rootNode,
           transformation,
@@ -920,9 +920,9 @@ async function explodeWall(params: any[], layers: Layer[], api: ApiHistory) {
 async function removeNodes(nodes: number[], api: ApiHistory) {
   if (nodes.length > 0) {
     const nodesToRemove = nodes.map(nodeId => ({
-      referenceId: nodeId,
+      id: nodeId,
     }))
-    await api.removeNodes(...nodesToRemove)
+    await api.removeInstances(...nodesToRemove)
   }
 }
 

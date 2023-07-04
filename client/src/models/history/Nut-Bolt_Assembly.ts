@@ -27,7 +27,7 @@ export const create: Create = async (apiType, params) => {
       { name: 'Shaft_Diameter', value: shaftDiameter },
     ],
   })
-  const [boltRefId] = await api.addNodes({
+  const [boltRefId] = await api.addInstances({
     productId: bolt[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
@@ -39,7 +39,7 @@ export const create: Create = async (apiType, params) => {
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
   api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
-  const [nutRefId] = await api.addNodes({
+  const [nutRefId] = await api.addInstances({
     productId: nut[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
