@@ -1,12 +1,12 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import {
   BooleanOperationType,
-  BrepElemType,
   ChamferType,
   WorkAxisType,
   WorkCoordSystemType,
 } from '@buerli.io/classcad'
 import { Create, Param } from '../../store'
+import { GraphicType } from '@buerli.io/core'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -45,10 +45,8 @@ export const create: Create = async (apiType, params, options) => {
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       offset,
       rotation,
-      false,
       false,
       'WCSCenter',
     )
@@ -74,30 +72,28 @@ export const create: Create = async (apiType, params, options) => {
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flangeSolid1, subCylFlange])
 
     options?.onSelect()
-    const edges1 = await api.findOrSelect(flange, BrepElemType.EDGE, 2, null)
+    const selections = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE], 2)
     options?.onResume()
-    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, edges1, 2, 2, 45)
+    const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, selections.map(sel => sel.graphicId), 2, 2, 45)
 
     const wcsHole1Bottom = api.createWorkCoordSystem(
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       holeOffset1Bottom,
       rotation,
-      false,
       false,
       'WCSBoltHoleBottom',
     )
     const subCylHole1 = await api.cylinder(flange, [wcsHole1Bottom], 30, 50)
 
     options?.onSelect()
-    const edgeId8 = await api.findOrSelect(flange, BrepElemType.EDGE, 1, null)
+    const selections2 = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE])
     options?.onResume()
     const waCenter = await api.createWorkAxis(
       flange,
       WorkAxisType.WA_CURVE,
-      edgeId8,
+      selections2.map(sel => sel.graphicId),
       origin,
       zDir,
       false,
@@ -115,10 +111,8 @@ export const create: Create = async (apiType, params, options) => {
       flange,
       WorkCoordSystemType.WCS_CUSTOM,
       [],
-      [],
       holeOffset1Top,
       rotation,
-      false,
       false,
       'WCSBoltHoleTop',
     )
