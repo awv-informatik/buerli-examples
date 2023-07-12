@@ -1,0 +1,27 @@
+{
+  "buerli": [
+    {
+      "method": "load",
+      "params": {
+        "type": "ofb",
+        "ident": "Zelt2"
+      }
+    },
+    {
+      "method": "setExpressions",
+      "params": {
+        "expressions": [
+          {
+            "partIdent": "Zelt",
+            "members": [
+              {
+                "name": "depth",
+                "value": 10
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

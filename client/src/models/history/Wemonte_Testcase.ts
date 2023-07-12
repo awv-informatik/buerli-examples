@@ -1,6 +1,7 @@
 import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import { Create, Param } from '../../store'
-import data from '../../resources/history/Wireway/Test.json'
+import data from '../../resources/history/Wemonte3.json'
+import arraybuffer from '../../resources/history/Wemonte.ofb'
 
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -28,6 +29,12 @@ export const create: Create = async (apiType, params) => {
     switch (command.method) {
       case 'createRootAssembly':
         root = await api.createRootAssembly('Assembly', { ident: command.params.ident })
+        break;
+      case 'load':
+        [root] = await api.load(arraybuffer, command.params.type as 'ofb' | 'stp', { ident: command.params.ident })
+        break;
+      case 'loadFromUrl':
+        [root] = await api.loadFromUrl(command.params.url, 'ofb', { ident: command.params.ident})
         break;
       case 'loadProductFromUrl':
         await api.loadProductFromUrl(command.params.url, 'ofb', { ident: command.params.ident})

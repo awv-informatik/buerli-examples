@@ -1,0 +1,28 @@
+{
+  "buerli": [
+    {
+      "method": "loadFromUrl",
+      "params": {
+        "url": "https://raw.githubusercontent.com/wemonte/cad-test/main/test.ofb",
+        "type": "ofb",
+        "ident": "Zelt"
+      }
+    },
+    {
+      "method": "setExpressions",
+      "params": {
+        "expressions": [
+          {
+            "partIdent": "Zelt",
+            "members": [
+              {
+                "name": "depth",
+                "value": 10
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
