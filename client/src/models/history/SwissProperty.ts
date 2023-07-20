@@ -177,16 +177,16 @@ export const create: Create = async (apiType, params) => {
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    gipsplattePrt = await api.getPartFromContainer('Gipsplatte')
-    spanplattePrt = await api.getPartFromContainer('Spanplatte')
-    daemmungPrt = await api.getPartFromContainer('Daemmung')
-    holzlattungPrt = await api.getPartFromContainer('Holzlattung')
-    holzschalungPrt = await api.getPartFromContainer('Holzschalung')
-    horizontalBeamPrt = await api.getPartFromContainer('HorizontalBeam')
-    verticalBeamPrt = await api.getPartFromContainer('VerticalBeam')
-    wallInsulationPrt = await api.getPartFromContainer('Insulation')
-    wallInsulationCustomPrt = await api.getPartFromContainer('InsulationCustom')
-    balkenwandAsm = await api.getAssemblyFromContainer('BalkenWandAsm')
+    gipsplattePrt = await api.getPartTemplate('Gipsplatte')
+    spanplattePrt = await api.getPartTemplate('Spanplatte')
+    daemmungPrt = await api.getPartTemplate('Daemmung')
+    holzlattungPrt = await api.getPartTemplate('Holzlattung')
+    holzschalungPrt = await api.getPartTemplate('Holzschalung')
+    horizontalBeamPrt = await api.getPartTemplate('HorizontalBeam')
+    verticalBeamPrt = await api.getPartTemplate('VerticalBeam')
+    wallInsulationPrt = await api.getPartTemplate('Insulation')
+    wallInsulationCustomPrt = await api.getPartTemplate('InsulationCustom')
+    balkenwandAsm = await api.getAssemblyTemplate('BalkenWandAsm')
 
     // Add default nodes to root node
     const defaultNodes: node[] = [
@@ -454,15 +454,15 @@ async function updateBalkenwandSize(
       },
     ]
     if (balkenwandNodeId) {
-      await api.setCurrentNode(balkenwandNodeId)
+      await api.setCurrentInstance(balkenwandNodeId)
       await api.setExpressions(...exprSets)
       await updateBalkenwandBeams(balkenwandNodeId, length, api)
-      await api.setCurrentNode(balkenwandNodeId)
+      await api.setCurrentInstance(balkenwandNodeId)
     } else {
       await api.setCurrentProduct(balkenwandAsm[0])
       await api.setExpressions(...exprSets)
     }
-    await api.setCurrentNode(rootNode)
+    await api.setCurrentInstance(rootNode)
   }
 }
 
