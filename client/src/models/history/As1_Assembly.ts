@@ -44,7 +44,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Add bolt to nut-bolt assembly template */
-  const [boltRefId] = await api.addNodes({
+  const [boltRefId] = await api.addInstances({
     productId: bolt[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
@@ -62,7 +62,7 @@ export const create: Create = async (apiType, params?) => {
   api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
   /* Add nut to nut-bolt-assembly template */
-  const [nutRefId] = await api.addNodes({
+  const [nutRefId] = await api.addInstances({
     productId: nut[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
@@ -120,7 +120,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Add lBracket to lbracket-assembly template */
-  const [lBracketRef1] = await api.addNodes({
+  const [lBracketRef1] = await api.addInstances({
     productId: lBracket[0],
     ownerId: lBracketAsm,
     transformation: [pt0, xDir, yDir],
@@ -135,7 +135,7 @@ export const create: Create = async (apiType, params?) => {
   const wcsIdLBracketOrigin = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCSys, 'WCS_Origin')
 
   /* Add nut-bolt assembly three times to lBracket-assembly template */
-  const nutBoltAsmRefs = await api.addNodes({
+  const nutBoltAsmRefs = await api.addInstances({
     productId: nutBoltAsm,
     ownerId: lBracketAsm,
     transformation: [pt0, xDir, yDir],
@@ -237,7 +237,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Add nut to nut-bolt assembly template */
-  const [plateRef] = await api.addNodes({
+  const [plateRef] = await api.addInstances({
     productId: plate[0],
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
@@ -264,7 +264,7 @@ export const create: Create = async (apiType, params?) => {
   )
 
   /* Add nut to nut-bolt assembly template */
-  const lBracketAsmRefs = await api.addNodes({
+  const lBracketAsmRefs = await api.addInstances({
     productId: lBracketAsm,
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
@@ -323,7 +323,7 @@ export const create: Create = async (apiType, params?) => {
   api.setExpressions({ partId: rod[0], members: [{ name: 'Rod_Diameter', value: rodDiameter }] })
 
   /* Add nut to nut-bolt assembly template */
-  const [rodRefId] = await api.addNodes({
+  const [rodRefId] = await api.addInstances({
     productId: rod[0],
     ownerId: rodAsm,
     transformation: [pt0, xDir, yDir],
@@ -335,7 +335,7 @@ export const create: Create = async (apiType, params?) => {
   const wcsIdRodOrigin = await api.getWorkGeometry(rodRefId, CCClasses.CCWorkCSys, 'WCS_Origin')
 
   /* Add nut to nut-bolt assembly template */
-  const nutRefIds = await api.addNodes({
+  const nutRefIds = await api.addInstances({
     productId: nut[0],
     ownerId: rodAsm,
     transformation: [pt0, xDir, yDir],
@@ -403,7 +403,7 @@ export const create: Create = async (apiType, params?) => {
   )
 
   /* Add nut to nut-bolt assembly template */
-  const [rodAsmRef] = await api.addNodes({
+  const [rodAsmRef] = await api.addInstances({
     productId: rodAsm,
     ownerId: as1Asm,
     transformation: [pt0, xDir, yDir],
