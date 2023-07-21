@@ -67,7 +67,7 @@ let constrEnd1: FastenedOriginConstraintType
 let constrEnd2: FastenedOriginConstraintType
 let constrWalzeOrigin: FastenedOriginConstraintType
 
-let currSegmentNodes: number[] = []
+let currSegmentInstances: number[] = []
 let currDimensions: number[] = []
 
 export const create: Create = async (apiType, params) => {
@@ -275,26 +275,26 @@ async function updateNofSegments(
       break
   }
 
-  const nodes: {
+  const instances: {
     productId: number
     ownerId: number
     transformation: Transform
     name?: string
   }[] = []
 
-  // If any nodes already exist, remove them
-  if (currSegmentNodes.length > 0) {
-    const nodesToRemove = currSegmentNodes.map(node => ({
-      id: node,
+  // If any instances already exist, remove them
+  if (currSegmentInstances.length > 0) {
+    const instancesToRemove = currSegmentInstances.map(instance => ({
+      id: instance,
     }))
-    await api.removeInstances(...nodesToRemove)
+    await api.removeInstances(...instancesToRemove)
   }
 
-  // Add segments as nodes to productId (owner/root)
+  // Add segments as instances to productId (owner/root)
   for (let i = 0; i < nofSegments; i++) {
     if (segmentPrt !== null && z !== null) {
       const firstPos = { x: 0, y: 0, z: -z }
-      nodes.push({
+      instances.push({
         productId: segmentPrt[0],
         ownerId: productId,
         transformation: [firstPos, zDir, segmentDir],
@@ -303,7 +303,7 @@ async function updateNofSegments(
       firstPos.z += i * distanceBtSegments
     }
   }
-  currSegmentNodes = await api.addInstances(...nodes)
+  currSegmentInstances = await api.addInstances(...instances)
 }
 
 ///////////////////////////////////////////////////////////////

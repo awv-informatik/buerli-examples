@@ -30,8 +30,8 @@ export const create: Create = async (apiType, param) => {
     const [wcsBoltHead] = await api.getWorkGeometry(bolt, CCClasses.CCWorkCSys, 'WCSHead')
     const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCSys, 'WCSNut')
 
-    // Add the products as nodes to the root assembly
-    const [flange1Node, flange2Node, boltNode, nutNode] = await api.addInstances(
+    // Add the products as instances to the root assembly
+    const [flange1Instance, flange2Instance, boltInstance, nutInstance] = await api.addInstances(
       {
         productId: flange,
         ownerId: root,
@@ -58,7 +58,7 @@ export const create: Create = async (apiType, param) => {
     await api.createFastenedOriginConstraint(
       root,
       {
-        matePath: [flange1Node],
+        matePath: [flange1Instance],
         wcsId: wcsCenter,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
@@ -72,13 +72,13 @@ export const create: Create = async (apiType, param) => {
     await api.createFastenedConstraint(
       root,
       {
-        matePath: [flange1Node],
+        matePath: [flange1Instance],
         wcsId: wcsCenter,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
-        matePath: [flange2Node],
+        matePath: [flange2Instance],
         wcsId: wcsCenter,
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_180,
@@ -92,13 +92,13 @@ export const create: Create = async (apiType, param) => {
     await api.createFastenedConstraint(
       root,
       {
-        matePath: [flange1Node],
+        matePath: [flange1Instance],
         wcsId: wcsHole1Top,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
-        matePath: [boltNode],
+        matePath: [boltInstance],
         wcsId: wcsBoltHead,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
@@ -112,13 +112,13 @@ export const create: Create = async (apiType, param) => {
     await api.createFastenedConstraint(
       root,
       {
-        matePath: [flange2Node],
+        matePath: [flange2Instance],
         wcsId: wcsHole1Top,
         flip: FlipType.FLIP_Z,
         reoriented: ReorientedType.REORIENTED_0,
       },
       {
-        matePath: [nutNode],
+        matePath: [nutInstance],
         wcsId: wcsNut,
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_0,
