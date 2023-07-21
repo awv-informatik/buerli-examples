@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     libglu1-mesa-dev \
     ocl-icd-opencl-dev \
     libarchive-dev \
+    libgomp1 \
     locales
 
 # Language settings
