@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "classcad --ip localhost --port 8081 --instances 5 --ccappfile ./FreeBaseModeling.ccapp"
+    "start": "classcad --ip localhost --port 9091 --instances 5 --ccappfile ./FreeBaseModeling.ccapp"
   },
   "dependencies": {
     "@classcad/windows-x64": "0.0.5-beta.3"
