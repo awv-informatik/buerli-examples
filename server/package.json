@@ -6,6 +6,6 @@
     "start": "classcad --ip localhost --port 8081 --instances 5 --ccappfile ./FreeBaseModeling.ccapp"
   },
   "dependencies": {
-    "@classcad/windows-x64": "0.0.4"
+    "@classcad/windows-x64": "0.0.5-beta.3"
   }
 }
