@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/ShadowboxTemplate.ofb'
+import arraybuffer from '../../resources/history/ShadowboxTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 export const paramsMap: Param[] = [

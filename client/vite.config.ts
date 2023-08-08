@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-// @ts-ignore
 import checker from 'vite-plugin-checker'
+import dynamicImport from 'vite-plugin-dynamic-import'
 import svgrPlugin from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import commonjs from '@rollup/plugin-commonjs'
+import rawLoader from './vite-plugins/raw-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,8 @@ export default defineConfig({
     },
   },
   plugins: [
+    rawLoader(),
+    dynamicImport(),
     react(),
     checker({
       overlay: { initialIsOpen: false },

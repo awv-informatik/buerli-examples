@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history } from '@buerli.io/headless'
 import { Param, Create } from '../../store'
-import sketches from '../../resources/history/SuspensionBracket.ofb'
+import sketches from '../../resources/history/SuspensionBracket.ofb?buffer'
 import {
   BooleanOperationType,
   ExtrusionType,
