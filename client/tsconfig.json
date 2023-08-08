@@ -1,29 +1,22 @@
 {
   "compilerOptions": {
-    "strict": false,
-    "target": "ES2017",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "outDir": "build.ts/",
-    "jsx": "react-jsx",
     "allowJs": false,
-    "declaration": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "paths": { "react": ["./node_modules/@types/react"] }
+    "jsx": "react-jsx",
+    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "skipDefaultLibCheck": true
   },
-  "include": ["./src/**/*"]
+  "include": ["src"]
 }

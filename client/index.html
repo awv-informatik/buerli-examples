@@ -1,4 +1,3 @@
-<% var publicPath = htmlWebpackPlugin.files.publicPath %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -13,9 +12,10 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#000000" />
-    <link rel="manifest" href="<%= publicPath %>manifest.json" />
-    <link rel="shortcut icon" href="<%= publicPath %>favicon.png" type="image/png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicon.png" type="image/png" />
     <title>buerli examples</title>
+    <script type="module" src="/src/index.tsx"></script>
   </head>
 
   <body>
