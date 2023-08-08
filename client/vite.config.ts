@@ -5,11 +5,15 @@ import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import svgrPlugin from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
+import commonjs from '@rollup/plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     outDir: './build',
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   plugins: [
     react(),
@@ -22,6 +26,7 @@ export default defineConfig({
     }),
     viteTsconfigPaths(),
     svgrPlugin(),
+    commonjs(),
   ],
   server: {
     port: 3000,
