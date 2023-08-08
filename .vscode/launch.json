@@ -9,9 +9,9 @@
       "name": "Run chrome",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:8082",
+      "url": "http://localhost:3000",
       "sourceMaps": true,
-      "webRoot": "${workspaceRoot}/dist",
+      "webRoot": "${workspaceRoot}",
       "userDataDir": "${workspaceRoot}/.vscode/chrome", //Can be any directory. Makes chrome load in a different directory so that it opens in a new instance.
       "port": 9222,
       "smartStep": true,
