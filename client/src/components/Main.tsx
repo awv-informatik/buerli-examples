@@ -43,18 +43,9 @@ export const Main: React.FC = () => {
         </button>
       </div>
       <ExampleLayout>
-        <Sidebar
-          examples={exampleIds}
-          onChange={v => set({ activeExample: v })}
-          active={activeExample}
-        />
+        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
         <CanvasContainer>
-          <Canvas
-            shadows
-            orthographic
-            frameloop="demand"
-            dpr={[1, 2]}
-            camera={{ position: [0, 0, 100], fov: 90 }}>
+          <Canvas shadows orthographic frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
             <Fit>
@@ -166,11 +157,7 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidIds.current = await update(
-            headlessApi.current,
-            productOrSolidIds.current,
-            params,
-          )
+          productOrSolidIds.current = await update(headlessApi.current, productOrSolidIds.current, params)
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
@@ -214,5 +201,5 @@ const Part: React.FC = () => {
 const CodeWrapper: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const example = useStore(s => s.examples.objs[activeExample])
-  return <Code data={example.text as any}></Code>
+  return <Code fileUrl={example.fileUrl}></Code>
 }

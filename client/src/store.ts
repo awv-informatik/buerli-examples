@@ -116,7 +116,7 @@ const initExamples = async () => {
     const example = await import(`./models/${t.file}`)
     examples[t.exampleId] = {
       label: t.label,
-      text: fetch(`src/models/${t.file}.ts`),
+      fileUrl: `/models/${t.file}.ts`,
       params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
       ...example,
     }
@@ -147,7 +147,7 @@ export type Example = {
   update?: Update
   getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
   getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
-  text?: Promise<{ default: any }>
+  fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
   cad: history | solid

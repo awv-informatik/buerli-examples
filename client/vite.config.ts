@@ -5,7 +5,6 @@ import checker from 'vite-plugin-checker'
 import dynamicImport from 'vite-plugin-dynamic-import'
 import svgrPlugin from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
-import commonjs from '@rollup/plugin-commonjs'
 import rawLoader from './vite-plugins/raw-loader'
 
 // https://vitejs.dev/config/
@@ -29,7 +28,6 @@ export default defineConfig({
     }),
     viteTsconfigPaths(),
     svgrPlugin(),
-    commonjs(),
   ],
   server: {
     port: 3000,
