@@ -1,23 +1,21 @@
-import CodeMirror from '@uiw/react-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
+import CodeMirror from '@uiw/react-codemirror'
 import React from 'react'
 
-export const Code: React.FC<{ data: Promise<{ default: any }> }> = ({ data }) => {
+export const Code: React.FC<{ fileUrl: string }> = ({ fileUrl }) => {
   const [code, setCode] = React.useState<string>('')
   React.useEffect(() => {
+    let value = ''
     const apply = async () => {
-      const value = (await data).default
+      try {
+        value = await (await fetch(fileUrl)).text()
+      } catch (error) {}
       setCode(value)
     }
     apply()
-  }, [data, setCode])
+  }, [setCode, fileUrl])
   return code ? (
-    <CodeMirror
-      value={code}
-      theme="dark"
-      extensions={[javascript({ jsx: true, typescript: true })]}
-      readOnly
-    />
+    <CodeMirror value={code} theme="dark" extensions={[javascript({ jsx: true, typescript: true })]} readOnly />
   ) : null
 }
 

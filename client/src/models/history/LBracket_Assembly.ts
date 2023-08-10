@@ -1,8 +1,8 @@
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/As1/Bolt.ofb'
-import arraybuffer3 from '../../resources/history/As1/LBracket.ofb'
-import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
+import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
+import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
+import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)

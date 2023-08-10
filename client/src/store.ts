@@ -78,27 +78,15 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
 ]
 
-const exampleMap: Record<string, Example> = {}
-for (const t of toc) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const example = require(`./models/${t.file}`)
-  exampleMap[t.exampleId] = {
-    label: t.label,
-    text: import(`!!raw-loader!./models/${t.file}.ts`),
-    params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
-    ...example,
-  }
-}
-
 const storeApi = vanillaCreate<State>(set => ({
-  activeExample: toc[0].exampleId,
-  examples: { ids: Object.keys(exampleMap), objs: exampleMap },
+  activeExample: '',
+  examples: { ids: [], objs: {} },
   set,
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => {
     set(state =>
       produce(state, draft => {
-        draft.examples.objs[exampleId].params.values[paramIndex] = paramValue
-        draft.examples.objs[exampleId].params.lastUpdatedParam = paramIndex
+        draft.examples.objs[exampleId].params!.values[paramIndex] = paramValue
+        draft.examples.objs[exampleId].params!.lastUpdatedParam = paramIndex
       }),
     )
   },
@@ -106,6 +94,8 @@ const storeApi = vanillaCreate<State>(set => ({
     set(state =>
       produce(state, draft => {
         if (!api) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           delete draft.examples.objs[exampleId].api
         } else {
           draft.examples.objs[exampleId].api = api
@@ -117,7 +107,27 @@ const storeApi = vanillaCreate<State>(set => ({
 
 const useStore = create(storeApi)
 
-export { useStore, storeApi }
+export { storeApi, useStore }
+
+const initExamples = async () => {
+  const examples: Record<string, Example> = {}
+  for (const t of toc) {
+    // console.info(t.exampleId)
+    const example = await import(`./models/${t.file}`)
+    examples[t.exampleId] = {
+      label: t.label,
+      fileUrl: `/models/${t.file}.ts`,
+      params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
+      ...example,
+    }
+  }
+  storeApi.getState().set(state => ({
+    ...state,
+    examples: { ids: Object.keys(examples), objs: examples },
+    activeExample: toc[0].exampleId,
+  }))
+}
+initExamples()
 
 // *****************************************
 // TYPES
@@ -137,7 +147,7 @@ export type Example = {
   update?: Update
   getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
   getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
-  text?: Promise<{ default: any }>
+  fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
   cad: history | solid

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history, RevoluteConstraintType, SliderConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb'
+import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { LimitedValue } from '@buerli.io/classcad'
 
 type Step = {

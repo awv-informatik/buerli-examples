@@ -1,5 +1,5 @@
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/GripperTemplate.ofb'
+import arraybuffer from '../../resources/history/GripperTemplate.ofb?buffer'
 import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [

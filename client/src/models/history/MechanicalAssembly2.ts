@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import mechAsm from '../../resources/history/MechanicalAssembly2.ofb'
+import mechAsm from '../../resources/history/MechanicalAssembly2.ofb?buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Handle', type: ParamType.Slider, value: 0, step: 1, values: [0, 360] },

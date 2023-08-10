@@ -3,7 +3,7 @@ import { ApiHistory, history, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import templateSP from '../../resources/history/WallTemplate.ofb'
+import templateSP from '../../resources/history/WallTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type instance = {
@@ -736,11 +736,10 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await api.transformInstances({ id: tempLayers[i].refId, transformation: [
-      { x: tempLayers[i].posX, y: 0, z: 0 },
-      xDir,
-      yDir,
-    ]})
+    await api.transformInstances({
+      id: tempLayers[i].refId,
+      transformation: [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir],
+    })
   }
   store.getState().setLayers(activeExampleId, -1, tempLayers)
 }

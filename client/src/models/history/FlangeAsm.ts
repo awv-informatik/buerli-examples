@@ -1,9 +1,9 @@
 /* eslint-disable max-lines */
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import flangeAB from '../../resources/history/Flange/FlangePrt.ofb'
-import boltAB from '../../resources/history/Flange/Bolt_M22.ofb'
-import nutAB from '../../resources/history/Flange/Nut_M22.ofb'
+import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
+import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
+import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'
 import { Create, Param } from '../../store'
 
 const origin = { x: 0, y: 0, z: 0 }
