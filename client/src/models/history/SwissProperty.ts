@@ -6,7 +6,7 @@ import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/WallTemplate.ofb'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
-type node = {
+type instance = {
   productId: number
   ownerId: number
   transformation: Transform
@@ -118,7 +118,7 @@ export const paramsMap: Param[] = [
 const xDir = { x: 1, y: 0, z: 0 }
 const yDir = { x: 0, y: 1, z: 0 }
 let rootNode: number | null
-let currNodes: number[] = []
+let currInstances: number[] = []
 
 const posXGipsplatte: number = 0
 const posXSpanplatte: number = paramsMap[gt].value
@@ -144,18 +144,18 @@ let holzlattungPrt: number[] | null = null
 let holzschalungPrt: number[] | null = null
 let balkenwandAsm: number[] | null = null
 
-let gipsplatteNode: number | null = null
-let spanplatteNode: number | null = null
-let daemmungNode: number | null = null
-let holzlattungNode: number | null = null
-let holzschalungNode: number | null = null
-let balkenwandNode: number | null = null
+let gipsplatteInstance: number | null = null
+let spanplatteInstance: number | null = null
+let daemmungInstance: number | null = null
+let holzlattungInstance: number | null = null
+let holzschalungInstance: number | null = null
+let balkenwandInstance: number | null = null
 
-let beamNodes: node[] = []
-let beamCustomNodes: node[] = []
-let wallInsulationNodes: node[] = []
-let wallInsulationCustomNodes: node[] = []
-let allNodes: node[] = []
+let beamInstances: instance[] = []
+let beamCustomInstances: instance[] = []
+let wallInsulationInstances: instance[] = []
+let wallInsulationCustomInstances: instance[] = []
+let allInstances: instance[] = []
 
 let activeExampleId: string = ''
 
@@ -177,19 +177,19 @@ export const create: Create = async (apiType, params) => {
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    gipsplattePrt = await api.getPartFromContainer('Gipsplatte')
-    spanplattePrt = await api.getPartFromContainer('Spanplatte')
-    daemmungPrt = await api.getPartFromContainer('Daemmung')
-    holzlattungPrt = await api.getPartFromContainer('Holzlattung')
-    holzschalungPrt = await api.getPartFromContainer('Holzschalung')
-    horizontalBeamPrt = await api.getPartFromContainer('HorizontalBeam')
-    verticalBeamPrt = await api.getPartFromContainer('VerticalBeam')
-    wallInsulationPrt = await api.getPartFromContainer('Insulation')
-    wallInsulationCustomPrt = await api.getPartFromContainer('InsulationCustom')
-    balkenwandAsm = await api.getAssemblyFromContainer('BalkenWandAsm')
+    gipsplattePrt = await api.getPartTemplate('Gipsplatte')
+    spanplattePrt = await api.getPartTemplate('Spanplatte')
+    daemmungPrt = await api.getPartTemplate('Daemmung')
+    holzlattungPrt = await api.getPartTemplate('Holzlattung')
+    holzschalungPrt = await api.getPartTemplate('Holzschalung')
+    horizontalBeamPrt = await api.getPartTemplate('HorizontalBeam')
+    verticalBeamPrt = await api.getPartTemplate('VerticalBeam')
+    wallInsulationPrt = await api.getPartTemplate('Insulation')
+    wallInsulationCustomPrt = await api.getPartTemplate('InsulationCustom')
+    balkenwandAsm = await api.getAssemblyTemplate('BalkenWandAsm')
 
-    // Add default nodes to root node
-    const defaultNodes: node[] = [
+    // Add default instances to root node
+    const defaultInstances: instance[] = [
       {
         productId: gipsplattePrt[0],
         ownerId: rootNode,
@@ -227,54 +227,54 @@ export const create: Create = async (apiType, params) => {
         name: 'Holzschalung',
       },
     ]
-    const addedNodes = await api.addNodes(...defaultNodes)
-    gipsplatteNode = addedNodes[0]
-    spanplatteNode = addedNodes[1]
-    balkenwandNode = addedNodes[2]
-    daemmungNode = addedNodes[3]
-    holzlattungNode = addedNodes[4]
-    holzschalungNode = addedNodes[5]
+    const addedInstances = await api.addInstances(...defaultInstances)
+    gipsplatteInstance = addedInstances[0]
+    spanplatteInstance = addedInstances[1]
+    balkenwandInstance = addedInstances[2]
+    daemmungInstance = addedInstances[3]
+    holzlattungInstance = addedInstances[4]
+    holzschalungInstance = addedInstances[5]
 
     const layers: Layer[] = []
     layers.push({
       name: 'Gipsplatte',
       type: 'Gipsplatte',
-      refId: gipsplatteNode,
+      refId: gipsplatteInstance,
       posX: posXGipsplatte,
       thickness: paramsMap[gt].value,
     })
     layers.push({
       name: 'Spanplatte',
       type: 'Spanplatte',
-      refId: spanplatteNode,
+      refId: spanplatteInstance,
       posX: posXSpanplatte,
       thickness: paramsMap[spt].value,
     })
     layers.push({
       name: 'Balkenwand',
       type: 'Balkenwand',
-      refId: balkenwandNode,
+      refId: balkenwandInstance,
       posX: posXBalkenwand,
       thickness: paramsMap[bwt].value,
     })
     layers.push({
       name: 'Daemmung',
       type: 'Daemmung',
-      refId: daemmungNode,
+      refId: daemmungInstance,
       posX: posXDaemmung,
       thickness: paramsMap[dt].value,
     })
     layers.push({
       name: 'Holzlattung',
       type: 'Holzlattung',
-      refId: holzlattungNode,
+      refId: holzlattungInstance,
       posX: posXHolzlattung,
       thickness: 2 * paramsMap[hlt].value,
     })
     layers.push({
       name: 'Holzschalung',
       type: 'Holzschalung',
-      refId: holzschalungNode,
+      refId: holzschalungInstance,
       posX: posXHolzschalung,
       thickness: paramsMap[hst].value,
     })
@@ -302,7 +302,7 @@ export const update: Update = async (apiType, productId, params) => {
 
   const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
-    await api.removeNodes({ referenceId: layers.lastRemovedLayer })
+    await api.removeInstances({ id: layers.lastRemovedLayer })
     await transformLayers(layers.layers, params.values, api)
   }
 
@@ -431,7 +431,7 @@ async function updateBalkenwandSize(
     wallInsulationPrt &&
     wallInsulationCustomPrt
   ) {
-    const balkenwandNodeId = layers.find(layer => layer.type === 'Balkenwand')?.refId
+    const balkenwandInstanceId = layers.find(layer => layer.type === 'Balkenwand')?.refId
     const exprSets: {
       partId: number
       members: { name: string; value: number | string }[]
@@ -453,21 +453,21 @@ async function updateBalkenwandSize(
         members: [{ name: 'insulationHeight', value: height - 2 * horizontalBeamThickness }],
       },
     ]
-    if (balkenwandNodeId) {
-      await api.setCurrentNode(balkenwandNodeId)
+    if (balkenwandInstanceId) {
+      await api.setCurrentInstance(balkenwandInstanceId)
       await api.setExpressions(...exprSets)
-      await updateBalkenwandBeams(balkenwandNodeId, length, api)
-      await api.setCurrentNode(balkenwandNodeId)
+      await updateBalkenwandBeams(balkenwandInstanceId, length, api)
+      await api.setCurrentInstance(balkenwandInstanceId)
     } else {
       await api.setCurrentProduct(balkenwandAsm[0])
       await api.setExpressions(...exprSets)
     }
-    await api.setCurrentNode(rootNode)
+    await api.setCurrentInstance(rootNode)
   }
 }
 
 /** Adds beams and wall insulations depending on the wall length */
-async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api: ApiHistory) {
+async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, api: ApiHistory) {
   const distanceBtSegments = verticalBeamThickness + wallInsulationWidth
   let nofBeams = 0
   let nofBeamsCustom = 0
@@ -515,51 +515,51 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
     })
   }
 
-  beamNodes = []
-  beamCustomNodes = []
-  wallInsulationNodes = []
-  wallInsulationCustomNodes = []
-  allNodes = []
+  beamInstances = []
+  beamCustomInstances = []
+  wallInsulationInstances = []
+  wallInsulationCustomInstances = []
+  allInstances = []
 
-  // If any added nodes already exist, remove them
-  await removeNodes(currNodes, api)
+  // If any added instances already exist, remove them
+  await removeInstances(currInstances, api)
 
-  // Create standard vertical beam nodes
+  // Create standard vertical beam instances
   if (verticalBeamPrt) {
     const firstPos = {
       x: 0,
       y: distanceBtSegments,
       z: horizontalBeamThickness,
     }
-    const nodes = await createNodes(
+    const instances = await createInstances(
       nofBeams,
       firstPos,
       distanceBtSegments,
       verticalBeamPrt[0],
-      ownerNode,
+      ownerInstance,
       'VerticalBeam',
     )
-    beamNodes.push(...nodes)
-    allNodes.push(...nodes)
+    beamInstances.push(...instances)
+    allInstances.push(...instances)
   }
 
-  // Create standard wall insulation nodes
+  // Create standard wall insulation instances
   if (wallInsulationPrt) {
     const firstPos = {
       x: 0,
       y: distanceBtSegments + verticalBeamThickness,
       z: horizontalBeamThickness,
     }
-    const nodes = await createNodes(
+    const instances = await createInstances(
       nofWallInsulations,
       firstPos,
       distanceBtSegments,
       wallInsulationPrt[0],
-      ownerNode,
+      ownerInstance,
       'Insulation',
     )
-    wallInsulationNodes.push(...nodes)
-    allNodes.push(...nodes)
+    wallInsulationInstances.push(...instances)
+    allInstances.push(...instances)
   }
 
   // Create custom beam node
@@ -572,38 +572,38 @@ async function updateBalkenwandBeams(ownerNode: number, wallLength: number, api:
         wallInsulationCustomWidth,
       z: horizontalBeamThickness,
     }
-    const nodes = await createNodes(
+    const instances = await createInstances(
       nofBeamsCustom,
       firstPos,
       wallInsulationCustomWidth + verticalBeamThickness,
       verticalBeamPrt[0],
-      ownerNode,
+      ownerInstance,
       'VerticalBeamCustom',
     )
-    beamCustomNodes.push(...nodes)
-    allNodes.push(...nodes)
+    beamCustomInstances.push(...instances)
+    allInstances.push(...instances)
   }
 
-  // Create custom wall insulation nodes
+  // Create custom wall insulation instances
   if (wallInsulationCustomPrt) {
     const firstPos = {
       x: 0,
       y: (nofBeams + 1) * verticalBeamThickness + (nofWallInsulations + 1) * wallInsulationWidth,
       z: horizontalBeamThickness,
     }
-    const nodes = await createNodes(
+    const instances = await createInstances(
       nofWallInsulationsCustom,
       firstPos,
       wallInsulationCustomWidth + verticalBeamThickness,
       wallInsulationCustomPrt[0],
-      ownerNode,
+      ownerInstance,
       'InsulationCustom',
     )
-    wallInsulationCustomNodes.push(...nodes)
-    allNodes.push(...nodes)
+    wallInsulationCustomInstances.push(...instances)
+    allInstances.push(...instances)
   }
-  // Add all created nodes at once
-  currNodes = await api.addNodes(...allNodes)
+  // Add all created instances at once
+  currInstances = await api.addInstances(...allInstances)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -736,7 +736,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await api.transformNodes({ referenceId: tempLayers[i].refId, transformation: [
+    await api.transformInstances({ id: tempLayers[i].refId, transformation: [
       { x: tempLayers[i].posX, y: 0, z: 0 },
       xDir,
       yDir,
@@ -759,17 +759,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: gipsplattePrt[0],
           ownerId: rootNode,
           transformation,
           name: layerName,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[gt],
           })
@@ -784,17 +784,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: spanplattePrt[0],
           ownerId: rootNode,
           transformation,
           name: layerName,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[spt],
           })
@@ -809,17 +809,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: balkenwandAsm[0],
           ownerId: rootNode,
           transformation,
           name: layerType,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[bwt],
           })
@@ -835,17 +835,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: daemmungPrt[0],
           ownerId: rootNode,
           transformation,
           name: layerType,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[dt],
           })
@@ -860,17 +860,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: holzlattungPrt[0],
           ownerId: rootNode,
           transformation,
           name: layerType,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: 2 * params[hlt],
           })
@@ -885,17 +885,17 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedNode] = await api.addNodes({
+        const [addedInstance] = await api.addInstances({
           productId: holzschalungPrt[0],
           ownerId: rootNode,
           transformation,
           name: layerType,
         })
-        if (addedNode) {
+        if (addedInstance) {
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedNode,
+            refId: addedInstance,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[hst],
           })
@@ -917,24 +917,24 @@ async function explodeWall(params: any[], layers: Layer[], api: ApiHistory) {
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeNodes(nodes: number[], api: ApiHistory) {
-  if (nodes.length > 0) {
-    const nodesToRemove = nodes.map(nodeId => ({
-      referenceId: nodeId,
+async function removeInstances(instances: number[], api: ApiHistory) {
+  if (instances.length > 0) {
+    const instancesToRemove = instances.map(instanceId => ({
+      id: instanceId,
     }))
-    await api.removeNodes(...nodesToRemove)
+    await api.removeInstances(...instancesToRemove)
   }
 }
 
-async function createNodes(
+async function createInstances(
   nof: number,
   firstPos: { x: number; y: number; z: number },
   distance: number,
   productId: number,
-  ownerNode: number,
+  ownerInstance: number,
   name: string,
 ) {
-  const nodesToAdd: node[] = []
+  const instancesToAdd: instance[] = []
   for (let i = 0; i < nof; i++) {
     if (productId !== null) {
       const pos = {
@@ -942,14 +942,14 @@ async function createNodes(
         y: firstPos.y,
         z: firstPos.z,
       }
-      nodesToAdd.push({
+      instancesToAdd.push({
         productId: productId,
-        ownerId: ownerNode,
+        ownerId: ownerInstance,
         transformation: [pos, xDir, yDir],
         name: name + i,
       })
       pos.y += i * distance
     }
   }
-  return nodesToAdd
+  return instancesToAdd
 }

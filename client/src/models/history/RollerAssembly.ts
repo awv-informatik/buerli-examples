@@ -67,7 +67,7 @@ let constrEnd1: FastenedOriginConstraintType
 let constrEnd2: FastenedOriginConstraintType
 let constrWalzeOrigin: FastenedOriginConstraintType
 
-let currSegmentNodes: number[] = []
+let currSegmentInstances: number[] = []
 let currDimensions: number[] = []
 
 export const create: Create = async (apiType, params) => {
@@ -79,7 +79,7 @@ export const create: Create = async (apiType, params) => {
   }
   const root = await api.load(templateAB, 'ofb')
   const rootAsm = root ? root[0] : null
-  segmentPrt = await api.getPartFromContainer('Segment')
+  segmentPrt = await api.getPartTemplate('Segment')
 
   //*************************************************/
   // Create Methoden
@@ -90,13 +90,13 @@ export const create: Create = async (apiType, params) => {
     constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
     constrPneumaticPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
-    ;[frame0] = await api.getAssemblyNode(rootAsm, 'Frame0')
+    ;[frame0] = await api.getInstance(rootAsm, 'Frame0')
     ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw_csys')
     ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw2_csys')
 
-    ;[frame1] = await api.getAssemblyNode(rootAsm, 'Frame1')
+    ;[frame1] = await api.getInstance(rootAsm, 'Frame1')
     ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Screw_csys')
@@ -275,26 +275,26 @@ async function updateNofSegments(
       break
   }
 
-  const nodes: {
+  const instances: {
     productId: number
     ownerId: number
     transformation: Transform
     name?: string
   }[] = []
 
-  // If any nodes already exist, remove them
-  if (currSegmentNodes.length > 0) {
-    const nodesToRemove = currSegmentNodes.map(node => ({
-      referenceId: node,
+  // If any instances already exist, remove them
+  if (currSegmentInstances.length > 0) {
+    const instancesToRemove = currSegmentInstances.map(instance => ({
+      id: instance,
     }))
-    await api.removeNodes(...nodesToRemove)
+    await api.removeInstances(...instancesToRemove)
   }
 
-  // Add segments as nodes to productId (owner/root)
+  // Add segments as instances to productId (owner/root)
   for (let i = 0; i < nofSegments; i++) {
     if (segmentPrt !== null && z !== null) {
       const firstPos = { x: 0, y: 0, z: -z }
-      nodes.push({
+      instances.push({
         productId: segmentPrt[0],
         ownerId: productId,
         transformation: [firstPos, zDir, segmentDir],
@@ -303,14 +303,14 @@ async function updateNofSegments(
       firstPos.z += i * distanceBtSegments
     }
   }
-  currSegmentNodes = await api.addNodes(...nodes)
+  currSegmentInstances = await api.addInstances(...instances)
 }
 
 ///////////////////////////////////////////////////////////////
 
 async function updateSegmentSize(segSize: number, api: ApiHistory) {
   // Set length of walze in expression set
-  const [segment] = await api.getPartFromContainer('Segment')
+  const [segment] = await api.getPartTemplate('Segment')
   await api.setExpressions({ partId: segment, members: [{ name: 'W', value: segSize }] })
 }
 
@@ -558,7 +558,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
 
 async function updateWalze(walzeLength: number, api: ApiHistory) {
   // Set length of walze in expression set
-  const walze = await api.getPartFromContainer('Walze')
+  const walze = await api.getPartTemplate('Walze')
   await api.setExpressions({ partId: walze[0], members: [{ name: 'L', value: walzeLength }] })
 
   // Set offset in z-Dir for frame0

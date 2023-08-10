@@ -24,10 +24,10 @@ Go to [buerli.io](https://buerli.io), sign up for a **user account** and downloa
 yarn start
 ```
 
-The server should now be available at http://localhost:8081. Please check the status:
+The server should now be available at http://localhost:9091. Please check the status:
 
 ```
-http://localhost:8081/status
+http://localhost:9091/status
 ```
 
 Now, you are ready to start the [client](../client/README.md)
