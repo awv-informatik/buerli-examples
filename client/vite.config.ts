@@ -30,7 +30,7 @@ export default defineConfig({
     svgrPlugin(),
   ],
   server: {
-    port: 3000,
+    port: 8082,
   },
   css: {
     preprocessorOptions: {
