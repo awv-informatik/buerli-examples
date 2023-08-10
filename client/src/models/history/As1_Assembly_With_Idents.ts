@@ -45,8 +45,8 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of bolt */
-  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
-   const wcsIdBoltOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Nut')
+   const wcsIdBoltOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Origin')
 
   /* Load Nut part */
   await api.loadProduct(arraybuffer2, 'ofb', { ident: 'NutProduct'})
@@ -63,7 +63,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of nut */
-  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCoordSystem, 'WCS_Hole_Top')
+  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCSys, 'WCS_Hole_Top')
 
   /* Set bolt to origin of nut-bolt-assembly */
   await api.createFastenedOriginConstraint(
@@ -151,7 +151,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Get needed workcoordsystems of plate */
-  const wcsIdPlateBase = await api.getWorkGeometry(plateRef, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdPlateBase = await api.getWorkGeometry(plateRef, CCClasses.CCWorkCSys, 'WCS_Origin')
   
   /* Set plate to origin of as1-assembly */
   api.createFastenedOriginConstraint(

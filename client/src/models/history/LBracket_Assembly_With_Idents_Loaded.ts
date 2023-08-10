@@ -46,10 +46,10 @@ export const create: Create = async (apiType, params) => {
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
   })
-  const [wcsIdLBracketOrigin] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
-  const [wcsIdLBracket1] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole1-Top')
-  const [wcsIdLBracket2] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole2-Top')
-  const [wcsIdLBracket3] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCoordSystem, 'WCS_Hole3-Top')
+  const [wcsIdLBracketOrigin] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCSys, 'WCS_Origin')
+  const [wcsIdLBracket1] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCSys, 'WCS_Hole1-Top')
+  const [wcsIdLBracket2] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCSys, 'WCS_Hole2-Top')
+  const [wcsIdLBracket3] = await api.getWorkGeometry(lBracketRef1, CCClasses.CCWorkCSys, 'WCS_Hole3-Top')
 
   /* LBracket at origin */
   await api.createFastenedOriginConstraint(
@@ -86,7 +86,7 @@ export const create: Create = async (apiType, params) => {
   const [boltNode1] = await api.getInstance(nutBoltNode1, 'Bolt')
   const [boltNode2] = await api.getInstance(nutBoltNode2, 'Bolt')
   const [boltNode3] = await api.getInstance(nutBoltNode3, 'Bolt')
-  const [wcsIdBoltHeadShaft] = await api.getWorkGeometry(boltNode1, CCClasses.CCWorkCoordSystem, 'WCS_Head-Shaft')
+  const [wcsIdBoltHeadShaft] = await api.getWorkGeometry(boltNode1, CCClasses.CCWorkCSys, 'WCS_Head-Shaft')
 
   /* NutBolt1 on LBracket */
   await api.createFastenedConstraint(
