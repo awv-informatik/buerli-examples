@@ -26,8 +26,8 @@ export const create: Create = async (apiType, params) => {
 
   // Wireway 1
   const [wireway1] = await api.loadProduct(arraybuffer, 'ofb', { ident: 'wireway1' }) // assembly template
-  const [duct1NodeTempl, cover1NodeTempl] = await api.getAssemblyNode(wireway1) // nodes of assembly template
-  const [duct1Product, cover1Product] = await api.getProductOfNode([duct1NodeTempl, cover1NodeTempl]) // products from part container
+  const [duct1NodeTempl, cover1NodeTempl] = await api.getInstance(wireway1) // nodes of assembly template
+  const [duct1Product, cover1Product] = await api.getProductsOfInstances([duct1NodeTempl, cover1NodeTempl]) // products from part container
   const [wcsWw1] = await api.getWorkGeometry(duct1Product, CCClasses.CCWorkCoordSystem, 'WCS_Hole')
   await api.setExpressions(
     {
@@ -49,8 +49,8 @@ export const create: Create = async (apiType, params) => {
 
   // Wireway 2
   const [wireway2] = await api.loadProduct(arraybuffer, 'ofb', { ident: 'wireway2' })
-  const [duct2NodeTempl, cover2NodeTempl] = await api.getAssemblyNode(wireway2)
-  const [duct2Product, cover2Product] = await api.getProductOfNode([duct2NodeTempl, cover2NodeTempl])
+  const [duct2NodeTempl, cover2NodeTempl] = await api.getInstance(wireway2)
+  const [duct2Product, cover2Product] = await api.getProductsOfInstances([duct2NodeTempl, cover2NodeTempl])
   const [wcsWw2] = await api.getWorkGeometry(duct2Product, CCClasses.CCWorkCoordSystem, 'WCS_Hole')
   await api.setExpressions(
     {
@@ -72,8 +72,8 @@ export const create: Create = async (apiType, params) => {
 
   // Wireway 3
   const [wireway3] = await api.loadProduct(arraybuffer, 'ofb', { ident: 'wireway3' })
-  const [duct3NodeTempl, cover3NodeTempl] = await api.getAssemblyNode(wireway3)
-  const [duct3Product, cover3Product] = await api.getProductOfNode([duct3NodeTempl, cover3NodeTempl])
+  const [duct3NodeTempl, cover3NodeTempl] = await api.getInstance(wireway3)
+  const [duct3Product, cover3Product] = await api.getProductsOfInstances([duct3NodeTempl, cover3NodeTempl])
   const [wcsWw3] = await api.getWorkGeometry(duct3Product, CCClasses.CCWorkCoordSystem, 'WCS_Hole')
   await api.setExpressions(
     {
@@ -93,7 +93,7 @@ export const create: Create = async (apiType, params) => {
     },
   )
 
-  const [plateNode, wirewayNode1, wirewayNode2, wirewayNode3 ] = await api.addNodes(
+  const [plateNode, wirewayNode1, wirewayNode2, wirewayNode3 ] = await api.addInstances(
     {
       productId: 'plate',
       ownerId: 'Root',
@@ -119,9 +119,9 @@ export const create: Create = async (apiType, params) => {
       options: { ident: 'wirewayNode3' },
     },
   )
-  const [duct1NodeExpTree] = await api.getAssemblyNode(wirewayNode1, 'Kanal')
-  const [duct2NodeExpTree] = await api.getAssemblyNode(wirewayNode2, 'Kanal')
-  const [duct3NodeExpTree] = await api.getAssemblyNode(wirewayNode3, 'Kanal')
+  const [duct1NodeExpTree] = await api.getInstance(wirewayNode1, 'Kanal')
+  const [duct2NodeExpTree] = await api.getInstance(wirewayNode2, 'Kanal')
+  const [duct3NodeExpTree] = await api.getInstance(wirewayNode3, 'Kanal')
 
   await api.createFastenedOriginConstraint(
     root,

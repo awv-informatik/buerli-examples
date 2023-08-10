@@ -38,7 +38,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Add bolt to nut-bolt assembly template */
-  const [boltRefId] = await api.addNodes({
+  const [boltRefId] = await api.addInstances({
     productId: bolt[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
@@ -55,7 +55,7 @@ export const create: Create = async (apiType, params?) => {
   api.setExpressions({ partId: 'NutProduct', members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
   /* Add nut to nut-bolt-assembly template */
-  const [nutRefId] = await api.addNodes({
+  const [nutRefId] = await api.addInstances({
     productId: 'NutProduct',
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
@@ -102,7 +102,7 @@ export const create: Create = async (apiType, params?) => {
   )
 
 
-  await api.addNodes({
+  await api.addInstances({
     productId: nutBoltAsm,
     ownerId: 'RootAssembly',
     transformation: [{x: 40, y: 60, z: 20}, xDir, yDir],
@@ -144,7 +144,7 @@ export const create: Create = async (apiType, params?) => {
   })
 
   /* Add nut to nut-bolt assembly template */
-  const [plateRef] = await api.addNodes({
+  const [plateRef] = await api.addInstances({
     productId: plate[0],
     ownerId: 'RootAssembly',
     transformation: [pt0, xDir, yDir],
@@ -168,23 +168,23 @@ export const create: Create = async (apiType, params?) => {
     'FOC2',
   )
 
-  await api.transformNodes({
-    referenceId: 'NutBoltNode1',
+  await api.transformInstances({
+    id: 'NutBoltNode1',
     transformation: [{x: 40, y: 60, z: 0}, xDir, yDir],
   }, {
-    referenceId: 'NutBoltNode2',
+    id: 'NutBoltNode2',
     transformation: [{x: 25, y: 75, z: 20}, xDir, yDir],
   }, {
-    referenceId: 'NutBoltNode3',
+    id: 'NutBoltNode3',
     transformation: [{x: 40, y: 90, z: 0}, xDir, yDir],
   }, {
-    referenceId: 'NutBoltNode4',
+    id: 'NutBoltNode4',
     transformation: [{x: 140, y: 60, z: 0}, xDir, yDir],
   }, {
-    referenceId: 'NutBoltNode5',
+    id: 'NutBoltNode5',
     transformation: [{x: 155, y: 75, z: 20}, xDir, yDir],
   }, {
-    referenceId: 'NutBoltNode6',
+    id: 'NutBoltNode6',
     transformation: [{x: 140, y: 90, z: 0}, xDir, yDir],
   })
 

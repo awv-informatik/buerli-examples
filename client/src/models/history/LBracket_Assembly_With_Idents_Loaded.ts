@@ -41,7 +41,7 @@ export const create: Create = async (apiType, params) => {
     ],
   })
 
-  const [lBracketRef1] = await api.addNodes({
+  const [lBracketRef1] = await api.addInstances({
     productId: 'LBracketProduct',
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
@@ -66,7 +66,7 @@ export const create: Create = async (apiType, params) => {
     'FOC',
   )
 
-  const [nutBoltNode1, nutBoltNode2, nutBoltNode3] = await api.addNodes({
+  const [nutBoltNode1, nutBoltNode2, nutBoltNode3] = await api.addInstances({
     productId: 'NutBoltProduct',
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
@@ -83,9 +83,9 @@ export const create: Create = async (apiType, params) => {
     options: { ident: 'NutBoltNode3'}
   })
 
-  const [boltNode1] = await api.getAssemblyNode(nutBoltNode1, 'Bolt')
-  const [boltNode2] = await api.getAssemblyNode(nutBoltNode2, 'Bolt')
-  const [boltNode3] = await api.getAssemblyNode(nutBoltNode3, 'Bolt')
+  const [boltNode1] = await api.getInstance(nutBoltNode1, 'Bolt')
+  const [boltNode2] = await api.getInstance(nutBoltNode2, 'Bolt')
+  const [boltNode3] = await api.getInstance(nutBoltNode3, 'Bolt')
   const [wcsIdBoltHeadShaft] = await api.getWorkGeometry(boltNode1, CCClasses.CCWorkCoordSystem, 'WCS_Head-Shaft')
 
   /* NutBolt1 on LBracket */

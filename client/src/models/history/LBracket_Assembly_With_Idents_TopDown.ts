@@ -20,7 +20,7 @@ export const create: Create = async (apiType, params) => {
   const lBracketAsm = await api.createRootAssembly('LBracket_Asm', { ident: 'LBracketRoot'})
   const nutBoltAsm = await api.createAssemblyAsTemplate('NutBolt_Asm')
 
-  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = await api.addNodes({
+  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = await api.addInstances({
     productId: nutBoltAsm,
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
@@ -47,7 +47,7 @@ export const create: Create = async (apiType, params) => {
       { name: 'Shaft_Diameter', value: shaftDiameter },
     ],
   })
-  const [boltRefId] = await api.addNodes({
+  const [boltRefId] = await api.addInstances({
     productId: 'BoltProduct',
     ownerId: 'NutBoltNode2',
     transformation: [pt0, xDir, yDir],
@@ -63,7 +63,7 @@ export const create: Create = async (apiType, params) => {
 
   api.setExpressions({ partId: 'NutProduct', members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
 
-  const [nutRefId] = await api.addNodes({
+  const [nutRefId] = await api.addInstances({
     productId: 'NutProduct',
     ownerId: 'NutBoltNode2',
     transformation: [pt0, xDir, yDir],
@@ -118,7 +118,7 @@ export const create: Create = async (apiType, params) => {
     ],
   })
 
-  const [lBracketRef1] = await api.addNodes({
+  const [lBracketRef1] = await api.addInstances({
     productId: lBracket[0],
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
