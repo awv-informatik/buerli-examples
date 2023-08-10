@@ -11,13 +11,5 @@ declare module '*?buffer' {
   export default buffer
 }
 
-declare module '@mdx-js/react' {
-  type MDXProps = {
-    children: React.ReactNode
-    components?: { wrapper: React.ReactNode }
-  }
-  export class MDXProvider extends React.Component<MDXProps> {}
-}
-
 // Dirty workaround
 declare const require: any
