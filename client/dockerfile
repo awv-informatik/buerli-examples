@@ -7,7 +7,7 @@ RUN apt-get update && \
 ## INSTALL node / npm
 ###############################
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get install -y nodejs
 
 ###############################
@@ -23,4 +23,4 @@ RUN npm i
 
 COPY ./ $CLIENT_DIR
 
-CMD npm run start
+CMD npm run start -- --host

@@ -1,7 +1,7 @@
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import arraybuffer from '../../resources/history/As1/Bolt.ofb'
-import arraybuffer2 from '../../resources/history/As1/Nut.ofb'
+import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
+import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -27,24 +27,24 @@ export const create: Create = async (apiType, params) => {
       { name: 'Shaft_Diameter', value: shaftDiameter },
     ],
   })
-  const [boltRefId] = await api.addNodes({
+  const [boltRefId] = await api.addInstances({
     productId: bolt[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
   })
 
-  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Nut')
-  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCoordSystem, 'WCS_Origin')
+  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Nut')
+  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Origin')
 
   /* Nut */
   const nut = await api.loadProduct(arraybuffer2, 'ofb')
   api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
-  const [nutRefId] = await api.addNodes({
+  const [nutRefId] = await api.addInstances({
     productId: nut[0],
     ownerId: nutBoltAsm,
     transformation: [pt0, xDir, yDir],
   })
-  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCoordSystem, 'WCS_Hole_Top')
+  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCSys, 'WCS_Hole_Top')
 
   /* Bolt at origin */
   await api.createFastenedOriginConstraint(

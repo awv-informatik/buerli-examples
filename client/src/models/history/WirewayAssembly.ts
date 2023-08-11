@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
-import templateSP from '../../resources/history/WirewayTemplate.ofb'
+import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const le = 0
@@ -46,10 +46,10 @@ export const create: Create = async (apiType, params) => {
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    const tempDeckel = await api.getPartFromContainer('Deckel')
+    const tempDeckel = await api.getPartTemplate('Deckel')
     deckelPrt = tempDeckel ? tempDeckel[0] : null
 
-    const tempKanal = await api.getPartFromContainer('Kanal')
+    const tempKanal = await api.getPartTemplate('Kanal')
     kanalPrt = tempKanal ? tempKanal[0] : null
 
     constrDeckel = await api.getConstraint(rootNode, 'Fastened')

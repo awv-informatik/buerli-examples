@@ -1,7 +1,7 @@
 import { ApiNoHistory, solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
-import data from '../../resources/solid/Ventil.stp'
+import data from '../../resources/solid/Ventil.stp?raw'
 import { Create, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
 
@@ -10,7 +10,7 @@ export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiNoHistory
 
-  const importedIds = await api.import(data)
+  const importedIds = await api.import(data as any)
   return importedIds
 }
 

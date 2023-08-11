@@ -6,7 +6,7 @@ import {
   SliderConstraintType,
 } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import mechAsm from '../../resources/history/MechanicalAssembly.ofb'
+import mechAsm from '../../resources/history/MechanicalAssembly.ofb?buffer'
 
 const a0 = 0 // slider
 const a1 = 1 // revolute
