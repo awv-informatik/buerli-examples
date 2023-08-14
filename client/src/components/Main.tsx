@@ -7,13 +7,13 @@ import React from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, ExampleLayout, Spin } from '.'
 import { storeApi, useStore } from '../store'
+import { Code } from './Code'
+import { Resizer, useResizeStore } from './Resizer'
+import { Sidebar } from './Sidebar'
 import AutoClear from './canvas/AutoClear'
 import { Controls } from './canvas/Controls'
 import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
-import { Code } from './Code'
-import { Resizer, useResizeStore } from './Resizer'
-import { Sidebar } from './Sidebar'
 
 export const Main: React.FC = () => {
   const set = useStore(s => s.set)
@@ -31,7 +31,7 @@ export const Main: React.FC = () => {
     document.title = 'buerli-examples'
   }, [])
 
-  return (
+  return activeExample ? (
     <div style={{ width: '100%', height: '100%' }}>
       <div style={{ position: 'absolute', right: 65, top: 80 }}>
         <button
@@ -43,18 +43,9 @@ export const Main: React.FC = () => {
         </button>
       </div>
       <ExampleLayout>
-        <Sidebar
-          examples={exampleIds}
-          onChange={v => set({ activeExample: v })}
-          active={activeExample}
-        />
+        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
         <CanvasContainer>
-          <Canvas
-            shadows
-            orthographic
-            frameloop="demand"
-            dpr={[1, 2]}
-            camera={{ position: [0, 0, 100], fov: 90 }}>
+          <Canvas shadows orthographic frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
             <Fit>
@@ -94,7 +85,7 @@ export const Main: React.FC = () => {
         )}
       </ExampleLayout>
     </div>
-  )
+  ) : null
 }
 
 export default Main
@@ -166,11 +157,7 @@ const Part: React.FC = () => {
       if (headlessApi.current && update && params) {
         set({ loading: true })
         try {
-          productOrSolidIds.current = await update(
-            headlessApi.current,
-            productOrSolidIds.current,
-            params,
-          )
+          productOrSolidIds.current = await update(headlessApi.current, productOrSolidIds.current, params)
           if (getBufferGeom) {
             const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
             setMeshes(tempMeshes)
@@ -196,7 +183,7 @@ const Part: React.FC = () => {
     return (
       <group>
         {meshes.map(m => (
-          <mesh key={m.uuid} {...m as any} />
+          <mesh key={m.uuid} {...(m as any)} />
         ))}
       </group>
     )
@@ -207,12 +194,12 @@ const Part: React.FC = () => {
       </group>
     )
   } else {
-    return <group>{drawingId && <BuerliGeometry selection/>}</group>
+    return <group>{drawingId && <BuerliGeometry selection />}</group>
   }
 }
 
 const CodeWrapper: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const example = useStore(s => s.examples.objs[activeExample])
-  return <Code data={example.text}></Code>
+  return <Code fileUrl={example.fileUrl}></Code>
 }

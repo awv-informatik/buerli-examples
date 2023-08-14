@@ -12,7 +12,7 @@ services:
     networks:
       - examples-network
     ports:
-      - 8082:8082 # Webpack Server
+      - 8082:8082 # Vite Server
     restart: unless-stopped
 
   buerli-examples-server:

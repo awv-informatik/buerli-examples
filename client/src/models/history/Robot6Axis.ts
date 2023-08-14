@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import robotArm from '../../resources/history/Robot6Axis.ofb'
+import robotArm from '../../resources/history/Robot6Axis.ofb?buffer'
 import { LimitedValue } from '@buerli.io/classcad'
 
 const a1 = 0 // axis 1

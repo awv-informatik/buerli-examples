@@ -9,7 +9,7 @@ import {
   FastenedConstraintType,
   FastenedOriginConstraintType,
 } from '@buerli.io/headless'
-import templateAB from '../../resources/history/RollerTemplate.ofb'
+import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const wl = 0

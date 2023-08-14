@@ -1,4 +1,4 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "liveServer.settings.root": "./client/build",
+  "liveServer.settings.port": 3001
 }
