@@ -42,6 +42,27 @@ export const create: Create = async (apiType, params) => {
       ],
       name: 'ScrewInstance2',
     },
+    {
+      productId: 'Screw', // by name
+      ownerId: 'root', // by ident
+      transformation: [
+        { x: -deltaX, y: -deltaY, z: deltaZ },
+        { x: 1, y: 0, z: 0 },
+        { x: 0, y: 1, z: 0 },
+      ],
+      name: 'ScrewInstance3',
+      options: { ident: 'ScrewInstanceIdent3' },
+    },
+    {
+      productId: 'Screw', // by name
+      ownerId: 'root', // by ident
+      transformation: [
+        { x: deltaX, y: -deltaY, z: deltaZ },
+        { x: 1, y: 0, z: 0 },
+        { x: 0, y: 1, z: 0 },
+      ],
+      name: 'ScrewInstance4',
+    },
   )
   return root
 }
@@ -107,6 +128,20 @@ export const update: Update = async (apiType, productId, params) => {
       id: 'ScrewInstance2',
       transformation: [
         { x: deltaX, y: deltaY, z: deltaZ },
+        { x: 1, y: 0, z: 0 },
+        { x: 0, y: 1, z: 0 },
+      ],
+    }, {
+      id: 'ScrewInstanceIdent3',
+      transformation: [
+        { x: -deltaX, y: -deltaY, z: deltaZ },
+        { x: 1, y: 0, z: 0 },
+        { x: 0, y: 1, z: 0 },
+      ],
+    }, {
+      id: 'ScrewInstance4',
+      transformation: [
+        { x: deltaX, y: -deltaY, z: deltaZ },
         { x: 1, y: 0, z: 0 },
         { x: 0, y: 1, z: 0 },
       ],
