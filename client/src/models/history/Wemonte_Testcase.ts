@@ -22,10 +22,31 @@ declare type Expression = {
   }[]
 }
 
+declare type Command = {
+  method: string;
+  params: {
+    type: string;
+    ident: string;
+    expressions?: {
+      partIdent: number | string
+      members: {
+        name: string
+        value: number
+      }[]
+    }[]
+    url?: string,
+    nodes?: {
+      productIdent: string,
+      ownerIdent: string,
+      transformation: Transform
+    }[]
+  }
+}
+
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
   let root = 0
-  for (const command of data.buerli) {
+  for (const command of data.buerli as Command[]) {
     switch (command.method) {
       case 'createRootAssembly':
         root = await api.createRootAssembly('Assembly', { ident: command.params.ident })
@@ -52,7 +73,7 @@ export const create: Create = async (apiType, params) => {
             ],
           })
         }
-        await api.addNodes(...nodesToAdd)
+        await api.addInstances(...nodesToAdd)
         break;
       case 'setExpressions':
         const expressionsToAdd: Expression[] = []
