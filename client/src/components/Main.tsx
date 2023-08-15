@@ -18,7 +18,6 @@ import Lights from './canvas/Lights'
 export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
   const set = useStore(s => s.set)
   const exampleIds = useStore(s => s.examples.objs)
-  const activeExample = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
   const loading = useStore(s => s.loading)
   const [visible, setVisible] = React.useState<boolean>(true)
@@ -28,16 +27,12 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
   const rightResizer = `${widthCodeStore[0] + 50}px`
 
   React.useEffect(() => {
-    set({ activeExample: actExmpl })
-  }, [actExmpl, set])
-
-  React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
 
   const isExampleAvailable = useStore(s => s.examples.objs[actExmpl])
 
-  return activeExample ? (
+  return isExampleAvailable ? (
     <div style={{ width: '100%', height: '100%' }}>
       {actExmpl === '' && (
         <div style={{ position: 'absolute', right: 65, top: 80 }}>
@@ -55,7 +50,7 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
           <Sidebar
             examples={exampleIds}
             onChange={v => set({ activeExample: v })}
-            active={activeExample}
+            active={actExmpl}
           />
         )}
         <CanvasContainer>
@@ -63,7 +58,7 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
             <Fit>
-              {isExampleAvailable && <Part />}
+              {isExampleAvailable && <Part actExmpl={actExmpl}/>}
             </Fit>
             <AutoClear />
             <GizmoHelper renderPriority={2} alignment="top-right" margin={[80, 80]}>
@@ -94,7 +89,7 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
               xRange={{ min: 500, max: 850 }}
               xDir="-"
             />
-            <CodeWrapper />
+            <CodeWrapper actExmpl={actExmpl}/>
           </div>
         )}
       </ExampleLayout>
@@ -104,14 +99,13 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
 
 export default Main
 
-const Part: React.FC = () => {
+const Part: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
   const setParam = storeApi.getState().setParam
 
   const set = useStore(s => s.set)
-  const exampleId = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
-  const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[exampleId])
-  const params = useStore(s => s.examples.objs[exampleId].params)
+  const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[actExmpl])
+  const params = useStore(s => s.examples.objs[actExmpl].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
   const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
@@ -126,12 +120,12 @@ const Part: React.FC = () => {
         const features = configuration.steps[0].features
         for (let index = 0; index < features.length; index++) {
           if (params.values[index] !== features[index].value) {
-            setParam(exampleId, index, features[index].value)
+            setParam(actExmpl, index, features[index].value)
           }
         }
       }
     })
-  }, [exampleId, params.values, setParam])
+  }, [actExmpl, params.values, setParam])
 
   const onSelect = React.useCallback(() => {
     fit()
@@ -148,10 +142,10 @@ const Part: React.FC = () => {
     set({ loading: true })
 
     cad.init(async api => {
-      setAPI(exampleId, api)
+      setAPI(actExmpl, api)
       headlessApi.current = api
       try {
-        const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
+        const p = storeApi.getState().examples.objs[actExmpl].params
         productOrSolidIds.current = await create(api, p, { onSelect, onResume })
         if (getBufferGeom) {
           const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
@@ -178,9 +172,8 @@ const Part: React.FC = () => {
         }
       })
       scene.children = []
-      // cad.destroy()
     }
-  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setAPI])
+  }, [cad, create, actExmpl, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setAPI])
 
   React.useEffect(() => {
     const run = async () => {
@@ -228,8 +221,7 @@ const Part: React.FC = () => {
   }
 }
 
-const CodeWrapper: React.FC = () => {
-  const activeExample = useStore(s => s.activeExample)
-  const example = useStore(s => s.examples.objs[activeExample])
+const CodeWrapper: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
+  const example = useStore(s => s.examples.objs[actExmpl])
   return <Code fileUrl={example.fileUrl}></Code>
 }
