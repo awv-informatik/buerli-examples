@@ -27,13 +27,15 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
   const widthCode = `${widthCodeStore[0]}px`
   const rightResizer = `${widthCodeStore[0] + 50}px`
 
-  if (actExmpl) {
+  React.useEffect(() => {
     set({ activeExample: actExmpl })
-  }
+  }, [actExmpl, set])
 
   React.useEffect(() => {
     document.title = 'buerli-examples'
   }, [])
+
+  const isExampleAvailable = useStore(s => s.examples.objs[actExmpl])
 
   return activeExample ? (
     <div style={{ width: '100%', height: '100%' }}>
@@ -61,7 +63,7 @@ export const Main: React.FC<{ actExmpl: string }> = ({ actExmpl }) => {
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
             <Fit>
-              <Part />
+              {isExampleAvailable && <Part />}
             </Fit>
             <AutoClear />
             <GizmoHelper renderPriority={2} alignment="top-right" margin={[80, 80]}>
@@ -117,17 +119,19 @@ const Part: React.FC = () => {
   const fit = useFit(f => f.fit)
   const setAPI = useStore(s => s.setAPI)
 
-  window.addEventListener('message', function (e) {
-    if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
-      const configuration = e.data.args
-      const features = configuration.steps[0].features
-      for (let index = 0; index < features.length; index++) {
-        if (params.values[index] !== features[index].value) {
-          setParam(exampleId, index, features[index].value)
+  React.useEffect(() => {
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
+        const configuration = e.data.args
+        const features = configuration.steps[0].features
+        for (let index = 0; index < features.length; index++) {
+          if (params.values[index] !== features[index].value) {
+            setParam(exampleId, index, features[index].value)
+          }
         }
       }
-    }
-  })
+    })
+  }, [exampleId, params.values, setParam])
 
   const onSelect = React.useCallback(() => {
     fit()
