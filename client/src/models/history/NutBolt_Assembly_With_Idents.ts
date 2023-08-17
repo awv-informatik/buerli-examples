@@ -31,6 +31,7 @@ export const create: Create = async (apiType, params) => {
     productId: 'BoltProduct',
     ownerId: 'NutBoltRoot',
     transformation: [pt0, xDir, yDir],
+    name: 'BoltNodeName',
     options: { ident: 'BoltNode'}
   })
 
@@ -53,7 +54,7 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedOriginConstraint(
     nutBoltAsm,
     {
-      matePath: [boltRefId],
+      matePath: await api.getMatePath('BoltNode'),
       wcsId: wcsIdBoltOrigin[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
@@ -68,7 +69,7 @@ export const create: Create = async (apiType, params) => {
   await api.createFastenedConstraint(
     nutBoltAsm,
     {
-      matePath: [boltRefId],
+      matePath: await api.getMatePath('BoltNodeName'),
       wcsId: wcsIdBoltNut[0],
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,

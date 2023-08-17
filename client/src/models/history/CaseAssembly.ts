@@ -3,9 +3,9 @@ import { Create, Param, ParamType, Update } from '../../store'
 import data from '../../resources/history/CaseAssembly.ofb'
 
 export const paramsMap: Param[] = [
-  { index: 0, name: 'width', type: ParamType.Number, value: 120 },
-  { index: 1, name: 'height', type: ParamType.Number, value: 50 },
-  { index: 2, name: 'depth', type: ParamType.Number, value: 160 },
+  { index: 0, name: 'width', type: ParamType.Slider, value: 120, step: 2, values: [30, 200] },
+  { index: 1, name: 'height', type: ParamType.Slider, value: 50, step: 2, values: [30, 200] },
+  { index: 2, name: 'depth', type: ParamType.Slider, value: 160, step: 2, values: [30, 200] },
 ].sort((a, b) => a.index - b.index)
 
 let deltaX = 0
@@ -147,6 +147,8 @@ export const update: Update = async (apiType, productId, params) => {
       ],
     })
   }
+
+  
 
   return productId
 }

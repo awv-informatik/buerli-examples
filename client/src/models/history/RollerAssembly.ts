@@ -90,13 +90,13 @@ export const create: Create = async (apiType, params) => {
     constrElectricPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_ElectricPlug')
     constrPneumaticPlug = await api.getFastenedConstraint(rootAsm, 'Fastened_PneumaticPlug')
 
-    ;[frame0] = await api.getInstance(rootAsm, 'Frame0')
+    ;frame0 = await api.findInstance({ instanceName: 'Frame0'})
     ;[wcsEPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame0Left] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw_csys')
     ;[wcsPPlugFrame0Right] = await api.getWorkGeometry(frame0, CCClasses.CCWorkCSys, 'Screw2_csys')
 
-    ;[frame1] = await api.getInstance(rootAsm, 'Frame1')
+    ;frame1 = await api.findInstance({ instanceName: 'Frame1'})
     ;[wcsEPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug_csys')
     ;[wcsEPlugFrame1Right] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Plug2_csys')
     ;[wcsPPlugFrame1Left] = await api.getWorkGeometry(frame1, CCClasses.CCWorkCSys, 'Screw_csys')

@@ -70,6 +70,7 @@ export const create: Create = async (apiType, params) => {
     productId: 'NutBoltProduct',
     ownerId: 'LBracketRoot',
     transformation: [{ x: 0, y: 0, z: 0 }, xDir, yDir],
+    name: 'NutBoltNode1Name',
     options: { ident: 'NutBoltNode1'}
   }, {
     productId: 'NutBoltProduct',
