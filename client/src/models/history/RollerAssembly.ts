@@ -222,6 +222,9 @@ async function updatePlugPos(plugPos: number, api: ApiHistory) {
     xOffset: constrPneumaticPlug.xOffset,
     yOffset: constrPneumaticPlug.yOffset,
     zOffset: constrPneumaticPlug.zOffset,
+    xRotation: constrPneumaticPlug.xRotation,
+    yRotation: constrPneumaticPlug.yRotation,
+    zRotation: constrPneumaticPlug.zRotation,
   }
 
   const fcElectricPlug: FastenedConstraintType = {
@@ -236,6 +239,9 @@ async function updatePlugPos(plugPos: number, api: ApiHistory) {
     xOffset: constrElectricPlug.xOffset,
     yOffset: constrElectricPlug.yOffset,
     zOffset: constrElectricPlug.zOffset,
+    xRotation: constrElectricPlug.xRotation,
+    yRotation: constrElectricPlug.yRotation,
+    zRotation: constrElectricPlug.zRotation,
   }
 
   await api.updateFastenedConstraints(fcPneumaticPlug, fcElectricPlug)
@@ -339,6 +345,9 @@ async function updateWalzeDir(api: ApiHistory) {
     xOffset: constrWalzeOrigin.xOffset,
     yOffset: constrWalzeOrigin.yOffset,
     zOffset: constrWalzeOrigin.zOffset,
+    xRotation: constrWalzeOrigin.xRotation,
+    yRotation: constrWalzeOrigin.yRotation,
+    zRotation: constrWalzeOrigin.zRotation,
   })
 }
 
@@ -417,6 +426,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrArrow0Out.xOffset,
     yOffset: constrArrow0Out.yOffset,
     zOffset: constrArrow0Out.zOffset,
+    xRotation: constrArrow0Out.xRotation,
+    yRotation: constrArrow0Out.yRotation,
+    zRotation: constrArrow0Out.zRotation,
   }
 
   const fcArrow1Out: FastenedConstraintType = {
@@ -436,6 +448,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrArrow1Out.xOffset,
     yOffset: constrArrow1Out.yOffset,
     zOffset: constrArrow1Out.zOffset,
+    xRotation: constrArrow1Out.xRotation,
+    yRotation: constrArrow1Out.yRotation,
+    zRotation: constrArrow1Out.zRotation,
   }
 
   const fcArrow0In: FastenedConstraintType = {
@@ -455,6 +470,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrArrow0In.xOffset,
     yOffset: constrArrow0In.yOffset,
     zOffset: constrArrow0In.zOffset,
+    xRotation: constrArrow0In.xRotation,
+    yRotation: constrArrow0In.yRotation,
+    zRotation: constrArrow0In.zRotation,
   }
 
   const fcArrow1In: FastenedConstraintType = {
@@ -474,6 +492,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrArrow1In.xOffset,
     yOffset: constrArrow1In.yOffset,
     zOffset: constrArrow1In.zOffset,
+    xRotation: constrArrow1In.xRotation,
+    yRotation: constrArrow1In.yRotation,
+    zRotation: constrArrow1In.zRotation,
   }
 
   // Logos
@@ -494,6 +515,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrLogo0.xOffset,
     yOffset: constrLogo0.yOffset,
     zOffset: constrLogo0.zOffset,
+    xRotation: constrLogo0.xRotation,
+    yRotation: constrLogo0.yRotation,
+    zRotation: constrLogo0.zRotation,
   }
 
   const fcLogo1: FastenedConstraintType = {
@@ -513,6 +537,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: constrLogo1.xOffset,
     yOffset: constrLogo1.yOffset,
     zOffset: constrLogo1.zOffset,
+    xRotation: constrLogo1.xRotation,
+    yRotation: constrLogo1.yRotation,
+    zRotation: constrLogo1.zRotation,
   }
 
   await api.updateFastenedConstraints(
@@ -536,6 +563,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: 0,
     yOffset: 0,
     zOffset: -walzeLength / 2,
+    xRotation: 0,
+    yRotation: 0,
+    zRotation: 0,
   }
 
   const focEnd2: FastenedOriginConstraintType = {
@@ -549,6 +579,9 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
     xOffset: 0,
     yOffset: 0,
     zOffset: walzeLength / 2,
+    xRotation: 0,
+    yRotation: 0,
+    zRotation: 0,
   }
 
   await api.updateFastenedOriginConstraints(focEnd1, focEnd2)
@@ -573,6 +606,9 @@ async function updateWalze(walzeLength: number, api: ApiHistory) {
     xOffset: 0,
     yOffset: 0,
     zOffset: -walzeLength / 2,
+    xRotation: 0,
+    yRotation: 0,
+    zRotation: 0,
   }
 
   // Set offset in z-Dir for frame1
@@ -587,6 +623,9 @@ async function updateWalze(walzeLength: number, api: ApiHistory) {
     xOffset: 0,
     yOffset: 0,
     zOffset: walzeLength / 2,
+    xRotation: 0,
+    yRotation: 0,
+    zRotation: 0,
   }
 
   await api.updateFastenedOriginConstraints(focEnd1, focEnd2)

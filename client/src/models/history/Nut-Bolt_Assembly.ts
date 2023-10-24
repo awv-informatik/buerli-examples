@@ -58,6 +58,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     0,
+    0,
+    0,
+    0,
     'FOC',
   )
 
@@ -76,6 +79,9 @@ export const create: Create = async (apiType, params) => {
       flip: FlipType.FLIP_Z,
       reoriented: ReorientedType.REORIENTED_0,
     },
+    0,
+    0,
+    0,
     0,
     0,
     0,

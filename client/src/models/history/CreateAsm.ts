@@ -205,6 +205,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     0,
+    0,
+    0,
+    0,
     'FOC1',
   )
 
@@ -225,6 +228,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     -20,
+    0,
+    0,
+    0,
     'FC1',
   )
 
@@ -262,6 +268,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     20,
+    0,
+    0,
+    0,
     'FOC2',
   )
 
@@ -282,7 +291,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     20,
-
+    0,
+    0,
+    0,
     'FC2',
   )
   await api.createFastenedConstraint(
@@ -302,6 +313,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     20,
+    0,
+    0,
+    0,
     'FC3',
   )
   await api.createFastenedConstraint(
@@ -321,6 +335,9 @@ export const create: Create = async (apiType, params) => {
     0,
     0,
     20,
+    0,
+    0,
+    0,
     'FC4',
   )
   return lBracketAsm

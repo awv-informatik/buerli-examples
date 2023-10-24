@@ -66,6 +66,9 @@ export const create: Create = async (apiType, param) => {
       0,
       0,
       0,
+      0,
+      0,
+      0,
       'FOCFlange1',
     )
 
@@ -83,6 +86,9 @@ export const create: Create = async (apiType, param) => {
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_180,
       },
+      0,
+      0,
+      0,
       0,
       0,
       0,
@@ -106,6 +112,9 @@ export const create: Create = async (apiType, param) => {
       0,
       0,
       0,
+      0,
+      0,
+      0,
       'FCFlange1Bolt',
     )
 
@@ -123,6 +132,9 @@ export const create: Create = async (apiType, param) => {
         flip: FlipType.FLIP_Z_INV,
         reoriented: ReorientedType.REORIENTED_0,
       },
+      0,
+      0,
+      0,
       0,
       0,
       0,

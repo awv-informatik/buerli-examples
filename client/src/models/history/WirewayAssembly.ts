@@ -139,6 +139,9 @@ export const update: Update = async (apiType, productId, params) => {
       xOffset: number
       yOffset: number
       zOffset: number
+      xRotation: number
+      yRotation: number
+      zRotation: number
     } = {
       constrId: constrDeckel[0],
       mate1: {
@@ -156,6 +159,10 @@ export const update: Update = async (apiType, productId, params) => {
       xOffset: constrDeckel[3],
       yOffset: constrDeckel[4],
       zOffset: params.values[pd],
+      xRotation: constrDeckel[6],
+      yRotation: constrDeckel[7],
+      zRotation: constrDeckel[8],
+
     }
 
     await api.updateFastenedConstraints(fcDeckel)
