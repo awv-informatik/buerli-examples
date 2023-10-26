@@ -9,7 +9,7 @@ import {
   FastenedConstraintType,
   FastenedOriginConstraintType,
 } from '@buerli.io/headless'
-import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
+import templateAB from '../../resources/history/RollerTemplate_Optimized.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 const wl = 0
@@ -71,6 +71,7 @@ let currSegmentInstances: number[] = []
 let currDimensions: number[] = []
 
 export const create: Create = async (apiType, params) => {
+  const startTime = performance.now()
   const api = apiType as ApiHistory
 
   if (!params) {
@@ -115,10 +116,13 @@ export const create: Create = async (apiType, params) => {
 
     await update(api, rootAsm, { lastUpdatedParam: undefined, values: params.values })
   }
+  const endTime = performance.now()
+  console.info(`Call to create Roller took ${(endTime - startTime).toFixed(0)} milliseconds`)
   return rootAsm
 }
 
 export const update: Update = async (apiType, productId, params) => {
+  const startTime = performance.now()
   const api = apiType as ApiHistory
   if (Array.isArray(productId)) {
     throw new Error(
@@ -171,6 +175,8 @@ export const update: Update = async (apiType, productId, params) => {
   if (check(paramsMap[pp])) {
     await updatePlugPos(params.values[pp], api)
   }
+  const endTime = performance.now()
+  console.info(`Call to load Roller took ${(endTime - startTime).toFixed(0)} milliseconds`)
   return productId
 }
 

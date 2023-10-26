@@ -10,6 +10,7 @@ export const paramsMap: Param[] = [
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (apiType, params) => {
+  const startTime = performance.now()
   const api = apiType as ApiHistory
 
   const productId = await api.load(arraybuffer, 'ofb')
@@ -24,6 +25,8 @@ export const create: Create = async (apiType, params) => {
       { name: 'W1', value: params.values[3] },
     ],
   })
+  const endTime = performance.now()
+  console.info(`Call to create Gripper took ${(endTime - startTime).toFixed(0)} milliseconds`)
   return productId[0]
 }
 
