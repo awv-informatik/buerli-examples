@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import robotArm from '../../resources/history/Robot6Axis.ofb?buffer'
+import robotArm from '../../resources/history/Robot6Axis_Optimized.ofb?buffer'
 import { LimitedValue } from '@buerli.io/classcad'
 
 const a1 = 0 // axis 1
@@ -37,6 +37,7 @@ export const paramsMap: Param[] = [
 let constraints: RevoluteConstraintType[] = []
 
 export const create: Create = async (apiType, params) => {
+  const startTime = performance.now()
   const api = apiType as ApiHistory
 
   if (!params) {
@@ -56,6 +57,8 @@ export const create: Create = async (apiType, params) => {
       await api.getRevoluteConstraint(rootAsm, 'J5-J6'),
     ]
   }
+  const endTime = performance.now()
+  console.info(`Call to create Robot took ${(endTime - startTime).toFixed(0)} milliseconds`)
 
   return rootAsm
 }
