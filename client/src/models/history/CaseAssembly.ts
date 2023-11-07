@@ -1,6 +1,6 @@
 import { ApiHistory, history } from '@buerli.io/headless'
 import { Create, Param, ParamType, Update } from '../../store'
-import data from '../../resources/history/CaseAssembly.ofb'
+import data from '../../resources/history/CaseAssembly.ofb?buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'width', type: ParamType.Slider, value: 120, step: 2, values: [30, 200] },
