@@ -27,6 +27,8 @@ export const paramsMap: Param[] = [
   { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
   { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
   { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },
+  { index: 902, name: 'saveAsDxf', type: ParamType.Button, value: exportDXF },
+  { index: 903, name: 'saveAsSvg', type: ParamType.Button, value: exportSVG },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
@@ -72,7 +74,7 @@ let currDimensions: number[] = []
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
-
+  
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
@@ -798,9 +800,8 @@ async function prepareViews(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export DXF is not available in the free version, please contact AWV Informatik for more information
+ * Export DXF is not available for arm64 systems
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function exportDXF(api: ApiHistory) {
   const productId = await prepareViews(api)
   const data = await api.exportDXF(productId)
@@ -814,9 +815,8 @@ async function exportDXF(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export SVG is not available in the free version, please contact AWV Informatik for more information
+ * Export SVG is not available for arm64 systems
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function exportSVG(api: ApiHistory) {
   const productId = await prepareViews(api)
   const data = await api.exportSVG(productId)
