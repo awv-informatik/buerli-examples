@@ -76,6 +76,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
+  { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly' },
 ]
 
 const storeApi = vanillaCreate<State>(set => ({
