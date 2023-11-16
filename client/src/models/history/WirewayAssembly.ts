@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ApiHistory, history, ConstraintType } from '@buerli.io/headless'
+import { ApiHistory, history, FastenedConstraintType } from '@buerli.io/headless'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -26,7 +26,7 @@ export const paramsMap: Param[] = [
 let rootNode: number | null
 let deckelPrt: number | null = null
 let kanalPrt: number | null = null
-let constrDeckel: ConstraintType
+let constrDeckel: FastenedConstraintType
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -52,7 +52,7 @@ export const create: Create = async (apiType, params) => {
     const tempKanal = await api.getPartTemplate('Kanal')
     kanalPrt = tempKanal ? tempKanal[0] : null
 
-    constrDeckel = await api.getConstraint(rootNode, 'Fastened')
+    constrDeckel = await api.getFastenedConstraint(rootNode, 'Fastened')
   }
   return rootNode
 }
@@ -132,33 +132,7 @@ export const update: Update = async (apiType, productId, params) => {
 
   // Update pos
   if (check(paramsMap[pd])) {
-    const fcDeckel: {
-      constrId: number
-      mate1: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-      mate2: { matePath: number[]; wcsId: number; flip: number; reoriented: number }
-      xOffset: number
-      yOffset: number
-      zOffset: number
-    } = {
-      constrId: constrDeckel[0],
-      mate1: {
-        matePath: constrDeckel[1][0],
-        wcsId: constrDeckel[1][1],
-        flip: constrDeckel[1][2],
-        reoriented: constrDeckel[1][3],
-      },
-      mate2: {
-        matePath: constrDeckel[2][0],
-        wcsId: constrDeckel[2][1],
-        flip: constrDeckel[2][2],
-        reoriented: constrDeckel[2][3],
-      },
-      xOffset: constrDeckel[3],
-      yOffset: constrDeckel[4],
-      zOffset: params.values[pd],
-    }
-
-    await api.updateFastenedConstraints(fcDeckel)
+    await api.updateFastenedConstraints({ ...constrDeckel, zOffset: params.values[pd] })
   }
 
   // Update produkt

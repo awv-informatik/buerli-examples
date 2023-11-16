@@ -23,13 +23,9 @@ RUN mkdir -p /classcad
 WORKDIR /classcad
 RUN npm init -y
 
-# x64
-RUN npm i @classcad/linux-x64
-RUN chmod +x ./node_modules/@classcad/linux-x64/ClassCADInstance
-
-# arm64, if you are on arm64, delete the x64 lines and activate the following lines
-# RUN npm i @classcad/linux-arm64
-# RUN chmod +x ./node_modules/@classcad/linux-arm64/ClassCADInstance
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/x64/) && \
+    npm i "@classcad/linux-${arch}@0.0.7" && \
+    chmod +x "./node_modules/@classcad/linux-${arch}/ClassCADInstance"
 
 # Copy the .ccapp downloaded from buerli.io.
 COPY ./FreeBaseModeling.ccapp modeling.ccapp
