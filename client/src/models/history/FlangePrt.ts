@@ -1,7 +1,9 @@
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, DimensionType, history } from '@buerli.io/headless'
 import {
   BooleanOperationType,
   ChamferType,
+  OrientationType,
+  ViewType,
   WorkAxisType,
   WorkCoordSystemType,
 } from '@buerli.io/classcad'
@@ -21,6 +23,7 @@ export const create: Create = async (apiType, params, options) => {
   const thickness = 30
   const upperCylDiam = 190
   const holeOffset = upperCylDiam / 2 + thickness
+  const dimensions: DimensionType[] = []
   const holeOffset1Bottom = { x: 0, y: holeOffset, z: 0 }
   const holeOffset1Top = { x: 0, y: holeOffset, z: thickness }
 
@@ -71,7 +74,7 @@ export const create: Create = async (apiType, params, options) => {
     )
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flangeSolid1, subCylFlange])
 
-    options?.onSelect()
+   /* options?.onSelect()
     const selections = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE], 2)
     options?.onResume()
     const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, selections.map(sel => sel.graphicId), 2, 2, 45)
@@ -115,7 +118,149 @@ export const create: Create = async (apiType, params, options) => {
       rotation,
       false,
       'WCSBoltHoleTop',
-    )
+    )*/
+    const diameter: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Durchmesser1',
+        dimLabel: 'Durchmesser = ',
+        dimStartPos: {x: -155, y: 0, z: 0},
+        dimEndPos: {x: 155, y: 0, z: 0},
+        dimTextPos: {x: 0, y: 200, z: 0},
+        dimOrientation: OrientationType.ALIGNED,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(diameter)
+    const holeDiameter: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Durchmesser2',
+        dimLabel: 'Durchmesser = ',
+        dimStartPos: {x: -15, y: -125, z: 0},
+        dimEndPos: {x: 15, y: -125, z: 0},
+        dimTextPos: {x: 0, y: -200, z: 0},
+        dimOrientation: OrientationType.HORIZONTAL,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(holeDiameter)
+    const thicknessDim: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Dicke',
+        dimLabel: 'Dicke = ',
+        dimStartPos: {x: 0, y: -155, z: 30},
+        dimEndPos: {x: 0, y: -155, z: 0},
+        dimTextPos: {x: 0, y: -200, z: 70},
+        dimOrientation: OrientationType.VERTICAL,
+      },
+      dxfView: ViewType.RIGHT,
+    }
+    dimensions.push(thicknessDim)
+
+    const thicknessDimA: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'DickeA',
+        dimLabel: 'DickeA = ',
+        dimStartPos: {x: 0, y: -155, z: 30},
+        dimEndPos: {x: 0, y: -155, z: 0},
+        dimTextPos: {x: 0, y: -200, z: 70},
+        dimOrientation: OrientationType.ALIGNED,
+      },
+      dxfView: ViewType.RIGHT,
+    }
+    dimensions.push(thicknessDimA)
+
+    const thicknessDimA1: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'DickeA_Angle',
+        dimLabel: 'DickeA_Angle = ',
+        dimStartPos: {x: 0, y: -155, z: 30},
+        dimEndPos: {x: 0, y: -155, z: 0},
+        dimTextPos: {x: 0, y: -200, z: 70},
+        dimTextAngle: 45*Math.PI/180,
+        dimOrientation: OrientationType.ALIGNED,
+      },
+      dxfView: ViewType.RIGHT,
+    }
+    dimensions.push(thicknessDimA1)
+
+    const upperCylDiameter: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Durchmesser2',
+        dimLabel: 'Durchmesser = ',
+        dimStartPos: {x: 0, y: 95, z: 108},
+        dimEndPos: {x: 0, y: -95, z: 108},
+        dimTextPos: {x: 0, y: 0, z: 150},
+        dimOrientation: OrientationType.HORIZONTAL,
+      },
+      dxfView: ViewType.RIGHT,
+    }
+    dimensions.push(upperCylDiameter)
+
+    const thicknessDim1: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Dicke1',
+        dimLabel: 'Dicke1 = ',
+        dimStartPos: {x: 0, y: -155, z: 30},
+        dimEndPos: {x: 0, y: -155, z: 0},
+        dimTextPos: {x: 0, y: -200, z: 70},
+        dimOrientation: OrientationType.HORIZONTAL,
+      },
+      dxfView: ViewType.RIGHT_90,
+    }
+    dimensions.push(thicknessDim1)
+
+    const upperCylHeight: DimensionType = {
+      productId: flange,
+      dimParam: {
+        dimType: 'LinearDimension',
+        dimName: 'Height',
+        dimLabel: 'Height = ',
+        dimStartPos: {x: 0, y: 95, z: 110},
+        dimEndPos: {x: 0, y: 95, z: 30},
+        dimTextPos: {x: 0, y: 200, z: 70},
+        dimOrientation: OrientationType.HORIZONTAL,
+      },
+      dxfView: ViewType.RIGHT_90,
+    }
+    dimensions.push(upperCylHeight)
+
+    await api.addDimensions(...dimensions)
+
+
+    await api.create2DViews(flange, [ViewType.TOP, ViewType.RIGHT, ViewType.RIGHT_90, ViewType.ISO])
+    await api.place2DViews(flange, [
+      { viewType: ViewType.ISO, vector: { x: 500, y: 500, z: 0 } },
+      { viewType: ViewType.RIGHT, vector: { x: 500, y: 0, z: 0 } },
+      { viewType: ViewType.RIGHT_90, vector: { x: 1000, y: 0, z: 0 } },
+    ])
+
+
+    const dataDxf = await api.exportDXF(flange)
+    if (dataDxf) {
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([dataDxf], { type: 'application/octet-stream' }))
+      link.download = `FlangeDwg.dxf`
+      link.click()
+    }
+
+
+
+
+
 
     return flange
   }
