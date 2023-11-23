@@ -1,6 +1,7 @@
 import { ApiHistory, DimensionType, history } from '@buerli.io/headless'
 import {
   BooleanOperationType,
+  CCClasses,
   ChamferType,
   OrientationType,
   ViewType,
@@ -121,42 +122,87 @@ export const create: Create = async (apiType, params, options) => {
     )*/
     const diameter: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Durchmesser1',
-        dimLabel: 'Durchmesser = ',
-        dimStartPos: {x: -155, y: 0, z: 0},
-        dimEndPos: {x: 155, y: 0, z: 0},
-        dimTextPos: {x: 0, y: 200, z: 0},
-        dimOrientation: OrientationType.ALIGNED,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Durchmesser1',
+        label: 'Durchmesser = ',
+        startPos: {x: -155, y: 0, z: 0},
+        endPos: {x: 155, y: 0, z: 0},
+        textPos: {x: 0, y: 200, z: 0},
+        orientation: OrientationType.ALIGNED,
       },
       dxfView: ViewType.TOP,
     }
     dimensions.push(diameter)
+
+    const innerDiameter: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'InnerHole',
+        label: 'DurchmesserIH = ',
+        startPos: {x: -0.70710678*80, y: -0.70710678*80, z: 110},
+        endPos: {x: 0.70710678*80, y: 0.70710678*80, z: 110},
+        textPos: {x: 100, y: -150, z: 110},
+        orientation: OrientationType.ALIGNED,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(innerDiameter)
+
+    const angle: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCAngularDimension,
+        name: 'Angle',
+        label: 'Angle = ',
+        startPos: {x: -1, y: 1, z: 30},
+        endPos: {x: 1, y: 1, z: 30},
+        cornerPos: {x: 0, y: 0, z: 30},
+        textPos: {x: -80, y: 100, z: 30},
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(angle)
+
+    const radius: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCRadialDimension,
+        name: 'Radius',
+        label: 'Radius = ',
+        centerPos: {x: 0, y: 0, z: 110},
+        textPos: {x: -100, y: -100, z: 110},
+        radius: 80,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(radius)
+
     const holeDiameter: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Durchmesser2',
-        dimLabel: 'Durchmesser = ',
-        dimStartPos: {x: -15, y: -125, z: 0},
-        dimEndPos: {x: 15, y: -125, z: 0},
-        dimTextPos: {x: 0, y: -200, z: 0},
-        dimOrientation: OrientationType.HORIZONTAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Durchmesser2',
+        label: 'Durchmesser = ',
+        startPos: {x: -15, y: -125, z: 30},
+        endPos: {x: 15, y: -125, z: 30},
+        textPos: {x: 0, y: -200, z: 30},
+        orientation: OrientationType.HORIZONTAL,
       },
       dxfView: ViewType.TOP,
     }
     dimensions.push(holeDiameter)
     const thicknessDim: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Dicke',
-        dimLabel: 'Dicke = ',
-        dimStartPos: {x: 0, y: -155, z: 30},
-        dimEndPos: {x: 0, y: -155, z: 0},
-        dimTextPos: {x: 0, y: -200, z: 70},
-        dimOrientation: OrientationType.VERTICAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Dicke',
+        label: 'Dicke = ',
+        startPos: {x: 0, y: -155, z: 30},
+        endPos: {x: 0, y: -155, z: 0},
+        textPos: {x: 0, y: -200, z: 70},
+        orientation: OrientationType.VERTICAL,
       },
       dxfView: ViewType.RIGHT,
     }
@@ -164,14 +210,14 @@ export const create: Create = async (apiType, params, options) => {
 
     const thicknessDimA: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'DickeA',
-        dimLabel: 'DickeA = ',
-        dimStartPos: {x: 0, y: -155, z: 30},
-        dimEndPos: {x: 0, y: -155, z: 0},
-        dimTextPos: {x: 0, y: -200, z: 70},
-        dimOrientation: OrientationType.ALIGNED,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'DickeA',
+        label: 'DickeA = ',
+        startPos: {x: 0, y: -155, z: 30},
+        endPos: {x: 0, y: -155, z: 0},
+        textPos: {x: 0, y: -200, z: 70},
+        orientation: OrientationType.ALIGNED,
       },
       dxfView: ViewType.RIGHT,
     }
@@ -179,15 +225,15 @@ export const create: Create = async (apiType, params, options) => {
 
     const thicknessDimA1: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'DickeA_Angle',
-        dimLabel: 'DickeA_Angle = ',
-        dimStartPos: {x: 0, y: -155, z: 30},
-        dimEndPos: {x: 0, y: -155, z: 0},
-        dimTextPos: {x: 0, y: -200, z: 70},
-        dimTextAngle: 45*Math.PI/180,
-        dimOrientation: OrientationType.ALIGNED,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'DickeA_Angle',
+        label: 'DickeA_Angle = ',
+        startPos: {x: 0, y: -155, z: 30},
+        endPos: {x: 0, y: -155, z: 0},
+        textPos: {x: 0, y: -200, z: 70},
+        textAngle: 45*Math.PI/180,
+        orientation: OrientationType.ALIGNED,
       },
       dxfView: ViewType.RIGHT,
     }
@@ -195,14 +241,14 @@ export const create: Create = async (apiType, params, options) => {
 
     const upperCylDiameter: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Durchmesser2',
-        dimLabel: 'Durchmesser = ',
-        dimStartPos: {x: 0, y: 95, z: 108},
-        dimEndPos: {x: 0, y: -95, z: 108},
-        dimTextPos: {x: 0, y: 0, z: 150},
-        dimOrientation: OrientationType.HORIZONTAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Durchmesser2',
+        label: 'Durchmesser = ',
+        startPos: {x: 0, y: 95, z: 108},
+        endPos: {x: 0, y: -95, z: 108},
+        textPos: {x: 0, y: 0, z: 150},
+        orientation: OrientationType.HORIZONTAL,
       },
       dxfView: ViewType.RIGHT,
     }
@@ -210,14 +256,14 @@ export const create: Create = async (apiType, params, options) => {
 
     const thicknessDim1: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Dicke1',
-        dimLabel: 'Dicke1 = ',
-        dimStartPos: {x: 0, y: -155, z: 30},
-        dimEndPos: {x: 0, y: -155, z: 0},
-        dimTextPos: {x: 0, y: -200, z: 70},
-        dimOrientation: OrientationType.HORIZONTAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Dicke1',
+        label: 'Dicke1 = ',
+        startPos: {x: 0, y: -155, z: 30},
+        endPos: {x: 0, y: -155, z: 0},
+        textPos: {x: 0, y: -200, z: 70},
+        orientation: OrientationType.HORIZONTAL,
       },
       dxfView: ViewType.RIGHT_90,
     }
@@ -225,14 +271,14 @@ export const create: Create = async (apiType, params, options) => {
 
     const upperCylHeight: DimensionType = {
       productId: flange,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimName: 'Height',
-        dimLabel: 'Height = ',
-        dimStartPos: {x: 0, y: 95, z: 110},
-        dimEndPos: {x: 0, y: 95, z: 30},
-        dimTextPos: {x: 0, y: 200, z: 70},
-        dimOrientation: OrientationType.HORIZONTAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        name: 'Height',
+        label: 'Height = ',
+        startPos: {x: 0, y: 95, z: 110},
+        endPos: {x: 0, y: 95, z: 30},
+        textPos: {x: 0, y: 200, z: 70},
+        orientation: OrientationType.HORIZONTAL,
       },
       dxfView: ViewType.RIGHT_90,
     }
