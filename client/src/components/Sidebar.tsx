@@ -46,7 +46,7 @@ const Options: React.FC<{
   active?: string | undefined
   onChange: (value: string) => void
 }> = ({ examples, exampleKeys, active, onChange }) => {
-  const disabled = useStore(s => s.disabled)
+  const busy = useStore(s => s.busy)
   return (
     <Collapse
       accordion
@@ -60,7 +60,7 @@ const Options: React.FC<{
           header={<div style={active === key ? activeStyle : {}}>{examples[key].label}</div>}
           key={key}
           showArrow={false}
-          collapsible={disabled ? 'disabled' : 'header'}>
+          collapsible={busy ? 'disabled' : 'header'}>
           <div style={{ paddingLeft: '20px' }}>
             {examples[key].paramsMap.length > 0 && <Params />}
           </div>

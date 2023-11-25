@@ -136,8 +136,7 @@ initExamples()
 type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
-  loading?: boolean
-  disabled?: boolean
+  busy?: boolean
   set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
