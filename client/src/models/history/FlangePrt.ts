@@ -120,7 +120,7 @@ export const create: Create = async (apiType, params, options) => {
       false,
       'WCSBoltHoleTop',
     )*/
-    const diameter: DimensionType = {
+    const diameterLD: DimensionType = {
       productId: flange,
       param: {
         type: CCClasses.CCLinearDimension,
@@ -133,14 +133,15 @@ export const create: Create = async (apiType, params, options) => {
       },
       dxfView: ViewType.TOP,
     }
-    dimensions.push(diameter)
+    dimensions.push(diameterLD)
 
-    const innerDiameter: DimensionType = {
+    const innerDiameterEV: DimensionType = {
       productId: flange,
       param: {
         type: CCClasses.CCLinearDimension,
-        name: 'InnerHole',
-        label: 'DurchmesserIH = ',
+        name: 'InnerHole_EV',
+        label: 'Durchmesser_EV = 160',
+        value: "",//EmptyValue
         startPos: {x: -0.70710678*80, y: -0.70710678*80, z: 110},
         endPos: {x: 0.70710678*80, y: 0.70710678*80, z: 110},
         textPos: {x: 100, y: -150, z: 110},
@@ -148,22 +149,60 @@ export const create: Create = async (apiType, params, options) => {
       },
       dxfView: ViewType.TOP,
     }
-    dimensions.push(innerDiameter)
+    dimensions.push(innerDiameterEV)
 
-    const angle: DimensionType = {
+
+    const angle_cw: DimensionType = {
       productId: flange,
       param: {
         type: CCClasses.CCAngularDimension,
-        name: 'Angle',
-        label: 'Angle = ',
+        name: 'AngleCW',
+        label: 'AngleCW = ',
+//        value: "<>°",//placeholder, ° is not usable for server (dxf)
+        value: "<>deg",//placeholder
         startPos: {x: -1, y: 1, z: 30},
         endPos: {x: 1, y: 1, z: 30},
         cornerPos: {x: 0, y: 0, z: 30},
-        textPos: {x: -80, y: 100, z: 30},
+        textPos: {x: 40, y: 170, z: 30},
+        isCCW: false,
       },
       dxfView: ViewType.TOP,
     }
-    dimensions.push(angle)
+    dimensions.push(angle_cw)
+
+    const angle_ccw: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCAngularDimension,
+        name: 'AngleCCW',
+        label: 'AngleCCW = ',
+        startPos: {x: -1, y: 1, z: 30},
+        endPos: {x: 1, y: 1, z: 30},
+        cornerPos: {x: 0, y: 0, z: 30},
+  //      textPos: {x: -80, y: 150, z: 30},//dxf would display 90° angle, as textpositions drives angle which is used.
+  //                                       //If text in dxf is placed inside or outside of angle is driven by the size of the angle
+        textPos: {x: -80, y: -150, z: 30},
+  isCCW: true,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(angle_ccw)
+
+    const angle_cw1: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCAngularDimension,
+        name: 'AngleCWSmall',
+        label: 'AngleCWSmall = ',
+        startPos: {x: -1, y: -0.01, z: 30},
+        endPos: {x: -1, y: 0.01, z: 30},
+        cornerPos: {x: 0, y: 0, z: 30},
+        textPos: {x: -200, y: 0, z: 30},//dimtext is placed outside in dxf
+        isCCW: false,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(angle_cw1)
 
     const radius: DimensionType = {
       productId: flange,
@@ -178,6 +217,20 @@ export const create: Create = async (apiType, params, options) => {
       dxfView: ViewType.TOP,
     }
     dimensions.push(radius)
+
+    const diameter: DimensionType = {
+      productId: flange,
+      param: {
+        type: CCClasses.CCDiameterDimension,
+        name: 'Diameter',
+        label: 'Diameter = ',
+        centerPos: {x: 0, y: 0, z: 110},
+        textPos: {x: 200, y: 20, z: 110},
+        radius: 95,
+      },
+      dxfView: ViewType.TOP,
+    }
+    dimensions.push(diameter)
 
     const holeDiameter: DimensionType = {
       productId: flange,
@@ -243,8 +296,10 @@ export const create: Create = async (apiType, params, options) => {
       productId: flange,
       param: {
         type: CCClasses.CCLinearDimension,
-        name: 'Durchmesser2',
-        label: 'Durchmesser = ',
+        name: 'DurchmesserDM',
+        label: '',
+//        value: 'Ø <>',Ø is not usable for server (dxf)
+        value: 'DM <>',
         startPos: {x: 0, y: 95, z: 108},
         endPos: {x: 0, y: -95, z: 108},
         textPos: {x: 0, y: 0, z: 150},
