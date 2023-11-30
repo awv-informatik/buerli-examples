@@ -27,6 +27,8 @@ export const paramsMap: Param[] = [
   { index: ns, name: 'nofSegments', type: ParamType.Number, value: 0 },
   { index: pp, name: 'plugPosition', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
   { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },
+  { index: 902, name: 'saveAsDxf', type: ParamType.Button, value: exportDXF },
+  { index: 903, name: 'saveAsSvg', type: ParamType.Button, value: exportSVG },
 
   // string example
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
@@ -212,36 +214,15 @@ async function updatePlugPos(plugPos: number, api: ApiHistory) {
 
   // Electric and pneumatic plug
   const fcPneumaticPlug: FastenedConstraintType = {
-    constrId: constrPneumaticPlug.constrId,
-    mate1: {
-      matePath: pneumaticPlug.matePath,
-      wcsId: pneumaticPlug.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrPneumaticPlug.mate2.matePath,
-      wcsId: constrPneumaticPlug.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: constrPneumaticPlug.xOffset,
-    yOffset: constrPneumaticPlug.yOffset,
-    zOffset: constrPneumaticPlug.zOffset,
+    ...constrPneumaticPlug, mate1: {
+      ...constrPneumaticPlug.mate1, matePath: pneumaticPlug.matePath, wcsId: pneumaticPlug.wcsId
+    }
   }
 
   const fcElectricPlug: FastenedConstraintType = {
-    constrId: constrElectricPlug.constrId,
-    mate1: {
-      matePath: electricPlug.matePath,
-      wcsId: electricPlug.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: constrElectricPlug.mate2,
-    xOffset: constrElectricPlug.xOffset,
-    yOffset: constrElectricPlug.yOffset,
-    zOffset: constrElectricPlug.zOffset,
+    ...constrElectricPlug, mate1: {
+      ...constrElectricPlug.mate1, matePath: electricPlug.matePath, wcsId: electricPlug.wcsId
+    }
   }
 
   await api.updateFastenedConstraints(fcPneumaticPlug, fcElectricPlug)
@@ -333,19 +314,7 @@ async function updateWalzeDir(api: ApiHistory) {
       break
   }
   constrWalzeOrigin.mate1.flip = flipWalze
-
-  await api.updateFastenedOriginConstraints({
-    constrId: constrWalzeOrigin.constrId,
-    mate1: {
-      matePath: constrWalzeOrigin.mate1.matePath,
-      wcsId: constrWalzeOrigin.mate1.wcsId,
-      flip: flipWalze,
-      reoriented: constrWalzeOrigin.mate1.reoriented,
-    },
-    xOffset: constrWalzeOrigin.xOffset,
-    yOffset: constrWalzeOrigin.yOffset,
-    zOffset: constrWalzeOrigin.zOffset,
-  })
+  await api.updateFastenedOriginConstraints(constrWalzeOrigin)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -407,118 +376,40 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
 
   // Arrows
   const fcArrow0Out: FastenedConstraintType = {
-    constrId: constrArrow0Out.constrId,
-    mate1: {
-      matePath: constrArrow0Out.mate1.matePath,
-      wcsId: constrArrow0Out.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrArrow0Out.mate2.matePath,
-      wcsId: constrArrow0Out.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientArrow0Out,
-    },
-    xOffset: constrArrow0Out.xOffset,
-    yOffset: constrArrow0Out.yOffset,
-    zOffset: constrArrow0Out.zOffset,
+    ...constrArrow0Out, mate2: {
+      ...constrArrow0Out.mate2, reoriented: reorientArrow0Out
+    }
   }
 
   const fcArrow1Out: FastenedConstraintType = {
-    constrId: constrArrow1Out.constrId,
-    mate1: {
-      matePath: constrArrow1Out.mate1.matePath,
-      wcsId: constrArrow1Out.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrArrow1Out.mate2.matePath,
-      wcsId: constrArrow1Out.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientArrow1Out,
-    },
-    xOffset: constrArrow1Out.xOffset,
-    yOffset: constrArrow1Out.yOffset,
-    zOffset: constrArrow1Out.zOffset,
+    ...constrArrow1Out, mate2: {
+      ...constrArrow1Out.mate2, reoriented: reorientArrow1Out
+    }
   }
 
   const fcArrow0In: FastenedConstraintType = {
-    constrId: constrArrow0In.constrId,
-    mate1: {
-      matePath: constrArrow0In.mate1.matePath,
-      wcsId: constrArrow0In.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrArrow0In.mate2.matePath,
-      wcsId: constrArrow0In.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientArrow0In,
-    },
-    xOffset: constrArrow0In.xOffset,
-    yOffset: constrArrow0In.yOffset,
-    zOffset: constrArrow0In.zOffset,
+    ...constrArrow0In, mate2: {
+      ...constrArrow0In.mate2, reoriented: reorientArrow0In
+    }
   }
 
   const fcArrow1In: FastenedConstraintType = {
-    constrId: constrArrow1In.constrId,
-    mate1: {
-      matePath: constrArrow1In.mate1.matePath,
-      wcsId: constrArrow1In.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrArrow1In.mate2.matePath,
-      wcsId: constrArrow1In.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientArrow1In,
-    },
-    xOffset: constrArrow1In.xOffset,
-    yOffset: constrArrow1In.yOffset,
-    zOffset: constrArrow1In.zOffset,
+    ...constrArrow1In, mate2: {
+      ...constrArrow1In.mate2, reoriented: reorientArrow1In
+    }
   }
 
   // Logos
   const fcLogo0: FastenedConstraintType = {
-    constrId: constrLogo0.constrId,
-    mate1: {
-      matePath: constrLogo0.mate1.matePath,
-      wcsId: constrLogo0.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrLogo0.mate2.matePath,
-      wcsId: constrLogo0.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientLogo0,
-    },
-    xOffset: constrLogo0.xOffset,
-    yOffset: constrLogo0.yOffset,
-    zOffset: constrLogo0.zOffset,
+    ...constrLogo0, mate2: {
+      ...constrLogo0.mate2, reoriented: reorientLogo0
+    }
   }
 
   const fcLogo1: FastenedConstraintType = {
-    constrId: constrLogo1.constrId,
-    mate1: {
-      matePath: constrLogo1.mate1.matePath,
-      wcsId: constrLogo1.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    mate2: {
-      matePath: constrLogo1.mate2.matePath,
-      wcsId: constrLogo1.mate2.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientLogo1,
-    },
-    xOffset: constrLogo1.xOffset,
-    yOffset: constrLogo1.yOffset,
-    zOffset: constrLogo1.zOffset,
+    ...constrLogo1, mate2: {
+      ...constrLogo1.mate2, reoriented: reorientLogo1
+    }
   }
 
   await api.updateFastenedConstraints(
@@ -532,29 +423,15 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, api: ApiHis
 
   // Frames (End)
   const focEnd1: FastenedOriginConstraintType = {
-    constrId: constrEnd1.constrId,
-    mate1: {
-      matePath: constrEnd1.mate1.matePath,
-      wcsId: constrEnd1.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: reorientEnd1,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: -walzeLength / 2,
+    ...constrEnd1, mate1: {
+      ...constrEnd1.mate1, reoriented: reorientEnd1
+    }, zOffset: -walzeLength / 2
   }
 
   const focEnd2: FastenedOriginConstraintType = {
-    constrId: constrEnd2.constrId,
-    mate1: {
-      matePath: constrEnd2.mate1.matePath,
-      wcsId: constrEnd2.mate1.wcsId,
-      flip: FlipType.FLIP_Z_INV,
-      reoriented: reorientEnd2,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: walzeLength / 2,
+    ...constrEnd2, mate1: {
+      ...constrEnd2.mate1, reoriented: reorientEnd2
+    }, zOffset: walzeLength / 2
   }
 
   await api.updateFastenedOriginConstraints(focEnd1, focEnd2)
@@ -569,30 +446,12 @@ async function updateWalze(walzeLength: number, api: ApiHistory) {
 
   // Set offset in z-Dir for frame0
   const focEnd1: FastenedOriginConstraintType = {
-    constrId: constrEnd1.constrId,
-    mate1: {
-      matePath: constrEnd1.mate1.matePath,
-      wcsId: constrEnd1.mate1.wcsId,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: -walzeLength / 2,
+    ...constrEnd1, zOffset: -walzeLength / 2
   }
 
   // Set offset in z-Dir for frame1
   const focEnd2: FastenedOriginConstraintType = {
-    constrId: constrEnd2.constrId,
-    mate1: {
-      matePath: constrEnd2.mate1.matePath,
-      wcsId: constrEnd2.mate1.wcsId,
-      flip: FlipType.FLIP_Z_INV,
-      reoriented: ReorientedType.REORIENTED_180,
-    },
-    xOffset: 0,
-    yOffset: 0,
-    zOffset: walzeLength / 2,
+    ...constrEnd2, zOffset: walzeLength / 2
   }
 
   await api.updateFastenedOriginConstraints(focEnd1, focEnd2)
@@ -804,9 +663,8 @@ async function prepareViews(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export DXF is not available in the free version, please contact AWV Informatik for more information
+ * Export DXF is not available for arm64 systems
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function exportDXF(api: ApiHistory) {
   const productId = await prepareViews(api)
   const data = await api.exportDXF(productId)
@@ -820,9 +678,8 @@ async function exportDXF(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export SVG is not available in the free version, please contact AWV Informatik for more information
+ * Export SVG is not available for arm64 systems
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function exportSVG(api: ApiHistory) {
   const productId = await prepareViews(api)
   const data = await api.exportSVG(productId)

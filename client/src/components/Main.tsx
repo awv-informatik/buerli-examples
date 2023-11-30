@@ -20,7 +20,7 @@ export const Main: React.FC = () => {
   const exampleIds = useStore(s => s.examples.objs)
   const activeExample = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
-  const loading = useStore(s => s.loading)
+  const busy = useStore(s => s.busy)
   const [visible, setVisible] = React.useState<boolean>(true)
 
   const widthCodeStore = useResizeStore(500)
@@ -70,7 +70,7 @@ export const Main: React.FC = () => {
               </group>
             </GizmoHelper>
           </Canvas>
-          {loading && <Spin />}
+          {busy && <Spin />}
         </CanvasContainer>
         {visible && (
           <div style={{ width: widthCode }}>
@@ -105,17 +105,17 @@ const Part: React.FC = () => {
 
   const onSelect = React.useCallback(() => {
     fit()
-    set({ loading: false })
+    set({ busy: false })
   }, [fit, set])
 
   const onResume = React.useCallback(() => {
-    set({ loading: true })
+    set({ busy: true })
   }, [set])
 
   React.useEffect(() => {
     headlessApi.current = null
     setMeshes([])
-    set({ loading: true })
+    set({ busy: true })
 
     cad.init(async api => {
       setAPI(exampleId, api)
@@ -134,7 +134,7 @@ const Part: React.FC = () => {
         setMeshes([])
         console.error(error)
       } finally {
-        set({ loading: false })
+        set({ busy: false })
         fit()
       }
     })
@@ -155,7 +155,7 @@ const Part: React.FC = () => {
   React.useEffect(() => {
     const run = async () => {
       if (headlessApi.current && update && params) {
-        set({ loading: true })
+        set({ busy: true })
         try {
           productOrSolidIds.current = await update(headlessApi.current, productOrSolidIds.current, params)
           if (getBufferGeom) {
@@ -172,7 +172,7 @@ const Part: React.FC = () => {
           setMeshes([])
           console.error(error)
         } finally {
-          set({ loading: false })
+          set({ busy: false })
         }
       }
     }
