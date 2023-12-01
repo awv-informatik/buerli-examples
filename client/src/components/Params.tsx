@@ -48,6 +48,8 @@ const setParamIfValChanged = (
 const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
   const { index, type, value } = param
   const exampleId = useStore(s => s.activeExample)
+  const busy = useStore(s => s.busy)
+  const set = useStore(s => s.set)
   const setParam = useStore(s => s.setParam)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index])
   const api = useStore(s => s.examples.objs[exampleId].api)
@@ -65,6 +67,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
               setParamIfValChanged(prs(e.target.value), val, index)
             }
           }}
+          disabled={busy}
         />
       ) : type === ParamType.Checkbox ? (
         <input
@@ -73,6 +76,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
           onChange={(e: any) => {
             setParamIfValChanged(e.target.checked, val, index)
           }}
+          disabled={busy}
         />
       ) : type === ParamType.Enum ? (
         <EnumParam param={param} />
@@ -82,10 +86,13 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
         <DropdownParam param={param} />
       ) : type === ParamType.Button ? (
         <button
-          onClick={e => {
-            value(api, val)
+          onClick={async e => {
+            set({ busy: true })
+            await value(api, val)
+            set({ busy: false })
             setParam(exampleId, index, Date.now())
           }}
+          disabled={busy}
           style={{ cursor: 'pointer' }}>
           run
         </button>
@@ -98,6 +105,7 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
+  const busy = useStore(s => s.busy)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const marks: any = {}
   for (let i = 0; i < vals.length; i++) {
@@ -115,6 +123,7 @@ const EnumParam: React.FC<{ param: Param }> = ({ param }) => {
       onAfterChange={(e: any) => {
         setParamIfValChanged(vals[e], val, index)
       }}
+      disabled={busy}
     />
   )
 }
@@ -123,6 +132,7 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, step, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
+  const busy = useStore(s => s.busy)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   const min = vals[0]
   const max = vals[vals.length - 1]
@@ -142,6 +152,7 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
       onAfterChange={(e: any) => {
         setParamIfValChanged(e, val, index)
       }}
+      disabled={busy}
     />
   )
 }
@@ -150,11 +161,12 @@ const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
   const exampleId = useStore(s => s.activeExample)
+  const busy = useStore(s => s.busy)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   return (
     <Dropdown
       overlay={
-        <Menu style={{ maxHeight: '255px', overflow: 'auto' }}>
+        <Menu style={{ maxHeight: '255px', overflow: 'auto' }} disabled={busy}>
           {vals.map((c, i) => {
             return (
               <Menu.Item
