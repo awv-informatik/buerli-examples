@@ -134,7 +134,6 @@ async function createDimensions(api: ApiHistory) {
   const angleFrom270InRad = Math.PI - (holeIndex * angleBetweenHolesInRad)  // delta angle from 270°
   const xHoleCenter = Math.sin(angleFrom270InRad) * 125 // x Pos of the hole center
   const yHoleCenter = Math.cos(angleFrom270InRad) * 125 // y Pos of the hole center
-  console.info(holeIndex)
   const holeDiameter: DimensionType = {
     productId,
     param: {
