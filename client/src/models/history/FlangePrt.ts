@@ -1,10 +1,7 @@
-import { ApiHistory, DimensionType, history } from '@buerli.io/headless'
+import { ApiHistory, history } from '@buerli.io/headless'
 import {
   BooleanOperationType,
-  CCClasses,
   ChamferType,
-  OrientationType,
-  ViewType,
   WorkAxisType,
   WorkCoordSystemType,
 } from '@buerli.io/classcad'
@@ -24,7 +21,6 @@ export const create: Create = async (apiType, params, options) => {
   const thickness = 30
   const upperCylDiam = 190
   const holeOffset = upperCylDiam / 2 + thickness
-  const dimensions: DimensionType[] = []
   const holeOffset1Bottom = { x: 0, y: holeOffset, z: 0 }
   const holeOffset1Top = { x: 0, y: holeOffset, z: thickness }
 
@@ -75,7 +71,7 @@ export const create: Create = async (apiType, params, options) => {
     )
     await api.boolean(flange, BooleanOperationType.SUBTRACTION, [flangeSolid1, subCylFlange])
 
-   /* options?.onSelect()
+    options?.onSelect()
     const selections = await api.selectGeometry([GraphicType.ARC, GraphicType.CIRCLE], 2)
     options?.onResume()
     const flange2 = await api.chamfer(flange, ChamferType.EQUAL_DISTANCE, selections.map(sel => sel.graphicId), 2, 2, 45)
@@ -119,250 +115,8 @@ export const create: Create = async (apiType, params, options) => {
       rotation,
       false,
       'WCSBoltHoleTop',
-    )*/
-    const diameterLD: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'Durchmesser1',
-        label: 'Durchmesser = ',
-        startPos: {x: -155, y: 0, z: 0},
-        endPos: {x: 155, y: 0, z: 0},
-        textPos: {x: 0, y: 200, z: 0},
-        orientation: OrientationType.ALIGNED,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(diameterLD)
-
-    const innerDiameterEV: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'InnerHole_EV',
-        label: 'Durchmesser_EV = 160',
-        value: "",//EmptyValue
-        startPos: {x: -0.70710678*80, y: -0.70710678*80, z: 110},
-        endPos: {x: 0.70710678*80, y: 0.70710678*80, z: 110},
-        textPos: {x: 100, y: -150, z: 110},
-        orientation: OrientationType.ALIGNED,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(innerDiameterEV)
-
-
-    const angle_cw: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCAngularDimension,
-        name: 'AngleCW',
-        label: 'AngleCW = ',
-//        value: "<>°",//placeholder, ° is not usable for server (dxf)
-        value: "<>deg",//placeholder
-        startPos: {x: -1, y: 1, z: 30},
-        endPos: {x: 1, y: 1, z: 30},
-        cornerPos: {x: 0, y: 0, z: 30},
-        textPos: {x: 40, y: 170, z: 30},
-        isCCW: false,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(angle_cw)
-
-    const angle_ccw: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCAngularDimension,
-        name: 'AngleCCW',
-        label: 'AngleCCW = ',
-        startPos: {x: -1, y: 1, z: 30},
-        endPos: {x: 1, y: 1, z: 30},
-        cornerPos: {x: 0, y: 0, z: 30},
-  //      textPos: {x: -80, y: 150, z: 30},//dxf would display 90° angle, as textpositions drives angle which is used.
-  //                                       //If text in dxf is placed inside or outside of angle is driven by the size of the angle
-        textPos: {x: -80, y: -150, z: 30},
-  isCCW: true,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(angle_ccw)
-
-    const angle_cw1: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCAngularDimension,
-        name: 'AngleCWSmall',
-        label: 'AngleCWSmall = ',
-        startPos: {x: -1, y: -0.01, z: 30},
-        endPos: {x: -1, y: 0.01, z: 30},
-        cornerPos: {x: 0, y: 0, z: 30},
-        textPos: {x: -200, y: 0, z: 30},//dimtext is placed outside in dxf
-        isCCW: false,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(angle_cw1)
-
-    const radius: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCRadialDimension,
-        name: 'Radius',
-        label: 'Radius = ',
-        centerPos: {x: 0, y: 0, z: 110},
-        textPos: {x: -100, y: -100, z: 110},
-        radius: 80,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(radius)
-
-    const diameter: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCDiameterDimension,
-        name: 'Diameter',
-        label: 'Diameter = ',
-        centerPos: {x: 0, y: 0, z: 110},
-        textPos: {x: 200, y: 20, z: 110},
-        radius: 95,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(diameter)
-
-    const holeDiameter: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'Durchmesser2',
-        label: 'Durchmesser = ',
-        startPos: {x: -15, y: -125, z: 30},
-        endPos: {x: 15, y: -125, z: 30},
-        textPos: {x: 0, y: -200, z: 30},
-        orientation: OrientationType.HORIZONTAL,
-      },
-      dxfView: ViewType.TOP,
-    }
-    dimensions.push(holeDiameter)
-    const thicknessDim: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'Dicke',
-        label: 'Dicke = ',
-        startPos: {x: 0, y: -155, z: 30},
-        endPos: {x: 0, y: -155, z: 0},
-        textPos: {x: 0, y: -200, z: 70},
-        orientation: OrientationType.VERTICAL,
-      },
-      dxfView: ViewType.RIGHT,
-    }
-    dimensions.push(thicknessDim)
-
-    const thicknessDimA: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'DickeA',
-        label: 'DickeA = ',
-        startPos: {x: 0, y: -155, z: 30},
-        endPos: {x: 0, y: -155, z: 0},
-        textPos: {x: 0, y: -200, z: 70},
-        orientation: OrientationType.ALIGNED,
-      },
-      dxfView: ViewType.RIGHT,
-    }
-    dimensions.push(thicknessDimA)
-
-    const thicknessDimA1: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'DickeA_Angle',
-        label: 'DickeA_Angle = ',
-        startPos: {x: 0, y: -155, z: 30},
-        endPos: {x: 0, y: -155, z: 0},
-        textPos: {x: 0, y: -200, z: 70},
-        textAngle: 45*Math.PI/180,
-        orientation: OrientationType.ALIGNED,
-      },
-      dxfView: ViewType.RIGHT,
-    }
-    dimensions.push(thicknessDimA1)
-
-    const upperCylDiameter: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'DurchmesserDM',
-        label: '',
-//        value: 'Ø <>',Ø is not usable for server (dxf)
-        value: 'DM <>',
-        startPos: {x: 0, y: 95, z: 108},
-        endPos: {x: 0, y: -95, z: 108},
-        textPos: {x: 0, y: 0, z: 150},
-        orientation: OrientationType.HORIZONTAL,
-      },
-      dxfView: ViewType.RIGHT,
-    }
-    dimensions.push(upperCylDiameter)
-
-    const thicknessDim1: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'Dicke1',
-        label: 'Dicke1 = ',
-        startPos: {x: 0, y: -155, z: 30},
-        endPos: {x: 0, y: -155, z: 0},
-        textPos: {x: 0, y: -200, z: 70},
-        orientation: OrientationType.HORIZONTAL,
-      },
-      dxfView: ViewType.RIGHT_90,
-    }
-    dimensions.push(thicknessDim1)
-
-    const upperCylHeight: DimensionType = {
-      productId: flange,
-      param: {
-        type: CCClasses.CCLinearDimension,
-        name: 'Height',
-        label: 'Height = ',
-        startPos: {x: 0, y: 95, z: 110},
-        endPos: {x: 0, y: 95, z: 30},
-        textPos: {x: 0, y: 200, z: 70},
-        orientation: OrientationType.HORIZONTAL,
-      },
-      dxfView: ViewType.RIGHT_90,
-    }
-    dimensions.push(upperCylHeight)
-
-    await api.addDimensions(...dimensions)
-
-
-    await api.create2DViews(flange, [ViewType.TOP, ViewType.RIGHT, ViewType.RIGHT_90, ViewType.ISO])
-    await api.place2DViews(flange, [
-      { viewType: ViewType.ISO, vector: { x: 500, y: 500, z: 0 } },
-      { viewType: ViewType.RIGHT, vector: { x: 500, y: 0, z: 0 } },
-      { viewType: ViewType.RIGHT_90, vector: { x: 1000, y: 0, z: 0 } },
-    ])
-
-
-    const dataDxf = await api.exportDXF(flange)
-    if (dataDxf) {
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([dataDxf], { type: 'application/octet-stream' }))
-      link.download = `FlangeDwg.dxf`
-      link.click()
-    }
-
-
-
-
-
-
+    )
+    
     return flange
   }
 }
