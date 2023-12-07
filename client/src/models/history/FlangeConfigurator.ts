@@ -13,8 +13,12 @@ export const paramsMap: Param[] = [
     step: 5,
     values: [40, 300],
   },
-  { index: 901, name: 'createDimensions', type: ParamType.Button, value: createDimensions },
+  { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },
+  { index: 902, name: 'saveAsDxf', type: ParamType.Button, value: exportDXF },
+  { index: 903, name: 'saveAsSvg', type: ParamType.Button, value: exportSVG },
 ].sort((a, b) => a.index - b.index)
+
+let currDimensions: number[] = []
 
 export const create: Create = async (apiType, params) => {
   const api = apiType as ApiHistory
@@ -23,20 +27,21 @@ export const create: Create = async (apiType, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const productId = await api.load(arraybuffer, 'ofb')
+  const [productId] = await api.load(arraybuffer, 'ofb')
 
   // Set initial values
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
 
   await api.setExpressions({
-    partId: productId[0],
+    partId: productId,
     members: [
       { name: 'holeCount', value: holesCount },
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
-  return productId[0]
+  await createDimensions(api, productId)
+  return productId
 }
 
 export const update: Update = async (apiType, productId, params) => {
@@ -47,13 +52,14 @@ export const update: Update = async (apiType, productId, params) => {
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
 
-  api.setExpressions({
+  await api.setExpressions({
     partId: productId,
     members: [
       { name: 'holeCount', value: holesCount },
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
+  await createDimensions(api, productId)
   return productId
 }
 
@@ -61,12 +67,11 @@ export const cad = new history()
 
 export default { create, update, paramsMap, cad }
 
-async function createDimensions(api: ApiHistory) {
+async function createDimensions(api: ApiHistory, productId: number) {
   const activeExample = storeApi.getState().activeExample
   const params = storeApi.getState().examples.objs[activeExample].params
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
-  const productId = await api.getCurrentProduct()
   const dimensions: DimensionType[] = []
 
   if (productId === null) {
@@ -156,12 +161,12 @@ async function createDimensions(api: ApiHistory) {
       type: CCClasses.CCLinearDimension,
       name: 'Thickness',
       label: 'Thickness = ',
-      startPos: { x: 155, y: 0, z: 30 },
-      endPos: { x: 155, y: 0, z: 0 },
-      textPos: { x: 200, y: 0, z: 70 },
+      startPos: { x: 0, y: -155, z: 0 },
+      endPos: { x: 0, y: -155, z: 30 },
+      textPos: { x: 0, y: -250, z: 70 },
       orientation: OrientationType.VERTICAL,
     },
-    dxfView: ViewType.LEFT,
+    dxfView: ViewType.RIGHT,
   }
   dimensions.push(thicknessDim)
 
@@ -198,13 +203,59 @@ async function createDimensions(api: ApiHistory) {
   }
   dimensions.push(upperCylHeight)
 
-  await api.addDimensions(...dimensions)
+  // If any dimensions already exist, remove them
+  if (currDimensions.length > 0) {
+    await api.removeDimensions(currDimensions)
+  }
+  currDimensions = await api.addDimensions(...dimensions)
+
   await api.create2DViews(productId, [ViewType.TOP, ViewType.RIGHT, ViewType.RIGHT_90, ViewType.ISO])
   await api.place2DViews(productId, [
     { viewType: ViewType.ISO, vector: { x: 500, y: 500, z: 0 } },
     { viewType: ViewType.RIGHT, vector: { x: 500, y: 0, z: 0 } },
     { viewType: ViewType.RIGHT_90, vector: { x: 1000, y: 0, z: 0 } },
   ])
-
   return productId
+}
+
+///////////////////////////////////////////////////////////////
+/**
+ * Export DXF is not available for arm64 systems
+ */
+ async function exportDXF(api: ApiHistory) {
+  const productId = await api.getCurrentProduct()
+  const data = await api.exportDXF(productId)
+  if (data) {
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.download = `Flange.dxf`
+    link.click()
+  }
+}
+
+///////////////////////////////////////////////////////////////
+/**
+ * Export SVG is not available for arm64 systems
+ */
+async function exportSVG(api: ApiHistory) {
+  const productId = await api.getCurrentProduct()
+  const data = await api.exportSVG(productId)
+  if (data) {
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.download = `Flange.svg`
+    link.click()
+  }
+}
+
+///////////////////////////////////////////////////////////////
+
+async function saveOfb(api: ApiHistory) {
+  const data = await api.save('ofb')
+  if (data) {
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.download = `Flange.ofb`
+    link.click()
+  }
 }
