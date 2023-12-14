@@ -108,7 +108,7 @@ async function createDimensions(api: ApiHistory, productId: number) {
       type: CCClasses.CCAngularDimension,
       name: 'Angle',
       label: 'Angle = ',
-      value: '<> deg', // <> = placeholder for value
+      value: '<>', // <> = placeholder for value
       startPos: { x: 0, y: 125, z: 30 },
       endPos: { x: xEndPos, y: yEndPos, z: 30 },
       cornerPos: { x: 0, y: 0, z: 30 },
