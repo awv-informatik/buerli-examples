@@ -18,7 +18,7 @@ function StampFit() {
   const stamp = useFit(f => f.stamp)
 
   React.useEffect(() => {
-    bounds?.refresh().clip().fit()
+    bounds?.refresh().reset().fit().clip()
   }, [bounds, stamp])
 
   return null
@@ -33,7 +33,7 @@ function DblClick() {
 
   React.useEffect(() => {
     function onDoubleClick() {
-      bounds?.refresh().clip().fit()
+      bounds?.refresh().reset().fit().clip()
     }
     gl.domElement.addEventListener('dblclick', onDoubleClick, { passive: true })
     return () => {
