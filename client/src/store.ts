@@ -71,12 +71,13 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
-  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis' },
+  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis_FC' },
   { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
   { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
   { exampleId: 'Pipes', label: 'Pipe Configurator', file: 'history/Pipes' },
+  { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly' },
 ]
 
 const storeApi = vanillaCreate<State>(set => ({
@@ -136,7 +137,7 @@ initExamples()
 type State = Readonly<{
   activeExample: string
   examples: { ids: string[]; objs: Record<string, Example> }
-  loading?: boolean
+  busy?: boolean
   set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
   setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
