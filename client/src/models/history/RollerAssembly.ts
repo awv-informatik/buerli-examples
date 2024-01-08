@@ -518,14 +518,14 @@ async function prepareViews(api: ApiHistory) {
 
   const frameWidth_D: DimensionType = {
     productId: productId,
-    dimParam: {
-      dimType: 'LinearDimension',
-      dimLabel: 'Endstuecklaenge = ',
-      dimStartPos: dimStartPos,
-      dimEndPos: dimEndPos,
-      dimTextPos: dimTextPos,
-      dimTextAngle: dimTextAngle,
-      dimOrientation: dimOrientation,
+    param: {
+      type: CCClasses.CCLinearDimension,
+      label: 'Endstuecklaenge = ',
+      startPos: dimStartPos,
+      endPos: dimEndPos,
+      textPos: dimTextPos,
+      textAngle: dimTextAngle,
+      orientation: dimOrientation,
     },
     dxfView: ViewType.TOP,
   }
@@ -569,14 +569,14 @@ async function prepareViews(api: ApiHistory) {
 
     segmentDiameter_D = {
       productId: productId,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimLabel: 'Segmentdurchmesser = ',
-        dimStartPos: dimStartPos,
-        dimEndPos: dimEndPos,
-        dimTextPos: dimTextPos,
-        dimTextAngle: dimTextAngle,
-        dimOrientation: dimOrientation,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        label: 'Segmentdurchmesser = ',
+        startPos: dimStartPos,
+        endPos: dimEndPos,
+        textPos: dimTextPos,
+        textAngle: dimTextAngle,
+        orientation: dimOrientation,
       },
       dxfView: ViewType.TOP,
     }
@@ -592,14 +592,14 @@ async function prepareViews(api: ApiHistory) {
 
     segmentWidth_SDR = {
       productId: productId,
-      dimParam: {
-        dimType: 'LinearDimension',
-        dimLabel: 'Segmentbreite = ',
-        dimStartPos: dimStartPos,
-        dimEndPos: dimEndPos,
-        dimTextPos: dimTextPos,
-        dimTextAngle: 0,
-        dimOrientation: OrientationType.HORIZONTAL,
+      param: {
+        type: CCClasses.CCLinearDimension,
+        label: 'Segmentbreite = ',
+        startPos: dimStartPos,
+        endPos: dimEndPos,
+        textPos: dimTextPos,
+        textAngle: 0,
+        orientation: OrientationType.HORIZONTAL,
       },
       dxfView: ViewType.RIGHT_90,
     }
@@ -613,14 +613,14 @@ async function prepareViews(api: ApiHistory) {
 
   const walzeLength_SDR: DimensionType = {
     productId: productId,
-    dimParam: {
-      dimType: 'LinearDimension',
-      dimLabel: 'Walzenlaenge = ',
-      dimStartPos: dimStartPos,
-      dimEndPos: dimEndPos,
-      dimTextPos: dimTextPos,
-      dimTextAngle: 0,
-      dimOrientation: OrientationType.HORIZONTAL,
+    param: {
+      type: CCClasses.CCLinearDimension,
+      label: 'Walzenlaenge = ',
+      startPos: dimStartPos,
+      endPos: dimEndPos,
+      textPos: dimTextPos,
+      textAngle: 0,
+      orientation: OrientationType.HORIZONTAL,
     },
     dxfView: ViewType.RIGHT_90,
   }
@@ -634,14 +634,14 @@ async function prepareViews(api: ApiHistory) {
 
   const frameDepth_SDR: DimensionType = {
     productId: productId,
-    dimParam: {
-      dimType: 'LinearDimension',
-      dimLabel: 'Endstuecktiefe = ',
-      dimStartPos: dimStartPos,
-      dimEndPos: dimEndPos,
-      dimTextPos: dimTextPos,
-      dimTextAngle: 0,
-      dimOrientation: OrientationType.HORIZONTAL,
+    param: {
+      type: CCClasses.CCLinearDimension,
+      label: 'Endstuecktiefe = ',
+      startPos: dimStartPos,
+      endPos: dimEndPos,
+      textPos: dimTextPos,
+      textAngle: 0,
+      orientation: OrientationType.HORIZONTAL,
     },
     dxfView: ViewType.RIGHT_90,
   }
