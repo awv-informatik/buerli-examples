@@ -77,6 +77,8 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
   { exampleId: 'Zeltbau', label: 'Zeltbau', file: 'history/Zeltbau' },
+  { exampleId: 'Zeltbau_TestCreate', label: 'Zeltbau_TestCreate', file: 'history/Zeltbau_TestCreate' },
+  { exampleId: 'Zeltbau_Test', label: 'Zeltbau_Test', file: 'history/Zeltbau_Test' },
   { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly' },
 ]
 
