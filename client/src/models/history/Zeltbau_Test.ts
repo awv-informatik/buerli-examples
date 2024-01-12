@@ -26,8 +26,6 @@ const defaultBreiteZelt = 4000
 const defaultLaengeZelt = 10000
 const defaultErkerBreite = 2670
 
-let dachPrt: number
-
 let zeltInstance: number
 let dachInstance: number
 let fensterLinksInstances: number[] = []
@@ -36,7 +34,13 @@ let tuereVorneInstance: number
 
 let sL_Part: number
 let sR_Part: number
-let vW_Part: number
+let rW_Part: number
+let vW_Einfach_Part: number
+let vW_Winkelbau_Part: number
+let vW_1Erker_Part: number
+let vW_2Erker_Part: number
+let vW_Parts: number[]
+let dach_Part: number
 let fenster110x70_Part: number
 let tuere189x127_Part: number
 
@@ -64,9 +68,23 @@ export const create: Create = async (apiType, params) => {
 
     ;[sL_Part] = await api.getPartTemplate('SL_Part_Ident')
     ;[sR_Part] = await api.getPartTemplate('SR_Part_Ident')
-    ;[vW_Part] = await api.getPartTemplate('VW_Part_Ident')
+    ;[rW_Part] = await api.getPartTemplate('RW_Part_Ident')
+    ;[vW_Einfach_Part] = await api.getPartTemplate('VW_Einfach_Part_Ident')
+    ;[vW_Winkelbau_Part] = await api.getPartTemplate('VW_Winkelbau_Part_Ident')
+    ;[vW_1Erker_Part] = await api.getPartTemplate('VW_1Erker_Part_Ident')
+    ;[vW_2Erker_Part] = await api.getPartTemplate('VW_2Erker_Part_Ident')
+    vW_Parts = [vW_Einfach_Part, vW_Winkelbau_Part, vW_1Erker_Part, vW_2Erker_Part]
+    ;[dach_Part] = await api.getPartTemplate('Dach_Ident')
     ;[fenster110x70_Part] = await api.getPartTemplate('Fenster110x70_Ident')
     ;[tuere189x127_Part] = await api.getPartTemplate('Tuere189x128_Ident')
+
+    await api.addInstances(...[
+      { productId: sL_Part, ownerId: rootAsm, transformation: originTransform, name: 'SL_Instance', options: { ident: 'SL_Instance_Ident'} }, 
+      { productId: sR_Part, ownerId: rootAsm, transformation: originTransform, name: 'SR_Instance', options: { ident: 'SR_Instance_Ident'} },
+      { productId: rW_Part, ownerId: rootAsm, transformation: originTransform, name: 'RW_Instance', options: { ident: 'RW_Instance_Ident'} },
+      { productId: vW_Einfach_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'} },
+      { productId: dach_Part, ownerId: rootAsm, transformation: originTransform, name: 'Dach_Instance', options: { ident: 'Dach_Instance_Ident'} },
+    ])
 
     // ;[zeltErkerPrt] = await api.getPartTemplate('Zelt_Erker')
     // ;[zeltEinfachPrt] = await api.getPartTemplate('Zelt_Einfach')
@@ -104,36 +122,45 @@ export const update: Update = async (apiType, productId, params) => {
     await updateTuereVorne(params.values, api, productId)
   }
 
+  if(check(paramsMap[zType])) {
+    await updateZeltType(params.values, api, productId)
+  }
+
   return productId
 }
 
-const updateZeltPrt = async (values: any[], api: ApiHistory) => {
-  const [zeltPrt] = await api.getProductsOfInstances([zeltInstance])
+// const updateZeltPrt = async (values: any[], api: ApiHistory) => {
+//   const [zeltPrt] = await api.getProductsOfInstances([zeltInstance])
 
-  // Anzahl Fenster und deren Offset berechnen
-  const zeltTiefe = values[zTiefe]
-  const anzFensterLinks = values[fLinks]
-  const yOffsetLinks = (zeltTiefe - (anzFensterLinks * fBreite)) / (anzFensterLinks + 1)
-  const anzFensterRechts = values[fRechts]
-  const yOffsetRechts = (zeltTiefe - (anzFensterRechts * fBreite)) / (anzFensterRechts + 1)
+//   // Anzahl Fenster und deren Offset berechnen
+//   const zeltTiefe = values[zTiefe]
+//   const anzFensterLinks = values[fLinks]
+//   const yOffsetLinks = (zeltTiefe - (anzFensterLinks * fBreite)) / (anzFensterLinks + 1)
+//   const anzFensterRechts = values[fRechts]
+//   const yOffsetRechts = (zeltTiefe - (anzFensterRechts * fBreite)) / (anzFensterRechts + 1)
 
-  await api.setExpressions(
-    { partId: zeltPrt, members: [
-      { name: 'B', value: values[zTiefe] },
-      { name: 'SL_0_yOffset', value: anzFensterLinks > 0 ? yOffsetLinks : zeltTiefe + 5000 },
-      { name: 'SL_1_yOffset', value: anzFensterLinks > 1 ? (2 * yOffsetLinks) + fBreite : zeltTiefe + 5000 },
-      { name: 'SL_2_yOffset', value: anzFensterLinks > 2 ? (3 * yOffsetLinks) + 2 * fBreite : zeltTiefe + 5000 },
-      { name: 'SR_0_yOffset', value: anzFensterRechts > 0 ? yOffsetRechts : zeltTiefe + 5000 },
-      { name: 'SR_1_yOffset', value: anzFensterRechts > 1 ? (2 * yOffsetRechts) + fBreite : zeltTiefe + 5000 },
-      { name: 'SR_2_yOffset', value: anzFensterRechts > 2 ? (3 * yOffsetRechts) + 2 * fBreite : zeltTiefe + 5000 },
-      { name: 'L', value: values[zLaenge] },
-      { name: 'FLeft', value: values[zLaenge] - fMiddle }  // Erker Sketch nachschieben?
-    ]},
-    { partId: dachPrt, members: [
-      { name: 'B', value: values[zTiefe] },
-      { name: 'L', value: values[zLaenge] }
-    ]}
-  )
+//   await api.setExpressions(
+//     { partId: zeltPrt, members: [
+//       { name: 'B', value: values[zTiefe] },
+//       { name: 'SL_0_yOffset', value: anzFensterLinks > 0 ? yOffsetLinks : zeltTiefe + 5000 },
+//       { name: 'SL_1_yOffset', value: anzFensterLinks > 1 ? (2 * yOffsetLinks) + fBreite : zeltTiefe + 5000 },
+//       { name: 'SL_2_yOffset', value: anzFensterLinks > 2 ? (3 * yOffsetLinks) + 2 * fBreite : zeltTiefe + 5000 },
+//       { name: 'SR_0_yOffset', value: anzFensterRechts > 0 ? yOffsetRechts : zeltTiefe + 5000 },
+//       { name: 'SR_1_yOffset', value: anzFensterRechts > 1 ? (2 * yOffsetRechts) + fBreite : zeltTiefe + 5000 },
+//       { name: 'SR_2_yOffset', value: anzFensterRechts > 2 ? (3 * yOffsetRechts) + 2 * fBreite : zeltTiefe + 5000 },
+//       { name: 'L', value: values[zLaenge] },
+//       { name: 'FLeft', value: values[zLaenge] - fMiddle }  // Erker Sketch nachschieben?
+//     ]},
+//     { partId: dachPrt, members: [
+//       { name: 'B', value: values[zTiefe] },
+//       { name: 'L', value: values[zLaenge] }
+//     ]}
+//   )
+// }
+
+const updateZeltType = async (values: any[], api: ApiHistory, productId: number) => {
+  await api.removeInstances({ id: 'VW_Instance_Ident'})
+  await api.addInstances({ productId: vW_Parts[values[zType]], ownerId: productId, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'} })
 }
 
 const updateTuereVorne = async (values: any[], api: ApiHistory, productId: number) => {
@@ -141,7 +168,7 @@ const updateTuereVorne = async (values: any[], api: ApiHistory, productId: numbe
     await api.removeInstances({ id: tuereVorneInstance})
   }
   // Create cutouts for windows
-  await api.setExpressions({ partId: vW_Part, members: [
+  await api.setExpressions({ partId: vW_Parts[values[zType]], members: [
     { name: 'TuerVW_Offset', value: values[posTuereVorne] },
   ]})
 
@@ -149,7 +176,7 @@ const updateTuereVorne = async (values: any[], api: ApiHistory, productId: numbe
     productId: tuere189x127_Part,
     ownerId: productId,
     transformation: [
-      { x: 4360, y: 0, z: 0},
+      { x: values[posTuereVorne], y: 0, z: 0},
       { x: 1, y: 0, z: 0},
       { x: 0, y: -1, z: 0},
     ],

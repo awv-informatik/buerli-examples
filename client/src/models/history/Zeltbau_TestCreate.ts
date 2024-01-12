@@ -31,28 +31,22 @@ export const create: Create = async (apiType, params) => {
     await api.loadProduct(tuere189x128AB, 'ofb', { ident: 'Tuere189x128_Ident'})
 
     const sL_Part = await createSL(api)
-    await api.addInstances({ productId: sL_Part, ownerId: rootAsm, transformation: originTransform, name: 'SL_Instance', options: { ident: 'SL_Instance_Ident'}})
-
     const sR_Part = await createSR(api)
-    await api.addInstances({ productId: sR_Part, ownerId: rootAsm, transformation: originTransform, name: 'SR_Instance', options: { ident: 'SR_Instance_Ident'}})
-
     const rW_Part = await createRW(api)
-    await api.addInstances({ productId: rW_Part, ownerId: rootAsm, transformation: originTransform, name: 'RW_Instance', options: { ident: 'RW_Instance_Ident'}})
-
     const vW_Einfach_Part = await createVW_Einfach(api)
-    await api.addInstances({ productId: vW_Einfach_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'}})
-
     const vW_Winkelbau_Part = await createVW_Winkelbau(api)
-    //await api.addInstances({ productId: vW_Winkelbau_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Winkelbau_Instance', options: { ident: 'VW_Winkelbau_Instance_Ident'}})
-
     const vW_1Erker_Part = await createVW_1Erker(api)
-    //await api.addInstances({ productId: vW_1Erker_Part, ownerId: rootAsm, transformation: originTransform, name: 'vW_1Erker_Instance', options: { ident: 'vW_1Erker_Instance_Ident'}})
-    
     const vW_2Erker_Part = await createVW_2Erker(api)
-    //await api.addInstances({ productId: vW_2Erker_Part, ownerId: rootAsm, transformation: originTransform, name: 'vW_2Erker_Instance', options: { ident: 'vW_2Erker_Instance_Ident'}})
-
     const dach_Part = await createDachGiebel(api)
-    await api.addInstances({ productId: dach_Part, ownerId: rootAsm, transformation: originTransform, name: 'Dach_Instance', options: { ident: 'Dach_Instance_Ident'}})
+
+    // await api.addInstances({ productId: sL_Part, ownerId: rootAsm, transformation: originTransform, name: 'SL_Instance', options: { ident: 'SL_Instance_Ident'}})
+    // await api.addInstances({ productId: sR_Part, ownerId: rootAsm, transformation: originTransform, name: 'SR_Instance', options: { ident: 'SR_Instance_Ident'}})
+    // await api.addInstances({ productId: rW_Part, ownerId: rootAsm, transformation: originTransform, name: 'RW_Instance', options: { ident: 'RW_Instance_Ident'}})
+    // await api.addInstances({ productId: vW_Einfach_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'}})
+    // await api.addInstances({ productId: vW_Winkelbau_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Winkelbau_Instance', options: { ident: 'VW_Winkelbau_Instance_Ident'}})
+    // await api.addInstances({ productId: vW_1Erker_Part, ownerId: rootAsm, transformation: originTransform, name: 'vW_1Erker_Instance', options: { ident: 'vW_1Erker_Instance_Ident'}})
+    // await api.addInstances({ productId: vW_2Erker_Part, ownerId: rootAsm, transformation: originTransform, name: 'vW_2Erker_Instance', options: { ident: 'vW_2Erker_Instance_Ident'}})
+    // await api.addInstances({ productId: dach_Part, ownerId: rootAsm, transformation: originTransform, name: 'Dach_Instance', options: { ident: 'Dach_Instance_Ident'}})
 
     await save(api, 'ZeltAsmTemplate.ofb')
   }
@@ -119,7 +113,7 @@ const createRW = async (api: ApiHistory) => {
 }
 
 const createVW_Einfach = async (api: ApiHistory) => {
-  const [wand_Part] = await api.loadProduct(aBTemplate, 'ofb', { ident: 'VW_Part_Ident'})
+  const [wand_Part] = await api.loadProduct(aBTemplate, 'ofb', { ident: 'VW_Einfach_Part_Ident'})
   const [wand_SketchRegion] = await api.getSketchRegion(wand_Part, 'VW_Einfach')
   const wand_Extrusion = await api.extrusion(wand_Part, wand_SketchRegion, ExtrusionType.UP, 0, 4000, 0, [0,0,1], 1)
   const [dach_SheetSR] = await api.getSketchRegion(wand_Part, 'DachSheet')
