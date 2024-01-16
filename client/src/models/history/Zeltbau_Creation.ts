@@ -27,9 +27,11 @@ export const create: Create = async (apiType, params) => {
   const rootAsm = await api.createRootAssembly('RootAsm', { ident: 'RootAsmIdent'})
 
   if (rootAsm) {
+    // Loading standard parts
     await api.loadProduct(fenster110x70AB, 'ofb', { ident: 'Fenster110x70_Ident'})
     await api.loadProduct(tuere189x128AB, 'ofb', { ident: 'Tuere189x128_Ident'})
 
+    // Creating the part templates
     const sL_Part = await createSL(api)
     const sR_Part = await createSR(api)
     const rW_Part = await createRW(api)
@@ -39,6 +41,7 @@ export const create: Create = async (apiType, params) => {
     const vW_2Erker_Part = await createVW_2Erker(api)
     const dach_Part = await createDachGiebel(api)
 
+    // Uncomment for testing purpose only
     // await api.addInstances({ productId: sL_Part, ownerId: rootAsm, transformation: originTransform, name: 'SL_Instance', options: { ident: 'SL_Instance_Ident'}})
     // await api.addInstances({ productId: sR_Part, ownerId: rootAsm, transformation: originTransform, name: 'SR_Instance', options: { ident: 'SR_Instance_Ident'}})
     // await api.addInstances({ productId: rW_Part, ownerId: rootAsm, transformation: originTransform, name: 'RW_Instance', options: { ident: 'RW_Instance_Ident'}})
@@ -52,7 +55,7 @@ export const create: Create = async (apiType, params) => {
   }
 
   const endTime = performance.now()
-  console.info(`Call to create Zeltbau took ${(endTime - startTime).toFixed(0)} milliseconds`)
+  console.info(`Creation of 'Zelt' part templates took ${(endTime - startTime).toFixed(0)} milliseconds`)
 
   return rootAsm
 }
@@ -145,10 +148,8 @@ const createVW_Winkelbau = async (api: ApiHistory) => {
   const dach_Sheet = await api.extrusion(wand_Part, dach_SheetSR, ExtrusionType.CUSTOM, -500, 6000, 0, [0,0,-1], 0)
   const wand_Slice = await api.sliceBySheet(wand_Part, wand_Extrusion, dach_Sheet, true)
   const [wcs] = await api.getWorkGeometry(wand_Part, CCClasses.CCWorkCSys, 'TuerVW')
-  const [wcs1] = await api.getWorkGeometry(wand_Part, CCClasses.CCWorkCSys, 'EL_1')
   const tuere = await api.box(wand_Part, [wcs], 100, 'ExpressionSet.VWT_B', 'ExpressionSet.VWT_H')
-  const fenster1 = await api.box(wand_Part, [wcs1], 'ExpressionSet.EFF_B', 100, 'ExpressionSet.EFF_H')
-  await api.boolean(wand_Part, BooleanOperationType.SUBTRACTION, [wand_Slice, tuere, fenster1])
+  await api.boolean(wand_Part, BooleanOperationType.SUBTRACTION, [wand_Slice, tuere])
   return wand_Part
 }
 
@@ -207,7 +208,7 @@ const createVW_2Erker = async (api: ApiHistory) => {
 const createDachGiebel = async (api: ApiHistory) => {
   const [dach_Part] = await api.loadProduct(aBTemplate, 'ofb', { ident: 'Dach_Ident'})
   const [dach_SketchRegion] = await api.getSketchRegion(dach_Part, 'Dach')
-  await api.extrusion(dach_Part, dach_SketchRegion, ExtrusionType.CUSTOM, 0, '-ExpressionSet.B-400', 0, [0,0,1], 1)
+  await api.extrusion(dach_Part, dach_SketchRegion, ExtrusionType.CUSTOM, 0, '-ExpressionSet.B-ExpressionSet.DUeV-ExpressionSet.FMDepth', 0, [0,0,1], 1)
   return dach_Part
 }
 

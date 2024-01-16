@@ -76,9 +76,9 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
-  { exampleId: 'Zeltbau', label: 'Zeltbau', file: 'history/Zeltbau' },
-  { exampleId: 'Zeltbau_TestCreate', label: 'Zeltbau_TestCreate', file: 'history/Zeltbau_TestCreate' },
-  { exampleId: 'Zeltbau_Test', label: 'Zeltbau_Test', file: 'history/Zeltbau_Test' },
+  //{ exampleId: 'Zeltbau', label: 'Zeltbau', file: 'history/Zeltbau' },
+  { exampleId: 'Zeltbau_Creation', label: 'Zeltbau_Creation', file: 'history/Zeltbau_Creation' },
+  { exampleId: 'Zeltbau_Assembly', label: 'Zeltbau_Assembly', file: 'history/Zeltbau_Assembly' },
   { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly' },
 ]
 
