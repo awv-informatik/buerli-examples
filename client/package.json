@@ -33,7 +33,7 @@
     "@codemirror/lang-javascript": "^6.0.2",
     "@mdx-js/react": "2.1.0",
     "@react-three/drei": "9.92.3",
-    "@react-three/fiber": "8.13.0",
+    "@react-three/fiber": "8.15.14",
     "@uiw/react-codemirror": "^4.11.4",
     "antd": "^4.23.4",
     "arraybuffer-loader": "1.0.8",
