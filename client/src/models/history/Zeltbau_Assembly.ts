@@ -86,21 +86,92 @@ export const create: Create = async (apiType, params) => {
     ;[tuere189x127_Part] = await api.getPartTemplate('Tuere189x128_Ident')
 
     // Some initial positions
-    const pos_Fenster1_Links: Transform = [{ x: 20, y: 2550, z: 1200 }, { x: 0, y: 0, z: 1 }, { x: 0, y: 1, z: 0}]
-    const pos_Fenster1_Rechts: Transform = [{ x: 9980, y: 1450, z: 1200 }, { x: 0, y: 0, z: 1 }, { x: 0, y: -1, z: 0}]
-    const pos_Tuere: Transform = [{ x: params.values[posTuereVorne], y: 0, z: 0}, { x: 1, y: 0, z: 0}, { x: 0, y: -1, z: 0}]
+    const pos_Fenster1_Links: Transform = [
+      { x: 20, y: 2550, z: 1200 },
+      { x: 0, y: 0, z: 1 },
+      { x: 0, y: 1, z: 0 },
+    ]
+    const pos_Fenster1_Rechts: Transform = [
+      { x: 9980, y: 1450, z: 1200 },
+      { x: 0, y: 0, z: 1 },
+      { x: 0, y: -1, z: 0 },
+    ]
+    const pos_Tuere: Transform = [
+      { x: params.values[posTuereVorne], y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 0, y: -1, z: 0 },
+    ]
 
     // Add all initially needed instances to the root assembly
-    ;[sL_Instance, sR_Instance, rW_Instance, vW_Instance, dach_Instance, fenster1Links_Instance, fenster1Rechts_Instance, tuere_Instance] = await api.addInstances(...[
-      { productId: sL_Part, ownerId: rootAsm, transformation: originTransform, name: 'SL_Instance', options: { ident: 'SL_Instance_Ident'} }, 
-      { productId: sR_Part, ownerId: rootAsm, transformation: originTransform, name: 'SR_Instance', options: { ident: 'SR_Instance_Ident'} },
-      { productId: rW_Part, ownerId: rootAsm, transformation: originTransform, name: 'RW_Instance', options: { ident: 'RW_Instance_Ident'} },
-      { productId: vW_Einfach_Part, ownerId: rootAsm, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'} },
-      { productId: dach_Part, ownerId: rootAsm, transformation: originTransform, name: 'Dach_Instance', options: { ident: 'Dach_Instance_Ident'} },
-      { productId: fenster110x70_Part, ownerId: rootAsm, transformation: pos_Fenster1_Links, name: 'Fenster1_Links_Instance', options: { ident: 'Fenster1_Links_Instance_Ident'} },
-      { productId: fenster110x70_Part, ownerId: rootAsm, transformation: pos_Fenster1_Rechts, name: 'Fenster1_Rechts_Instance', options: { ident: 'Fenster1_Rechts_Instance_Ident'} },
-      { productId: tuere189x127_Part, ownerId: rootAsm, transformation: pos_Tuere, name: 'Tuere_Instance', options: { ident: 'Tuere_Instance_Ident'} },
-    ])
+    ;[
+      sL_Instance,
+      sR_Instance,
+      rW_Instance,
+      vW_Instance,
+      dach_Instance,
+      fenster1Links_Instance,
+      fenster1Rechts_Instance,
+      tuere_Instance,
+    ] = await api.addInstances(
+      ...[
+        {
+          productId: sL_Part,
+          ownerId: rootAsm,
+          transformation: originTransform,
+          name: 'SL_Instance',
+          options: { ident: 'SL_Instance_Ident' },
+        },
+        {
+          productId: sR_Part,
+          ownerId: rootAsm,
+          transformation: originTransform,
+          name: 'SR_Instance',
+          options: { ident: 'SR_Instance_Ident' },
+        },
+        {
+          productId: rW_Part,
+          ownerId: rootAsm,
+          transformation: originTransform,
+          name: 'RW_Instance',
+          options: { ident: 'RW_Instance_Ident' },
+        },
+        {
+          productId: vW_Einfach_Part,
+          ownerId: rootAsm,
+          transformation: originTransform,
+          name: 'VW_Instance',
+          options: { ident: 'VW_Instance_Ident' },
+        },
+        {
+          productId: dach_Part,
+          ownerId: rootAsm,
+          transformation: originTransform,
+          name: 'Dach_Instance',
+          options: { ident: 'Dach_Instance_Ident' },
+        },
+        {
+          productId: fenster110x70_Part,
+          ownerId: rootAsm,
+          transformation: pos_Fenster1_Links,
+          name: 'Fenster1_Links_Instance',
+          options: { ident: 'Fenster1_Links_Instance_Ident' },
+        },
+        {
+          productId: fenster110x70_Part,
+          ownerId: rootAsm,
+          transformation: pos_Fenster1_Rechts,
+          name: 'Fenster1_Rechts_Instance',
+          options: { ident: 'Fenster1_Rechts_Instance_Ident' },
+        },
+        {
+          productId: tuere189x127_Part,
+          ownerId: rootAsm,
+          transformation: pos_Tuere,
+          name: 'Tuere_Instance',
+          options: { ident: 'Tuere_Instance_Ident' },
+        },
+      ],
+    )
 
     // Add initial window instances to their array
     fensterLinksInstances.push(fenster1Links_Instance)
@@ -122,19 +193,19 @@ export const update: Update = async (apiType, productId, params) => {
 
   const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
-  if(check(paramsMap[fLinks])) {
+  if (check(paramsMap[fLinks])) {
     await updateFensterLinks(params.values, api, productId)
   }
 
-  if(check(paramsMap[fRechts])) {
+  if (check(paramsMap[fRechts])) {
     await updateFensterRechts(params.values, api, productId)
   }
 
-  if(check(paramsMap[posTuereVorne])) {
+  if (check(paramsMap[posTuereVorne])) {
     await updateTuereVorne(params.values, api, productId)
   }
 
-  if(check(paramsMap[zType])) {
+  if (check(paramsMap[zType])) {
     await updateZeltType(params.values, api, productId)
   }
 
@@ -142,36 +213,53 @@ export const update: Update = async (apiType, productId, params) => {
 }
 
 const updateZeltType = async (values: any[], api: ApiHistory, productId: number) => {
-  await api.removeInstances({ id: 'VW_Instance_Ident'})
+  await api.removeInstances({ id: 'VW_Instance_Ident' })
   await updateTuereVorne(values, api, productId)
-  await api.addInstances({ productId: vW_Parts[values[zType]], ownerId: productId, transformation: originTransform, name: 'VW_Instance', options: { ident: 'VW_Instance_Ident'} })
+  await api.addInstances({
+    productId: vW_Parts[values[zType]],
+    ownerId: productId,
+    transformation: originTransform,
+    name: 'VW_Instance',
+    options: { ident: 'VW_Instance_Ident' },
+  })
 }
 
 const updateTuereVorne = async (values: any[], api: ApiHistory, productId: number) => {
-  if (tuere_Instance) {
-    await api.removeInstances({ id: tuere_Instance})
+  const startTime = performance.now()
+  if (!tuere_Instance) {
+    ;[tuere_Instance] = await api.addInstances({
+      productId: tuere189x127_Part,
+      ownerId: productId,
+      transformation: [
+        { x: values[posTuereVorne], y: 0, z: 0 },
+        { x: 1, y: 0, z: 0 },
+        { x: 0, y: -1, z: 0 },
+      ],
+      name: 'Tuere_Vorne_Instance',
+    })
   }
   // Create cutouts for windows
-  await api.setExpressions({ partId: vW_Parts[values[zType]], members: [
-    { name: 'TuerVW_Offset', value: values[posTuereVorne] },
-  ]})
-
-  ;[tuere_Instance] = await api.addInstances({
-    productId: tuere189x127_Part,
-    ownerId: productId,
-    transformation: [
-      { x: values[posTuereVorne], y: 0, z: 0},
-      { x: 1, y: 0, z: 0},
-      { x: 0, y: -1, z: 0},
-    ],
-    name: 'Tuere_Vorne_Instance'
+  await api.setExpressions({
+    partId: vW_Parts[values[zType]],
+    members: [{ name: 'TuerVW_Offset', value: values[posTuereVorne] }],
   })
+
+  await api.transformInstances({
+    id: tuere_Instance,
+    transformation: [
+      { x: values[posTuereVorne], y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 0, y: -1, z: 0 },
+    ],
+  })
+  const endTime = performance.now()
+  console.info(`Update Tuere vorne took ${(endTime - startTime).toFixed(0)} milliseconds`)
 }
 
 const updateFensterLinks = async (values: any[], api: ApiHistory, productId: number) => {
   // Calculate number of windows and their offset
   const anzFensterLinks = values[fLinks]
-  const yOffsetLinks = (defaultBreiteZelt - (anzFensterLinks * fBreite)) / (anzFensterLinks + 1)
+  const yOffsetLinks = (defaultBreiteZelt - anzFensterLinks * fBreite) / (anzFensterLinks + 1)
 
   if (fensterLinksInstances.length > 0) {
     const toRemoveInstances = []
@@ -180,11 +268,14 @@ const updateFensterLinks = async (values: any[], api: ApiHistory, productId: num
   }
 
   // Create cutouts for windows
-  await api.setExpressions({ partId: sL_Part, members: [
-    { name: 'SL_0_yOffset', value: anzFensterLinks > 0 ? yOffsetLinks : defaultBreiteZelt + 5000 },
-    { name: 'SL_1_yOffset', value: anzFensterLinks > 1 ? (2 * yOffsetLinks) + fBreite : defaultBreiteZelt + 5000 },
-    { name: 'SL_2_yOffset', value: anzFensterLinks > 2 ? (3 * yOffsetLinks) + 2 * fBreite : defaultBreiteZelt + 5000 },
-  ]})
+  await api.setExpressions({
+    partId: sL_Part,
+    members: [
+      { name: 'SL_0_yOffset', value: anzFensterLinks > 0 ? yOffsetLinks : defaultBreiteZelt + 5000 },
+      { name: 'SL_1_yOffset', value: anzFensterLinks > 1 ? 2 * yOffsetLinks + fBreite : defaultBreiteZelt + 5000 },
+      { name: 'SL_2_yOffset', value: anzFensterLinks > 2 ? 3 * yOffsetLinks + 2 * fBreite : defaultBreiteZelt + 5000 },
+    ],
+  })
 
   // Create instances and at them at once
   const windowInstancesToAdd = []
@@ -193,9 +284,10 @@ const updateFensterLinks = async (values: any[], api: ApiHistory, productId: num
       productId: fenster110x70_Part,
       ownerId: productId,
       transformation: [
-        { x: 20, y: values[zTiefe] - (((index + 1) * yOffsetLinks) + index * fBreite), z: fEinbauhoehe - fHoehe },
+        { x: 20, y: values[zTiefe] - ((index + 1) * yOffsetLinks + index * fBreite), z: fEinbauhoehe - fHoehe },
         { x: 0, y: 0, z: 1 },
-        { x: 0, y: 1, z: 0 }],
+        { x: 0, y: 1, z: 0 },
+      ],
       name: 'Fenster_' + index + '_Links_Instance',
     })
   }
@@ -205,7 +297,7 @@ const updateFensterLinks = async (values: any[], api: ApiHistory, productId: num
 const updateFensterRechts = async (values: any[], api: ApiHistory, productId: number) => {
   // Calculate number of windows and their offset
   const anzFensterRechts = values[fRechts]
-  const yOffsetRechts = (defaultBreiteZelt - (anzFensterRechts * fBreite)) / (anzFensterRechts + 1)
+  const yOffsetRechts = (defaultBreiteZelt - anzFensterRechts * fBreite) / (anzFensterRechts + 1)
 
   if (fensterRechtsInstances.length > 0) {
     const toRemoveInstances = []
@@ -214,11 +306,17 @@ const updateFensterRechts = async (values: any[], api: ApiHistory, productId: nu
   }
 
   // Create cutouts for windows
-  await api.setExpressions({ partId: sR_Part, members: [
-    { name: 'SR_0_yOffset', value: anzFensterRechts > 0 ? yOffsetRechts : defaultBreiteZelt + 5000 },
-    { name: 'SR_1_yOffset', value: anzFensterRechts > 1 ? (2 * yOffsetRechts) + fBreite : defaultBreiteZelt + 5000 },
-    { name: 'SR_2_yOffset', value: anzFensterRechts > 2 ? (3 * yOffsetRechts) + 2 * fBreite : defaultBreiteZelt + 5000 },
-  ]})
+  await api.setExpressions({
+    partId: sR_Part,
+    members: [
+      { name: 'SR_0_yOffset', value: anzFensterRechts > 0 ? yOffsetRechts : defaultBreiteZelt + 5000 },
+      { name: 'SR_1_yOffset', value: anzFensterRechts > 1 ? 2 * yOffsetRechts + fBreite : defaultBreiteZelt + 5000 },
+      {
+        name: 'SR_2_yOffset',
+        value: anzFensterRechts > 2 ? 3 * yOffsetRechts + 2 * fBreite : defaultBreiteZelt + 5000,
+      },
+    ],
+  })
 
   // Create instances and at them at once
   const windowInstancesToAdd = []
@@ -227,9 +325,10 @@ const updateFensterRechts = async (values: any[], api: ApiHistory, productId: nu
       productId: fenster110x70_Part,
       ownerId: productId,
       transformation: [
-        { x: values[zLaenge] - 20, y: ((index + 1) * yOffsetRechts) + index * fBreite, z: fEinbauhoehe - fHoehe },
+        { x: values[zLaenge] - 20, y: (index + 1) * yOffsetRechts + index * fBreite, z: fEinbauhoehe - fHoehe },
         { x: 0, y: 0, z: 1 },
-        { x: 0, y: -1, z: 0 }],
+        { x: 0, y: -1, z: 0 },
+      ],
       name: 'Fenster_' + index + '_Rechts_Instance',
     })
   }
