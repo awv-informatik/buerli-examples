@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ApiHistory, history, Transform } from '@buerli.io/headless'
+import { ApiHistory, History, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'

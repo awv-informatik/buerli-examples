@@ -3,7 +3,7 @@ import { CCClasses, FlipType, OrientationType, ReorientedType, ViewType } from '
 import { ObjectID, PointMemValue } from '@buerli.io/core'
 import {
   ApiHistory,
-  history,
+  History,
   Transform,
   DimensionType,
   FastenedConstraintType,

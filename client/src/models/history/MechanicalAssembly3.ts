@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
+import { ApiHistory, History, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import mechAsm from '../../resources/history/MechanicalAssembly3.ofb?buffer'
 

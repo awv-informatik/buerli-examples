@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ApiHistory, history, FastenedConstraintType } from '@buerli.io/headless'
+import { ApiHistory, History, FastenedConstraintType } from '@buerli.io/headless'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

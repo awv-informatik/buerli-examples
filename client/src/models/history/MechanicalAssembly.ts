@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ApiHistory,
-  history,
+  History,
   RevoluteConstraintType,
   SliderConstraintType,
 } from '@buerli.io/headless'

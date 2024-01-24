@@ -1,4 +1,4 @@
-import { ApiHistory, ApiNoHistory, history, Solid } from '@buerli.io/headless'
+import { ApiHistory, ApiNoHistory, History, Solid } from '@buerli.io/headless'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
