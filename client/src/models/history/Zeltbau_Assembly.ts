@@ -5,11 +5,11 @@ import zeltAsm from '../../resources/history/Zeltbau/ZeltAsmTemplate.ofb?buffer'
 
 // Parameter indices
 const zType = 0
-const zTiefe = 1
-const zLaenge = 2
-const fLinks = 3
-const fRechts = 4
-const posTuereVorne = 5
+// const zTiefe = 1
+// const zLaenge = 2
+const fLinks = 1
+const fRechts = 2
+const posTuereVorne = 3
 
 // Consts and default values
 const originPt = { x: 0, y: 0, z: 0 }
@@ -53,8 +53,8 @@ let tuere189x127_Part: number
 
 export const paramsMap: Param[] = [
   { index: zType, name: 'Type', type: ParamType.Enum, value: 0, values: [0, 1, 2, 3] },
-  { index: zTiefe, name: 'Zelt Tiefe', type: ParamType.Slider, value: 4000, step: 100, values: [2000, 10000] },
-  { index: zLaenge, name: 'Zelt Länge', type: ParamType.Slider, value: 10000, step: 100, values: [3000, 10000] },
+  // { index: zTiefe, name: 'Zelt Tiefe', type: ParamType.Slider, value: 4000, step: 100, values: [2000, 10000] },
+  // { index: zLaenge, name: 'Zelt Länge', type: ParamType.Slider, value: 10000, step: 100, values: [3000, 10000] },
   { index: fLinks, name: 'Anzahl Fenster links', type: ParamType.Enum, value: 1, values: [0, 1, 2, 3] },
   { index: fRechts, name: 'Anzahl Fenster rechts', type: ParamType.Enum, value: 1, values: [0, 1, 2, 3] },
   { index: posTuereVorne, name: 'Position Tuere', type: ParamType.Number, value: 4360 },
@@ -103,74 +103,63 @@ export const create: Create = async (apiType, params) => {
     ]
 
     // Add all initially needed instances to the root assembly
-    ;[
-      sL_Instance,
-      sR_Instance,
-      rW_Instance,
-      vW_Instance,
-      dach_Instance,
-      fenster1Links_Instance,
-      fenster1Rechts_Instance,
-      tuere_Instance,
-    ] = await api.addInstances(
-      ...[
-        {
-          productId: sL_Part,
-          ownerId: rootAsm,
-          transformation: originTransform,
-          name: 'SL_Instance',
-          options: { ident: 'SL_Instance_Ident' },
-        },
-        {
-          productId: sR_Part,
-          ownerId: rootAsm,
-          transformation: originTransform,
-          name: 'SR_Instance',
-          options: { ident: 'SR_Instance_Ident' },
-        },
-        {
-          productId: rW_Part,
-          ownerId: rootAsm,
-          transformation: originTransform,
-          name: 'RW_Instance',
-          options: { ident: 'RW_Instance_Ident' },
-        },
-        {
-          productId: vW_Einfach_Part,
-          ownerId: rootAsm,
-          transformation: originTransform,
-          name: 'VW_Instance',
-          options: { ident: 'VW_Instance_Ident' },
-        },
-        {
-          productId: dach_Part,
-          ownerId: rootAsm,
-          transformation: originTransform,
-          name: 'Dach_Instance',
-          options: { ident: 'Dach_Instance_Ident' },
-        },
-        {
-          productId: fenster110x70_Part,
-          ownerId: rootAsm,
-          transformation: pos_Fenster1_Links,
-          name: 'Fenster1_Links_Instance',
-          options: { ident: 'Fenster1_Links_Instance_Ident' },
-        },
-        {
-          productId: fenster110x70_Part,
-          ownerId: rootAsm,
-          transformation: pos_Fenster1_Rechts,
-          name: 'Fenster1_Rechts_Instance',
-          options: { ident: 'Fenster1_Rechts_Instance_Ident' },
-        },
-        {
-          productId: tuere189x127_Part,
-          ownerId: rootAsm,
-          transformation: pos_Tuere,
-          name: 'Tuere_Instance',
-          options: { ident: 'Tuere_Instance_Ident' },
-        },
-      ],
+    ;[sL_Instance, sR_Instance, rW_Instance, vW_Instance, dach_Instance, fenster1Links_Instance, fenster1Rechts_Instance, tuere_Instance ] = await api.addInstances(
+      {
+        productId: sL_Part,
+        ownerId: rootAsm,
+        transformation: originTransform,
+        name: 'SL_Instance',
+        options: { ident: 'SL_Instance_Ident' },
+      },
+      {
+        productId: sR_Part,
+        ownerId: rootAsm,
+        transformation: originTransform,
+        name: 'SR_Instance',
+        options: { ident: 'SR_Instance_Ident' },
+      },
+      {
+        productId: rW_Part,
+        ownerId: rootAsm,
+        transformation: originTransform,
+        name: 'RW_Instance',
+        options: { ident: 'RW_Instance_Ident' },
+      },
+      {
+        productId: vW_Einfach_Part,
+        ownerId: rootAsm,
+        transformation: originTransform,
+        name: 'VW_Instance',
+        options: { ident: 'VW_Instance_Ident' },
+      },
+      {
+        productId: dach_Part,
+        ownerId: rootAsm,
+        transformation: originTransform,
+        name: 'Dach_Instance',
+        options: { ident: 'Dach_Instance_Ident' },
+      },
+      {
+        productId: fenster110x70_Part,
+        ownerId: rootAsm,
+        transformation: pos_Fenster1_Links,
+        name: 'Fenster1_Links_Instance',
+        options: { ident: 'Fenster1_Links_Instance_Ident' },
+      },
+      {
+        productId: fenster110x70_Part,
+        ownerId: rootAsm,
+        transformation: pos_Fenster1_Rechts,
+        name: 'Fenster1_Rechts_Instance',
+        options: { ident: 'Fenster1_Rechts_Instance_Ident' },
+      },
+      {
+        productId: tuere189x127_Part,
+        ownerId: rootAsm,
+        transformation: pos_Tuere,
+        name: 'Tuere_Instance',
+        options: { ident: 'Tuere_Instance_Ident' },
+      },
     )
 
     // Add initial window instances to their array
@@ -284,7 +273,7 @@ const updateFensterLinks = async (values: any[], api: ApiHistory, productId: num
       productId: fenster110x70_Part,
       ownerId: productId,
       transformation: [
-        { x: 20, y: values[zTiefe] - ((index + 1) * yOffsetLinks + index * fBreite), z: fEinbauhoehe - fHoehe },
+        { x: 20, y: defaultBreiteZelt - ((index + 1) * yOffsetLinks + index * fBreite), z: fEinbauhoehe - fHoehe },
         { x: 0, y: 0, z: 1 },
         { x: 0, y: 1, z: 0 },
       ],
@@ -325,7 +314,7 @@ const updateFensterRechts = async (values: any[], api: ApiHistory, productId: nu
       productId: fenster110x70_Part,
       ownerId: productId,
       transformation: [
-        { x: values[zLaenge] - 20, y: (index + 1) * yOffsetRechts + index * fBreite, z: fEinbauhoehe - fHoehe },
+        { x: defaultLaengeZelt - 20, y: (index + 1) * yOffsetRechts + index * fBreite, z: fEinbauhoehe - fHoehe },
         { x: 0, y: 0, z: 1 },
         { x: 0, y: -1, z: 0 },
       ],
