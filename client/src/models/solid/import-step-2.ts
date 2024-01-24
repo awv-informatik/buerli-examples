@@ -1,4 +1,4 @@
-import { ApiNoHistory, solid } from '@buerli.io/headless'
+import { ApiNoHistory, Solid } from '@buerli.io/headless'
 import data from '../../resources/solid/AWVLogoCube.stp?raw'
 import { Create, Param } from '../../store'
 
@@ -11,6 +11,6 @@ export const create: Create = async (apiType, params) => {
   return importedIds
 }
 
-export const cad = new solid()
+export const cad = new Solid()
 
 export default { create, paramsMap, cad }

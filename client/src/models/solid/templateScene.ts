@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiNoHistory, solid } from '@buerli.io/headless'
+import { ApiNoHistory, Solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Param, Create } from '../../store'
@@ -29,6 +29,6 @@ const colorize = (solids: THREE.Group[]) => {
   setObjectColor(solids[0], customRed)
 }
 
-export const cad = new solid()
+export const cad = new Solid()
 
 export default { create, getScene, paramsMap, cad }

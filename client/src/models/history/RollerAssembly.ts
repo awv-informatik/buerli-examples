@@ -176,7 +176,7 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }
 

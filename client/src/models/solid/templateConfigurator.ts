@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiNoHistory, solid } from '@buerli.io/headless'
+import { ApiNoHistory, Solid } from '@buerli.io/headless'
 import { Param, Create, Update, storeApi } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -40,6 +40,6 @@ export const update: Update = async (apiType, productId, params) => {
   return [0] // solid ids
 }
 
-export const cad = new solid()
+export const cad = new Solid()
 
 export default { create, update, paramsMap, cad }

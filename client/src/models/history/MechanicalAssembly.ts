@@ -74,6 +74,6 @@ async function updateRevolute(paramValues: number[], api: ApiHistory) {
   })
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

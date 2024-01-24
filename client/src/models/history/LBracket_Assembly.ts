@@ -1,5 +1,5 @@
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
@@ -210,6 +210,6 @@ export const getScene = async (productId: number, api: ApiHistory) => {
   return scene
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

@@ -5,7 +5,7 @@ import { Example, useStore } from '../store'
 import Params from './Params'
 import Tabs from 'antd/lib/tabs'
 import TabPane from 'rc-tabs/lib/TabPanelList/TabPane'
-import { solid, history } from '@buerli.io/headless'
+import { solid, History } from '@buerli.io/headless'
 import './../styles/custom.css'
 
 export const Sidebar: React.FC<{
@@ -15,7 +15,7 @@ export const Sidebar: React.FC<{
 }> = ({ examples, active, onChange }) => {
   const solidExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof solid)
   const historyExampleKeys = Object.keys(examples).filter(
-    key => examples[key].cad instanceof history,
+    key => examples[key].cad instanceof History,
   )
   return (
     <Tabs defaultActiveKey="1">

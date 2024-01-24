@@ -1,4 +1,4 @@
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import {
   BooleanOperationType,
   ChamferType,
@@ -121,6 +121,6 @@ export const create: Create = async (apiType, params, options) => {
   }
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import { Param, Create } from '../../store'
 import sketches from '../../resources/history/SuspensionBracket.ofb?buffer'
 import {
@@ -107,6 +107,6 @@ export const create: Create = async (apiType, params, options) => {
   return part
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

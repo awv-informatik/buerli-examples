@@ -47,6 +47,6 @@ async function updateRevolute(paramValues: number[], api: ApiHistory) {
   await api.update3dConstraintValues({constrId: constrRevolute.constrId, paramName: 'zRotationValue', value: angleInRadian})
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

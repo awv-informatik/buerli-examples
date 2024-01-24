@@ -1,4 +1,4 @@
-import { ApiHistory, ApiNoHistory, history, solid } from '@buerli.io/headless'
+import { ApiHistory, ApiNoHistory, history, Solid } from '@buerli.io/headless'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
@@ -151,6 +151,6 @@ export type Example = {
   fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
-  cad: history | solid
+  cad: History | Solid
   api: ApiHistory | ApiNoHistory | null
 }

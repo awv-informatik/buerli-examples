@@ -1,4 +1,4 @@
-import { ApiNoHistory, solid } from '@buerli.io/headless'
+import { ApiNoHistory, Solid } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Create, Param } from '../../store'
 
@@ -37,6 +37,6 @@ export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   return meshes
 }
 
-export const cad = new solid()
+export const cad = new Solid()
 
 export default { create, getBufferGeom, paramsMap, cad }

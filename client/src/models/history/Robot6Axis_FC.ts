@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, FastenedConstraintType, history } from '@buerli.io/headless'
+import { ApiHistory, FastenedConstraintType, History } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import robotArm from '../../resources/history/Robot6Axis_FC.ofb?buffer'
 
@@ -76,6 +76,6 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

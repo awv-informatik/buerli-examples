@@ -1,4 +1,4 @@
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/ShadowboxTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -99,6 +99,6 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Param, Create } from '../../store'
@@ -31,6 +31,6 @@ const colorize = (scene: THREE.Scene) => {
   setObjectColor(boltObj, customRed)
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, getScene, paramsMap, cad }
