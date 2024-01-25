@@ -1,4 +1,4 @@
-import { ApiNoHistory, solid, createPolyline, Polyline } from '@buerli.io/headless'
+import { ApiNoHistory, Solid, createPolyline, Polyline } from '@buerli.io/headless'
 import { Color, Vector3 } from 'three'
 import { Create, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
@@ -45,6 +45,6 @@ const colorize = (solids: THREE.Group[]) => {
   setObjectColor(solids[0], customRed)
 }
 
-export const cad = new solid()
+export const cad = new Solid()
 
 export default { create, getScene, paramsMap, cad }

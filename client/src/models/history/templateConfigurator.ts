@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import { Param, Create, Update, storeApi } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -40,6 +40,6 @@ export const update: Update = async (apiType, productId, params) => {
   return 0 // product id
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

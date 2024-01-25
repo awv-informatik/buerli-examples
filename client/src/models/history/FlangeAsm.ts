@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
 import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'
@@ -132,6 +132,6 @@ export const create: Create = async (apiType, param) => {
   }
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

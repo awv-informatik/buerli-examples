@@ -1,4 +1,4 @@
-import { ApiHistory, GraphicType, history } from '@buerli.io/headless'
+import { ApiHistory, GraphicType, History } from '@buerli.io/headless'
 import { Create, Param } from '../../store'
 import * as THREE from 'three'
 import { ChamferType } from '@buerli.io/classcad'
@@ -33,6 +33,6 @@ const colorize = (nodes: { [key: string]: THREE.Object3D }) => {
   setObjectTransparency(nodes.Part, 0.5)
 } 
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, getScene, paramsMap, cad }
