@@ -1,4 +1,4 @@
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import {
   BooleanOperationType,
   ChamferType,
@@ -18,11 +18,9 @@ export const create: Create = async (apiType, params, options) => {
   const offset = { x: 0, y: 0, z: 0 }
   const origin = { x: 0, y: 0, z: 0 }
   const zDir = { x: 0, y: 0, z: 1 }
-  const thickness = 30
-  const upperCylDiam = 190
-  const holeOffset = upperCylDiam / 2 + thickness
+  const holeOffset = 'ExpressionSet.upperCylDiam / 2 + ExpressionSet.thickness'
   const holeOffset1Bottom = { x: 0, y: holeOffset, z: 0 }
-  const holeOffset1Top = { x: 0, y: holeOffset, z: thickness }
+  const holeOffset1Top = { x: 0, y: holeOffset, z: 'ExpressionSet.thickness' }
 
   const flange = await api.createPart('Flange')
 
@@ -121,6 +119,6 @@ export const create: Create = async (apiType, params, options) => {
   }
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

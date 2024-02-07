@@ -1,5 +1,5 @@
 import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
@@ -463,6 +463,6 @@ const colorize = (scene: THREE.Scene) => {
   setObjectColor(rodObj, new Color('rgb(178, 0, 13)'))
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, getScene, paramsMap, cad }

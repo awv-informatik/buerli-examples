@@ -4,7 +4,7 @@ import {
   BooleanOperationType,
   WorkCoordSystemType,
 } from '@buerli.io/classcad'
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
@@ -326,6 +326,6 @@ export const create: Create = async (apiType, params) => {
   return lBracketAsm
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, paramsMap, cad }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history, RevoluteConstraintType } from '@buerli.io/headless'
+import { ApiHistory, History, RevoluteConstraintType } from '@buerli.io/headless'
 import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import mechAsm from '../../resources/history/MechanicalAssembly2.ofb?buffer'
 
@@ -47,6 +47,6 @@ async function updateRevolute(paramValues: number[], api: ApiHistory) {
   await api.update3dConstraintValues({constrId: constrRevolute.constrId, paramName: 'zRotationValue', value: angleInRadian})
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, update, paramsMap, cad }

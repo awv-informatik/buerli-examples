@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, history } from '@buerli.io/headless'
+import { ApiHistory, History } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Param, Create } from '../../store'
 
@@ -27,6 +27,6 @@ export const getBufferGeom = async (productId: number, api: ApiHistory) => {
   )
 }
 
-export const cad = new history()
+export const cad = new History()
 
 export default { create, getBufferGeom, paramsMap, cad }
