@@ -3,7 +3,7 @@ import { ApiHistory, History, Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import templateSP from '../../resources/history/WallTemplate.ofb?buffer'
+import templateSP from '../../resources/history/Wall.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type instance = {
