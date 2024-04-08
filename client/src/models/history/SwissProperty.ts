@@ -59,7 +59,7 @@ export const paramsMap: Param[] = [
   { index: wh, name: 'Height', type: ParamType.Number, value: 1000 },
   {
     index: gt,
-    name: 'Gipsplatte Thickness',
+    name: 'Plasterboard Thickness',
     type: ParamType.Slider,
     value: 13,
     step: 1,
@@ -67,7 +67,7 @@ export const paramsMap: Param[] = [
   },
   {
     index: spt,
-    name: 'Spanplatte Thickness',
+    name: 'Chipboard Thickness',
     type: ParamType.Slider,
     value: 15,
     step: 1,
@@ -75,7 +75,7 @@ export const paramsMap: Param[] = [
   },
   {
     index: bwt,
-    name: 'Balkenwand Thickness',
+    name: 'Wooden Beam Wall Thickness',
     type: ParamType.Slider,
     value: 140,
     step: 1,
@@ -83,7 +83,7 @@ export const paramsMap: Param[] = [
   },
   {
     index: dt,
-    name: 'Daemmung Thickness',
+    name: 'Insulation Thickness',
     type: ParamType.Slider,
     value: 60,
     step: 1,
@@ -91,7 +91,7 @@ export const paramsMap: Param[] = [
   },
   {
     index: hlt,
-    name: 'Holzlattung Thickness',
+    name: 'Wooden Slats Thickness',
     type: ParamType.Slider,
     value: 40,
     step: 1,
@@ -99,7 +99,7 @@ export const paramsMap: Param[] = [
   },
   {
     index: hst,
-    name: 'Holzschalung Thickness',
+    name: 'Wooden Formwork Thickness',
     type: ParamType.Slider,
     value: 25,
     step: 1,
@@ -111,7 +111,7 @@ export const paramsMap: Param[] = [
     name: 'Add layer',
     type: ParamType.Dropdown,
     value: 'Choose layer...',
-    values: ['Gipsplatte', 'Spanplatte', 'Balkenwand', 'Daemmung', 'Holzlattung', 'Holzschalung'],
+    values: ['Plasterboard', 'Chipboard', 'Beamwall', 'Insulation', 'WoodenSlats', 'WoodenFormwork'],
   },
 ].sort((a, b) => a.index - b.index)
 
@@ -238,42 +238,42 @@ export const create: Create = async (apiType, params) => {
     const layers: Layer[] = []
     layers.push({
       name: 'Gipsplatte',
-      type: 'Gipsplatte',
+      type: 'Plasterboard',
       refId: gipsplatteInstance,
       posX: posXGipsplatte,
       thickness: paramsMap[gt].value,
     })
     layers.push({
       name: 'Spanplatte',
-      type: 'Spanplatte',
+      type: 'Chipboard',
       refId: spanplatteInstance,
       posX: posXSpanplatte,
       thickness: paramsMap[spt].value,
     })
     layers.push({
       name: 'Balkenwand',
-      type: 'Balkenwand',
+      type: 'Beamwall',
       refId: balkenwandInstance,
       posX: posXBalkenwand,
       thickness: paramsMap[bwt].value,
     })
     layers.push({
       name: 'Daemmung',
-      type: 'Daemmung',
+      type: 'Insulation',
       refId: daemmungInstance,
       posX: posXDaemmung,
       thickness: paramsMap[dt].value,
     })
     layers.push({
       name: 'Holzlattung',
-      type: 'Holzlattung',
+      type: 'WoodenSlats',
       refId: holzlattungInstance,
       posX: posXHolzlattung,
       thickness: 2 * paramsMap[hlt].value,
     })
     layers.push({
       name: 'Holzschalung',
-      type: 'Holzschalung',
+      type: 'WoodenFormwork',
       refId: holzschalungInstance,
       posX: posXHolzschalung,
       thickness: paramsMap[hst].value,
@@ -431,7 +431,7 @@ async function updateBalkenwandSize(
     wallInsulationPrt &&
     wallInsulationCustomPrt
   ) {
-    const balkenwandInstanceId = layers.find(layer => layer.type === 'Balkenwand')?.refId
+    const balkenwandInstanceId = layers.find(layer => layer.type === 'Beamwall')?.refId
     const exprSets: {
       partId: number
       members: { name: string; value: number | string }[]
@@ -621,7 +621,7 @@ async function updateLayer(
     case 'Gipsplatte':
       if (gipsplattePrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Gipsplatte') {
+          if (tempLayers[i].type === 'Plasterboard') {
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
@@ -636,7 +636,7 @@ async function updateLayer(
     case 'Spanplatte':
       if (spanplattePrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Spanplatte') {
+          if (tempLayers[i].type === 'Chipboard') {
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
@@ -650,7 +650,7 @@ async function updateLayer(
     case 'Balkenwand':
       if (verticalBeamPrt && horizontalBeamPrt && wallInsulationPrt && wallInsulationCustomPrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Balkenwand') {
+          if (tempLayers[i].type === 'Beamwall') {
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
@@ -682,7 +682,7 @@ async function updateLayer(
     case 'Daemmung':
       if (daemmungPrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Daemmung') {
+          if (tempLayers[i].type === 'Insulation') {
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
@@ -696,7 +696,7 @@ async function updateLayer(
     case 'Holzlattung':
       if (holzlattungPrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Holzlattung') {
+          if (tempLayers[i].type === 'WoodenSlats') {
             tempLayers[i] = { ...tempLayers[i], thickness: 2 * newThickness }
           }
         }
@@ -710,7 +710,7 @@ async function updateLayer(
     case 'Holzschalung':
       if (holzschalungPrt) {
         for (let i = 0; i < tempLayers.length; i++) {
-          if (tempLayers[i].type === 'Holzschalung') {
+          if (tempLayers[i].type === 'WoodenFormwork') {
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
@@ -751,7 +751,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
   const lastLayer = tempLayers[tempLayers.length - 1]
   const layerName = layerType + tempLayers.filter(layer => layer.type === layerType).length
   switch (layerType) {
-    case 'Gipsplatte':
+    case 'Plasterboard':
       if (gipsplattePrt) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },
@@ -776,7 +776,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
         }
       }
       break
-    case 'Spanplatte':
+    case 'Chipboard':
       if (spanplattePrt) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },
@@ -801,7 +801,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
         }
       }
       break
-    case 'Balkenwand':
+    case 'Beamwall':
       if (balkenwandAsm) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },
@@ -827,7 +827,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
         }
       }
       break
-    case 'Daemmung':
+    case 'Insulation':
       if (daemmungPrt) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },
@@ -852,7 +852,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
         }
       }
       break
-    case 'Holzlattung':
+    case 'WoodenSlats':
       if (holzlattungPrt) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },
@@ -877,7 +877,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
         }
       }
       break
-    case 'Holzschalung':
+    case 'WoodenFormwork':
       if (holzschalungPrt) {
         const transformation: Transform = [
           { x: lastLayer.posX + lastLayer.thickness + params[di], y: 0, z: 0 },

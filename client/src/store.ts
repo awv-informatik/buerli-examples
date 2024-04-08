@@ -45,7 +45,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1' },
   { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2' },
   { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley' },
-  { exampleId: 'Felge', label: 'Felge', file: 'solid/felge' },
+  { exampleId: 'WheelRim', label: 'Wheel Rim', file: 'solid/wheelRim' },
 
   // history example
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
