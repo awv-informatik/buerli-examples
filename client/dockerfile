@@ -17,9 +17,8 @@ ENV CLIENT_DIR /buerli
 RUN mkdir -p $CLIENT_DIR
 WORKDIR $CLIENT_DIR
 
-COPY ./package.json ./
+COPY ./ $CLIENT_DIR
 RUN npm i
 
-COPY ./ $CLIENT_DIR
 
 CMD npm run start -- --host
