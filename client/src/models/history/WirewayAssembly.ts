@@ -16,9 +16,9 @@ export const paramsMap: Param[] = [
   { index: pd, name: 'Position', type: ParamType.Slider, value: 0, step: 5, values: [0, 100] },
   {
     index: pa,
-    name: 'Produktauswahl',
+    name: 'Product Selection',
     type: ParamType.Dropdown,
-    value: 'Wähle ein Produkt...',
+    value: 'Select a product ...',
     values: ['40x60', '60x80', '60x120'],
   },
 ].sort((a, b) => a.index - b.index)
