@@ -51,6 +51,7 @@ const toc: { exampleId: string; label: string; file: string }[] = [
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
   { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch' },
   { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2' },
+  { exampleId: 'Twist', label: 'Twist Feature', file: 'history/Twist' },
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
   {
     exampleId: 'Nut-Bolt_Assembly',
