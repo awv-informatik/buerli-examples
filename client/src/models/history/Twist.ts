@@ -114,7 +114,7 @@ export const update: Update = async (apiType, productId, params) => {
           twistAngle: '180g',
           capEnds: 1,
           direction: { x: 0, y: 0, z: 1 },
-          twistCenter: { x: 0, y: 0, z: 0 },
+          twistCenter: { x: 10, y: 10, z: 0 },
         })
         break
 
