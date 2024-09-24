@@ -268,12 +268,12 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.13.1-beta.0":
-  version "0.13.1-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.13.1-beta.0.tgz#4aef5c83d271bf1f518fa0839dcba8b4fb833a23"
-  integrity sha512-4HEZHMbk0kXarTmGF5muWrLboh8Se2c47oWMz2KH1FMxbVPopsqHTbWh13tHsyAt6qm0CIspKS44zaahnFtDHw==
+"@buerli.io/classcad@0.13.1-beta.2":
+  version "0.13.1-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.13.1-beta.2.tgz#b70c7d4ffcd736fc73b7193bd3bb909287349b65"
+  integrity sha512-GWhZp1KKYLRsNcJDpOyihW3xQEYI1tJbukhGysFmgqV8mHMbTH2h5xCKevi4oB8BE9RDlLdWkSTrvcFCvaW/zw==
   dependencies:
-    "@buerli.io/core" "0.13.1-beta.0"
+    "@buerli.io/core" "0.13.1-beta.2"
     "@types/events" "^3.0.0"
     base64-arraybuffer "^0.2.0"
     comlink "^4.3.1"
@@ -287,32 +287,32 @@
     uuid "^9.0.0"
     xmlhttprequest-ssl "^2.0.0"
 
-"@buerli.io/core@0.13.1-beta.0":
-  version "0.13.1-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.13.1-beta.0.tgz#38ed50fd0b2e3cfe0579e53d758c4b8c1d18a997"
-  integrity sha512-C0ia0/TuAVimUeMmKVmcv7qeC71YuPOTqQuBOGfxvUrON277i9kV22y6XpP1QQqG7xCdrQ3jJUt2Q63gGi8uwg==
+"@buerli.io/core@0.13.1-beta.2":
+  version "0.13.1-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.13.1-beta.2.tgz#4fd18567d9f9870600813b674f9c539a558a089a"
+  integrity sha512-f3KEBIoUytXujD0qQgQ5cizTlr4CybQnMNygitLKNYPpPHgSJoh7e00HSJXzwPFE7d0KIgOYQpMstAhOp9GKnQ==
   dependencies:
     fast-json-patch "^3.1.1"
     jsonpatch "^3.1.0"
     uuid "^9.0.0"
     zustand "^4.1.4"
 
-"@buerli.io/headless@0.13.1-beta.0":
-  version "0.13.1-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.13.1-beta.0.tgz#393da8ddcdd87f19e77c4622d0c2808a2abd21f4"
-  integrity sha512-Lc5vsnBp0cZeBGd+T6zXvoGImmFzadnAl3c088XunZ+x35AYhXGYdrbA/UAQpTt3zI+q6JURAa1BmPpjnezTaw==
+"@buerli.io/headless@0.13.1-beta.2":
+  version "0.13.1-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.13.1-beta.2.tgz#26ac5d029b5cd89a1d5e5a1deb9318b85390d14b"
+  integrity sha512-vQxwlNy5TTpgIID4WR6XRHF0EVf9m/dJDIujok4/MSkqSbj3yMaBbttGhP3WOowGRRtD1c1+BwVpzrizkDIDDA==
   dependencies:
-    "@buerli.io/classcad" "0.13.1-beta.0"
+    "@buerli.io/classcad" "0.13.1-beta.2"
     flat-promise "^1.0.3"
 
-"@buerli.io/react@0.13.1-beta.0":
-  version "0.13.1-beta.0"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.13.1-beta.0.tgz#3b2a8dc33b96ee5cfb795d73675700178ddcb064"
-  integrity sha512-dqGkrlxxJFJ4WXfk88i5n9Z8R8510bcUJ0M0f6BlpEgLIRSmMzaENeuy0nvMBkKCp5eSdfai38QTJUVu/9szmg==
+"@buerli.io/react@0.13.1-beta.2":
+  version "0.13.1-beta.2"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.13.1-beta.2.tgz#613afb0e40458b30d6a8541d3f41664b06918f82"
+  integrity sha512-Ny5SzI6r4fc8+bECb6mjBchFfVYxdTInKvEfb0rHkTC+fvOpuSd1RAjfbt0KJ+QVK3TB1Yp/XGX9HYRcWPQHzA==
   dependencies:
     "@ant-design/icons" "^4.7.0"
-    "@buerli.io/core" "0.13.1-beta.0"
-    "@buerli.io/headless" "0.13.1-beta.0"
+    "@buerli.io/core" "0.13.1-beta.2"
+    "@buerli.io/headless" "0.13.1-beta.2"
     antd "^4.23.4"
     deepmerge "^4.2.2"
     lodash-es "^4.17.15"
