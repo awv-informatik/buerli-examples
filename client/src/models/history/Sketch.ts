@@ -1,32 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
-import { Param, Create } from '../../store'
+import { Buffer } from 'buffer'
 import sketches from '../../resources/history/SketchesTemplate.ofb?buffer'
-import { ExtrusionType, WorkPlaneType } from '@buerli.io/classcad'
+import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
-  const part = api.createPart('Part')
-  const wp = api.createWorkPlane(
-    part,
-    WorkPlaneType.WP_USERDEFINED,
-    [],
-    0,
-    0,
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 1 },
-    false,
-    'WP',
-  )
-  const sketch = await api.loadSketch(part, sketches, wp)
-  await api.extrusion(part, sketch, ExtrusionType.UP, 0, 20, 0, { x: 0, y: 0, z: 1 }, 1)
-
+export const create: Create = async (model, params) => {
+  const { sketch: sketchApi, part: partApi } = model.api
+  const { result: part } = await partApi.create({ name: 'Part' })
+  const { result: wp } = await partApi.workPlane({
+    id: part,
+    type: 'USERDEFINED',
+    references: [],
+    offset: 0,
+    angle: 0,
+    position: [0, 0, 0],
+    normal: [0, 0, 1],
+    name: 'WP',
+  })
+  const { result: sketch } = await sketchApi.create({ id: part, planeId: wp })
+  await sketchApi.loadFrom({
+    id: sketch,
+    partId: part,
+    data: Buffer.from(sketches).toString('utf-8'), // TODO: how to support ArrayBuffer in the API?
+    format: 'OFB',
+  })
+  await partApi.extrusion({
+    id: part,
+    type: 'UP',
+    references: [sketch],
+    limit1: 0,
+    limit2: 20,
+    taperAngle: 0,
+    direction: [0, 0, 1],
+    capEnds: true,
+  })
   return part
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }

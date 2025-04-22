@@ -1,7 +1,8 @@
-import { ApiHistory, ApiNoHistory, History, Solid } from '@buerli.io/headless'
+import { ObjectID } from '@buerli.io/core'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
+import { CadModel } from './CadModel'
 
 // eslint-disable-next-line no-shadow
 export enum ParamType {
@@ -21,31 +22,36 @@ export type Param = {
   values?: any[]
 }
 export type Create = (
-  api: ApiHistory | ApiNoHistory,
+  model: CadModel,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
+
 export type Update = (
-  api: ApiHistory | ApiNoHistory,
-  productId: number | number[],
+  model: CadModel,
+  productId: ObjectID | ObjectID[],
   params?: { lastUpdatedParam: number; values: any[] },
 ) => Promise<number | number[]>
 
-const toc: { exampleId: string; label: string; file: string }[] = [
+export type GetScene = (model: CadModel, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Scene>
+
+export type GetBufferGeom = (model: CadModel, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Mesh[]>
+
+const toc: { exampleId: string; label: string; file: string; solid?: boolean }[] = [
   // solid example
-  { exampleId: 'Fish', label: 'Fish', file: 'solid/fish' },
-  { exampleId: 'Heart', label: 'Heart', file: 'solid/heart' },
-  { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego' },
-  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step' },
-  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2' },
-  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
-  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
-  { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon' },
-  { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part' },
-  { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1' },
-  { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2' },
-  { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley' },
-  { exampleId: 'WheelRim', label: 'Wheel Rim', file: 'solid/wheelRim' },
+  { exampleId: 'Fish', label: 'Fish', file: 'solid/fish', solid: true },
+  { exampleId: 'Heart', label: 'Heart', file: 'solid/heart', solid: true },
+  { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego', solid: true },
+  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step', solid: true },
+  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2', solid: true },
+  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball', solid: true },
+  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile', solid: true },
+  { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon', solid: true },
+  { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part', solid: true },
+  { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1', solid: true },
+  { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2', solid: true },
+  { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley', solid: true },
+  { exampleId: 'WheelRim', label: 'Wheel Rim', file: 'solid/wheelRim', solid: true },
 
   // history example
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
@@ -92,15 +98,15 @@ const storeApi = vanillaCreate<State>(set => ({
       }),
     )
   },
-  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => {
+  setModel: (exampleId: string, model: CadModel | null) => {
     set(state =>
       produce(state, draft => {
-        if (!api) {
+        if (!model) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          delete draft.examples.objs[exampleId].api
+          delete draft.examples.objs[exampleId].model
         } else {
-          draft.examples.objs[exampleId].api = api
+          draft.examples.objs[exampleId].model = model
         }
       }),
     )
@@ -117,6 +123,7 @@ const initExamples = async () => {
     // console.info(t.exampleId)
     const example = await import(`./models/${t.file}`)
     examples[t.exampleId] = {
+      solid: t.solid,
       label: t.label,
       fileUrl: `/models/${t.file}.ts`,
       params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
@@ -140,18 +147,18 @@ type State = Readonly<{
   busy?: boolean
   set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
-  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
+  setModel: (exampleId: string, model: CadModel | null) => void
 }>
 
 export type Example = {
   label: string
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getScene?: GetScene
+  getBufferGeom?: GetBufferGeom
   fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
-  cad: History | Solid
-  api: ApiHistory | ApiNoHistory | null
+  model: CadModel
+  solid?: boolean
 }

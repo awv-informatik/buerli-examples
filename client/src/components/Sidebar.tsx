@@ -1,39 +1,26 @@
-import React from 'react'
 import Collapse from 'antd/lib/collapse/Collapse'
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
-import { Example, useStore } from '../store'
-import Params from './Params'
 import Tabs from 'antd/lib/tabs'
 import TabPane from 'rc-tabs/lib/TabPanelList/TabPane'
-import { Solid, History } from '@buerli.io/headless'
+import React from 'react'
+import { Example, useStore } from '../store'
 import './../styles/custom.css'
+import Params from './Params'
 
 export const Sidebar: React.FC<{
   examples: Record<string, Example>
   active?: string | undefined
   onChange: (value: string) => void
 }> = ({ examples, active, onChange }) => {
-  const solidExampleKeys = Object.keys(examples).filter(key => examples[key].cad instanceof Solid)
-  const historyExampleKeys = Object.keys(examples).filter(
-    key => examples[key].cad instanceof History,
-  )
+  const solidExampleKeys = Object.keys(examples).filter(key => examples[key].solid)
+  const historyExampleKeys = Object.keys(examples).filter(key => !examples[key].solid)
   return (
     <Tabs defaultActiveKey="1">
       <TabPane tab="Solid" key="1">
-        <Options
-          examples={examples}
-          exampleKeys={solidExampleKeys}
-          active={active}
-          onChange={onChange}
-        />
+        <Options examples={examples} exampleKeys={solidExampleKeys} active={active} onChange={onChange} />
       </TabPane>
       <TabPane tab="History" key="2">
-        <Options
-          examples={examples}
-          exampleKeys={historyExampleKeys}
-          active={active}
-          onChange={onChange}
-        />
+        <Options examples={examples} exampleKeys={historyExampleKeys} active={active} onChange={onChange} />
       </TabPane>
     </Tabs>
   )
@@ -61,9 +48,7 @@ const Options: React.FC<{
           key={key}
           showArrow={false}
           collapsible={busy ? 'disabled' : 'header'}>
-          <div style={{ paddingLeft: '20px' }}>
-            {examples[key].paramsMap.length > 0 && <Params />}
-          </div>
+          <div style={{ paddingLeft: '20px' }}>{examples[key].paramsMap.length > 0 && <Params />}</div>
         </CollapsePanel>
       ))}
     </Collapse>

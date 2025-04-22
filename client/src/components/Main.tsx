@@ -1,11 +1,11 @@
-import { api as buerliApi } from '@buerli.io/core'
-import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
+import { api as buerliApi, ObjectID } from '@buerli.io/core'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, ExampleLayout, Spin } from '.'
+import { CadModel } from '../CadModel'
 import { storeApi, useStore } from '../store'
 import { Code } from './Code'
 import { Resizer, useResizeStore } from './Resizer'
@@ -94,14 +94,14 @@ const Part: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleId = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
-  const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[exampleId])
+  const { update, create, getScene, getBufferGeom } = useStore(s => s.examples.objs[exampleId])
   const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
-  const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
-  const productOrSolidIds = React.useRef<number | number[]>(0)
+  const model = React.useRef<CadModel>()
+  const productOrSolidIds = React.useRef<ObjectID | ObjectID[]>(0)
   const fit = useFit(f => f.fit)
-  const setAPI = useStore(s => s.setAPI)
+  const setModel = useStore(s => s.setModel)
 
   const onSelect = React.useCallback(() => {
     fit()
@@ -113,21 +113,23 @@ const Part: React.FC = () => {
   }, [set])
 
   React.useEffect(() => {
-    headlessApi.current = null
+    model.current = null
     setMeshes([])
     set({ busy: true })
 
-    cad.init(async api => {
-      setAPI(exampleId, api)
-      headlessApi.current = api
+    const run = async () => {
+      const m = new CadModel()
+      await m.init()
+      setModel(exampleId, m)
+      model.current = m
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidIds.current = await create(api, p, { onSelect, onResume })
+        productOrSolidIds.current = await create(m, p, { onSelect, onResume })
         if (getBufferGeom) {
-          const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
+          const tempMeshes = await getBufferGeom(m, productOrSolidIds.current)
           setMeshes(tempMeshes)
         } else if (getScene) {
-          const createdScene = await getScene(productOrSolidIds.current, api)
+          const createdScene = await getScene(m, productOrSolidIds.current)
           scene.copy(createdScene)
         }
       } catch (error) {
@@ -137,7 +139,9 @@ const Part: React.FC = () => {
         set({ busy: false })
         fit()
       }
-    })
+    }
+    run()
+
     return () => {
       // Remove inactive drawings
       const activeDrawing = buerliApi.getState().drawing.active
@@ -148,21 +152,20 @@ const Part: React.FC = () => {
         }
       })
       scene.children = []
-      // cad.destroy()
     }
-  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setAPI])
+  }, [create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setModel])
 
   React.useEffect(() => {
     const run = async () => {
-      if (headlessApi.current && update && params) {
+      if (model.current && update && params) {
         set({ busy: true })
         try {
-          productOrSolidIds.current = await update(headlessApi.current, productOrSolidIds.current, params)
+          productOrSolidIds.current = await update(model.current, productOrSolidIds.current, params)
           if (getBufferGeom) {
-            const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
+            const tempMeshes = await getBufferGeom(model.current, productOrSolidIds.current)
             setMeshes(tempMeshes)
           } else if (getScene) {
-            const updatedScene = await getScene(productOrSolidIds.current, headlessApi.current)
+            const updatedScene = await getScene(model.current, productOrSolidIds.current)
             if (updatedScene) {
               scene.clear()
               scene.copy(updatedScene)
@@ -177,7 +180,7 @@ const Part: React.FC = () => {
       }
     }
     run()
-  }, [update, params, headlessApi, set, getBufferGeom, getScene, fit, scene])
+  }, [update, params, model, set, getBufferGeom, getScene, fit, scene])
 
   if (getBufferGeom && meshes) {
     return (
