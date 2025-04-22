@@ -35,16 +35,22 @@ export class CadModel {
    * return geoms.map(geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial()))
    * @return array of buffer geometry
    */
-  async createBufferGeometry(objectId: ObjectID): Promise<BufferGeometry[] | undefined> {
+  async createBufferGeometry(objectId?: ObjectID | ObjectID[]): Promise<BufferGeometry[] | undefined> {
+    if (!objectId) return undefined
     const cDrawing = getDrawing(this.drawingId)
     const structureTree = cDrawing.structure.tree
+    const ids = Array.isArray(objectId) ? objectId : [objectId]
     const bufferGeomArray: BufferGeometry[] = []
-    if (objectId) {
-      const rootObj = structureTree[objectId]
-      await createRecursiveBufferGeometry(rootObj, this.drawingId, bufferGeomArray)
-      if (bufferGeomArray.length > 0) {
-        return bufferGeomArray
+    for (const id of ids) {
+      const obj = structureTree[id]
+      if (obj) {
+        await createRecursiveBufferGeometry(obj, this.drawingId, bufferGeomArray)
+      } else {
+        throw new Error('Object does not exist!')
       }
+    }
+    if (bufferGeomArray.length > 0) {
+      return bufferGeomArray
     }
     return undefined
   }
@@ -59,23 +65,23 @@ export class CadModel {
    * @example // tbd
    */
   async createScene(
-    objectId?: ObjectID,
+    objectId?: ObjectID | ObjectID[],
     options?: { meshPerGeometry?: boolean; structureOnly?: boolean },
   ): Promise<{ scene: Scene; nodes: { [key: string]: Object3D }; materials: { [key: string]: Material } }> {
     const cDrawing = getDrawing(this.drawingId)
     const structureTree = cDrawing.structure.tree
-    const rObjectId = objectId ? objectId : cDrawing.structure.root
+    const ids = objectId ? (Array.isArray(objectId) ? objectId : [objectId]) : [cDrawing.structure.root]
     const scene: Scene = new Scene()
     const result: { nodes: { [key: string]: Object3D }; materials: { [key: string]: Material } } = {
       nodes: {},
       materials: {},
     }
-    if (rObjectId != null) {
-      const rootObj = structureTree[rObjectId]
-      if (rootObj) {
-        await createRecursiveScene(rootObj, this.drawingId, scene, result, options)
+    for (const id of ids) {
+      const obj = structureTree[id]
+      if (obj) {
+        await createRecursiveScene(obj, this.drawingId, scene, result, options)
       } else {
-        throw new Error('Root object does not exist!')
+        throw new Error('Object does not exist!')
       }
     }
     return { scene, ...result }
