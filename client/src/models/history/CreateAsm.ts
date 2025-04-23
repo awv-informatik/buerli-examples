@@ -125,15 +125,15 @@ export const create: Create = async (model, params) => {
   const { result: baseBracket } = await partApi.box({
     id: lBracket,
     references: [wcsBaseBracket],
-    length: 200,
-    width: 100,
+    length: 100,
+    width: 200,
     height: 100,
   })
   const { result: subBracket } = await partApi.box({
     id: lBracket,
     references: [wcsSubBracket],
-    length: 200,
-    width: 100,
+    length: 100,
+    width: 200,
     height: 100,
   })
   const { result: mate1LBracket } = await partApi.workCSys({
