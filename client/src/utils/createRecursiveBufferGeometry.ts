@@ -15,10 +15,10 @@ export const createRecursiveBufferGeometry = async (
 ) => {
   let cDrawing = getDrawing(drawingId)
   const tree: ScgTree = cDrawing.structure.tree
-  if (object.link || object.solids) {
-    // Part
+  if (object.link || object.solids || object.geometryIdList) {
+    // Part or Solid
     const baseModeler = ccApi(drawingId).v0.baseModeler
-    const solids: number[] | undefined = object.link ? tree[object.link].solids : object.solids
+    const solids = object.link ? tree[object.link].solids : object.solids ? object.solids : object.geometryIdList
     if (solids != undefined) {
       let geometries: BufferGeometry[] = []
       for (const solid of solids) {

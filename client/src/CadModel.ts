@@ -86,4 +86,56 @@ export class CadModel {
     }
     return { scene, ...result }
   }
+
+  async createThreeShape(owner: ObjectID, shape: THREE.Shape) {
+    const jobs = []
+    for (const curve of shape.curves) {
+      switch (curve.type) {
+        case 'CubicBezierCurve':
+          const c1 = curve as THREE.CubicBezierCurve
+          const p11 = [c1.v0.x, c1.v0.y, 0]
+          const p12 = [c1.v1.x, c1.v1.y, 0]
+          const p13 = [c1.v2.x, c1.v2.y, 0]
+          const p14 = [c1.v3.x, c1.v3.y, 0]
+          jobs.push({ api: 'v1/curve/bezierCurve', param: { id: owner, points: [p11, p12, p13, p14] } })
+          break
+        case 'QuadraticBezierCurve':
+          const c2 = curve as THREE.QuadraticBezierCurve
+          const p21 = [c2.v0.x, c2.v0.y, 0]
+          const p22 = [c2.v1.x, c2.v1.y, 0]
+          const p23 = [c2.v2.x, c2.v2.y, 0]
+          jobs.push({ api: 'v1/curve/bezierCurve', param: { id: owner, points: [p21, p22, p23] } })
+          break
+        case 'LineCurve':
+          const c3 = curve as THREE.LineCurve
+          const p31 = [c3.v1.x, c3.v1.y, 0]
+          const p32 = [c3.v2.x, c3.v2.y, 0]
+          jobs.push({ api: 'v1/curve/line', param: { id: owner, startPos: p31, endPos: p32 } })
+          break
+        case 'SplineCurve':
+          const c4 = curve as THREE.SplineCurve
+          const p41 = c4.points.map((p: THREE.Vector2) => [p.x, p.y, 0])
+          jobs.push({ api: 'v1/curve/interpolationCurve', param: { id: owner, points: p41 } })
+          break
+        case 'EllipseCurve':
+        case 'ArcCurve':
+          const c5 = curve as THREE.ArcCurve
+          jobs.push({
+            api: 'v1/curve/ellipticArc',
+            param: {
+              id: owner,
+              centerPos: [c5.aX, c5.aY, 0],
+              startAngle: c5.aStartAngle,
+              endAngle: c5.aEndAngle,
+              radius1: c5.xRadius,
+              radius2: c5.yRadius,
+            },
+          })
+          break
+        default:
+          break
+      }
+    }
+    await this.api.common.batch({ jobs })
+  }
 }

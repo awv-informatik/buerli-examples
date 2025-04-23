@@ -31,7 +31,7 @@ export type Update = (
   model: CadModel,
   productId: ObjectID | ObjectID[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
 
 export type GetScene = (model: CadModel, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Scene>
 

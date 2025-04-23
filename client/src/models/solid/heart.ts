@@ -1,11 +1,11 @@
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
-import { Create, Param } from '../../store'
+import { Create, GetBufferGeom, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+export const create: Create = async (model, params) => {
+  const api = model.api.v1
 
   const shape = new THREE.Shape()
   shape.moveTo(25, 25)
@@ -15,17 +15,24 @@ export const create: Create = async (apiType, params) => {
   shape.bezierCurveTo(60, 77, 80, 55, 80, 35)
   shape.bezierCurveTo(80, 35, 80, 0, 50, 0)
   shape.bezierCurveTo(35, 0, 25, 25, 25, 25)
-  const basicBody = await api.extrude([0, 0, 5], shape)
+
+  const { result: part } = await api.part.create()
+  const { result: ei } = await api.part.entityInjection({ id: part })
+  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  await model.createThreeShape(ccShape, shape)
+
+  const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 5] })
   return [basicBody]
 }
 
-export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
+export const getBufferGeom: GetBufferGeom = async (model, ids) => {
+  if (!model) return
   const meshes: THREE.Mesh[] = []
-  for await (const solidId of solidIds) {
-    const geom = await api.createBufferGeometry(solidId)
+  ids = Array.isArray(ids) ? ids : [ids]
+  for await (const solidId of ids) {
+    const geom = await model.createBufferGeometry(solidId)
     const mesh = new THREE.Mesh(
-      geom,
+      geom[0],
       new THREE.MeshStandardMaterial({
         transparent: true,
         opacity: 1,
@@ -37,6 +44,4 @@ export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   return meshes
 }
 
-export const cad = new Solid()
-
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }

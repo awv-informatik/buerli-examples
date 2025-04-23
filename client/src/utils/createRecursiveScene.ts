@@ -24,10 +24,10 @@ export const createRecursiveScene = async (
 ) => {
   let cDrawing = getDrawing(drawingId)
   const tree = cDrawing.structure.tree
-  if (object.link || object.solids) {
-    // Part
+  if (object.link || object.solids || object.geometryIdList) {
+    // Part or Solid
     const baseModeler = ccApi(drawingId).v0.baseModeler
-    const entities = object.link ? tree[object.link].solids : object.solids
+    const entities = object.link ? tree[object.link].solids : object.solids ? object.solids : object.geometryIdList
     if (entities != undefined) {
       const part = new Group()
       const matrix = object.coordinateSystem ? MathUtils.convertToMatrix4(object.coordinateSystem) : new Matrix4()
@@ -49,6 +49,8 @@ export const createRecursiveScene = async (
             const _solid = new Group()
             _solid.name = solidObject.name + '_solid'
             _solid.userData = { id: solidObject.id } // add solid id to the userData
+            result.nodes[_solid.name] = _solid
+            result.nodes[`${solidObject.id}`] = _solid
 
             if (options?.meshPerGeometry) {
               // Create a mesh for each geometry element
@@ -72,7 +74,6 @@ export const createRecursiveScene = async (
                 _solid.add(mesh)
               })
               part.add(_solid)
-              result.nodes[_solid.name] = _solid
             } else {
               // Merge all geometries into one mesh, sort them by color
               const colorMeshesMap = getDifferentColoredMeshesFromEntity(cachedEntity)
@@ -102,7 +103,6 @@ export const createRecursiveScene = async (
                   _solid.add(mesh) // Add mesh to solid of the scene
                 })
                 part.add(_solid)
-                result.nodes[_solid.name] = _solid
               } else {
                 // Otherwise we can use the mesh itself
                 const key = colorMeshes[0]
@@ -132,6 +132,7 @@ export const createRecursiveScene = async (
       }
       root.add(part)
       result.nodes[part.name] = part
+      result.nodes[`${object.id}`] = part
     }
   } else if (object.children) {
     // Assembly
