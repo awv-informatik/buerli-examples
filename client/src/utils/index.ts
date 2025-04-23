@@ -1,4 +1,5 @@
 export * from './createRecursiveBufferGeometry'
 export * from './createRecursiveScene'
 export * from './getDifferentColoredMeshesFromEntity'
+export * from './polyline'
 export * from './utils'

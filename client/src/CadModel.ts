@@ -1,7 +1,13 @@
 import { api as ccApi, Connection, ObjectID } from '@buerli.io/classcad'
 import { DrawingID, getDrawing } from '@buerli.io/core'
 import { BufferGeometry, Material, Object3D, Scene } from 'three'
-import { createRecursiveBufferGeometry, createRecursiveScene } from './utils'
+import {
+  createRecursiveBufferGeometry,
+  createRecursiveScene,
+  FilletInfo,
+  getIncludingBulgeAngle,
+  getTouchPoints,
+} from './utils'
 
 type ClassCadApi = ReturnType<typeof ccApi>
 
@@ -137,5 +143,35 @@ export class CadModel {
       }
     }
     await this.api.common.batch({ jobs })
+  }
+
+  async createPolyline(owner: ObjectID, fPts: { point: THREE.Vector3; radius: number }[]) {
+    const newVertices: THREE.Vector3[] = []
+    const bulges: number[] = []
+    for (let i = 0; i < fPts.length; i++) {
+      // if fillet point has radius, calculate fillet info, touchpoints and bulge
+      if (fPts[i].radius > 0) {
+        const j = i - 1 < 0 ? fPts.length - 1 : i - 1
+        const k = i + 1 > fPts.length - 1 ? 0 : i + 1
+        const filletInfo: FilletInfo = {
+          control: fPts[i].point as THREE.Vector3,
+          lineStarts: [fPts[i].point, fPts[i].point],
+          lineEnds: [fPts[j].point, fPts[k].point],
+        }
+        const touchPts = getTouchPoints(filletInfo, fPts[i].radius) // returns two points
+        if (touchPts != undefined && touchPts?.length > 0) {
+          const angle = getIncludingBulgeAngle(filletInfo)
+          const bulge = Math.tan(angle / 4)
+          newVertices.push(...touchPts)
+          bulges.push(bulge) // bulge for first point
+          bulges.push(0) // bulge for second point
+        }
+      } else {
+        newVertices.push(fPts[i].point as THREE.Vector3)
+        bulges.push(0)
+      }
+    }
+    const points = newVertices.map(v => [v.x, v.y, v.z])
+    await this.api.curve.polyline2d({ id: owner, points: points as any, bulges, close: true })
   }
 }
