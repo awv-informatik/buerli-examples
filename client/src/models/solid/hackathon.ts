@@ -52,7 +52,7 @@ export const create: Create = async (model, params) => {
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: cyl1 } })
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: cyl2 } })
 
-  const { result: offset } = await api.solid.offset({ id: ei, target: { id: basicBody }, distance: 1 })
+  const { result: offset } = await api.solid.offset({ id: ei, target: { id: basicBody }, distance: 1, extend: false })
   return [offset]
 }
 
