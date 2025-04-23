@@ -1,19 +1,10 @@
-import {
-  FlipType,
-  ReorientedType,
-  BooleanOperationType,
-  WorkCoordSystemType,
-} from '@buerli.io/classcad'
-import { ApiHistory, History } from '@buerli.io/headless'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
+export const create: Create = async (model, params) => {
+  const { assembly: assemblyApi, part: partApi } = model.api.v1
   /* consts */
-  const pt0 = { x: 0, y: 0, z: 0 }
   const pt1 = { x: 50, y: 0, z: 0 }
   const pt2 = { x: 100, y: 0, z: 0 }
   const pt3 = { x: 0, y: 0, z: 0 }
@@ -23,7 +14,7 @@ export const create: Create = async (apiType, params) => {
   const nullRot = { x: 0, y: 0, z: 0 }
 
   /* root assembly */
-  const lBracketAsm = await api.createRootAssembly('L_Bracket_Assembly')
+  const { result: lBracketAsm } = await assemblyApi.create({ name: 'L_Bracket_Assembly' })
 
   /* nut part */
   const wcsNut = {
@@ -34,37 +25,34 @@ export const create: Create = async (apiType, params) => {
     mate1Pos: { x: 15, y: 15, z: 0 },
     mate1Rot: nullRot,
   }
-  const nut = await api.createPartAsTemplate('Nut')
-  const wcsBoxNut = await api.createWorkCoordSystem(
-    nut,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsNut.boxPos,
-    wcsNut.boxRot,
-    false,
-    'wcsBoxNut',
-  )
-  const wcsCylNut = await api.createWorkCoordSystem(
-    nut,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsNut.cylPos,
-    wcsNut.cylRot,
-    false,
-    'wcsCylNut',
-  )
-  const mate1Nut = await api.createWorkCoordSystem(
-    nut,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsNut.mate1Pos,
-    wcsNut.mate1Rot,
-    false,
-    'mate1Nut',
-  )
-  const boxNut = api.box(nut, [wcsBoxNut], 30, 30, 10)
-  const cylNut = api.cylinder(nut, [wcsCylNut], 20, 40)
-  api.boolean(nut, BooleanOperationType.SUBTRACTION, [boxNut, cylNut])
+  const { result: nut } = await assemblyApi.partTemplate({ name: 'Nut' })
+  const { result: wcsBoxNut } = await partApi.workCSys({
+    id: nut,
+    type: 'CUSTOM',
+    offset: wcsNut.boxPos,
+    rotation: wcsNut.boxRot,
+    name: 'wcsBoxNut',
+  })
+
+  const { result: wcsCylNut } = await partApi.workCSys({
+    id: nut,
+    type: 'CUSTOM',
+    offset: wcsNut.cylPos,
+    rotation: wcsNut.cylRot,
+    name: 'wcsCylNut',
+  })
+
+  const { result: mate1Nut } = await partApi.workCSys({
+    id: nut,
+    type: 'CUSTOM',
+    offset: wcsNut.mate1Pos,
+    rotation: wcsNut.mate1Rot,
+    name: 'mate1Nut',
+  })
+
+  const { result: boxNut } = await partApi.box({ id: nut, references: [wcsBoxNut], length: 30, width: 30, height: 10 })
+  const { result: cylNut } = await partApi.cylinder({ id: nut, references: [wcsCylNut], diameter: 20, height: 40 })
+  await partApi.boolean({ id: nut, type: 'SUBTRACTION', target: { id: boxNut }, tools: [{ id: cylNut }] })
 
   /* bolt part */
   const wcsBolt = {
@@ -75,37 +63,34 @@ export const create: Create = async (apiType, params) => {
     mate1Pos: nullPos,
     mate1Rot: nullRot,
   }
-  const bolt = await api.createPartAsTemplate('Bolt')
-  const wcsShaftBolt = await api.createWorkCoordSystem(
-    bolt,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsBolt.shaftPos,
-    wcsBolt.shaftRot,
-    false,
-    'wcsShaftBolt',
-  )
-  const wcsHeadBolt = await api.createWorkCoordSystem(
-    bolt,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsBolt.headPos,
-    wcsBolt.headRot,
-    false,
-    'wcsHeadBolt',
-  )
-  const mate1Bolt = await api.createWorkCoordSystem(
-    bolt,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsBolt.mate1Pos,
-    wcsBolt.mate1Rot,
-    false,
-    'mate1Bolt',
-  )
-  const shaft = api.cylinder(bolt, [wcsShaftBolt], 20, 60)
-  const head = api.cylinder(bolt, [wcsHeadBolt], 30, 10)
-  api.boolean(bolt, BooleanOperationType.UNION, [shaft, head])
+  const { result: bolt } = await assemblyApi.partTemplate({ name: 'Bolt' })
+  const { result: wcsShaftBolt } = await partApi.workCSys({
+    id: bolt,
+    type: 'CUSTOM',
+    offset: wcsBolt.shaftPos,
+    rotation: wcsBolt.shaftRot,
+    name: 'wcsShaftBolt',
+  })
+
+  const { result: wcsHeadBolt } = await partApi.workCSys({
+    id: bolt,
+    type: 'CUSTOM',
+    offset: wcsBolt.headPos,
+    rotation: wcsBolt.headRot,
+    name: 'wcsHeadBolt',
+  })
+
+  const { result: mate1Bolt } = await partApi.workCSys({
+    id: bolt,
+    type: 'CUSTOM',
+    offset: wcsBolt.mate1Pos,
+    rotation: wcsBolt.mate1Rot,
+    name: 'mate1Bolt',
+  })
+
+  const { result: shaft } = await partApi.cylinder({ id: bolt, references: [wcsShaftBolt], diameter: 20, height: 60 })
+  const { result: head } = await partApi.cylinder({ id: bolt, references: [wcsHeadBolt], diameter: 30, height: 10 })
+  await partApi.boolean({ id: bolt, type: 'UNION', target: { id: shaft }, tools: [{ id: head }] })
 
   /* lbracket part */
   const wcsLBracket = {
@@ -120,212 +105,184 @@ export const create: Create = async (apiType, params) => {
     mate3Pos: { x: 75, y: 150, z: 0 },
     mate3Rot: nullRot,
   }
-  const lBracket = await api.createPartAsTemplate('L_Bracket')
-  const wcsBaseBracket = await api.createWorkCoordSystem(
-    lBracket,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsLBracket.basePos,
-    wcsLBracket.baseRot,
-    false,
-    'wcsBaseBracket',
-  )
-  const wcsSubBracket = await api.createWorkCoordSystem(
-    lBracket,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsLBracket.subPos,
-    wcsLBracket.subRot,
-    false,
-    'wcsSubBracket',
-  )
-  const baseBracket = api.box(lBracket, [wcsBaseBracket], 200, 100, 100)
-  const subBracket = api.box(lBracket, [wcsSubBracket], 200, 100, 100)
-  const mate1LBracket = await api.createWorkCoordSystem(
-    lBracket,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsLBracket.mate1Pos,
-    wcsLBracket.mate1Rot,
-    false,
-    'mate1LBracket',
-  )
-  const mate2LBracket = await api.createWorkCoordSystem(
-    lBracket,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsLBracket.mate2Pos,
-    wcsLBracket.mate2Rot,
-    false,
-    'mate2LBracket',
-  )
-  const mate3LBracket = await api.createWorkCoordSystem(
-    lBracket,
-    WorkCoordSystemType.WCS_CUSTOM,
-    [],
-    wcsLBracket.mate3Pos,
-    wcsLBracket.mate3Rot,
-    false,
-    'mate3LBracket',
-  )
-  const sub1Bracket = api.cylinder(lBracket, [mate1LBracket], 20, 40)
-  const sub2Bracket = api.cylinder(lBracket, [mate2LBracket], 20, 40)
-  const sub3Bracket = api.cylinder(lBracket, [mate3LBracket], 20, 40)
-  api.boolean(lBracket, BooleanOperationType.SUBTRACTION, [
-    baseBracket,
-    subBracket,
-    sub1Bracket,
-    sub2Bracket,
-    sub3Bracket,
-  ])
+  const { result: lBracket } = await assemblyApi.partTemplate({ name: 'L_Bracket' })
+  const { result: wcsBaseBracket } = await partApi.workCSys({
+    id: lBracket,
+    type: 'CUSTOM',
+    offset: wcsLBracket.basePos,
+    rotation: wcsLBracket.baseRot,
+    name: 'wcsBaseBracket',
+  })
+
+  const { result: wcsSubBracket } = await partApi.workCSys({
+    id: lBracket,
+    type: 'CUSTOM',
+    offset: wcsLBracket.subPos,
+    rotation: wcsLBracket.subRot,
+    name: 'wcsSubBracket',
+  })
+
+  const { result: baseBracket } = await partApi.box({
+    id: lBracket,
+    references: [wcsBaseBracket],
+    length: 200,
+    width: 100,
+    height: 100,
+  })
+  const { result: subBracket } = await partApi.box({
+    id: lBracket,
+    references: [wcsSubBracket],
+    length: 200,
+    width: 100,
+    height: 100,
+  })
+  const { result: mate1LBracket } = await partApi.workCSys({
+    id: lBracket,
+    type: 'CUSTOM',
+    offset: wcsLBracket.mate1Pos,
+    rotation: wcsLBracket.mate1Rot,
+    name: 'mate1LBracket',
+  })
+
+  const { result: mate2LBracket } = await partApi.workCSys({
+    id: lBracket,
+    type: 'CUSTOM',
+    offset: wcsLBracket.mate2Pos,
+    rotation: wcsLBracket.mate2Rot,
+    name: 'mate2LBracket',
+  })
+
+  const { result: mate3LBracket } = await partApi.workCSys({
+    id: lBracket,
+    type: 'CUSTOM',
+    offset: wcsLBracket.mate3Pos,
+    rotation: wcsLBracket.mate3Rot,
+    name: 'mate3LBracket',
+  })
+
+  const { result: sub1Bracket } = await partApi.cylinder({
+    id: lBracket,
+    references: [mate1LBracket],
+    diameter: 20,
+    height: 40,
+  })
+  const { result: sub2Bracket } = await partApi.cylinder({
+    id: lBracket,
+    references: [mate2LBracket],
+    diameter: 20,
+    height: 40,
+  })
+  const { result: sub3Bracket } = await partApi.cylinder({
+    id: lBracket,
+    references: [mate3LBracket],
+    diameter: 20,
+    height: 40,
+  })
+  await partApi.boolean({
+    id: lBracket,
+    type: 'SUBTRACTION',
+    target: { id: baseBracket },
+    tools: [{ id: subBracket }, { id: sub1Bracket }, { id: sub2Bracket }, { id: sub3Bracket }],
+  })
 
   /* nut-bolt assembly */
-  const nutBoltAsm = await api.createAssemblyAsTemplate('Nut_Bolt_Assembly')
-  const [nutRef, boltRef] = await api.addInstances(
-    {
-      productId: nut,
-      ownerId: nutBoltAsm,
-      transformation: [pt0, xDir, yDir],
-    },
-    {
-      productId: bolt,
-      ownerId: nutBoltAsm,
-      transformation: [pt0, xDir, yDir],
-    },
-  )
+  const { result: nutBoltAsm } = await assemblyApi.assemblyTemplate({ name: 'Nut_Bolt_Assembly' })
+  let res = await assemblyApi.instance([
+    { productId: nut, ownerId: nutBoltAsm },
+    { productId: bolt, ownerId: nutBoltAsm },
+  ])
+  const [nutRef, boltRef] = res.result as number[]
 
-  await api.createFastenedOriginConstraint(
-    nutBoltAsm,
-    {
+  await assemblyApi.fastenedOrigin({
+    id: nutBoltAsm,
+    mate1: {
       matePath: [boltRef],
       wcsId: mate1Bolt,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+      flipType: 'Z',
+      reorientType: '0',
     },
-    0,
-    0,
-    0,
-    'FOC1',
-  )
+    name: 'FOC1',
+  })
 
-  await api.createFastenedConstraint(
-    nutBoltAsm,
-    {
+  await assemblyApi.fastened({
+    id: nutBoltAsm,
+    mate1: {
       matePath: [nutRef],
       wcsId: mate1Nut,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
     },
-    {
+    mate2: {
       matePath: [boltRef],
       wcsId: mate1Bolt,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
     },
-    0,
-    0,
-    -20,
-    'FC1',
-  )
+    zOffset: -20,
+    name: 'FC1',
+  })
 
   /* l-bracket assembly */
-  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = await api.addInstances(
-    {
-      productId: nutBoltAsm,
-      ownerId: lBracketAsm,
-      transformation: [pt0, xDir, yDir],
-    },
-    {
-      productId: nutBoltAsm,
-      ownerId: lBracketAsm,
-      transformation: [pt1, xDir, yDir],
-    },
-    {
-      productId: nutBoltAsm,
-      ownerId: lBracketAsm,
-      transformation: [pt2, xDir, yDir],
-    },
-    {
-      productId: lBracket,
-      ownerId: lBracketAsm,
-      transformation: [pt3, xDir, yDir],
-    },
-  )
-  await api.createFastenedOriginConstraint(
-    lBracketAsm,
-    {
-      matePath: [lBracketRef],
-      wcsId: mate1LBracket,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
-    },
-    0,
-    0,
-    20,
-    'FOC2',
-  )
+  res = await assemblyApi.instance([
+    { productId: nutBoltAsm, ownerId: lBracketAsm },
+    { productId: nutBoltAsm, ownerId: lBracketAsm, transformation: [pt1, xDir, yDir] },
+    { productId: nutBoltAsm, ownerId: lBracketAsm, transformation: [pt2, xDir, yDir] },
+    { productId: lBracket, ownerId: lBracketAsm, transformation: [pt3, xDir, yDir] },
+  ])
 
-  await api.createFastenedConstraint(
-    lBracketAsm,
-    {
+  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = res.result as number[]
+  await assemblyApi.fastenedOrigin({
+    id: lBracketAsm,
+    mate1: {
       matePath: [lBracketRef],
       wcsId: mate1LBracket,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
     },
-    {
+    zOffset: 20,
+    name: 'FOC2',
+  })
+
+  await assemblyApi.fastened({
+    id: lBracketAsm,
+    mate1: {
+      matePath: [lBracketRef],
+      wcsId: mate1LBracket
+    },
+    mate2: {
       matePath: [nutBoltRef0],
       wcsId: wcsShaftBolt,
-      flip: FlipType.FLIP_Z_INV,
-      reoriented: ReorientedType.REORIENTED_0,
+      flipType: '-Z',
     },
-    0,
-    0,
-    20,
+    zOffset: 20,
+    name: 'FC2'
+  })
 
-    'FC2',
-  )
-  await api.createFastenedConstraint(
-    lBracketAsm,
-    {
+  await assemblyApi.fastened({
+    id: lBracketAsm,
+    mate1: {
       matePath: [lBracketRef],
-      wcsId: mate2LBracket,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+      wcsId: mate2LBracket
     },
-    {
+    mate2: {
       matePath: [nutBoltRef1],
       wcsId: wcsShaftBolt,
-      flip: FlipType.FLIP_Z_INV,
-      reoriented: ReorientedType.REORIENTED_0,
+      flipType: '-Z',
     },
-    0,
-    0,
-    20,
-    'FC3',
-  )
-  await api.createFastenedConstraint(
-    lBracketAsm,
-    {
+    zOffset: 20,
+    name: 'FC3'
+  })
+
+  await assemblyApi.fastened({
+    id: lBracketAsm,
+    mate1: {
       matePath: [lBracketRef],
-      wcsId: mate3LBracket,
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+      wcsId: mate3LBracket
     },
-    {
+    mate2: {
       matePath: [nutBoltRef2],
       wcsId: wcsShaftBolt,
-      flip: FlipType.FLIP_Z_INV,
-      reoriented: ReorientedType.REORIENTED_0,
+      flipType: '-Z',
     },
-    0,
-    0,
-    20,
-    'FC4',
-  )
+    zOffset: 20,
+    name: 'FC4'
+  })
+  
   return lBracketAsm
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }
