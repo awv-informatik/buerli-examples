@@ -121,7 +121,10 @@ const initExamples = async () => {
   const examples: Record<string, Example> = {}
   for (const t of toc) {
     // console.info(t.exampleId)
-    const example = await import(`./models/${t.file}`)
+    let example = await import(`./models/${t.file}`)
+    if (example.default) {
+      example = { ...example, ...example.default }
+    }
     examples[t.exampleId] = {
       solid: t.solid,
       label: t.label,

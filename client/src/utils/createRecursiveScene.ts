@@ -1,5 +1,5 @@
-import { api as ccApi, ccUtils } from '@buerli.io/classcad'
-import { CCClasses, DrawingID, getDrawing, MathUtils, ScgObject } from '@buerli.io/core'
+import { api as ccApi } from '@buerli.io/classcad'
+import { DrawingID, getDrawing, MathUtils, ScgObject } from '@buerli.io/core'
 import { Group, Material, Matrix4, Mesh, MeshStandardMaterial, Object3D } from 'three'
 import { mergeBufferGeometries } from 'three-stdlib'
 import { getDifferentColoredMeshesFromEntity } from './'
@@ -135,19 +135,18 @@ export const createRecursiveScene = async (
       result.nodes[`${object.id}`] = part
     }
   } else if (object.children) {
-    // Assembly
-    const assembly = new Group()
+    // Assembly or Entity
+    const group = new Group()
     const matrix = object.coordinateSystem ? MathUtils.convertToMatrix4(object.coordinateSystem) : new Matrix4()
-    matrix.decompose(assembly.position, assembly.quaternion, assembly.scale)
-    assembly.updateMatrix()
-    assembly.userData = { id: object.id } // assembly root or instance id
-    assembly.name = object.name // assembly root or instance name
-    result.nodes[assembly.name] = assembly
-    root.add(assembly)
+    matrix.decompose(group.position, group.quaternion, group.scale)
+    group.updateMatrix()
+    group.userData = { id: object.id } // assembly root or instance id
+    group.name = object.name // assembly root or instance name
+    result.nodes[group.name] = group
+    result.nodes[`${object.id}`] = group
+    root.add(group)
     for (const child of object.children) {
-      if (ccUtils.base.isA(tree[child].class, CCClasses.IProductReference)) {
-        await createRecursiveScene(tree[child], drawingId, assembly, result, options)
-      }
+      await createRecursiveScene(tree[child], drawingId, group, result, options)
     }
   }
 }

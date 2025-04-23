@@ -1,5 +1,5 @@
-import { api as ccApi, ccUtils } from '@buerli.io/classcad'
-import { CCClasses, DrawingID, getDrawing, ScgObject, ScgTree } from '@buerli.io/core'
+import { api as ccApi } from '@buerli.io/classcad'
+import { DrawingID, getDrawing, ScgObject, ScgTree } from '@buerli.io/core'
 import { BufferGeometry } from 'three'
 import { mergeBufferGeometries } from 'three-stdlib'
 
@@ -46,11 +46,9 @@ export const createRecursiveBufferGeometry = async (
       }
     }
   } else if (object.children) {
-    // Assembly
+    // Assembly or Entity
     for (const child of object.children) {
-      if (ccUtils.base.isA(tree[child].class, CCClasses.IProductReference)) {
-        await createRecursiveBufferGeometry(tree[child], drawingId, bufferGeomArray)
-      }
+      await createRecursiveBufferGeometry(tree[child], drawingId, bufferGeomArray)
     }
   }
 }
