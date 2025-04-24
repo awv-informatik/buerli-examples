@@ -13,8 +13,8 @@ const create: Create = async (model, params) => {
   const rows = params.values[0]
   const columns = params.values[1]
   const unitLength = 8
-  const width = rows * unitLength
-  const length = columns * unitLength
+  const length = rows * unitLength
+  const width = columns * unitLength
   const thickness = 1.6
   const height = unitLength + thickness
   const dotHeight = 1.7
@@ -34,27 +34,25 @@ const create: Create = async (model, params) => {
     height: height - thickness,
     length: length - 2 * thickness,
   })
-  await api.solid.translation({ id: ei, target: { id: subBox }, translation: [0, -thickness, 0] })
+  await api.solid.translation({ id: ei, target: { id: subBox }, translation: [0, 0, -thickness] })
   await api.solid.subtraction({ id: ei, target: { id: basic }, tool: { id: subBox } })
 
   // dots
-  const { result: dot } = await api.solid.cylinder({ id: ei, diameter: 2 * dotRadius, height: dotHeight })
-  await api.solid.rotation({ id: ei, target: { id: dot }, rotation: [Math.PI / 2, 0, 0] })
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
+      const { result: dot } = await api.solid.cylinder({ id: ei, diameter: 2 * dotRadius, height: dotHeight })
       await api.solid.translation({
         id: ei,
         target: { id: dot },
         translation: [
-          width / 2 - dotGap - j * (2 * dotGap),
+          length / 2 - dotGap - j * (2 * dotGap),
+          width / 2 - dotGap - i * (2 * dotGap),
           (height + dotHeight) / 2,
-          length / 2 - dotGap - i * (2 * dotGap),
         ],
       })
-      await api.solid.union({ id: ei, target: { id: basic }, tool: { id: dot }, keepTool: true })
+      await api.solid.union({ id: ei, target: { id: basic }, tool: { id: dot } })
     }
   }
-  await api.solid.deleteSolid({ id: ei, ids: [dot] })
 
   // tubes
   if (rows > 1 && columns > 1) {
@@ -65,25 +63,23 @@ const create: Create = async (model, params) => {
       height: tubeHeight,
     })
     await api.solid.subtraction({ id: ei, target: { id: tube }, tool: { id: subCyl } })
-    await api.solid.rotation({ id: ei, target: { id: tube }, rotation: [Math.PI / 2, 0, 0] })
-    await api.solid.translation({ id: ei, target: { id: tube }, translation: [0, -thickness / 2, 0] })
     for (let i = 0; i < columns - 1; i++) {
       for (let j = 0; j < rows - 1; j++) {
+        const { result: { copy: copy } } = await api.solid.copy({ id: ei, target: { id: tube }})
         await api.solid.translation({
           id: ei,
-          target: { id: tube },
+          target: { id: copy },
           translation: [
-            width / 2 - 2 * dotGap - j * (2 * dotGap),
+            length / 2 - 2 * dotGap - j * (2 * dotGap),
+            width / 2 - 2 * dotGap - i * (2 * dotGap),
             -thickness / 2,
-            length / 2 - 2 * dotGap - i * (2 * dotGap),
           ],
         })
-        await api.solid.union({ id: ei, target: { id: basic }, tool: { id: tube }, keepTool: true })
+        await api.solid.union({ id: ei, target: { id: basic }, tool: { id: copy } })
       }
     }
     await api.solid.deleteSolid({ id: ei, ids: [tube] })
   }
-
   return [basic]
 }
 
