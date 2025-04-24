@@ -145,7 +145,7 @@ export class CadModel {
     await this.api.common.batch({ jobs })
   }
 
-  async createPolyline(owner: ObjectID, fPts: { point: THREE.Vector3; radius: number }[]) {
+  async createPolyline(owner: ObjectID, fPts: { point: THREE.Vector3; radius: number }[], close = true) {
     const newVertices: THREE.Vector3[] = []
     const bulges: number[] = []
     for (let i = 0; i < fPts.length; i++) {
@@ -172,6 +172,6 @@ export class CadModel {
       }
     }
     const points = newVertices.map(v => [v.x, v.y, v.z])
-    await this.api.curve.polyline2d({ id: owner, points: points as any, bulges, close: true })
+    await this.api.curve.polyline2d({ id: owner, points: points as any, bulges, close })
   }
 }

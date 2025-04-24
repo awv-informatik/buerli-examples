@@ -1,50 +1,52 @@
-import { ApiNoHistory, Solid, createPolyline, Polyline } from '@buerli.io/headless'
-import { Color, Vector3 } from 'three'
-import { Create, Param } from '../../store'
+import { ObjectID } from '@buerli.io/core'
+import * as THREE from 'three'
+import { Create, GetScene, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
 
-  const polyline: Polyline = createPolyline([
-    { point: new Vector3(0, 0, 0), radius: 0 },
-    { point: new Vector3(0, 4, 0), radius: 0 },
-    { point: new Vector3(2.6, 4, 0), radius: 2 },
-    { point: new Vector3(6.8, 8.2, 0), radius: 1 },
-    { point: new Vector3(2.5, 8.2, 0), radius: 0 },
-    { point: new Vector3(2.5, 10, 0), radius: 1 },
-    { point: new Vector3(10, 10, 0), radius: 2 },
-    { point: new Vector3(10, 2.5, 0), radius: 1 },
-    { point: new Vector3(8.2, 2.5, 0), radius: 0 },
-    { point: new Vector3(8.2, 6.8, 0), radius: 1 },
-    { point: new Vector3(4, 2.6, 0), radius: 2 },
-    { point: new Vector3(4, 0, 0), radius: 0 },
+  const { result: part } = await api.part.create()
+  const { result: ei } = await api.part.entityInjection({ id: part })
+  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+
+  await model.createPolyline(ccShape, [
+    { point: new THREE.Vector3(0, 0, 0), radius: 0 },
+    { point: new THREE.Vector3(0, 4, 0), radius: 0 },
+    { point: new THREE.Vector3(2.6, 4, 0), radius: 2 },
+    { point: new THREE.Vector3(6.8, 8.2, 0), radius: 1 },
+    { point: new THREE.Vector3(2.5, 8.2, 0), radius: 0 },
+    { point: new THREE.Vector3(2.5, 10, 0), radius: 1 },
+    { point: new THREE.Vector3(10, 10, 0), radius: 2 },
+    { point: new THREE.Vector3(10, 2.5, 0), radius: 1 },
+    { point: new THREE.Vector3(8.2, 2.5, 0), radius: 0 },
+    { point: new THREE.Vector3(8.2, 6.8, 0), radius: 1 },
+    { point: new THREE.Vector3(4, 2.6, 0), radius: 2 },
+    { point: new THREE.Vector3(4, 0, 0), radius: 0 },
   ])
-  const extrusion = api.extrude([0, 0, 150], polyline)
+  const { result: extrusion } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 150] })
 
-  const copy = api.copy(extrusion)
   for (let i = 1; i < 4; i++) {
-    api.rotateTo(copy, [0, 0, (i * Math.PI) / 2])
-    api.union(extrusion, true, copy)
+    const { result: e1 } = await api.solid.copy({ id: ei, target: { id: extrusion } })
+    await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, (i * Math.PI) / 2] })
+    await api.solid.union({ id: ei, target: { id: extrusion }, tool: { id: e1.copy } })
   }
-  api.clearSolid(copy)
-  return [await extrusion]
+  return [extrusion]
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
-  const { scene, solids } = await api.createScene(solidIds)
-  scene && colorize(solids)
+const getScene: GetScene = async (model, ids) => {
+  if (!model) return
+  const { scene, nodes } = await model.createScene(ids)
+  scene && colorize(ids, nodes)
   return scene
 }
 
-const colorize = (solids: THREE.Group[]) => {
-  const customRed = new Color('rgb(203, 67, 188)')
-  setObjectColor(solids[0], customRed)
+const colorize = (ids: ObjectID | ObjectID[], nodes: { [key: string]: THREE.Object3D }) => {
+  const [id] = ids as ObjectID[]
+  const customRed = new THREE.Color('rgb(203, 67, 188)')
+  setObjectColor(nodes[`${id}`], customRed)
 }
 
-export const cad = new Solid()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, getScene, paramsMap }

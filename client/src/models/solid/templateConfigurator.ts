@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
-import { Param, Create, Update, storeApi } from '../../store'
+import { Create, Param, Update, storeApi } from '../../store'
 
-export const paramsMap: Param[] = [
+const paramsMap: Param[] = [
   // number example
   // { index: 0, name: 'test', type: ParamType.Number, value: 60 },
   // string example
@@ -11,8 +10,8 @@ export const paramsMap: Param[] = [
   // { index: 2, name: 'test', type: ParamType.Slider, value: 6, step: 1, values: [2, 12] },
 ].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -26,12 +25,11 @@ export const create: Create = async (apiType, params) => {
   return [0] // solid ids
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiNoHistory
+const update: Update = async (model, productId, params) => {
+  const api = model.api.v1
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Start updating your model here...
   // ...
@@ -40,6 +38,4 @@ export const update: Update = async (apiType, productId, params) => {
   return [0] // solid ids
 }
 
-export const cad = new Solid()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
 import * as THREE from 'three'
-import { Param, Create } from '../../store'
+import { Create, GetBufferGeom, Param } from '../../store'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
 
   // Start creating your model here...
   // ...
@@ -15,13 +14,14 @@ export const create: Create = async (apiType, params) => {
   return 0 // solid id
 }
 
-export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
+const getBufferGeom: GetBufferGeom = async (model, ids) => {
+  if (!model) return
   const meshes: THREE.Mesh[] = []
-  for await (const solidId of solidIds) {
-    const geom = await api.createBufferGeometry(solidId)
+  ids = Array.isArray(ids) ? ids : [ids]
+  for await (const solidId of ids) {
+    const geom = await model.createBufferGeometry(solidId)
     const mesh = new THREE.Mesh(
-      geom,
+      geom[0],
       new THREE.MeshStandardMaterial({
         transparent: true,
         opacity: 1,
@@ -33,6 +33,4 @@ export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   return meshes
 }
 
-export const cad = new Solid()
-
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }
