@@ -1,13 +1,16 @@
-import { ApiNoHistory, Solid, createPolyline, Polyline } from '@buerli.io/headless'
 import * as THREE from 'three'
-import { Create, Param } from '../../store'
+import { Create, GetBufferGeom, Param } from '../../store'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
 
-  const polyline1: Polyline = createPolyline([
+  const { result: part } = await api.part.create()
+  const { result: ei } = await api.part.entityInjection({ id: part })
+
+  const { result: ccShape1 } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  await model.createPolyline(ccShape1, [
     { point: new THREE.Vector3(0, 200, 140), radius: 0 },
     { point: new THREE.Vector3(0, 200, -73.676), radius: 0 },
     { point: new THREE.Vector3(0, 80, -30), radius: 0 },
@@ -27,31 +30,41 @@ export const create: Create = async (apiType, params) => {
     { point: new THREE.Vector3(0, 220, 140), radius: 0 },
   ])
 
-  const polyline2: Polyline = createPolyline([
+  const { result: ccShape2 } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  await model.createPolyline(ccShape2, [
     { point: new THREE.Vector3(-85, -10, -137.5), radius: 0 },
     { point: new THREE.Vector3(-185, -36.795, -137.5), radius: 0 },
     { point: new THREE.Vector3(-185, 36.795, -137.5), radius: 0 },
     { point: new THREE.Vector3(-85, 10, -137.5), radius: 0 },
   ])
 
-  const basicBody = api.revolve([0, 0, 0], [0, 0, 100], 2 * Math.PI, polyline1)
-  const subSolid = api.extrude([0, 0, 500], polyline2)
+  const { result: basicBody } = await api.solid.revolve({
+    id: ei,
+    curves: [ccShape1],
+    originPos: [0, 0, 0],
+    direction: [0, 0, 100],
+    angle: 2 * Math.PI,
+  })
+  const { result: subSolid } = await api.solid.extrusion({ id: ei, curves: [ccShape2], direction: [0, 0, 500] })
+
   const nof = 6
   const angle = (2 * Math.PI) / nof
   for (let i = 0; i < nof; i++) {
-    api.rotateTo(subSolid, [0, 0, i * angle])
-    api.subtract(basicBody, true, subSolid)
+    const { result: e1 } = await api.solid.copy({ id: ei, target: { id: subSolid } })
+    await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, i * angle] })
+    await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: e1.copy } })
   }
-  return [await basicBody]
+  return [basicBody]
 }
 
-export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
+const getBufferGeom: GetBufferGeom = async (model, ids) => {
+  if (!model) return
   const meshes: THREE.Mesh[] = []
-  for await (const solidId of solidIds) {
-    const geom = await api.createBufferGeometry(solidId)
+  ids = Array.isArray(ids) ? ids : [ids]
+  for await (const solidId of ids) {
+    const geom = await model.createBufferGeometry(solidId)
     const mesh = new THREE.Mesh(
-      geom,
+      geom[0],
       new THREE.MeshStandardMaterial({
         transparent: true,
         opacity: 1,
@@ -63,6 +76,4 @@ export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   return meshes
 }
 
-export const cad = new Solid()
-
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }

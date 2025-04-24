@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { Create, GetBufferGeom, Param } from '../../store'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (model, params) => {
+const create: Create = async (model, params) => {
   const api = model.api.v1
 
   const fp0 = { point: new THREE.Vector3(0, 25, 0), radius: 50 }
@@ -29,7 +29,7 @@ export const create: Create = async (model, params) => {
   return [revolve]
 }
 
-export const getBufferGeom: GetBufferGeom = async (model, ids) => {
+const getBufferGeom: GetBufferGeom = async (model, ids) => {
   if (!model) return
   const meshes: THREE.Mesh[] = []
   ids = Array.isArray(ids) ? ids : [ids]

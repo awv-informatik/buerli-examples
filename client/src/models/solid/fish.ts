@@ -5,11 +5,11 @@ import { Color } from 'three'
 import { Create, GetScene, Param, ParamType, Update } from '../../store'
 import { setObjectColor, setObjectTransparency } from '../../utils/utils'
 
-export const paramsMap: Param[] = [{ index: 0, name: 'Thickness', type: ParamType.Number, value: 5 }].sort(
+const paramsMap: Param[] = [{ index: 0, name: 'Thickness', type: ParamType.Number, value: 5 }].sort(
   (a, b) => a.index - b.index,
 )
 
-export const create: Create = async (model, params) => {
+const create: Create = async (model, params) => {
   const api = model.api.v1
 
   const origin = [0, 0, 0] as [number, number, number] // TODO: type point = { x: number; y: number; z: number;} | [number, number, number] | number[]
@@ -35,7 +35,7 @@ export const create: Create = async (model, params) => {
   return [fish1, fish2]
 }
 
-export const update: Update = async (model, productId, params) => {
+const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   if (check(paramsMap[0])) {
@@ -45,7 +45,7 @@ export const update: Update = async (model, productId, params) => {
   return undefined
 }
 
-export const getScene: GetScene = async (model, ids) => {
+const getScene: GetScene = async (model, ids) => {
   if (!model) return
   const { scene, nodes } = await model.createScene(ids, { meshPerGeometry: false })
   scene && colorize(ids, nodes)
@@ -59,4 +59,4 @@ const colorize = (ids: ObjectID | ObjectID[], nodes: { [key: string]: THREE.Obje
   setObjectTransparency(nodes[`${fish2}`], 0.5)
 }
 
-export default { create, getScene, paramsMap }
+export default { create, update, getScene, paramsMap }

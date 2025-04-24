@@ -4,9 +4,9 @@ import { Color } from 'three'
 import { Create, GetScene, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (model, params) => {
+const create: Create = async (model, params) => {
   const api = model.api.v1
 
   const fp0 = { point: new THREE.Vector3(0, 25, 0), radius: 0 }
@@ -26,7 +26,7 @@ export const create: Create = async (model, params) => {
   return [extrusion]
 }
 
-export const getScene: GetScene = async (model, ids) => {
+const getScene: GetScene = async (model, ids) => {
   if (!model) return
   const { scene, nodes } = await model.createScene(ids)
   scene && colorize(ids, nodes)

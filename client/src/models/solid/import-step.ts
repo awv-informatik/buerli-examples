@@ -31,23 +31,4 @@ const colorize = (ids: ObjectID | ObjectID[], nodes: { [key: string]: THREE.Obje
   setObjectColor(nodes[`${id}`], customRed)
 }
 
-// const getBufferGeom: GetBufferGeom = async (model, ids) => {
-//   if (!model) return
-//   const meshes: THREE.Mesh[] = []
-//   ids = Array.isArray(ids) ? ids : [ids]
-//   for await (const id of ids) {
-//     const geom = await model.createBufferGeometry(id)
-//     const mesh = new THREE.Mesh(
-//       geom[0],
-//       new THREE.MeshStandardMaterial({
-//         transparent: true,
-//         opacity: 1,
-//         color: new THREE.Color('rgb(203, 159, 22)'),
-//       }),
-//     )
-//     meshes.push(mesh)
-//   }
-//   return meshes
-// }
-
 export default { create, getScene, paramsMap }
