@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
 import { Param, Create, Update, storeApi } from '../../store'
 
 export const paramsMap: Param[] = [
@@ -11,9 +10,7 @@ export const paramsMap: Param[] = [
   // { index: 2, name: 'test', type: ParamType.Slider, value: 6, step: 1, values: [2, 12] },
 ].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
+export const create: Create = async (model, params) => {
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
@@ -26,8 +23,7 @@ export const create: Create = async (apiType, params) => {
   return 0 // product id
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
 
   const check = (param: Param) =>
@@ -40,6 +36,4 @@ export const update: Update = async (apiType, productId, params) => {
   return 0 // product id
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

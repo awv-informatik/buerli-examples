@@ -1,6 +1,6 @@
-import { ApiHistory, History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/GripperTemplate.ofb?buffer'
 import { Create, Param, ParamType, Update } from '../../store'
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Width', type: ParamType.Number, value: 60 },
@@ -9,26 +9,31 @@ export const paramsMap: Param[] = [
   { index: 3, name: 'Taper', type: ParamType.Number, value: 50 },
 ].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-  const productId = await api.load(arraybuffer, 'ofb')
+export const create: Create = async (model, params) => {
+  const { part: partApi, basemodeler: baseModelerApi } = model.api.v1
+
+  const {
+    result: { id: productId },
+  } = await baseModelerApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
 
   // Set initial values
-  await api.setExpressions({
-    partId: productId[0],
-    members: [
+  await partApi.updateExpression({
+    id: productId,
+    toUpdate: [
       { name: 'W', value: params.values[0] },
       { name: 'H', value: params.values[1] },
       { name: 'D', value: params.values[2] },
       { name: 'W1', value: params.values[3] },
-    ],
+    ]
   })
   return productId[0]
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi } = model.api.v1
+
   if (Array.isArray(productId)) {
     throw new Error(
       'Calling update does not support multiple product ids. Use a single product id only.',
@@ -39,36 +44,42 @@ export const update: Update = async (apiType, productId, params) => {
     typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   if (check(paramsMap[0])) {
-    await api.setExpressions({
-      partId: productId,
-      members: [{ name: 'W', value: params.values[0] }],
+    await partApi.updateExpression({
+      id: productId,
+      toUpdate: [
+        { name: 'W', value: params.values[0] }
+      ]
     })
   }
 
   if (check(paramsMap[1])) {
-    await api.setExpressions({
-      partId: productId,
-      members: [{ name: 'H', value: params.values[1] }],
+    await partApi.updateExpression({
+      id: productId,
+      toUpdate: [
+        { name: 'H', value: params.values[1] }
+      ]
     })
   }
 
   if (check(paramsMap[2])) {
-    await api.setExpressions({
-      partId: productId,
-      members: [{ name: 'D', value: params.values[2] }],
+    await partApi.updateExpression({
+      id: productId,
+      toUpdate: [
+        { name: 'D', value: params.values[2] }
+      ]
     })
   }
 
   if (check(paramsMap[3])) {
-    await api.setExpressions({
-      partId: productId,
-      members: [{ name: 'W1', value: params.values[3] }],
+    await partApi.updateExpression({
+      id: productId,
+      toUpdate: [
+        { name: 'W1', value: params.values[3] }
+      ]
     })
   }
 
   return productId
 }
 
-export const cad = new History()
-
-export default { update, create, paramsMap, cad }
+export default { update, create, paramsMap }

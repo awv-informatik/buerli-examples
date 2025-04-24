@@ -1,6 +1,6 @@
-import { ApiHistory, History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/Shadowbox.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Depth', type: ParamType.Number, value: 20 },
@@ -15,15 +15,18 @@ export const paramsMap: Param[] = [
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
 ].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { basemodeler: baseModelerApi, part: partApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-
-  const productId = await api.load(arraybuffer, 'ofb')
+  const {
+    result: { id: productId },
+  } = await baseModelerApi.load({ data, format: 'ofb' })
 
   // Set initial values
   const minGap = params.values[3]
@@ -45,9 +48,9 @@ export const create: Create = async (apiType, params) => {
       ? rows
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
-  await api.setExpressions({
-    partId: productId[0],
-    members: [
+  await partApi.updateExpression({
+    id: productId[0],
+    toUpdate: [
       { name: 'Columns', value: columns },
       { name: 'Rows', value: rows },
       { name: 'HoleDiameter', value: holeDiameter },
@@ -59,8 +62,9 @@ export const create: Create = async (apiType, params) => {
   return productId[0]
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi } = model.api.v1
+
   if (Array.isArray(productId)) {
     throw new Error(
       'Calling update does not support multiple product ids. Use a single product id only.',
@@ -85,9 +89,9 @@ export const update: Update = async (apiType, productId, params) => {
       ? rows
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
-  api.setExpressions({
-    partId: productId,
-    members: [
+  await partApi.updateExpression({
+    id: productId,
+    toUpdate: [
       { name: 'Columns', value: columns },
       { name: 'Rows', value: rows },
       { name: 'HoleDiameter', value: holeDiameter },
@@ -99,6 +103,4 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

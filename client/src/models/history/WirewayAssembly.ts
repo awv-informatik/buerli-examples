@@ -1,7 +1,30 @@
 /* eslint-disable max-lines */
-import { ApiHistory, History, FastenedConstraintType } from '@buerli.io/headless'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
+import { Buffer } from 'buffer'
+
+type FastenedConstraint = {
+  id: number
+  name: string
+  mate1: {
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
+  mate2: {
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
+  xOffset: number
+  yOffset: number
+  zOffset: number
+  xRotation: number
+  yRotation: number
+  zRotation: number
+}
 
 const le = 0
 const he = 1
@@ -26,10 +49,12 @@ export const paramsMap: Param[] = [
 let rootNode: number | null
 let deckelPrt: number | null = null
 let kanalPrt: number | null = null
-let constrDeckel: FastenedConstraintType
+let constrDeckel: FastenedConstraint
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(templateSP).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { basemodeler: baseModelerApi, assembly: assemblyApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -41,37 +66,32 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'ofb')
-  rootNode = root ? root[0] : null
+  rootNode = (await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    const tempDeckel = await api.getPartTemplate('Deckel')
-    deckelPrt = tempDeckel ? tempDeckel[0] : null
-
-    const tempKanal = await api.getPartTemplate('Kanal')
-    kanalPrt = tempKanal ? tempKanal[0] : null
-
-    constrDeckel = await api.getFastenedConstraint(rootNode, 'Fastened')
+    deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })).result as number
+    kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })).result as number
+    constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })).result as FastenedConstraint
   }
   return rootNode
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi, assembly: assemblyApi } = model.api.v1
+
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   const activeExample = storeApi.getState().activeExample
 
   // Update length
   if (check(paramsMap[le])) {
     deckelPrt &&
       kanalPrt &&
-      (await api.setExpressions(
+      (await partApi.updateExpression([
         {
-          partId: deckelPrt,
-          members: [
+          id: deckelPrt,
+          toUpdate: [
             {
               name: 'Laenge',
               value: params.values[le],
@@ -79,23 +99,23 @@ export const update: Update = async (apiType, productId, params) => {
           ],
         },
         {
-          partId: kanalPrt,
-          members: [
+          id: kanalPrt,
+          toUpdate: [
             {
               name: 'Laenge',
               value: params.values[le],
             },
           ],
         },
-      ))
+      ]))
   }
 
   // Update height
   if (check(paramsMap[he])) {
     kanalPrt &&
-      (await api.setExpressions({
-        partId: kanalPrt,
-        members: [
+      (await partApi.updateExpression({
+        id: kanalPrt,
+        toUpdate: [
           {
             name: 'Hoehe',
             value: params.values[he],
@@ -108,10 +128,10 @@ export const update: Update = async (apiType, productId, params) => {
   if (check(paramsMap[wi])) {
     deckelPrt &&
       kanalPrt &&
-      (await api.setExpressions(
+      (await partApi.updateExpression([
         {
-          partId: deckelPrt,
-          members: [
+          id: deckelPrt,
+          toUpdate: [
             {
               name: 'Breite',
               value: params.values[wi] + 3,
@@ -119,20 +139,20 @@ export const update: Update = async (apiType, productId, params) => {
           ],
         },
         {
-          partId: kanalPrt,
-          members: [
+          id: kanalPrt,
+          toUpdate: [
             {
               name: 'Breite',
               value: params.values[wi],
             },
           ],
-        },
+        }]
       ))
   }
 
   // Update pos
   if (check(paramsMap[pd])) {
-    await api.updateFastenedConstraints({ ...constrDeckel, zOffset: params.values[pd] })
+    await assemblyApi.updateFastened({ ...constrDeckel, zOffset: params.values[pd] })
   }
 
   // Update produkt
@@ -160,6 +180,4 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

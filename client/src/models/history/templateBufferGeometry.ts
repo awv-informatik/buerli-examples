@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Param, Create } from '../../store'
+import { CadModel } from '../../CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
+export const create: Create = async (model, params) => {
+  
   // Start creating your model here...
   // ...
   // ...
@@ -15,9 +14,9 @@ export const create: Create = async (apiType, params) => {
   return 0 // product id
 }
 
-export const getBufferGeom = async (productId: number, api: ApiHistory) => {
-  if (!api) return
-  const geoms = await api.createBufferGeometry(productId)
+export const getBufferGeom = async (productId: number, model: CadModel) => {
+  if (!model) return
+  const geoms = await model.createBufferGeometry(productId)
   return geoms.map(
     geom =>
       new THREE.Mesh(
@@ -27,6 +26,4 @@ export const getBufferGeom = async (productId: number, api: ApiHistory) => {
   )
 }
 
-export const cad = new History()
-
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }
