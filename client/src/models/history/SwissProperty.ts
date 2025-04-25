@@ -1,10 +1,12 @@
 /* eslint-disable max-lines */
-import { ApiHistory, History, Transform } from '@buerli.io/headless'
+import { Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/Wall.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
+import { Buffer } from 'buffer'
+import { CadModel } from '../../CadModel'
 
 type instance = {
   productId: number
@@ -133,16 +135,16 @@ const posXHolzschalung: number =
   paramsMap[dt].value +
   2 * paramsMap[hlt].value
 
-let gipsplattePrt: number[] | null = null
-let spanplattePrt: number[] | null = null
-let daemmungPrt: number[] | null = null
-let verticalBeamPrt: number[] | null = null
-let horizontalBeamPrt: number[] | null = null
-let wallInsulationPrt: number[] | null = null
-let wallInsulationCustomPrt: number[] | null = null
-let holzlattungPrt: number[] | null = null
-let holzschalungPrt: number[] | null = null
-let balkenwandAsm: number[] | null = null
+let gipsplattePrt: number | null = null
+let spanplattePrt: number | null = null
+let daemmungPrt: number | null = null
+let verticalBeamPrt: number | null = null
+let horizontalBeamPrt: number | null = null
+let wallInsulationPrt: number | null = null
+let wallInsulationCustomPrt: number | null = null
+let holzlattungPrt: number | null = null
+let holzschalungPrt: number | null = null
+let balkenwandAsm: number | null = null
 
 let gipsplatteInstance: number | null = null
 let spanplatteInstance: number | null = null
@@ -159,8 +161,10 @@ let allInstances: instance[] = []
 
 let activeExampleId: string = ''
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(templateSP).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { basemodeler: baseModelerApi, assembly: assemblyApi } = model.api.v1
 
   if (!params) {
     activeExampleId = storeApi.getState().activeExample
@@ -172,62 +176,61 @@ export const create: Create = async (apiType, params) => {
   //*************************************************/
 
   // Load template
-  const root = await api.load(templateSP, 'ofb')
-  rootNode = root ? root[0] : null
+  rootNode = (await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    gipsplattePrt = await api.getPartTemplate('Gipsplatte')
-    spanplattePrt = await api.getPartTemplate('Spanplatte')
-    daemmungPrt = await api.getPartTemplate('Daemmung')
-    holzlattungPrt = await api.getPartTemplate('Holzlattung')
-    holzschalungPrt = await api.getPartTemplate('Holzschalung')
-    horizontalBeamPrt = await api.getPartTemplate('HorizontalBeam')
-    verticalBeamPrt = await api.getPartTemplate('VerticalBeam')
-    wallInsulationPrt = await api.getPartTemplate('Insulation')
-    wallInsulationCustomPrt = await api.getPartTemplate('InsulationCustom')
-    balkenwandAsm = await api.getAssemblyTemplate('BalkenWandAsm')
+    gipsplattePrt = (await assemblyApi.getPartTemplate({ name: 'Gipsplatte' })).result as number
+    spanplattePrt = (await assemblyApi.getPartTemplate({ name: 'Spanplatte' })).result as number
+    daemmungPrt = (await assemblyApi.getPartTemplate({ name: 'Daemmung' })).result as number
+    holzlattungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzlattung' })).result as number
+    holzschalungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzschalung' })).result as number
+    horizontalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'HorizontalBeam' })).result as number
+    verticalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'VerticalBeam' })).result as number
+    wallInsulationPrt = (await assemblyApi.getPartTemplate({ name: 'Insulation' })).result as number
+    wallInsulationCustomPrt = (await assemblyApi.getPartTemplate({ name: 'InsulationCustom' })).result as number
+    balkenwandAsm = (await assemblyApi.getAssemblyTemplate({ name: 'BalkenWandAsm' })).result as number
 
     // Add default instances to root node
     const defaultInstances: instance[] = [
       {
-        productId: gipsplattePrt[0],
+        productId: gipsplattePrt,
         ownerId: rootNode,
         transformation: [{ x: posXGipsplatte, y: 0, z: 0 }, xDir, yDir],
         name: 'Gipsplatte',
       },
       {
-        productId: spanplattePrt[0],
+        productId: spanplattePrt,
         ownerId: rootNode,
         transformation: [{ x: posXSpanplatte, y: 0, z: 0 }, xDir, yDir],
         name: 'Spanplatte',
       },
       {
-        productId: balkenwandAsm[0],
+        productId: balkenwandAsm,
         ownerId: rootNode,
         transformation: [{ x: posXBalkenwand, y: 0, z: 0 }, xDir, yDir],
         name: 'Balkenwand',
       },
       {
-        productId: daemmungPrt[0],
+        productId: daemmungPrt,
         ownerId: rootNode,
         transformation: [{ x: posXDaemmung, y: 0, z: 0 }, xDir, yDir],
         name: 'Daemmung',
       },
       {
-        productId: holzlattungPrt[0],
+        productId: holzlattungPrt,
         ownerId: rootNode,
         transformation: [{ x: posXHolzlattung, y: 0, z: 0 }, xDir, yDir],
         name: 'Holzlattung',
       },
       {
-        productId: holzschalungPrt[0],
+        productId: holzschalungPrt,
         ownerId: rootNode,
         transformation: [{ x: posXHolzschalung, y: 0, z: 0 }, xDir, yDir],
         name: 'Holzschalung',
       },
     ]
-    const addedInstances = await api.addInstances(...defaultInstances)
+    const addedInstances = (await assemblyApi.instance(defaultInstances)).result as number[]
     gipsplatteInstance = addedInstances[0]
     spanplatteInstance = addedInstances[1]
     balkenwandInstance = addedInstances[2]
@@ -283,13 +286,13 @@ export const create: Create = async (apiType, params) => {
     store.getState().setLayers(activeExampleId, -1, layers)
 
     // Initial balkenwand configuration
-    await updateBalkenwandSize(params.values[wl], params.values[wh], params.values, layers, api)
+    await updateBalkenwandSize(params.values[wl], params.values[wh], params.values, layers, model)
   }
   return rootNode
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  
   if (Array.isArray(productId)) {
     throw new Error(
       'Calling update does not support multiple product ids. Use a single product id only.',
@@ -302,61 +305,59 @@ export const update: Update = async (apiType, productId, params) => {
 
   const layers = store.getState().layers[activeExampleId]
   if (layers.lastRemovedLayer > 0) {
-    await api.removeInstances({ id: layers.lastRemovedLayer })
-    await transformLayers(layers.layers, params.values, api)
+    await model.api.assembly.deleteInstance({ ids: [layers.lastRemovedLayer] })
+    await transformLayers(layers.layers, params.values, model)
   }
 
   // Update wall size
   if (check(paramsMap[wl]) || check(paramsMap[wh])) {
-    await updateWallSize(params.values[wl], params.values[wh], params.values, layers.layers, api)
+    await updateWallSize(params.values[wl], params.values[wh], params.values, layers.layers, model)
   }
 
   // Update gipsplatte thickness
   if (check(paramsMap[gt])) {
-    await updateLayer(params.values[gt], params.values, layers.layers, 'Gipsplatte', api)
+    await updateLayer(params.values[gt], params.values, layers.layers, 'Gipsplatte', model)
   }
 
   // Update spanplatte thickness
   if (check(paramsMap[spt])) {
-    await updateLayer(params.values[spt], params.values, layers.layers, 'Spanplatte', api)
+    await updateLayer(params.values[spt], params.values, layers.layers, 'Spanplatte', model)
   }
 
   // Update balkenwand thickness
   if (check(paramsMap[bwt])) {
-    await updateLayer(params.values[bwt], params.values, layers.layers, 'Balkenwand', api)
+    await updateLayer(params.values[bwt], params.values, layers.layers, 'Balkenwand', model)
   }
 
   // Update daemmung thickness
   if (check(paramsMap[dt])) {
-    await updateLayer(params.values[dt], params.values, layers.layers, 'Daemmung', api)
+    await updateLayer(params.values[dt], params.values, layers.layers, 'Daemmung', model)
   }
 
   // Update holzlattung thickness
   if (check(paramsMap[hlt])) {
-    await updateLayer(params.values[hlt], params.values, layers.layers, 'Holzlattung', api)
+    await updateLayer(params.values[hlt], params.values, layers.layers, 'Holzlattung', model)
   }
 
   // Update holzschalung thickness
   if (check(paramsMap[hst])) {
-    await updateLayer(params.values[hst], params.values, layers.layers, 'Holzschalung', api)
+    await updateLayer(params.values[hst], params.values, layers.layers, 'Holzschalung', model)
   }
 
   // Explode wall
   if (check(paramsMap[di])) {
-    await explodeWall(params.values, layers.layers, api)
+    await explodeWall(params.values, layers.layers, model)
   }
 
   // Adding a new layer
   if (check(paramsMap[aL])) {
-    await addLayer(params.values[aL], params.values, layers.layers, api)
+    await addLayer(params.values[aL], params.values, layers.layers, model)
   }
 
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }
 
 ///////////////////////////////////////////////////////////////
 // INTERNALS
@@ -368,51 +369,51 @@ async function updateWallSize(
   height: number,
   params: any[],
   layers: Layer[],
-  api: ApiHistory,
+  model: CadModel,
 ) {
   if (gipsplattePrt && spanplattePrt && daemmungPrt && holzlattungPrt && holzschalungPrt) {
-    await updateBalkenwandSize(length, height, params, layers, api)
+    await updateBalkenwandSize(length, height, params, layers, model)
     const exprSets: {
-      partId: number
-      members: { name: string; value: number | string }[]
+      id: number
+      toUpdate: { name: string; value: number | string }[]
     }[] = [
       {
-        partId: gipsplattePrt[0],
-        members: [
+        id: gipsplattePrt,
+        toUpdate: [
           { name: 'length', value: length },
           { name: 'height', value: height },
         ],
       },
       {
-        partId: spanplattePrt[0],
-        members: [
+        id: spanplattePrt,
+        toUpdate: [
           { name: 'length', value: length },
           { name: 'height', value: height },
         ],
       },
       {
-        partId: daemmungPrt[0],
-        members: [
+        id: daemmungPrt,
+        toUpdate: [
           { name: 'length', value: length },
           { name: 'height', value: height },
         ],
       },
       {
-        partId: holzlattungPrt[0],
-        members: [
+        id: holzlattungPrt,
+        toUpdate: [
           { name: 'wallLength', value: length },
           { name: 'wallHeight', value: height },
         ],
       },
       {
-        partId: holzschalungPrt[0],
-        members: [
+        id: holzschalungPrt,
+        toUpdate: [
           { name: 'length', value: length },
           { name: 'height', value: height },
         ],
       },
     ]
-    await api.setExpressions(...exprSets)
+    await model.api.part.updateExpression(exprSets)
   }
 }
 
@@ -422,7 +423,7 @@ async function updateBalkenwandSize(
   height: number,
   params: any[],
   layers: Layer[],
-  api: ApiHistory,
+  model: CadModel,
 ) {
   if (
     balkenwandAsm &&
@@ -433,41 +434,41 @@ async function updateBalkenwandSize(
   ) {
     const balkenwandInstanceId = layers.find(layer => layer.type === 'Beamwall')?.refId
     const exprSets: {
-      partId: number
-      members: { name: string; value: number | string }[]
+      id: number
+      toUpdate: { name: string; value: number | string }[]
     }[] = [
       {
-        partId: horizontalBeamPrt[0],
-        members: [{ name: 'beamLength', value: length }],
+        id: horizontalBeamPrt,
+        toUpdate: [{ name: 'beamLength', value: length }],
       },
       {
-        partId: verticalBeamPrt[0],
-        members: [{ name: 'beamLength', value: height - 2 * horizontalBeamThickness }],
+        id: verticalBeamPrt,
+        toUpdate: [{ name: 'beamLength', value: height - 2 * horizontalBeamThickness }],
       },
       {
-        partId: wallInsulationPrt[0],
-        members: [{ name: 'insulationHeight', value: height - 2 * horizontalBeamThickness }],
+        id: wallInsulationPrt,
+        toUpdate: [{ name: 'insulationHeight', value: height - 2 * horizontalBeamThickness }],
       },
       {
-        partId: wallInsulationCustomPrt[0],
-        members: [{ name: 'insulationHeight', value: height - 2 * horizontalBeamThickness }],
+        id: wallInsulationCustomPrt,
+        toUpdate: [{ name: 'insulationHeight', value: height - 2 * horizontalBeamThickness }],
       },
     ]
     if (balkenwandInstanceId) {
-      await api.setCurrentInstance(balkenwandInstanceId)
-      await api.setExpressions(...exprSets)
-      await updateBalkenwandBeams(balkenwandInstanceId, length, api)
-      await api.setCurrentInstance(balkenwandInstanceId)
+      await model.api.assembly.setCurrentInstance({ id: balkenwandInstanceId })
+      await model.api.part.updateExpression(exprSets)
+      await updateBalkenwandBeams(balkenwandInstanceId, length, model)
+      await model.api.assembly.setCurrentInstance({ id: balkenwandInstanceId })
     } else {
-      await api.setCurrentProduct(balkenwandAsm[0])
-      await api.setExpressions(...exprSets)
+      await model.api.basemodeler.setCurrentProduct({ id: balkenwandAsm })
+      await model.api.part.updateExpression(exprSets)
     }
-    await api.setCurrentInstance(rootNode)
+    await model.api.assembly.setCurrentInstance({ id: rootNode })
   }
 }
 
 /** Adds beams and wall insulations depending on the wall length */
-async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, api: ApiHistory) {
+async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, model: CadModel) {
   const distanceBtSegments = verticalBeamThickness + wallInsulationWidth
   let nofBeams = 0
   let nofBeamsCustom = 0
@@ -504,9 +505,9 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       wallInsulationCustomWidth = (remainFillLength - verticalBeamThickness) / 2
     }
     // Configure custom wall insulation part
-    await api.setExpressions({
-      partId: wallInsulationCustomPrt[0],
-      members: [
+    await model.api.part.updateExpression({
+      id: wallInsulationCustomPrt,
+      toUpdate: [
         {
           name: 'insulationLength',
           value: wallInsulationCustomWidth,
@@ -522,7 +523,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
   allInstances = []
 
   // If any added instances already exist, remove them
-  await removeInstances(currInstances, api)
+  await removeInstances(currInstances, model)
 
   // Create standard vertical beam instances
   if (verticalBeamPrt) {
@@ -535,7 +536,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       nofBeams,
       firstPos,
       distanceBtSegments,
-      verticalBeamPrt[0],
+      verticalBeamPrt,
       ownerInstance,
       'VerticalBeam',
     )
@@ -554,7 +555,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       nofWallInsulations,
       firstPos,
       distanceBtSegments,
-      wallInsulationPrt[0],
+      wallInsulationPrt,
       ownerInstance,
       'Insulation',
     )
@@ -576,7 +577,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       nofBeamsCustom,
       firstPos,
       wallInsulationCustomWidth + verticalBeamThickness,
-      verticalBeamPrt[0],
+      verticalBeamPrt,
       ownerInstance,
       'VerticalBeamCustom',
     )
@@ -595,7 +596,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       nofWallInsulationsCustom,
       firstPos,
       wallInsulationCustomWidth + verticalBeamThickness,
-      wallInsulationCustomPrt[0],
+      wallInsulationCustomPrt,
       ownerInstance,
       'InsulationCustom',
     )
@@ -603,7 +604,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
     allInstances.push(...instances)
   }
   // Add all created instances at once
-  currInstances = await api.addInstances(...allInstances)
+  currInstances = (await model.api.assembly.instance(allInstances)).result as number[]
 }
 
 ///////////////////////////////////////////////////////////////
@@ -614,7 +615,7 @@ async function updateLayer(
   params: any[],
   layers: Layer[],
   updatedLayer: string,
-  api: ApiHistory,
+  model: CadModel,
 ) {
   const tempLayers = [...layers]
   switch (updatedLayer) {
@@ -625,11 +626,11 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions({
-          partId: gipsplattePrt[0],
-          members: [{ name: 'thickness', value: newThickness }],
+        await model.api.part.updateExpression({
+          id: gipsplattePrt,
+          toUpdate: [{ name: 'thickness', value: newThickness }],
         })
-        await transformLayers(tempLayers, params, api)
+        await transformLayers(tempLayers, params, model)
       }
       break
 
@@ -640,11 +641,11 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions({
-          partId: spanplattePrt[0],
-          members: [{ name: 'thickness', value: newThickness }],
+        await model.api.part.updateExpression({
+          id: spanplattePrt,
+          toUpdate: [{ name: 'thickness', value: newThickness }],
         })
-        await transformLayers(tempLayers, params, api)
+        await transformLayers(tempLayers, params, model)
       }
       break
     case 'Balkenwand':
@@ -655,28 +656,28 @@ async function updateLayer(
           }
         }
         const exprSets: {
-          partId: number
-          members: { name: string; value: number | string }[]
+          id: number
+          toUpdate: { name: string; value: number | string }[]
         }[] = [
           {
-            partId: horizontalBeamPrt[0],
-            members: [{ name: 'beamWidth', value: newThickness }],
+            id: horizontalBeamPrt,
+            toUpdate: [{ name: 'beamWidth', value: newThickness }],
           },
           {
-            partId: verticalBeamPrt[0],
-            members: [{ name: 'beamWidth', value: newThickness }],
+            id: verticalBeamPrt,
+            toUpdate: [{ name: 'beamWidth', value: newThickness }],
           },
           {
-            partId: wallInsulationPrt[0],
-            members: [{ name: 'insulationThickness', value: newThickness }],
+            id: wallInsulationPrt,
+            toUpdate: [{ name: 'insulationThickness', value: newThickness }],
           },
           {
-            partId: wallInsulationCustomPrt[0],
-            members: [{ name: 'insulationThickness', value: newThickness }],
+            id: wallInsulationCustomPrt,
+            toUpdate: [{ name: 'insulationThickness', value: newThickness }],
           },
         ]
-        await api.setExpressions(...exprSets)
-        await transformLayers(tempLayers, params, api)
+        await model.api.part.updateExpression(exprSets)
+        await transformLayers(tempLayers, params, model)
       }
       break
     case 'Daemmung':
@@ -686,11 +687,11 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions({
-          partId: daemmungPrt[0],
-          members: [{ name: 'thickness', value: newThickness }],
+        await model.api.part.updateExpression({
+          id: daemmungPrt,
+          toUpdate: [{ name: 'thickness', value: newThickness }],
         })
-        await transformLayers(tempLayers, params, api)
+        await transformLayers(tempLayers, params, model)
       }
       break
     case 'Holzlattung':
@@ -700,11 +701,11 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: 2 * newThickness }
           }
         }
-        await api.setExpressions({
-          partId: holzlattungPrt[0],
-          members: [{ name: 'latchThickness', value: newThickness }],
+        await model.api.part.updateExpression({
+          id: holzlattungPrt,
+          toUpdate: [{ name: 'latchThickness', value: newThickness }],
         })
-        await transformLayers(tempLayers, params, api)
+        await transformLayers(tempLayers, params, model)
       }
       break
     case 'Holzschalung':
@@ -714,11 +715,11 @@ async function updateLayer(
             tempLayers[i] = { ...tempLayers[i], thickness: newThickness }
           }
         }
-        await api.setExpressions({
-          partId: holzschalungPrt[0],
-          members: [{ name: 'thickness', value: newThickness }],
+        await model.api.part.updateExpression({
+          id: holzschalungPrt,
+          toUpdate: [{ name: 'thickness', value: newThickness }],
         })
-        await transformLayers(tempLayers, params, api)
+        await transformLayers(tempLayers, params, model)
       }
       break
     default:
@@ -726,7 +727,7 @@ async function updateLayer(
   }
 }
 
-async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) {
+async function transformLayers(layers: Layer[], params: any[], model: CadModel) {
   const tempLayers = [...layers]
   for (let i = 0; i < tempLayers.length; i++) {
     const posXOfLayerBefore = i - 1 >= 0 ? tempLayers[i - 1].posX : 0
@@ -736,7 +737,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await api.transformInstances({
+    await model.api.assembly.transformInstance({
       id: tempLayers[i].refId,
       transformation: [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir],
     })
@@ -746,7 +747,7 @@ async function transformLayers(layers: Layer[], params: any[], api: ApiHistory) 
 
 ///////////////////////////////////////////////////////////////
 
-async function addLayer(layerType: string, params: any[], layers: Layer[], api: ApiHistory) {
+async function addLayer(layerType: string, params: any[], layers: Layer[], model: CadModel) {
   const tempLayers = [...layers]
   const lastLayer = tempLayers[tempLayers.length - 1]
   const layerName = layerType + tempLayers.filter(layer => layer.type === layerType).length
@@ -758,8 +759,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: gipsplattePrt[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: gipsplattePrt,
           ownerId: rootNode,
           transformation,
           name: layerName,
@@ -768,7 +769,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[gt],
           })
@@ -783,8 +784,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: spanplattePrt[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: spanplattePrt,
           ownerId: rootNode,
           transformation,
           name: layerName,
@@ -793,7 +794,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[spt],
           })
@@ -808,8 +809,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: balkenwandAsm[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: balkenwandAsm,
           ownerId: rootNode,
           transformation,
           name: layerType,
@@ -818,12 +819,12 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[bwt],
           })
           store.getState().setLayers(activeExampleId, -1, tempLayers)
-          await updateWallSize(params[wl], params[wh], params, tempLayers, api)
+          await updateWallSize(params[wl], params[wh], params, tempLayers, model)
         }
       }
       break
@@ -834,8 +835,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: daemmungPrt[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: daemmungPrt,
           ownerId: rootNode,
           transformation,
           name: layerType,
@@ -844,7 +845,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[dt],
           })
@@ -859,8 +860,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: holzlattungPrt[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: holzlattungPrt,
           ownerId: rootNode,
           transformation,
           name: layerType,
@@ -869,7 +870,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: 2 * params[hlt],
           })
@@ -884,8 +885,8 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           xDir,
           yDir,
         ]
-        const [addedInstance] = await api.addInstances({
-          productId: holzschalungPrt[0],
+        const { result: addedInstance } = await model.api.assembly.instance({
+          productId: holzschalungPrt,
           ownerId: rootNode,
           transformation,
           name: layerType,
@@ -894,7 +895,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
           tempLayers.push({
             name: layerName,
             type: layerType,
-            refId: addedInstance,
+            refId: addedInstance as number,
             posX: lastLayer.posX + lastLayer.thickness + params[di],
             thickness: params[hst],
           })
@@ -910,18 +911,15 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], api: 
 ///////////////////////////////////////////////////////////////
 
 /** Changes the gap between layers to get kind of exploded view */
-async function explodeWall(params: any[], layers: Layer[], api: ApiHistory) {
-  await transformLayers(layers, params, api)
+async function explodeWall(params: any[], layers: Layer[], model: CadModel) {
+  await transformLayers(layers, params, model)
 }
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeInstances(instances: number[], api: ApiHistory) {
+async function removeInstances(instances: number[], model: CadModel) {
   if (instances.length > 0) {
-    const instancesToRemove = instances.map(instanceId => ({
-      id: instanceId,
-    }))
-    await api.removeInstances(...instancesToRemove)
+    await model.api.assembly.deleteInstance({ ids: instances })
   }
 }
 

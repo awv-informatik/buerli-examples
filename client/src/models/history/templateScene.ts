@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Param, Create } from '../../store'
 import { findObjectsByName, setObjectColor } from '../../utils/utils'
+import { CadModel } from '../../CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
+export const create: Create = async (model, params) => {
   // Start creating your model here...
   // ...
   // ...
@@ -17,9 +15,9 @@ export const create: Create = async (apiType, params) => {
   return 0 // product id
 }
 
-export const getScene = async (productId: number, api: ApiHistory) => {
-  if (!api) return
-  const { scene } = await api.createScene(productId)
+export const getScene = async (productId: number, model: CadModel) => {
+  if (!model) return
+  const { scene } = await model.createScene(productId)
   scene && colorize(scene)
   return scene
 }
@@ -31,6 +29,4 @@ const colorize = (scene: THREE.Scene) => {
   setObjectColor(boltObj, customRed)
 }
 
-export const cad = new History()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, getScene, paramsMap }

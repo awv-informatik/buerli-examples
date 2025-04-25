@@ -1,86 +1,77 @@
-import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, History } from '@buerli.io/headless'
+import { History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const nutData = Buffer.from(arraybuffer2).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const boltData = Buffer.from(arraybuffer).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
 
-  const pt0 = { x: 0, y: 0, z: 0 }
-  const xDir = { x: 1, y: 0, z: 0 }
-  const yDir = { x: 0, y: 1, z: 0 }
+export const create: Create = async (model, params) => {
+  const { assembly: assemblyApi, part: partApi } = model.api.v1
 
   const shaftDiameter = 10
   const shaftLength = 37
-  const nutBoltAsm = await api.createRootAssembly('NutBolt_Asm')
+  const { result: nutBoltAsm } = await assemblyApi.create({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const bolt = await api.loadProduct(arraybuffer, 'ofb')
+  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
 
-  api.setExpressions({
-    partId: bolt[0],
-    members: [
+  await partApi.updateExpression({
+    id: bolt,
+    toUpdate: [
       { name: 'Shaft_Length', value: shaftLength },
       { name: 'Shaft_Diameter', value: shaftDiameter },
-    ],
+    ]
   })
-  const [boltRefId] = await api.addInstances({
-    productId: bolt[0],
-    ownerId: nutBoltAsm,
-    transformation: [pt0, xDir, yDir],
+  const { result: boltRefId } = await assemblyApi.instance({
+    productId: bolt,
+    ownerId: nutBoltAsm
   })
 
-  const wcsIdBoltNut = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Nut')
-  const wcsIdOrigin = await api.getWorkGeometry(boltRefId, CCClasses.CCWorkCSys, 'WCS_Origin')
+  const { result: wcsIdBoltNut } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
+  const { result: wcsIdOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const nut = await api.loadProduct(arraybuffer2, 'ofb')
-  api.setExpressions({ partId: nut[0], members: [{ name: 'Hole_Diameter', value: shaftDiameter }] })
-  const [nutRefId] = await api.addInstances({
-    productId: nut[0],
-    ownerId: nutBoltAsm,
-    transformation: [pt0, xDir, yDir],
+  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
+  
+  await partApi.updateExpression({
+    id: nut,
+    toUpdate: [
+      { name: 'Hole_Diameter', value: shaftDiameter }
+    ]
   })
-  const wcsIdNut = await api.getWorkGeometry(nutRefId, CCClasses.CCWorkCSys, 'WCS_Hole_Top')
+  const { result: nutRefId } = await assemblyApi.instance({
+    productId: nut,
+    ownerId: nutBoltAsm
+  })
+  const { result: wcsIdNut } = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
 
   /* Bolt at origin */
-  await api.createFastenedOriginConstraint(
-    nutBoltAsm,
-    {
-      matePath: [boltRefId],
-      wcsId: wcsIdOrigin[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+  await assemblyApi.fastenedOrigin({
+    id: nutBoltAsm,
+    mate1: {
+      matePath: [boltRefId as number],
+      wcsId: wcsIdOrigin,
     },
-    0,
-    0,
-    0,
-    'FOC',
-  )
+    name: 'FOC0'
+  })
 
   /* Nut on Bolt */
-  await api.createFastenedConstraint(
-    nutBoltAsm,
-    {
-      matePath: [nutRefId],
-      wcsId: wcsIdNut[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+  await assemblyApi.fastened({
+    id: nutBoltAsm,
+    mate1: {
+      matePath: [nutRefId as number],
+      wcsId: wcsIdNut,
     },
-    {
-      matePath: [boltRefId],
-      wcsId: wcsIdBoltNut[0],
-      flip: FlipType.FLIP_Z,
-      reoriented: ReorientedType.REORIENTED_0,
+    mate2: {
+      matePath: [boltRefId as number],
+      wcsId: wcsIdBoltNut,
     },
-    0,
-    0,
-    0,
-    'FC1',
-  )
+    name: 'FC1'
+  })
   return nutBoltAsm
 }
 

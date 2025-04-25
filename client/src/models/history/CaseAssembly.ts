@@ -1,6 +1,6 @@
-import { ApiHistory, History } from '@buerli.io/headless'
 import { Create, Param, ParamType, Update } from '../../store'
-import data from '../../resources/history/CaseAssembly.ofb?buffer'
+import arrayBuffer from '../../resources/history/CaseAssembly.ofb?buffer'
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'width', type: ParamType.Slider, value: 120, step: 2, values: [30, 200] },
@@ -12,17 +12,21 @@ let deltaX = 0
 let deltaY = 0
 let deltaZ = 0
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-  const [root] = await api.load(data, 'ofb', { ident: 'root' })
+export const create: Create = async (model, params) => {
+  const { assembly: assemblyApi, basemodeler: baseModelerApi } = model.api.v1
+
+  const {
+    result: { id: root },
+  } = await baseModelerApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
 
   // screw distances from origin depending on parameters
   deltaX = (params.values[0] - 10) / 2
   deltaY = (params.values[1] - 10) / 2
   deltaZ = params.values[2] + 2.5
 
-  await api.addInstances(
+  await assemblyApi.instance([
     {
       productId: 'Screw', // by name
       ownerId: 'root', // by ident
@@ -32,11 +36,11 @@ export const create: Create = async (apiType, params) => {
         { x: 0, y: 1, z: 0 },
       ],
       name: 'ScrewInstance1', // defining a name
-      options: { ident: 'ScrewInstanceIdent1' },  // defining an ident
+      ident: 'ScrewInstanceIdent1', // defining an ident}
     },
     {
-      productId: 'Screw', 
-      ownerId: 'root', 
+      productId: 'Screw',
+      ownerId: 'root',
       transformation: [
         { x: deltaX, y: deltaY, z: deltaZ },
         { x: 1, y: 0, z: 0 },
@@ -45,18 +49,18 @@ export const create: Create = async (apiType, params) => {
       name: 'ScrewInstance2',
     },
     {
-      productId: 'Screw', 
-      ownerId: 'root', 
+      productId: 'Screw',
+      ownerId: 'root',
       transformation: [
         { x: -deltaX, y: -deltaY, z: deltaZ },
         { x: 1, y: 0, z: 0 },
         { x: 0, y: 1, z: 0 },
       ],
-      name: 'ScrewInstance3', 
-      options: { ident: 'ScrewInstanceIdent3' }, 
+      name: 'ScrewInstance3',
+      ident: 'ScrewInstanceIdent3',
     },
     {
-      productId: 'Screw', 
+      productId: 'Screw',
       ownerId: 'root',
       transformation: [
         { x: deltaX, y: -deltaY, z: deltaZ },
@@ -65,98 +69,101 @@ export const create: Create = async (apiType, params) => {
       ],
       name: 'ScrewInstance4',
     },
-  )
+  ])
+
   return root
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi, assembly: assemblyApi } = model.api.v1
+
   if (Array.isArray(productId)) {
-    throw new Error(
-      'Calling update does not support multiple product ids. Use a single product id only.',
-    )
+    throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Update case and cover expressions
   if (check(paramsMap[0]) || check(paramsMap[1]) || check(paramsMap[2])) {
-
-    await api.setExpressions({
-      partId: 'Case', // by name
-      members: [
-        {
-          name: 'width',
-          value: params.values[0],
-        },
-        {
-          name: 'height',
-          value: params.values[1],
-        },
-        {
-          name: 'depth',
-          value: params.values[2],
-        },
-      ],
-    }, {
-      partId: 'Cover',  // by name
-      members: [
-        {
-          name: 'width',
-          value: params.values[0],
-        },
-        {
-          name: 'height',
-          value: params.values[1],
-        },
-      ],
-    })
+    await partApi.updateExpression([
+      {
+        id: 'Case', // by name
+        toUpdate: [
+          {
+            name: 'width',
+            value: params.values[0],
+          },
+          {
+            name: 'height',
+            value: params.values[1],
+          },
+          {
+            name: 'depth',
+            value: params.values[2],
+          },
+        ],
+      },
+      {
+        id: 'Cover', // by name
+        toUpdate: [
+          {
+            name: 'width',
+            value: params.values[0],
+          },
+          {
+            name: 'height',
+            value: params.values[1],
+          },
+        ],
+      },
+    ])
   }
 
   // Update transformation of screw instances
   if (check(paramsMap[0]) || check(paramsMap[1]) || check(paramsMap[2])) {
-    
     // screw distances from origin depending on parameters
     deltaX = (params.values[0] - 10) / 2
     deltaY = (params.values[1] - 10) / 2
     deltaZ = params.values[2] + 2.5
 
-    await api.transformInstances({
-      id: 'ScrewInstanceIdent1', // by ident
-      transformation: [
-        { x: -deltaX, y: deltaY, z: deltaZ },
-        { x: 1, y: 0, z: 0 },
-        { x: 0, y: 1, z: 0 },
-      ],
-    }, {
-      id: 'ScrewInstance2', // by name
-      transformation: [
-        { x: deltaX, y: deltaY, z: deltaZ },
-        { x: 1, y: 0, z: 0 },
-        { x: 0, y: 1, z: 0 },
-      ],
-    }, {
-      id: 'ScrewInstanceIdent3',
-      transformation: [
-        { x: -deltaX, y: -deltaY, z: deltaZ },
-        { x: 1, y: 0, z: 0 },
-        { x: 0, y: 1, z: 0 },
-      ],
-    }, {
-      id: 'ScrewInstance4',
-      transformation: [
-        { x: deltaX, y: -deltaY, z: deltaZ },
-        { x: 1, y: 0, z: 0 },
-        { x: 0, y: 1, z: 0 },
-      ],
-    })
+    await assemblyApi.transformInstance([
+      {
+        id: 'ScrewInstanceIdent1', // by ident
+        transformation: [
+          { x: -deltaX, y: deltaY, z: deltaZ },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+      {
+        id: 'ScrewInstance2', // by name
+        transformation: [
+          { x: deltaX, y: deltaY, z: deltaZ },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+      {
+        id: 'ScrewInstanceIdent3',
+        transformation: [
+          { x: -deltaX, y: -deltaY, z: deltaZ },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+      {
+        id: 'ScrewInstance4',
+        transformation: [
+          { x: deltaX, y: -deltaY, z: deltaZ },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+    ])
   }
-  
+
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

@@ -8,59 +8,44 @@ import {
   WorkPlaneType,
 } from '@buerli.io/classcad'
 import { GraphicType } from '@buerli.io/core'
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params, options) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(sketches).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-  const part = api.createPart('Part')
-  const wp = api.createWorkPlane(
-    part,
-    WorkPlaneType.WP_USERDEFINED,
-    [],
-    0,
-    0,
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 1 },
-    false,
-    'WP',
-  )
-  await api.loadSketch(part, sketches, wp)
-  const sROuter = await api.getSketchRegion(part, 'Outer')
-  const sRHoles = await api.getSketchRegion(part, 'Holes')
-  const sRInner = await api.getSketchRegion(part, 'Inner')
-  const extrOuter = await api.extrusion(
-    part,
-    sROuter,
-    ExtrusionType.SYMMETRIC,
-    0,
-    20,
-    0,
-    { x: 0, y: 0, z: 1 },
-    1,
-  )
-  const extrHoles = await api.extrusion(
-    part,
-    sRHoles,
-    ExtrusionType.SYMMETRIC,
-    0,
-    15,
-    0,
-    { x: 0, y: 0, z: 1 },
-    1,
-  )
-  const extrInner = await api.extrusion(
-    part,
-    sRInner,
-    ExtrusionType.SYMMETRIC,
-    0,
-    10,
-    0,
-    { x: 0, y: 0, z: 1 },
-    1,
-  )
-  await api.boolean(part, BooleanOperationType.UNION, [extrHoles, extrOuter, extrInner])
+export const create: Create = async (model, params, options) => {
+  const { sketch: sketchApi, part: partApi, geometry: geometryApi } = model.api.v1
+
+  const part = (await partApi.create({ name: 'Part' })).result
+  const { result: wp } = await partApi.workPlane({
+    id: part,
+    name: 'WP'
+  })
+  const { result: sketch } = await sketchApi.create({ id: part, planeId: wp })
+  await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB' })
+  const sROuter = (await sketchApi.getSketchRegion({ id: sketch, name: 'Outer' })).result
+  const sRHoles = (await sketchApi.getSketchRegion({ id: sketch, name: 'Holes' })).result
+  const sRInner = (await sketchApi.getSketchRegion({ id: sketch, name: 'Inner' })).result
+  const { result: extrOuter } = await partApi.extrusion({
+    id: part,
+    references: [sROuter],
+    type: 'SYMMETRIC',
+    limit2: 20,
+  })
+  const { result: extrHoles } = await partApi.extrusion({
+    id: part,
+    references: [sRHoles],
+    type: 'SYMMETRIC',
+    limit2: 15,
+  })
+  const { result: extrInner } = await partApi.extrusion({
+    id: part,
+    references: [sRInner],
+    type: 'SYMMETRIC',
+    limit2: 10,
+  })
+  await partApi.boolean({ id: part, type: 'UNION', target: { id: extrHoles }, tools: [{ id: extrOuter }, { id: extrInner }]})
 
   // The following position have been found by selecting two loops
   const positions = [
@@ -101,12 +86,10 @@ export const create: Create = async (apiType, params, options) => {
     [{ x: 30.135, y: 10.764, z: 5 }],
     [{ x: 28.016, y: 20.318, z: 5 }],
   ]
-  const edges = await api.findGeometry(part, GraphicType.ARC, positions)
-  await api.fillet(part, edges, 1)
+  const { result: edges } = await geometryApi.findBrepElemsByPositions({ id: part, type: 'ARC', positions})
+  await partApi.fillet({ id: part, references: edges, radius: 1 })
 
   return part
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }

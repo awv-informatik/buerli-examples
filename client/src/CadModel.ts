@@ -1,5 +1,14 @@
-import { api as ccApi, Connection, ObjectID } from '@buerli.io/classcad'
-import { DrawingID, getDrawing } from '@buerli.io/core'
+import { api as ccApi, Connection, ObjectID, ScgGraphicType } from '@buerli.io/classcad'
+import {
+  BuerliScope,
+  createInfo,
+  DrawingID,
+  getDrawing,
+  InteractionInfo,
+  Measure,
+  ProductElement,
+  SelectedItem,
+} from '@buerli.io/core'
 import { BufferGeometry, Material, Object3D, Scene } from 'three'
 import {
   createRecursiveBufferGeometry,
@@ -7,9 +16,21 @@ import {
   FilletInfo,
   getIncludingBulgeAngle,
   getTouchPoints,
+  waitForSelect
 } from './utils'
 
 type ClassCadApi = ReturnType<typeof ccApi>
+type GrT =
+  | ScgGraphicType.POINT
+  | ScgGraphicType.LINE
+  | ScgGraphicType.ARC
+  | ScgGraphicType.CIRCLE
+  | ScgGraphicType.PLANE
+  | ScgGraphicType.CYLINDER
+  | ScgGraphicType.CONE
+  | ScgGraphicType.SPHERE
+  | ScgGraphicType.NURBSCURVE
+  | ScgGraphicType.NURBSSURFACE
 
 export class CadModel {
   private _drawingId: DrawingID
@@ -173,5 +194,37 @@ export class CadModel {
     }
     const points = newVertices.map(v => [v.x, v.y, v.z])
     await this.api.curve.polyline2d({ id: owner, points: points as any, bulges, close })
+  }
+
+  async selectGeometry(types: GrT[], count?: number): Promise<InteractionInfo[]> {
+    const drId = this.drawingId as DrawingID
+
+    const filter = (scope: string, data: ScgGraphicType) => scope === BuerliScope && types.some(type => type === data)
+    // Check count param. If not set use by default 1, else check if not < 1
+    const lCount = count ? (count < 1 ? 1 : count) : 1
+    const selections = (await waitForSelect(drId, lCount, filter, (resolveSelection, items, diff) => {
+      if (items.length > lCount - 1) {
+        resolveSelection(items)
+      }
+    })) as SelectedItem<ProductElement>[]
+    const interactionInfos: InteractionInfo[] = []
+    for (const selection of selections) {
+      // Get matching points from selected geometry and add to userData. TODO: Only if in part mode useful?
+      const points = await this.api.geometry.getPositionsFromBrepElems({ elems: [selection.data.graphicId] })
+      const matrix = getDrawing(drId).api.structure.calculateGlobalTransformation(selection.data.productId)
+      const clone = selection.data.geometry.clone().applyMatrix4(matrix)
+      // TODO: Should the transform code be moved to something else than Measure? It's helpful for more cases than just measuring.
+      const transformedData = Measure.transform([selection.data], drId)[0]
+      const interactionInfo: InteractionInfo = createInfo({
+        objectId: selection.data.container.ownerId,
+        prodRefId: selection.data.productId,
+        containerId: selection.data.container.id,
+        graphicId: selection.data.graphicId,
+        // objectPath: ?,  TODO: Add path to the root in expanded tree, as soon as available
+        userData: { ...transformedData, geometry: clone, matchingPoints: points },
+      })
+      interactionInfos.push(interactionInfo)
+    }
+    return interactionInfos
   }
 }
