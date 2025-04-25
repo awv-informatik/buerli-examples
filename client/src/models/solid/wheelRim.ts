@@ -9,7 +9,7 @@ const create: Create = async (model, params) => {
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
 
-  const { result: ccShape1 } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape1 } = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape1, [
     { point: new THREE.Vector3(0, 200, 140), radius: 0 },
     { point: new THREE.Vector3(0, 200, -73.676), radius: 0 },
@@ -30,7 +30,7 @@ const create: Create = async (model, params) => {
     { point: new THREE.Vector3(0, 220, 140), radius: 0 },
   ])
 
-  const { result: ccShape2 } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape2 } = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape2, [
     { point: new THREE.Vector3(-85, -10, -137.5), radius: 0 },
     { point: new THREE.Vector3(-185, -36.795, -137.5), radius: 0 },

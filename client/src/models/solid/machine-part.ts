@@ -8,7 +8,7 @@ const create: Create = async (model, params) => {
 
   const width = 53
   const depth = 26
-  const direction = [-width, 0, 0] as [number, number, number] // TODO: type point = { x: number; y: number; z: number;} | [number, number, number] | number[]
+  const direction = [-width, 0, 0]
   const p1 = { point: new THREE.Vector3(0, 0, 0), radius: 0 }
   const p2 = { point: new THREE.Vector3(0, depth, 0), radius: 0 }
   const p3 = { point: new THREE.Vector3(0, depth, 5), radius: 0 }
@@ -16,7 +16,7 @@ const create: Create = async (model, params) => {
 
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape } = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape, [p1, p2, p3, p4])
   const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
 

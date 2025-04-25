@@ -65,7 +65,9 @@ const create: Create = async (model, params) => {
     await api.solid.subtraction({ id: ei, target: { id: tube }, tool: { id: subCyl } })
     for (let i = 0; i < columns - 1; i++) {
       for (let j = 0; j < rows - 1; j++) {
-        const { result: { copy: copy } } = await api.solid.copy({ id: ei, target: { id: tube }})
+        const {
+          result: { copy: copy },
+        } = await api.solid.copy({ id: ei, target: { id: tube } })
         await api.solid.translation({
           id: ei,
           target: { id: copy },

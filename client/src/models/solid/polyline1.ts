@@ -20,7 +20,7 @@ const create: Create = async (model, params) => {
 
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape } = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape, [fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7])
   const { result: extrusion } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 25] })
   return [extrusion]

@@ -19,7 +19,7 @@ const create: Create = async (model, params) => {
 
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape } = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccShape, shape)
 
   const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 100] })
@@ -28,14 +28,14 @@ const create: Create = async (model, params) => {
   const { result: edges1 } = await api.geometry.findBrepElemsByPositions({
     id: part,
     type: 'LINE',
-    positions: positions1 as any,
+    positions: positions1,
   })
 
   const positions2 = [[[10, 50, 50]], [[0, 0, 50]], [[20, 20, 50]]]
   const { result: edges2 } = await api.geometry.findBrepElemsByPositions({
     id: part,
     type: 'LINE',
-    positions: positions2 as any,
+    positions: positions2,
   })
 
   await api.solid.fillet({ radius: 5, geomIds: edges1 })

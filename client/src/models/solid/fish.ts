@@ -12,9 +12,9 @@ const paramsMap: Param[] = [{ index: 0, name: 'Thickness', type: ParamType.Numbe
 const create: Create = async (model, params) => {
   const api = model.api.v1
 
-  const origin = [0, 0, 0] as [number, number, number] // TODO: type point = { x: number; y: number; z: number;} | [number, number, number] | number[]
-  const normal = [1, 0, 0] as [number, number, number] // TODO: type point = { x: number; y: number; z: number;} | [number, number, number] | number[]
-  const direction = [0, 0, params.values[0]] as [number, number, number] // TODO: type point = { x: number; y: number; z: number;} | [number, number, number] | number[]
+  const origin = [0, 0, 0]
+  const normal = [1, 0, 0]
+  const direction = [0, 0, params.values[0]]
   const x = 25
   const y = 25
   const shape = new THREE.Shape()
@@ -27,7 +27,7 @@ const create: Create = async (model, params) => {
 
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei as any }) // TODO: fix type in CurveAPI_v1.cclass
+  const { result: ccShape } = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccShape, shape)
   const { result: fish1 } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
   const { result: fish2 } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
