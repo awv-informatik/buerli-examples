@@ -7,9 +7,9 @@ import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const flangeData = Buffer.from(flangeAB).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const boltData = Buffer.from(boltAB).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const nutData = Buffer.from(nutAB).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
+const flangeData = Buffer.from(flangeAB).toString('base64')
+const boltData = Buffer.from(boltAB).toString('base64')
+const nutData = Buffer.from(nutAB).toString('base64')
 
 export const create: Create = async (model, param) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
@@ -20,13 +20,13 @@ export const create: Create = async (model, param) => {
   // Load all needed products
   const {
     result: { id: flange },
-  } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB' })
+  } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB', encoding: 'base64' })
   const {
     result: { id: bolt },
-  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
+  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
   const {
     result: { id: nut },
-  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
+  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
@@ -77,6 +77,8 @@ export const create: Create = async (model, param) => {
         mate2: {
           matePath: [flange2Instance],
           wcsId: wcsCenter,
+          flipType: "-Z",
+          reorientType: "180"
         },
         name: 'FCFlange1Flange2',
       },

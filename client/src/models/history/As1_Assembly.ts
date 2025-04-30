@@ -10,11 +10,11 @@ import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(arraybuffer).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const data3 = Buffer.from(arraybuffer3).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const data2 = Buffer.from(arraybuffer2).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const data4 = Buffer.from(arraybuffer4).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const data5 = Buffer.from(arraybuffer5).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
+const data = Buffer.from(arraybuffer).toString('base64')
+const data3 = Buffer.from(arraybuffer3).toString('base64')
+const data2 = Buffer.from(arraybuffer2).toString('base64')
+const data4 = Buffer.from(arraybuffer4).toString('base64')
+const data5 = Buffer.from(arraybuffer5).toString('base64')
 
 export const create: Create = async (model, params?) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
@@ -33,7 +33,7 @@ export const create: Create = async (model, params?) => {
   const { result: rodAsm } = await assemblyApi.assemblyTemplate({ name: 'Rod_Asm' })
 
   /* Load Bolt part */
-  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: data, format: 'OFB' }) // TODO: arraybuffer?
+  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: data, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -59,7 +59,7 @@ export const create: Create = async (model, params?) => {
   const { result: wcsIdBoltOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Load Nut part */
-  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: data2, format: 'OFB' }) // TODO: arraybuffer?
+  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: data2, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -101,7 +101,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load LBracket part */
-  const { result: { id: lBracket } } = await assemblyApi.loadProduct({ data: data3, format: 'OFB' }) // TODO: arraybuffer?
+  const { result: { id: lBracket } } = await assemblyApi.loadProduct({ data: data3, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on lBracket part (optional) */
   await partApi.updateExpression({
@@ -208,7 +208,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load Plate part */
-  const { result: { id: plate } } = await assemblyApi.loadProduct({ data: data4, format: 'OFB' }) // TODO: arraybuffer?
+  const { result: { id: plate } } = await assemblyApi.loadProduct({ data: data4, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on plate part (optional) */
   await partApi.updateExpression({
@@ -285,7 +285,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load Rod part */
-  const { result: { id: rod } } = await assemblyApi.loadProduct({ data: data5, format: 'OFB' }) // TODO: arraybuffer?
+  const { result: { id: rod } } = await assemblyApi.loadProduct({ data: data5, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on rod part (optional) */
   await partApi.updateExpression({

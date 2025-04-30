@@ -91,7 +91,7 @@ export const create: Create = async (model, params) => {
 }
 
 export const update: Update = async (model, productId, params) => {
-  const { assembly: assemblyApi, basemodeler: baseModelerApi } = model.api.v1
+  const { assembly: assemblyApi } = model.api.v1
   const updatedParamIndex = params.lastUpdatedParam
 
   const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
@@ -99,7 +99,7 @@ export const update: Update = async (model, productId, params) => {
   // Update axis
   for (let index = 0; index < 6; index++) {
     if (check(paramsMap[index])) {
-      await assemblyApi.updateFastened({ ...constraints, zRotation: (params.values[index] / 180) * Math.PI })
+      await assemblyApi.updateFastened({ ...constraints[index], zRotation: (params.values[index] / 180) * Math.PI })
     }
   }
 

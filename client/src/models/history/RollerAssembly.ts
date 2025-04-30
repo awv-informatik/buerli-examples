@@ -340,7 +340,7 @@ async function updateNofSegments(
     if (segmentPrt !== null && z !== null) {
       const firstPos = { x: 0, y: 0, z: -z }
       instances.push({
-        productId: segmentPrt[0],
+        productId: segmentPrt,
         ownerId: productId,
         transformation: [firstPos, zDir, segmentDir],
         name: 'Segment' + i,
@@ -371,10 +371,8 @@ async function updateWalzeDir(model: CadModel) {
       flipWalze = 'X'
       break
   }
-  await model.api.assembly.updateFastenedOrigin({
-    ...constrWalzeOrigin,
-    mate1: { ...constrWalzeOrigin.mate1, flipType: flipWalze },
-  })
+  constrWalzeOrigin.mate1.flipType = flipWalze
+  await model.api.assembly.updateFastenedOrigin(constrWalzeOrigin)
 }
 
 ///////////////////////////////////////////////////////////////
@@ -513,7 +511,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: CadM
 async function updateWalze(walzeLength: number, model: CadModel) {
   // Set length of walze in expression set
   const walze = (await model.api.assembly.getPartTemplate({ name: 'Walze' })).result as number
-  await model.api.part.updateExpression({ id: walze[0], toUpdate: [{ name: 'L', value: walzeLength }] })
+  await model.api.part.updateExpression({ id: walze as number, toUpdate: [{ name: 'L', value: walzeLength }] })
 
   // Set offset in z-Dir for frame0
   const focEnd1: FastenedOriginConstraint = {

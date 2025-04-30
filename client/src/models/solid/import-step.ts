@@ -8,12 +8,12 @@ import { Create, GetScene, Param } from '../../store'
 import { setObjectColor } from '../../utils/utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
-const data = Buffer.from(Ventil).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
+const data = Buffer.from(Ventil).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 const create: Create = async (model, params) => {
   const api = model.api.v1
   const { result: part } = await api.part.create({ name: 'Part' })
-  const { result: importedId } = await api.part.importFeature({ id: part, data, format: 'STP' })
+  const { result: importedId } = await api.part.importFeature({ id: part, data, format: 'STP', encoding: 'base64' })
   return [importedId]
 }
 

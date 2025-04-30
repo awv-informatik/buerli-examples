@@ -7,9 +7,9 @@ import { CadModel } from '../../CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const boltData = Buffer.from(arraybuffer).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const lBracketData = Buffer.from(arraybuffer3).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
-const nutData = Buffer.from(arraybuffer2).toString('utf-8') // TODO: how to support ArrayBuffer in the API?
+const boltData = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const lBracketData = Buffer.from(arraybuffer3).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const nutData = Buffer.from(arraybuffer2).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
   const { part: partApi, assembly: assemblyApi } = model.api.v1
@@ -22,7 +22,7 @@ export const create: Create = async (model, params) => {
   const { result: nutBoltAsm } = await assemblyApi.assemblyTemplate({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
+  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: bolt,
@@ -41,7 +41,7 @@ export const create: Create = async (model, params) => {
   const { result: wcsIdBoltOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
+  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: nut,
@@ -81,7 +81,7 @@ export const create: Create = async (model, params) => {
   })
 
   /* LBracket */
-  const { result: { id: lBracket } } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB' })
+  const { result: { id: lBracket } } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: lBracket,

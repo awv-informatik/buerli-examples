@@ -74,7 +74,7 @@ export const create: Create = async (model, params) => {
   } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   if (rootAsm !== null) {
-    const res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis1' })
+    const res = await assemblyApi.getSlider({ id: rootAsm, name: 'Slider' })
     constrSlider = res.result as SliderConstraint
     const res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Revolute' })
     constrRevolute = res2.result as RevoluteConstraint

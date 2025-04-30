@@ -12,6 +12,12 @@ let deltaX = 0
 let deltaY = 0
 let deltaZ = 0
 
+let screwPrt: number | null = null
+let casePrt: number | null = null
+let coverPrt: number | null = null
+let screwInstance2: number | null = null
+let screwInstance4: number | null = null
+
 const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
@@ -26,9 +32,12 @@ export const create: Create = async (model, params) => {
   deltaY = (params.values[1] - 10) / 2
   deltaZ = params.values[2] + 2.5
 
-  await assemblyApi.instance([
+  screwPrt = (await assemblyApi.getPartTemplate({ name: 'Screw' })).result as number
+  casePrt = (await assemblyApi.getPartTemplate({ name: 'Case' })).result as number
+  coverPrt = (await assemblyApi.getPartTemplate({ name: 'Cover' })).result as number
+  const res = await assemblyApi.instance([
     {
-      productId: 'Screw', // by name
+      productId: screwPrt,
       ownerId: 'root', // by ident
       transformation: [
         { x: -deltaX, y: deltaY, z: deltaZ },
@@ -39,7 +48,7 @@ export const create: Create = async (model, params) => {
       ident: 'ScrewInstanceIdent1', // defining an ident}
     },
     {
-      productId: 'Screw',
+      productId: screwPrt,
       ownerId: 'root',
       transformation: [
         { x: deltaX, y: deltaY, z: deltaZ },
@@ -49,7 +58,7 @@ export const create: Create = async (model, params) => {
       name: 'ScrewInstance2',
     },
     {
-      productId: 'Screw',
+      productId: screwPrt,
       ownerId: 'root',
       transformation: [
         { x: -deltaX, y: -deltaY, z: deltaZ },
@@ -60,7 +69,7 @@ export const create: Create = async (model, params) => {
       ident: 'ScrewInstanceIdent3',
     },
     {
-      productId: 'Screw',
+      productId: screwPrt,
       ownerId: 'root',
       transformation: [
         { x: deltaX, y: -deltaY, z: deltaZ },
@@ -70,6 +79,8 @@ export const create: Create = async (model, params) => {
       name: 'ScrewInstance4',
     },
   ])
+  screwInstance2 = res.result[1]
+  screwInstance4 = res.result[3]
 
   return root
 }
@@ -88,7 +99,7 @@ export const update: Update = async (model, productId, params) => {
   if (check(paramsMap[0]) || check(paramsMap[1]) || check(paramsMap[2])) {
     await partApi.updateExpression([
       {
-        id: 'Case', // by name
+        id: casePrt,
         toUpdate: [
           {
             name: 'width',
@@ -105,7 +116,7 @@ export const update: Update = async (model, productId, params) => {
         ],
       },
       {
-        id: 'Cover', // by name
+        id: coverPrt,
         toUpdate: [
           {
             name: 'width',
@@ -137,7 +148,7 @@ export const update: Update = async (model, productId, params) => {
         ],
       },
       {
-        id: 'ScrewInstance2', // by name
+        id: screwInstance2, // by name
         transformation: [
           { x: deltaX, y: deltaY, z: deltaZ },
           { x: 1, y: 0, z: 0 },
@@ -153,7 +164,7 @@ export const update: Update = async (model, productId, params) => {
         ],
       },
       {
-        id: 'ScrewInstance4',
+        id: screwInstance4,
         transformation: [
           { x: deltaX, y: -deltaY, z: deltaZ },
           { x: 1, y: 0, z: 0 },

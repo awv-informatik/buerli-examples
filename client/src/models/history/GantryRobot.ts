@@ -4,6 +4,7 @@ import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { LimitedValue } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
+import { CadModel } from '../../CadModel'
 
 type Step = {
   xAxis: number
@@ -137,22 +138,22 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function startSequence(api: ApiHistory) {
+async function startSequence(model: CadModel) {
   for (const step of sequence) {
-    const offsetVal = 'zOffsetValue' as LimitedValue
-    const rotVal = 'zRotationValue' as LimitedValue
+    const offsetVal: "X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_OFFSET'
+    const rotVal:"X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_ROTATION'
     // x, y, j1 - j6
     const constrValues = [
-      { constrId: xAxis.id, paramName: offsetVal, value: step.xAxis },
-      { constrId: yAxis.id, paramName: offsetVal, value: step.yAxis },
-      { constrId: j1.id, paramName: rotVal, value: step.j1 },
-      { constrId: j2.id, paramName: rotVal, value: step.j2 },
-      { constrId: j3.id, paramName: rotVal, value: step.j3 },
-      { constrId: j4.id, paramName: rotVal, value: step.j4 },
-      { constrId: j5.id, paramName: rotVal, value: step.j5 },
-      { constrId: j6.id, paramName: rotVal, value: step.j6 },
+      { id: xAxis.id, name: offsetVal, value: step.xAxis },
+      { id: yAxis.id, name: offsetVal, value: step.yAxis },
+      { id: j1.id, name: rotVal, value: step.j1 },
+      { id: j2.id, name: rotVal, value: step.j2 },
+      { id: j3.id, name: rotVal, value: step.j3 },
+      { id: j4.id, name: rotVal, value: step.j4 },
+      { id: j5.id, name: rotVal, value: step.j5 },
+      { id: j6.id, name: rotVal, value: step.j6 },
     ]
-    await api.update3dConstraintValues(...constrValues)
+    await model.api.assembly.update3DConstraintValue(constrValues)
     await new Promise(resolve => setTimeout(resolve, 300))
   }
 }
