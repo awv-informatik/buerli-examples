@@ -33,11 +33,7 @@ export default Params
 
 const prs = Number.parseInt
 
-const setParamIfValChanged = (
-  newVal: number | boolean | string,
-  oldVal: number | boolean | string,
-  index: number,
-) => {
+const setParamIfValChanged = (newVal: number | boolean | string, oldVal: number | boolean | string, index: number) => {
   const exampleId = storeApi.getState().activeExample
   const setParam = storeApi.getState().setParam
   if (newVal !== oldVal) {
@@ -52,7 +48,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
   const set = useStore(s => s.set)
   const setParam = useStore(s => s.setParam)
   const val = useStore(s => s.examples.objs[exampleId].params.values[index])
-  const api = useStore(s => s.examples.objs[exampleId].api)
+  const model = useStore(s => s.examples.objs[exampleId].model)
   return (
     <>
       {type === ParamType.Number ? (
@@ -88,7 +84,7 @@ const ParamInput: React.FC<{ param: Param }> = ({ param }) => {
         <button
           onClick={async e => {
             set({ busy: true })
-            await value(api, val)
+            await value(model, val)
             set({ busy: false })
             setParam(exampleId, index, Date.now())
           }}

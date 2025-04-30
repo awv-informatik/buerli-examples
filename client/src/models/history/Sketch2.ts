@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
-import { Param, Create } from '../../store'
-import sketches from '../../resources/history/SuspensionBracket.ofb?buffer'
-import {
-  BooleanOperationType,
-  ExtrusionType,
-  WorkPlaneType,
-} from '@buerli.io/classcad'
-import { GraphicType } from '@buerli.io/core'
 import { Buffer } from 'buffer'
+import sketches from '../../resources/history/SuspensionBracket.ofb?buffer'
+import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -20,10 +13,10 @@ export const create: Create = async (model, params, options) => {
   const part = (await partApi.create({ name: 'Part' })).result
   const { result: wp } = await partApi.workPlane({
     id: part,
-    name: 'WP'
+    name: 'WP',
   })
   const { result: sketch } = await sketchApi.create({ id: part, planeId: wp })
-  await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB' })
+  await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB', encoding: 'base64' })
   const sROuter = (await sketchApi.getSketchRegion({ id: sketch, name: 'Outer' })).result
   const sRHoles = (await sketchApi.getSketchRegion({ id: sketch, name: 'Holes' })).result
   const sRInner = (await sketchApi.getSketchRegion({ id: sketch, name: 'Inner' })).result
@@ -45,7 +38,12 @@ export const create: Create = async (model, params, options) => {
     type: 'SYMMETRIC',
     limit2: 10,
   })
-  await partApi.boolean({ id: part, type: 'UNION', target: { id: extrHoles }, tools: [{ id: extrOuter }, { id: extrInner }]})
+  await partApi.boolean({
+    id: part,
+    type: 'UNION',
+    target: { id: extrHoles },
+    tools: [{ id: extrOuter }, { id: extrInner }],
+  })
 
   // The following position have been found by selecting two loops
   const positions = [
@@ -86,7 +84,7 @@ export const create: Create = async (model, params, options) => {
     [{ x: 30.135, y: 10.764, z: 5 }],
     [{ x: 28.016, y: 20.318, z: 5 }],
   ]
-  const { result: edges } = await geometryApi.findBrepElemsByPositions({ id: part, type: 'ARC', positions})
+  const { result: edges } = await geometryApi.findBrepElemsByPositions({ id: part, type: 'ARC', positions })
   await partApi.fillet({ id: part, references: edges, radius: 1 })
 
   return part

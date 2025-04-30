@@ -1,8 +1,8 @@
-import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
-import { Create, Param, ParamType, storeApi, Update } from '../../store'
+import { getDrawing } from '@buerli.io/core'
 import { Buffer } from 'buffer'
 import { CadModel } from '../../CadModel'
-import { getDrawing } from '@buerli.io/core'
+import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type point = { x: number; y: number; z: number } | [number, number, number]
 
@@ -184,7 +184,7 @@ async function createDimensions(model: CadModel, productId: number) {
       startPos: { x: 0, y: 125, z: 30 },
       endPos: { x: xEndPos, y: yEndPos, z: 30 },
       cornerPos: { x: 0, y: 0, z: 30 },
-      isCCW: false
+      isCCW: false,
     },
     viewType: 'TOP',
   }
@@ -315,9 +315,9 @@ async function exportDXF(model: CadModel) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
   const { result: dxfData } = await drawingApi.exportDXF({ id: productId })
-  if (dxfData) {
+  if (dxfData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([dxfData], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
     link.download = `Flange.dxf`
     link.click()
   }
@@ -331,9 +331,9 @@ async function exportSVG(model: CadModel) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
   const { result: svgData } = await drawingApi.exportSVG({ id: productId })
-  if (svgData) {
+  if (svgData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([svgData], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
     link.download = `Flange.svg`
     link.click()
   }

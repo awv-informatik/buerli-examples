@@ -1,30 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History, RevoluteConstraintType } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
+import { Buffer } from 'buffer'
+import { CadModel } from '../../CadModel'
 import mechAsm from '../../resources/history/MechanicalAssembly2.ofb?buffer'
-import { Buffer } from 'buffer';
-import { CadModel } from '../../CadModel';
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type RevoluteConstraint = {
-  id: number;
-  name: string;
+  id: number
+  name: string
   mate1: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
   mate2: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
-  zOffset: number;
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
+  zOffset: number
   zRotationLimits: {
-      min: number;
-      max: number;
-  };
+    min: number
+    max: number
+  }
 }
 
 export const paramsMap: Param[] = [
@@ -42,7 +41,9 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { result: { id: rootAsm } } = await baseModelerApi.load({ data, format: 'ofb' })
+  const {
+    result: { id: rootAsm },
+  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   if (rootAsm !== null) {
     const res = await assemblyApi.getRevolute({ id: rootAsm, name: 'Revolute' })
@@ -55,9 +56,7 @@ export const create: Create = async (model, params) => {
 export const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
-
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Update revolute
   if (check(paramsMap[0])) {
@@ -72,7 +71,7 @@ async function updateRevolute(paramValues: number[], model: CadModel) {
   await model.api.assembly.update3DConstraintValue({
     id: constrRevolute.id,
     name: 'Z_ROTATION',
-    value: angleInRadian
+    value: angleInRadian,
   })
 }
 

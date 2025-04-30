@@ -1,6 +1,6 @@
+import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/Shadowbox.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
-import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Depth', type: ParamType.Number, value: 20 },
@@ -26,7 +26,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: productId },
-  } = await baseModelerApi.load({ data, format: 'ofb' })
+  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   // Set initial values
   const minGap = params.values[3]
@@ -59,16 +59,14 @@ export const create: Create = async (model, params) => {
       { name: 'FoamWidth', value: foamWidth },
     ],
   })
-  return productId[0]
+  return productId
 }
 
 export const update: Update = async (model, productId, params) => {
   const { part: partApi } = model.api.v1
 
   if (Array.isArray(productId)) {
-    throw new Error(
-      'Calling update does not support multiple product ids. Use a single product id only.',
-    )
+    throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
   const minGap = params.values[3]
   const holeDiameter = params.values[4]

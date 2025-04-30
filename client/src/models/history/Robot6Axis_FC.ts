@@ -1,31 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import robotArm from '../../resources/history/Robot6Axis_FC.ofb?buffer'
 import { Buffer } from 'buffer'
+import robotArm from '../../resources/history/Robot6Axis_FC.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type FastenedConstraint = {
-    id: number;
-    name: string;
-    mate1: {
-        matePath: number[];
-        wcsId: number;
-        flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-        reorientType: "0" | "90" | "180" | "270";
-    };
-    mate2: {
-        matePath: number[];
-        wcsId: number;
-        flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-        reorientType: "0" | "90" | "180" | "270";
-    };
-    xOffset: number;
-    yOffset: number;
-    zOffset: number;
-    xRotation: number;
-    yRotation: number;
-    zRotation: number;
+  id: number
+  name: string
+  mate1: {
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
+  mate2: {
+    matePath: number[]
+    wcsId: number
+    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorientType: '0' | '90' | '180' | '270'
+  }
+  xOffset: number
+  yOffset: number
+  zOffset: number
+  xRotation: number
+  yRotation: number
+  zRotation: number
 }
-
 
 const a1 = 0 // axis 1
 const a2 = 1 // axis 2
@@ -68,7 +67,9 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { result: { id: rootAsm } } = await baseModelerApi.load({ data, format: 'ofb' })
+  const {
+    result: { id: rootAsm },
+  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getFastened({ id: rootAsm, name: 'Base-J1' })
@@ -93,13 +94,12 @@ export const update: Update = async (model, productId, params) => {
   const { assembly: assemblyApi, basemodeler: baseModelerApi } = model.api.v1
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Update axis
   for (let index = 0; index < 6; index++) {
     if (check(paramsMap[index])) {
-      await assemblyApi.updateFastened({...constraints, zRotation: (params.values[index] / 180) * Math.PI })
+      await assemblyApi.updateFastened({ ...constraints, zRotation: (params.values[index] / 180) * Math.PI })
     }
   }
 

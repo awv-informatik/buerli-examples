@@ -1,13 +1,10 @@
 /* eslint-disable max-lines */
 import { getDrawing, ObjectID } from '@buerli.io/core'
-import {
-  History,
-  Transform,
-} from '@buerli.io/headless'
-import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
-import { Create, Param, ParamType, storeApi, Update } from '../../store'
+import { History, Transform } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
 import { CadModel } from '../../CadModel'
+import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type point = { x: number; y: number; z: number } | [number, number, number]
 
@@ -145,7 +142,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: rootAsm },
-  } = await baseModelerApi.load({ data, format: 'ofb' })
+  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
   segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })).result as number
 
   //*************************************************/
@@ -736,11 +733,14 @@ async function prepareViews(model: CadModel) {
   }
   currDimensions = (await model.api.drawing2d.dimension(dimensions)).result as number[]
 
-  await model.api.drawing2d.view({ id: productId, types: ['TOP', 'RIGHT_90', 'ISO']})
-  await model.api.drawing2d.placeView({ id: productId, placements: [
-    { type: 'ISO', offset: { x: params.values[wl], y: params.values[wl], z: 0 } },
-    { type: 'RIGHT_90', offset: { x: params.values[wl], y: 0, z: 0 } },
-  ]})
+  await model.api.drawing2d.view({ id: productId, types: ['TOP', 'RIGHT_90', 'ISO'] })
+  await model.api.drawing2d.placeView({
+    id: productId,
+    placements: [
+      { type: 'ISO', offset: { x: params.values[wl], y: params.values[wl], z: 0 } },
+      { type: 'RIGHT_90', offset: { x: params.values[wl], y: 0, z: 0 } },
+    ],
+  })
   return productId
 }
 
@@ -751,9 +751,9 @@ async function prepareViews(model: CadModel) {
 async function exportDXF(model: CadModel) {
   const productId = await prepareViews(model)
   const { result: dxfData } = await model.api.drawing2d.exportDXF({ id: productId })
-  if (dxfData) {
+  if (dxfData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([dxfData], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
     link.download = `RollerAssembly.dxf`
     link.click()
   }
@@ -766,9 +766,9 @@ async function exportDXF(model: CadModel) {
 async function exportSVG(model: CadModel) {
   const productId = await prepareViews(model)
   const { result: svgData } = await model.api.drawing2d.exportSVG({ id: productId })
-  if (svgData) {
+  if (svgData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([svgData], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
     link.download = `RollerAssembly.svg`
     link.click()
   }
@@ -777,7 +777,7 @@ async function exportSVG(model: CadModel) {
 ///////////////////////////////////////////////////////////////
 
 async function saveOfb(model: CadModel) {
-  const { result: ofbData } = await model.api.basemodeler.save({ format: 'ofb'})
+  const { result: ofbData } = await model.api.basemodeler.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))
