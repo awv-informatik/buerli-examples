@@ -13,6 +13,7 @@ export const create: Create = async (model, params, options) => {
   const part = (await partApi.create({ name: 'Part' })).result
   const { result: wp } = await partApi.workPlane({
     id: part,
+    normal: { x: 0, y: 0, z: 1 },
     name: 'WP',
   })
   const { result: sketch } = await sketchApi.create({ id: part, planeId: wp })
