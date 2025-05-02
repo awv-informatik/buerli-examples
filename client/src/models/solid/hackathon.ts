@@ -24,19 +24,11 @@ const create: Create = async (model, params) => {
 
   const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 100] })
 
-  const positions1 = [[[100, 10, 0]], [[100, 10, 100]], [[5, 100, 100]], [[5, 100, 0]]]
-  const { result: edges1 } = await api.geometry.findBrepElemsByPositions({
-    id: part,
-    type: 'LINE',
-    positions: positions1,
-  })
+  const positions1 = [{ pos: [100, 10, 0] }, { pos: [100, 10, 100] }, { pos: [5, 100, 100] }, { pos: [5, 100, 0] }]
+  const edges1 = (await api.part.getGeometryIds({ id: part, lines: positions1 })).result.lines
 
-  const positions2 = [[[10, 50, 50]], [[0, 0, 50]], [[20, 20, 50]]]
-  const { result: edges2 } = await api.geometry.findBrepElemsByPositions({
-    id: part,
-    type: 'LINE',
-    positions: positions2,
-  })
+  const positions2 = [{ pos: [10, 50, 50] }, { pos: [0, 0, 50] }, { pos: [20, 20, 50] }]
+  const edges2 = (await api.part.getGeometryIds({ id: part, lines: positions2 })).result.lines
 
   await api.solid.fillet({ radius: 5, geomIds: edges1 })
   await api.solid.fillet({ radius: 5, geomIds: edges2 })

@@ -210,7 +210,7 @@ export class CadModel {
     const interactionInfos: InteractionInfo[] = []
     for (const selection of selections) {
       // Get matching points from selected geometry and add to userData. TODO: Only if in part mode useful?
-      const points = await this.api.geometry.getPositionsFromBrepElems({ elems: [selection.data.graphicId] })
+      const points = (await this.api.part.getGeometryPositions({ elems: [selection.data.graphicId] })).result[0].positions
       const matrix = getDrawing(drId).api.structure.calculateGlobalTransformation(selection.data.productId)
       const clone = selection.data.geometry.clone().applyMatrix4(matrix)
       // TODO: Should the transform code be moved to something else than Measure? It's helpful for more cases than just measuring.

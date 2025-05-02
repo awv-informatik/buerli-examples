@@ -41,7 +41,7 @@ export const create: Create = async (model, params, options) => {
 }
 
 export const update: Update = async (model, productId, params) => {
-  const { part: partApi, basemodeler: baseModelerApi } = model.api.v1
+  const { part: partApi } = model.api.v1
   if (Array.isArray(productId)) {
     throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
@@ -50,7 +50,7 @@ export const update: Update = async (model, productId, params) => {
 
   if (check(paramsMap[0])) {
     if (operation != 0) {
-      await baseModelerApi.deleteObject({ ids: [operation] })
+      await partApi.deleteFeature({ ids: [operation] })
     }
 
     switch (params.values[0]) {

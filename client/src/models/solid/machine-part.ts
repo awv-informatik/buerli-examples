@@ -36,23 +36,23 @@ const create: Create = async (model, params) => {
   await api.solid.translation({ id: ei, target: { id: subBox2 }, translation: [-width / 2, 13, 13] })
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: subBox2 }, keepTool: false })
 
-  const { result: edges1 } = await api.geometry.findBrepElemsByPositions({
-    id: part,
-    type: 'LINE',
-    positions: [[[-3.5, 16.7, depth]], [[-49.5, 16.7, depth]]],
-  })
+  const edges1 = (
+    await api.part.getGeometryIds({
+      id: part,
+      lines: [{ pos: [-3.5, 16.7, depth] }, { pos: [-49.5, 16.7, depth] }],
+    })
+  ).result.lines
   await api.solid.fillet({ radius: 2, geomIds: edges1 })
 
-  const { result: edges2 } = await api.geometry.findBrepElemsByPositions({
+  const edges2 = (await api.part.getGeometryIds({
     id: part,
-    type: 'LINE',
-    positions: [
-      [[-width / 2, 5, 0]],
-      [[-width / 2, 21, 0]],
-      [[-(width - 17) / 2, 13, 0]],
-      [[-(width + 17) / 2, 13, 0]],
+    lines: [
+      { pos: [-width / 2, 5, 0] },
+      { pos: [-width / 2, 21, 0] },
+      { pos: [-(width - 17) / 2, 13, 0] },
+      { pos: [-(width + 17) / 2, 13, 0] },
     ],
-  })
+  })).result.lines
   await api.solid.fillet({ radius: 2, geomIds: edges2 })
 
   return [basicBody]

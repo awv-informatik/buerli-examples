@@ -460,7 +460,7 @@ async function updateBalkenwandSize(
       await updateBalkenwandBeams(balkenwandInstanceId, length, model)
       await model.api.assembly.setCurrentInstance({ id: balkenwandInstanceId })
     } else {
-      await model.api.basemodeler.setCurrentProduct({ id: balkenwandAsm })
+      await model.api.assembly.setCurrentProduct({ id: balkenwandAsm })
       await model.api.part.updateExpression(exprSets)
     }
     await model.api.assembly.setCurrentInstance({ id: rootNode })

@@ -8,7 +8,7 @@ export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 const data = Buffer.from(sketches).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params, options) => {
-  const { sketch: sketchApi, part: partApi, geometry: geometryApi } = model.api.v1
+  const { sketch: sketchApi, part: partApi } = model.api.v1
 
   const part = (await partApi.create({ name: 'Part' })).result
   const { result: wp } = await partApi.workPlane({
@@ -48,44 +48,44 @@ export const create: Create = async (model, params, options) => {
 
   // The following position have been found by selecting two loops
   const positions = [
-    [{ x: 20.667, y: 7.541, z: -5 }],
-    [{ x: 63.589, y: 59.078, z: -5 }],
-    [{ x: 125.084, y: 93.726, z: -5 }],
-    [{ x: 152.271, y: 60.765, z: -5 }],
-    [{ x: 138.257, y: 16.007, z: -5 }],
-    [{ x: 78.329, y: -7.181, z: -5 }],
-    [{ x: 71.155, y: 52.334, z: -5 }],
-    [{ x: 28.016, y: 20.318, z: -5 }],
-    [{ x: 30.135, y: 10.764, z: -5 }],
-    [{ x: 34.482, y: 2.075, z: -5 }],
-    [{ x: 77.201, y: 2.849, z: -5 }],
-    [{ x: 120.19, y: 0.525, z: -5 }],
-    [{ x: 130.441, y: 22.254, z: -5 }],
-    [{ x: 148.445, y: 37.99, z: -5 }],
-    [{ x: 141.904, y: 60.146, z: -5 }],
-    [{ x: 134.465, y: 81.217, z: -5 }],
-    [{ x: 122.58, y: 84.04, z: -5 }],
-    [{ x: 110.825, y: 87.901, z: -5 }],
-    [{ x: 20.667, y: 7.541, z: 5 }],
-    [{ x: 78.329, y: -7.181, z: 5 }],
-    [{ x: 138.257, y: 16.007, z: 5 }],
-    [{ x: 152.271, y: 60.765, z: 5 }],
-    [{ x: 125.084, y: 93.726, z: 5 }],
-    [{ x: 63.589, y: 59.078, z: 5 }],
-    [{ x: 71.155, y: 52.334, z: 5 }],
-    [{ x: 110.825, y: 87.901, z: 5 }],
-    [{ x: 122.58, y: 84.04, z: 5 }],
-    [{ x: 134.465, y: 81.217, z: 5 }],
-    [{ x: 141.904, y: 60.146, z: 5 }],
-    [{ x: 148.445, y: 37.99, z: 5 }],
-    [{ x: 130.441, y: 22.254, z: 5 }],
-    [{ x: 120.19, y: 0.525, z: 5 }],
-    [{ x: 77.201, y: 2.849, z: 5 }],
-    [{ x: 34.482, y: 2.075, z: 5 }],
-    [{ x: 30.135, y: 10.764, z: 5 }],
-    [{ x: 28.016, y: 20.318, z: 5 }],
+    { pos: { x: 20.667, y: 7.541, z: -5 } },
+    { pos: { x: 63.589, y: 59.078, z: -5 } },
+    { pos: { x: 125.084, y: 93.726, z: -5 } },
+    { pos: { x: 152.271, y: 60.765, z: -5 } },
+    { pos: { x: 138.257, y: 16.007, z: -5 } },
+    { pos: { x: 78.329, y: -7.181, z: -5 } },
+    { pos: { x: 71.155, y: 52.334, z: -5 } },
+    { pos: { x: 28.016, y: 20.318, z: -5 } },
+    { pos: { x: 30.135, y: 10.764, z: -5 } },
+    { pos: { x: 34.482, y: 2.075, z: -5 } },
+    { pos: { x: 77.201, y: 2.849, z: -5 } },
+    { pos: { x: 120.19, y: 0.525, z: -5 } },
+    { pos: { x: 130.441, y: 22.254, z: -5 } },
+    { pos: { x: 148.445, y: 37.99, z: -5 } },
+    { pos: { x: 141.904, y: 60.146, z: -5 } },
+    { pos: { x: 134.465, y: 81.217, z: -5 } },
+    { pos: { x: 122.58, y: 84.04, z: -5 } },
+    { pos: { x: 110.825, y: 87.901, z: -5 } },
+    { pos: { x: 20.667, y: 7.541, z: 5 } },
+    { pos: { x: 78.329, y: -7.181, z: 5 } },
+    { pos: { x: 138.257, y: 16.007, z: 5 } },
+    { pos: { x: 152.271, y: 60.765, z: 5 } },
+    { pos: { x: 125.084, y: 93.726, z: 5 } },
+    { pos: { x: 63.589, y: 59.078, z: 5 } },
+    { pos: { x: 71.155, y: 52.334, z: 5 } },
+    { pos: { x: 110.825, y: 87.901, z: 5 } },
+    { pos: { x: 122.58, y: 84.04, z: 5 } },
+    { pos: { x: 134.465, y: 81.217, z: 5 } },
+    { pos: { x: 141.904, y: 60.146, z: 5 } },
+    { pos: { x: 148.445, y: 37.99, z: 5 } },
+    { pos: { x: 130.441, y: 22.254, z: 5 } },
+    { pos: { x: 120.19, y: 0.525, z: 5 } },
+    { pos: { x: 77.201, y: 2.849, z: 5 } },
+    { pos: { x: 34.482, y: 2.075, z: 5 } },
+    { pos: { x: 30.135, y: 10.764, z: 5 } },
+    { pos: { x: 28.016, y: 20.318, z: 5 } },
   ]
-  const { result: edges } = await geometryApi.findBrepElemsByPositions({ id: part, type: 'ARC', positions })
+  const edges = (await partApi.getGeometryIds({ id: part, arcs: positions })).result.arcs
   await partApi.fillet({ id: part, references: edges, radius: 1 })
 
   return part
