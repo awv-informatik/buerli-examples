@@ -49,7 +49,7 @@ export const create: Create = async (model, params) => {
       : Math.floor((foamHeight - (rows + 1) * minGap) / holeDiameter)
 
   await partApi.updateExpression({
-    id: productId[0],
+    id: productId,
     toUpdate: [
       { name: 'Columns', value: columns },
       { name: 'Rows', value: rows },

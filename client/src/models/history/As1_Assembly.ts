@@ -341,7 +341,7 @@ export const create: Create = async (model, params?) => {
       wcsId: wscIdRodLeft,
     },
     mate2: {
-      matePath: [nutRefIds[1]],
+      matePath: [nutRefIds[0]],
       wcsId: wcsIdNut,
     },
     name: 'FC7',

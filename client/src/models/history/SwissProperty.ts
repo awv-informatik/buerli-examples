@@ -13,6 +13,7 @@ type instance = {
   ownerId: number
   transformation: Transform
   name?: string
+  isLocal?: boolean
 }
 
 ///////////////////////////////////////////////////////////////
@@ -539,6 +540,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       verticalBeamPrt,
       ownerInstance,
       'VerticalBeam',
+      true
     )
     beamInstances.push(...instances)
     allInstances.push(...instances)
@@ -558,6 +560,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       wallInsulationPrt,
       ownerInstance,
       'Insulation',
+      true
     )
     wallInsulationInstances.push(...instances)
     allInstances.push(...instances)
@@ -580,6 +583,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       verticalBeamPrt,
       ownerInstance,
       'VerticalBeamCustom',
+      true
     )
     beamCustomInstances.push(...instances)
     allInstances.push(...instances)
@@ -599,6 +603,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       wallInsulationCustomPrt,
       ownerInstance,
       'InsulationCustom',
+      true
     )
     wallInsulationCustomInstances.push(...instances)
     allInstances.push(...instances)
@@ -930,6 +935,7 @@ async function createInstances(
   productId: number,
   ownerInstance: number,
   name: string,
+  isLocal?: boolean
 ) {
   const instancesToAdd: instance[] = []
   for (let i = 0; i < nof; i++) {
@@ -944,6 +950,7 @@ async function createInstances(
         ownerId: ownerInstance,
         transformation: [pos, xDir, yDir],
         name: name + i,
+        isLocal
       })
       pos.y += i * distance
     }

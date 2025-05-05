@@ -157,7 +157,6 @@ async function createDimensions(model: CadModel, productId: number) {
     linear: {
       startPos: { x: 0, y: 155, z: 0 },
       endPos: { x: 0, y: -155, z: 0 },
-      textAngle: 0,
       orientation: 'ALIGNED',
     },
     viewType: 'TOP',
@@ -223,7 +222,6 @@ async function createDimensions(model: CadModel, productId: number) {
     linear: {
       startPos: { x: xHoleCenter - 15, y: -yHoleCenter, z: 30 }, // left side of the hole
       endPos: { x: xHoleCenter + 15, y: -yHoleCenter, z: 30 }, // right side of the hole
-      textAngle: 0,
       orientation: 'HORIZONTAL',
     },
     viewType: 'TOP',
@@ -242,8 +240,7 @@ async function createDimensions(model: CadModel, productId: number) {
     linear: {
       startPos: { x: 0, y: -155, z: 0 },
       endPos: { x: 0, y: -155, z: 30 },
-      textAngle: 0,
-      orientation: 'HORIZONTAL',
+      orientation: 'VERTICAL',
     },
     viewType: 'RIGHT',
   }
@@ -262,7 +259,6 @@ async function createDimensions(model: CadModel, productId: number) {
     linear: {
       startPos: { x: 0, y: 95, z: flangeHeight },
       endPos: { x: 0, y: -95, z: flangeHeight },
-      textAngle: 0,
       orientation: 'HORIZONTAL',
     },
     viewType: 'RIGHT',
@@ -281,7 +277,6 @@ async function createDimensions(model: CadModel, productId: number) {
     linear: {
       startPos: { x: 0, y: 95, z: 0 },
       endPos: { x: 0, y: 95, z: flangeHeight },
-      textAngle: 0,
       orientation: 'HORIZONTAL',
     },
     viewType: 'RIGHT_90',

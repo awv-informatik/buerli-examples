@@ -672,7 +672,6 @@ async function prepareViews(model: CadModel) {
       linear: {
         startPos: dimStartPos,
         endPos: dimEndPos,
-        textAngle: 0,
         orientation: 'HORIZONTAL',
       },
       viewType: 'RIGHT_90',
@@ -695,7 +694,6 @@ async function prepareViews(model: CadModel) {
     linear: {
       startPos: dimStartPos,
       endPos: dimEndPos,
-      textAngle: 0,
       orientation: 'HORIZONTAL',
     },
     viewType: 'RIGHT_90',
@@ -718,7 +716,6 @@ async function prepareViews(model: CadModel) {
     linear: {
       startPos: dimStartPos,
       endPos: dimEndPos,
-      textAngle: 0,
       orientation: 'HORIZONTAL',
     },
     viewType: 'RIGHT_90',
