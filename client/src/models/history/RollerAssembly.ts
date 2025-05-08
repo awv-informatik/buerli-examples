@@ -23,7 +23,7 @@ type LinearDimension = {
   linear?: {
     startPos: point
     endPos: point
-    textAngle: number
+    textAngle?: number
     orientation: 'VERTICAL' | 'HORIZONTAL' | 'ALIGNED'
   }
 }
