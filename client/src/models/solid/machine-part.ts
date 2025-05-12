@@ -22,19 +22,19 @@ const create: Create = async (model, params) => {
 
   const { result: subBox1 } = await api.solid.box({ id: ei, length: 11, width: 10, height: 20 })
   await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-5.5, depth, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: subBox1 }, keepTool: true })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: true })
   await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-42, 0, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: subBox1 }, keepTool: false })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: false })
 
   const { result: sideBox } = await api.solid.box({ id: ei, length: 7, width: 16.7, height: depth })
   await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-3.5, 16.7 / 2, 13] })
-  await api.solid.union({ id: ei, target: { id: basicBody }, tool: { id: sideBox }, keepTool: true })
+  await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: true })
   await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-46, 0, 0] })
-  await api.solid.union({ id: ei, target: { id: basicBody }, tool: { id: sideBox }, keepTool: false })
+  await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: false })
 
   const { result: subBox2 } = await api.solid.box({ id: ei, length: 17, width: 16, height: depth })
   await api.solid.translation({ id: ei, target: { id: subBox2 }, translation: [-width / 2, 13, 13] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: subBox2 }, keepTool: false })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox2 }], keepTools: false })
 
   const edges1 = (
     await api.part.getGeometryIds({
@@ -44,15 +44,17 @@ const create: Create = async (model, params) => {
   ).result.lines
   await api.solid.fillet({ radius: 2, geomIds: edges1 })
 
-  const edges2 = (await api.part.getGeometryIds({
-    id: part,
-    lines: [
-      { pos: [-width / 2, 5, 0] },
-      { pos: [-width / 2, 21, 0] },
-      { pos: [-(width - 17) / 2, 13, 0] },
-      { pos: [-(width + 17) / 2, 13, 0] },
-    ],
-  })).result.lines
+  const edges2 = (
+    await api.part.getGeometryIds({
+      id: part,
+      lines: [
+        { pos: [-width / 2, 5, 0] },
+        { pos: [-width / 2, 21, 0] },
+        { pos: [-(width - 17) / 2, 13, 0] },
+        { pos: [-(width + 17) / 2, 13, 0] },
+      ],
+    })
+  ).result.lines
   await api.solid.fillet({ radius: 2, geomIds: edges2 })
 
   return [basicBody]

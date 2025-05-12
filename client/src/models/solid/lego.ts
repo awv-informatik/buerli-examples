@@ -35,7 +35,7 @@ const create: Create = async (model, params) => {
     length: length - 2 * thickness,
   })
   await api.solid.translation({ id: ei, target: { id: subBox }, translation: [0, 0, -thickness] })
-  await api.solid.subtraction({ id: ei, target: { id: basic }, tool: { id: subBox } })
+  await api.solid.subtraction({ id: ei, target: { id: basic }, tools: [{ id: subBox }] })
 
   // dots
   for (let i = 0; i < columns; i++) {
@@ -50,7 +50,7 @@ const create: Create = async (model, params) => {
           (height + dotHeight) / 2,
         ],
       })
-      await api.solid.union({ id: ei, target: { id: basic }, tool: { id: dot } })
+      await api.solid.union({ id: ei, target: { id: basic }, tools: [{ id: dot }] })
     }
   }
 
@@ -62,7 +62,7 @@ const create: Create = async (model, params) => {
       diameter: 2 * (tubeRadius - thickness),
       height: tubeHeight,
     })
-    await api.solid.subtraction({ id: ei, target: { id: tube }, tool: { id: subCyl } })
+    await api.solid.subtraction({ id: ei, target: { id: tube }, tools: [{ id: subCyl }] })
     for (let i = 0; i < columns - 1; i++) {
       for (let j = 0; j < rows - 1; j++) {
         const {
@@ -77,7 +77,7 @@ const create: Create = async (model, params) => {
             -thickness / 2,
           ],
         })
-        await api.solid.union({ id: ei, target: { id: basic }, tool: { id: copy } })
+        await api.solid.union({ id: ei, target: { id: basic }, tools: [{ id: copy }] })
       }
     }
     await api.solid.deleteSolid({ id: ei, ids: [tube] })

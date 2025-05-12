@@ -47,9 +47,9 @@ const create: Create = async (model, params) => {
     await api.solid.rotation({ id: ei, target: { id: smileyMouthBody }, rotation: [Math.PI, 0, 0] })
     await api.solid.translation({ id: ei, target: { id: smileyMouthBody }, translation: [0, 110, 5] })
   }
-  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tool: { id: smileyEye1Body } })
-  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tool: { id: smileyEye2Body } })
-  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tool: { id: smileyMouthBody } })
+  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tools: [{ id: smileyEye1Body }] })
+  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tools: [{ id: smileyEye2Body }] })
+  await api.solid.subtraction({ id: ei, target: { id: smileyBody }, tools: [{ id: smileyMouthBody }] })
 
   await api.solid.rotation({ id: ei, target: { id: smileyBody }, rotation: [Math.PI, 0, 0] })
   return [smileyBody]

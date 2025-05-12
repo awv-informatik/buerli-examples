@@ -52,7 +52,7 @@ const create: Create = async (model, params) => {
   for (let i = 0; i < nof; i++) {
     const { result: e1 } = await api.solid.copy({ id: ei, target: { id: subSolid } })
     await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, i * angle] })
-    await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: e1.copy } })
+    await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: e1.copy }] })
   }
   return [basicBody]
 }

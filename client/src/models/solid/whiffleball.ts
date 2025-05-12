@@ -17,18 +17,18 @@ const create: Create = async (model, params) => {
   // Create boxes and cylinders and subtract them
   const { result: b0 } = await api.solid.box({ id: ei, length: lOuterBox, width: lOuterBox, height: lOuterBox })
   const { result: b3 } = await api.solid.box({ id: ei, length: lInnerBox, width: lInnerBox, height: lInnerBox })
-  await api.solid.subtraction({ id: ei, target: { id: b0 }, tool: { id: b3 } })
+  await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: b3 }] })
 
   const { result: cyl1 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
-  await api.solid.subtraction({ id: ei, target: { id: b0 }, tool: { id: cyl1 } })
+  await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl1 }] })
 
   const { result: cyl2 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.rotation({ id: ei, target: { id: cyl2 }, rotation: [0, Math.PI / 2, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: b0 }, tool: { id: cyl2 } })
+  await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl2 }] })
 
   const { result: cyl3 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.rotation({ id: ei, target: { id: cyl3 }, rotation: [Math.PI / 2, 0, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: b0 }, tool: { id: cyl3 } })
+  await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl3 }] })
 
   // Slice lower corners
   await api.solid.slice({ id: ei, target: { id: b0 }, originPos: [-45, -45, -15.556], normal: [-0.5, -0.5, -0.707] })

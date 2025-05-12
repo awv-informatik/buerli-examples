@@ -41,8 +41,8 @@ const create: Create = async (model, params) => {
   await api.solid.translation({ id: ei, target: { id: cyl2 }, translation: [55, 50, 50] })
   await api.solid.rotation({ id: ei, target: { id: cyl2 }, rotation: [Math.PI / 2, 0, 0] })
 
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: cyl1 } })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tool: { id: cyl2 } })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl1 }] })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl2 }] })
 
   const { result: offset } = await api.solid.offset({ id: ei, target: { id: basicBody }, distance: 1, extend: false })
   return [offset]
