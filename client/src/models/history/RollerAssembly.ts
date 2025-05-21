@@ -134,7 +134,7 @@ let currDimensions: number[] = []
 const data = Buffer.from(templateAB).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { assembly: assemblyApi, basemodeler: baseModelerApi, part: partApi } = model.api.v1
+  const { assembly: assemblyApi, common: commonApi, part: partApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -142,7 +142,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: rootAsm },
-  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
+  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
   segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })).result as number
 
   //*************************************************/
@@ -772,7 +772,7 @@ async function exportSVG(model: CadModel) {
 ///////////////////////////////////////////////////////////////
 
 async function saveOfb(model: CadModel) {
-  const { result: ofbData } = await model.api.basemodeler.save({ format: 'ofb' })
+  const { result: ofbData } = await model.api.v1.common.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))

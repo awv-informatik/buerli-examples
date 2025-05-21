@@ -165,7 +165,7 @@ let activeExampleId: string = ''
 const data = Buffer.from(templateSP).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { basemodeler: baseModelerApi, assembly: assemblyApi } = model.api.v1
+  const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
   if (!params) {
     activeExampleId = storeApi.getState().activeExample
@@ -177,7 +177,7 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
+  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
 
   if (rootNode !== null) {
     // Get all needed parts from container

@@ -84,7 +84,7 @@ let currDimensions: number[] = []
 const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { part: partApi, basemodeler: baseModelerApi } = model.api.v1
+  const { part: partApi, common: commonApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -92,7 +92,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: productId },
-  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
+  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   // Set initial values
   const holesCount = params.values[0]
@@ -337,10 +337,10 @@ async function exportSVG(model: CadModel) {
 ///////////////////////////////////////////////////////////////
 
 async function saveOfb(model: CadModel) {
-  const { basemodeler: baseModelerApi } = model.api.v1
+  const { common: commonApi } = model.api.v1
   const {
     result: { content: ofbData },
-  } = await baseModelerApi.save({ format: 'ofb' })
+  } = await commonApi.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))

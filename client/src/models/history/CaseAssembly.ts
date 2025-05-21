@@ -15,11 +15,11 @@ let deltaZ = 0
 const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { assembly: assemblyApi, basemodeler: baseModelerApi } = model.api.v1
+  const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
   const {
     result: { id: root },
-  } = await baseModelerApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
+  } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
 
   // screw distances from origin depending on parameters
   deltaX = (params.values[0] - 10) / 2

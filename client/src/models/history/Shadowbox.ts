@@ -18,7 +18,7 @@ export const paramsMap: Param[] = [
 const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { basemodeler: baseModelerApi, part: partApi } = model.api.v1
+  const { common: commonApi, part: partApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -26,7 +26,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: productId },
-  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
+  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   // Set initial values
   const minGap = params.values[3]

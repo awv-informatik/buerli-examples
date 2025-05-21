@@ -63,7 +63,7 @@ let constrRevolute: RevoluteConstraint
 const data = Buffer.from(mechAsm).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
 export const create: Create = async (model, params) => {
-  const { assembly: assemblyApi, basemodeler: baseModelerApi } = model.api.v1
+  const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
@@ -71,7 +71,7 @@ export const create: Create = async (model, params) => {
   }
   const {
     result: { id: rootAsm },
-  } = await baseModelerApi.load({ data, format: 'ofb', encoding: 'base64' })
+  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   if (rootAsm !== null) {
     const res = await assemblyApi.getSlider({ id: rootAsm, name: 'Slider' })
