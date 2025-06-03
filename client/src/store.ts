@@ -113,7 +113,7 @@ const storeApi = vanillaCreate<State>(set => ({
   },
 }))
 
-const useStore = create(storeApi)
+const useStore = create<State>(storeApi as any) // TODO: Remove 'as any' once types are fine again with zustand
 
 export { storeApi, useStore }
 
