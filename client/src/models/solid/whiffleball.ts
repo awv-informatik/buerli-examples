@@ -1,7 +1,7 @@
 import { ObjectID } from '@buerli.io/core'
 import * as THREE from 'three'
 import { Create, GetScene, Param } from '../../store'
-import { setObjectColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 

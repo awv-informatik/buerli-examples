@@ -2,7 +2,7 @@
 import { getDrawing, ObjectID } from '@buerli.io/core'
 import { History, Transform } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

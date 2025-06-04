@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 import mechAsm from '../../resources/history/MechanicalAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

@@ -6,7 +6,7 @@ import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/Wall.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 
 type instance = {
   productId: number

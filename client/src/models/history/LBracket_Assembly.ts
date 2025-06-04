@@ -3,7 +3,7 @@ import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 

@@ -1,6 +1,6 @@
 import { getDrawing } from '@buerli.io/core'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

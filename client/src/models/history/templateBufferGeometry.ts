@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
 import { Param, Create } from '../../store'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 

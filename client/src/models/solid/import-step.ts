@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import { Color } from 'three'
 import Ventil from '../../resources/solid/Ventil.stp?raw'
 import { Create, GetScene, Param } from '../../store'
-import { setObjectColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 const data = Buffer.from(Ventil).toString('base64') // TODO: how to support ArrayBuffer in the API?

@@ -4,7 +4,7 @@ import { Param, Create, storeApi, ParamType, Update } from '../../store'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { LimitedValue } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import { CadModel } from '../../_CadModel'
 
 type Step = {
   xAxis: number

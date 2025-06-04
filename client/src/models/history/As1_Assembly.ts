@@ -5,7 +5,7 @@ import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import arraybuffer4 from '../../resources/history/As1/Plate.ofb?buffer'
 import arraybuffer5 from '../../resources/history/As1/Rod.ofb?buffer'
 import { Create, GetScene, Param } from '../../store'
-import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../utils'
 import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
 import { Color } from 'three'
+import { ClassCAD } from '@buerli.io/classcad'
 import { Param, Create } from '../../store'
-import { findObjectsByName, setObjectColor } from '../../utils/utils'
-import { CadModel } from '../../CadModel'
+import { findObjectsByName, setObjectColor } from '../../utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -15,7 +15,7 @@ export const create: Create = async (model, params) => {
   return 0 // product id
 }
 
-export const getScene = async (productId: number, model: CadModel) => {
+export const getScene = async (productId: number, model: ClassCAD) => {
   if (!model) return
   const { scene } = await model.createScene(productId)
   scene && colorize(scene)
