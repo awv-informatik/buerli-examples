@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { ClassCAD } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../_CadModel'
 import mechAsm from '../../resources/history/MechanicalAssembly2.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -66,7 +66,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function updateRevolute(paramValues: number[], model: CadModel) {
+async function updateRevolute(paramValues: number[], model: ClassCAD) {
   const angleInRadian = (paramValues[0] / 180) * Math.PI
   await model.api.assembly.update3DConstraintValue({
     id: constrRevolute.id,

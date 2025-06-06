@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History, RevoluteConstraintType, SliderConstraintType } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
-import { LimitedValue } from '@buerli.io/classcad'
+import { ClassCAD } from '@buerli.io/classcad'
+import { History } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../_CadModel'
+import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type Step = {
   xAxis: number
@@ -138,7 +137,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function startSequence(model: CadModel) {
+async function startSequence(model: ClassCAD) {
   for (const step of sequence) {
     const offsetVal: "X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_OFFSET'
     const rotVal:"X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_ROTATION'

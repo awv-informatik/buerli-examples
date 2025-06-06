@@ -1,8 +1,8 @@
 /* eslint-disable max-lines */
+import { ClassCAD } from '@buerli.io/classcad'
 import { getDrawing, ObjectID } from '@buerli.io/core'
 import { History, Transform } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../_CadModel'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -247,7 +247,7 @@ export default { create, update, paramsMap, cad }
 // INTERNALS
 ///////////////////////////////////////////////////////////////
 
-async function updatePlugPos(plugPos: number, model: CadModel) {
+async function updatePlugPos(plugPos: number, model: ClassCAD) {
   switch (plugPos) {
     case 0: // frame 0 right
       electricPlug = { matePath: [frame0], wcsId: wcsEPlugFrame0Right }
@@ -298,7 +298,7 @@ async function updateNofSegments(
   segSize: number,
   walzeLength: number,
   walzeDir: number,
-  model: CadModel,
+  model: ClassCAD,
   productId: number,
 ) {
   const z = nofSegments > 1 ? walzeLength / 2 - minGapFrameSegment - gapInFrame - segSize / 2 : 0
@@ -353,7 +353,7 @@ async function updateNofSegments(
 
 ///////////////////////////////////////////////////////////////
 
-async function updateSegmentSize(segSize: number, model: CadModel) {
+async function updateSegmentSize(segSize: number, model: ClassCAD) {
   // Set length of walze in expression set
   const { result: segment } = await model.api.assembly.getPartTemplate({ name: 'Segment' })
   await model.api.part.updateExpression({ id: segment as number, toUpdate: [{ name: 'W', value: segSize }] })
@@ -361,7 +361,7 @@ async function updateSegmentSize(segSize: number, model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function updateWalzeDir(model: CadModel) {
+async function updateWalzeDir(model: ClassCAD) {
   let flipWalze: FlipType = '-X'
   switch (constrWalzeOrigin.mate1.flipType) {
     case 'X':
@@ -377,7 +377,7 @@ async function updateWalzeDir(model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function updateArrowDir(arrowDir: number, walzeLength: number, model: CadModel) {
+async function updateArrowDir(arrowDir: number, walzeLength: number, model: ClassCAD) {
   let reorientArrow0In: ReorientType = '0'
   let reorientArrow0Out: ReorientType = '0'
   let reorientArrow1In: ReorientType = '0'
@@ -508,7 +508,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: CadM
 
 ///////////////////////////////////////////////////////////////
 
-async function updateWalze(walzeLength: number, model: CadModel) {
+async function updateWalze(walzeLength: number, model: ClassCAD) {
   // Set length of walze in expression set
   const walze = (await model.api.assembly.getPartTemplate({ name: 'Walze' })).result as number
   await model.api.part.updateExpression({ id: walze as number, toUpdate: [{ name: 'L', value: walzeLength }] })
@@ -530,7 +530,7 @@ async function updateWalze(walzeLength: number, model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function prepareViews(model: CadModel) {
+async function prepareViews(model: ClassCAD) {
   const activeExample = storeApi.getState().activeExample
   const params = storeApi.getState().examples.objs[activeExample].params
   const productId = getDrawing(model.drawingId).structure.currentProduct
@@ -743,7 +743,7 @@ async function prepareViews(model: CadModel) {
 /**
  * Export DXF is not available for arm64 systems
  */
-async function exportDXF(model: CadModel) {
+async function exportDXF(model: ClassCAD) {
   const productId = await prepareViews(model)
   const { result: dxfData } = await model.api.drawing2d.exportDXF({ id: productId })
   if (dxfData?.content) {
@@ -758,7 +758,7 @@ async function exportDXF(model: CadModel) {
 /**
  * Export SVG is not available for arm64 systems
  */
-async function exportSVG(model: CadModel) {
+async function exportSVG(model: ClassCAD) {
   const productId = await prepareViews(model)
   const { result: svgData } = await model.api.drawing2d.exportSVG({ id: productId })
   if (svgData?.content) {
@@ -771,7 +771,7 @@ async function exportSVG(model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOfb(model: CadModel) {
+async function saveOfb(model: ClassCAD) {
   const { result: ofbData } = await model.api.v1.common.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')

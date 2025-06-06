@@ -1,9 +1,9 @@
+import { ClassCAD } from '@buerli.io/classcad'
+import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
-import { Buffer } from 'buffer'
-import { CadModel } from '../../_CadModel'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -167,7 +167,7 @@ export const create: Create = async (model, params) => {
   return lBracketAsm
 }
 
-export const getScene = async (model: CadModel, productId: number) => {
+export const getScene = async (model: ClassCAD, productId: number) => {
   if (!model) return
   const { scene } = await model.createScene(productId, { meshPerGeometry: false })
   console.info(scene)

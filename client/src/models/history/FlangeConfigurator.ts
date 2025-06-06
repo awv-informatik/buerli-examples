@@ -1,6 +1,6 @@
+import { ClassCAD } from '@buerli.io/classcad'
 import { getDrawing } from '@buerli.io/core'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../_CadModel'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -131,7 +131,7 @@ export const update: Update = async (model, productId, params) => {
 
 export default { create, update, paramsMap }
 
-async function createDimensions(model: CadModel, productId: number) {
+async function createDimensions(model: ClassCAD, productId: number) {
   const { drawing2d: drawingApi } = model.api.v1
 
   const activeExample = storeApi.getState().activeExample
@@ -306,7 +306,7 @@ async function createDimensions(model: CadModel, productId: number) {
 /**
  * Export DXF is not available for arm64 systems
  */
-async function exportDXF(model: CadModel) {
+async function exportDXF(model: ClassCAD) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
   const { result: dxfData } = await drawingApi.exportDXF({ id: productId })
@@ -322,7 +322,7 @@ async function exportDXF(model: CadModel) {
 /**
  * Export SVG is not available for arm64 systems
  */
-async function exportSVG(model: CadModel) {
+async function exportSVG(model: ClassCAD) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
   const { result: svgData } = await drawingApi.exportSVG({ id: productId })
@@ -336,7 +336,7 @@ async function exportSVG(model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOfb(model: CadModel) {
+async function saveOfb(model: ClassCAD) {
   const { common: commonApi } = model.api.v1
   const {
     result: { content: ofbData },
