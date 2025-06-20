@@ -17,35 +17,37 @@ export const create: Create = async (model, params) => {
   const { result: nutBoltAsm } = await assemblyApi.create({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: bolt },
+  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: bolt,
     toUpdate: [
       { name: 'Shaft_Length', value: shaftLength },
       { name: 'Shaft_Diameter', value: shaftDiameter },
-    ]
+    ],
   })
   const { result: boltRefId } = await assemblyApi.instance({
     productId: bolt,
-    ownerId: nutBoltAsm
+    ownerId: nutBoltAsm,
   })
 
   const { result: wcsIdBoltNut } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
   const { result: wcsIdOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
-  
+  const {
+    result: { id: nut },
+  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+
   await partApi.updateExpression({
     id: nut,
-    toUpdate: [
-      { name: 'Hole_Diameter', value: shaftDiameter }
-    ]
+    toUpdate: [{ name: 'Hole_Diameter', value: shaftDiameter }],
   })
   const { result: nutRefId } = await assemblyApi.instance({
     productId: nut,
-    ownerId: nutBoltAsm
+    ownerId: nutBoltAsm,
   })
   const { result: wcsIdNut } = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
 
@@ -53,24 +55,24 @@ export const create: Create = async (model, params) => {
   await assemblyApi.fastenedOrigin({
     id: nutBoltAsm,
     mate1: {
-      matePath: [boltRefId as number],
-      wcsId: wcsIdOrigin,
+      path: [boltRefId as number],
+      csys: wcsIdOrigin,
     },
-    name: 'FOC0'
+    name: 'FOC0',
   })
 
   /* Nut on Bolt */
   await assemblyApi.fastened({
     id: nutBoltAsm,
     mate1: {
-      matePath: [nutRefId as number],
-      wcsId: wcsIdNut,
+      path: [nutRefId as number],
+      csys: wcsIdNut,
     },
     mate2: {
-      matePath: [boltRefId as number],
-      wcsId: wcsIdBoltNut,
+      path: [boltRefId as number],
+      csys: wcsIdBoltNut,
     },
-    name: 'FC1'
+    name: 'FC1',
   })
   return nutBoltAsm
 }

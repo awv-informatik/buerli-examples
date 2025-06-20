@@ -196,10 +196,10 @@ export const create: Create = async (model, params) => {
   await assemblyApi.fastenedOrigin({
     id: nutBoltAsm,
     mate1: {
-      matePath: [boltRef],
-      wcsId: mate1Bolt,
-      flipType: 'Z',
-      reorientType: '0',
+      path: [boltRef],
+      csys: mate1Bolt,
+      flip: 'Z',
+      reorient: '0',
     },
     name: 'FOC1',
   })
@@ -207,12 +207,12 @@ export const create: Create = async (model, params) => {
   await assemblyApi.fastened({
     id: nutBoltAsm,
     mate1: {
-      matePath: [nutRef],
-      wcsId: mate1Nut,
+      path: [nutRef],
+      csys: mate1Nut,
     },
     mate2: {
-      matePath: [boltRef],
-      wcsId: mate1Bolt,
+      path: [boltRef],
+      csys: mate1Bolt,
     },
     zOffset: -20,
     name: 'FC1',
@@ -230,8 +230,8 @@ export const create: Create = async (model, params) => {
   await assemblyApi.fastenedOrigin({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef],
-      wcsId: mate1LBracket,
+      path: [lBracketRef],
+      csys: mate1LBracket,
     },
     zOffset: 20,
     name: 'FOC2',
@@ -240,48 +240,48 @@ export const create: Create = async (model, params) => {
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef],
-      wcsId: mate1LBracket
+      path: [lBracketRef],
+      csys: mate1LBracket,
     },
     mate2: {
-      matePath: [nutBoltRef0],
-      wcsId: wcsShaftBolt,
-      flipType: '-Z',
+      path: [nutBoltRef0],
+      csys: wcsShaftBolt,
+      flip: '-Z',
     },
     zOffset: 20,
-    name: 'FC2'
+    name: 'FC2',
   })
 
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef],
-      wcsId: mate2LBracket
+      path: [lBracketRef],
+      csys: mate2LBracket,
     },
     mate2: {
-      matePath: [nutBoltRef1],
-      wcsId: wcsShaftBolt,
-      flipType: '-Z',
+      path: [nutBoltRef1],
+      csys: wcsShaftBolt,
+      flip: '-Z',
     },
     zOffset: 20,
-    name: 'FC3'
+    name: 'FC3',
   })
 
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef],
-      wcsId: mate3LBracket
+      path: [lBracketRef],
+      csys: mate3LBracket,
     },
     mate2: {
-      matePath: [nutBoltRef2],
-      wcsId: wcsShaftBolt,
-      flipType: '-Z',
+      path: [nutBoltRef2],
+      csys: wcsShaftBolt,
+      flip: '-Z',
     },
     zOffset: 20,
-    name: 'FC4'
+    name: 'FC4',
   })
-  
+
   return lBracketAsm
 }
 

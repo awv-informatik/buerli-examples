@@ -32,16 +32,16 @@ type FastenedConstraint = {
   id: number
   name: string
   mate1: {
-    matePath: number[]
-    wcsId: number
-    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
-    reorientType: '0' | '90' | '180' | '270'
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
   }
   mate2: {
-    matePath: number[]
-    wcsId: number
-    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
-    reorientType: '0' | '90' | '180' | '270'
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
   }
   xOffset: number
   yOffset: number
@@ -55,10 +55,10 @@ type FastenedOriginConstraint = {
   id: number
   name: string
   mate1: {
-    matePath: number[]
-    wcsId: number
-    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
-    reorientType: '0' | '90' | '180' | '270'
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
   }
   xOffset: number
   yOffset: number
@@ -101,8 +101,8 @@ export const minGapFrameSegment = 20
 export const gapInFrame = 20
 let segmentPrt: number | null = null
 
-let electricPlug: { matePath: ObjectID[]; wcsId: ObjectID }
-let pneumaticPlug: { matePath: ObjectID[]; wcsId: ObjectID }
+let electricPlug: { path: ObjectID[]; csys: ObjectID }
+let pneumaticPlug: { path: ObjectID[]; csys: ObjectID }
 let frame0: ObjectID
 let frame1: ObjectID
 let constrElectricPlug: FastenedConstraint
@@ -250,20 +250,20 @@ export default { create, update, paramsMap, cad }
 async function updatePlugPos(plugPos: number, model: ClassCAD) {
   switch (plugPos) {
     case 0: // frame 0 right
-      electricPlug = { matePath: [frame0], wcsId: wcsEPlugFrame0Right }
-      pneumaticPlug = { matePath: [frame0], wcsId: wcsPPlugFrame0Right }
+      electricPlug = { path: [frame0], csys: wcsEPlugFrame0Right }
+      pneumaticPlug = { path: [frame0], csys: wcsPPlugFrame0Right }
       break
     case 1: // frame 0 left
-      electricPlug = { matePath: [frame0], wcsId: wcsEPlugFrame0Left }
-      pneumaticPlug = { matePath: [frame0], wcsId: wcsPPlugFrame0Left }
+      electricPlug = { path: [frame0], csys: wcsEPlugFrame0Left }
+      pneumaticPlug = { path: [frame0], csys: wcsPPlugFrame0Left }
       break
     case 2: // frame 1 right
-      electricPlug = { matePath: [frame1], wcsId: wcsEPlugFrame1Right }
-      pneumaticPlug = { matePath: [frame1], wcsId: wcsPPlugFrame1Right }
+      electricPlug = { path: [frame1], csys: wcsEPlugFrame1Right }
+      pneumaticPlug = { path: [frame1], csys: wcsPPlugFrame1Right }
       break
     case 3: // frame 1 left
-      electricPlug = { matePath: [frame1], wcsId: wcsEPlugFrame1Left }
-      pneumaticPlug = { matePath: [frame1], wcsId: wcsPPlugFrame1Left }
+      electricPlug = { path: [frame1], csys: wcsEPlugFrame1Left }
+      pneumaticPlug = { path: [frame1], csys: wcsPPlugFrame1Left }
       break
     default:
       break
@@ -274,8 +274,8 @@ async function updatePlugPos(plugPos: number, model: ClassCAD) {
     ...constrPneumaticPlug,
     mate1: {
       ...constrPneumaticPlug.mate1,
-      matePath: pneumaticPlug.matePath,
-      wcsId: pneumaticPlug.wcsId,
+      path: pneumaticPlug.path,
+      csys: pneumaticPlug.csys,
     },
   }
 
@@ -283,8 +283,8 @@ async function updatePlugPos(plugPos: number, model: ClassCAD) {
     ...constrElectricPlug,
     mate1: {
       ...constrElectricPlug.mate1,
-      matePath: electricPlug.matePath,
-      wcsId: electricPlug.wcsId,
+      path: electricPlug.path,
+      csys: electricPlug.csys,
     },
   }
 
@@ -363,7 +363,7 @@ async function updateSegmentSize(segSize: number, model: ClassCAD) {
 
 async function updateWalzeDir(model: ClassCAD) {
   let flipWalze: FlipType = '-X'
-  switch (constrWalzeOrigin.mate1.flipType) {
+  switch (constrWalzeOrigin.mate1.flip) {
     case 'X':
       flipWalze = '-X'
       break
@@ -371,7 +371,7 @@ async function updateWalzeDir(model: ClassCAD) {
       flipWalze = 'X'
       break
   }
-  constrWalzeOrigin.mate1.flipType = flipWalze
+  constrWalzeOrigin.mate1.flip = flipWalze
   await model.api.assembly.updateFastenedOrigin(constrWalzeOrigin)
 }
 
@@ -437,7 +437,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrArrow0Out,
     mate2: {
       ...constrArrow0Out.mate2,
-      reorientType: reorientArrow0Out,
+      reorient: reorientArrow0Out,
     },
   }
 
@@ -445,7 +445,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrArrow1Out,
     mate2: {
       ...constrArrow1Out.mate2,
-      reorientType: reorientArrow1Out,
+      reorient: reorientArrow1Out,
     },
   }
 
@@ -453,7 +453,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrArrow0In,
     mate2: {
       ...constrArrow0In.mate2,
-      reorientType: reorientArrow0In,
+      reorient: reorientArrow0In,
     },
   }
 
@@ -461,7 +461,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrArrow1In,
     mate2: {
       ...constrArrow1In.mate2,
-      reorientType: reorientArrow1In,
+      reorient: reorientArrow1In,
     },
   }
 
@@ -470,7 +470,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrLogo0,
     mate2: {
       ...constrLogo0.mate2,
-      reorientType: reorientLogo0,
+      reorient: reorientLogo0,
     },
   }
 
@@ -478,7 +478,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrLogo1,
     mate2: {
       ...constrLogo1.mate2,
-      reorientType: reorientLogo1,
+      reorient: reorientLogo1,
     },
   }
 
@@ -489,7 +489,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrEnd1,
     mate1: {
       ...constrEnd1.mate1,
-      reorientType: reorientEnd1,
+      reorient: reorientEnd1,
     },
     zOffset: -walzeLength / 2,
   }
@@ -498,7 +498,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
     ...constrEnd2,
     mate1: {
       ...constrEnd2.mate1,
-      reorientType: reorientEnd2,
+      reorient: reorientEnd2,
     },
     zOffset: walzeLength / 2,
   }
