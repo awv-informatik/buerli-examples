@@ -7,16 +7,16 @@ type FastenedConstraint = {
   id: number
   name: string
   mate1: {
-    matePath: number[]
-    wcsId: number
-    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
-    reorientType: '0' | '90' | '180' | '270'
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
   }
   mate2: {
-    matePath: number[]
-    wcsId: number
-    flipType: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
-    reorientType: '0' | '90' | '180' | '270'
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
   }
   xOffset: number
   yOffset: number
@@ -146,8 +146,8 @@ export const update: Update = async (model, productId, params) => {
               value: params.values[wi],
             },
           ],
-        }]
-      ))
+        },
+      ]))
   }
 
   // Update pos

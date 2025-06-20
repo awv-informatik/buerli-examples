@@ -61,8 +61,8 @@ export const create: Create = async (model, param) => {
     await assemblyApi.fastenedOrigin({
       id: root,
       mate1: {
-        matePath: [flange1Instance],
-        wcsId: wcsCenter,
+        path: [flange1Instance],
+        csys: wcsCenter,
       },
       name: 'FOCFlange1',
     })
@@ -71,39 +71,39 @@ export const create: Create = async (model, param) => {
       {
         id: root,
         mate1: {
-          matePath: [flange1Instance],
-          wcsId: wcsCenter,
+          path: [flange1Instance],
+          csys: wcsCenter,
         },
         mate2: {
-          matePath: [flange2Instance],
-          wcsId: wcsCenter,
-          flipType: "-Z",
-          reorientType: "180"
+          path: [flange2Instance],
+          csys: wcsCenter,
+          flip: '-Z',
+          reorient: '180',
         },
         name: 'FCFlange1Flange2',
       },
       {
         id: root,
         mate1: {
-          matePath: [flange1Instance],
-          wcsId: wcsHole1Top,
+          path: [flange1Instance],
+          csys: wcsHole1Top,
         },
         mate2: {
-          matePath: [boltInstance],
-          wcsId: wcsBoltHead,
+          path: [boltInstance],
+          csys: wcsBoltHead,
         },
         name: 'FCFlange1Bolt',
       },
       {
         id: root,
         mate1: {
-          matePath: [flange2Instance],
-          wcsId: wcsHole1Top,
+          path: [flange2Instance],
+          csys: wcsHole1Top,
         },
         mate2: {
-          matePath: [nutInstance],
-          wcsId: wcsNut,
-          flipType: '-Z',
+          path: [nutInstance],
+          csys: wcsNut,
+          flip: '-Z',
         },
         name: 'FCFlange2Nut',
       },

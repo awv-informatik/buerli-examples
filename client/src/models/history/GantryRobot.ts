@@ -18,68 +18,68 @@ type Step = {
 }
 
 type SliderConstraint = {
-  id: number;
-  name: string;
+  id: number
+  name: string
   mate1: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
   mate2: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
-  xOffset: number;
-  yOffset: number;
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  xOffset: number
+  yOffset: number
   zOffsetLimits: {
-      min: number;
-      max: number;
-  };
+    min: number
+    max: number
+  }
 }
 
 type RevoluteConstraint = {
-  id: number;
-  name: string;
+  id: number
+  name: string
   mate1: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
   mate2: {
-      matePath: number[];
-      wcsId: number;
-      flipType: "X" | "-X" | "Y" | "-Y" | "Z" | "-Z";
-      reorientType: "0" | "90" | "180" | "270";
-  };
-  zOffset: number;
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  zOffset: number
   zRotationLimits: {
-      min: number;
-      max: number;
-  };
+    min: number
+    max: number
+  }
 }
 
 // Sequence table
 const sequence: Step[] = [
   { xAxis: 0, yAxis: 0, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
-  { xAxis: 200, yAxis: -200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 400, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 600, yAxis: -600, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 800, yAxis: -800, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 1000, yAxis: -1000, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 1200, yAxis: -700, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 900, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 600, yAxis: -100, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 300, yAxis: 200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 0, yAxis: 500, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
+  { xAxis: 200, yAxis: -200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 400, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 600, yAxis: -600, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 800, yAxis: -800, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 1000, yAxis: -1000, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 1200, yAxis: -700, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 900, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 600, yAxis: -100, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 300, yAxis: 200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 0, yAxis: 500, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
 ]
 
-export const paramsMap: Param[] = [
-  { index: 0, name: 'Sequence', type: ParamType.Button, value: startSequence },
-].sort((a, b) => a.index - b.index)
+export const paramsMap: Param[] = [{ index: 0, name: 'Sequence', type: ParamType.Button, value: startSequence }].sort(
+  (a, b) => a.index - b.index,
+)
 
 let xAxis: SliderConstraint
 let yAxis: SliderConstraint
@@ -127,11 +127,9 @@ export const create: Create = async (model, params) => {
 }
 
 export const update: Update = async (model, productId, params) => {
-  
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // ...
 
@@ -140,8 +138,8 @@ export const update: Update = async (model, productId, params) => {
 
 async function startSequence(model: CadModel) {
   for (const step of sequence) {
-    const offsetVal: "X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_OFFSET'
-    const rotVal:"X_OFFSET"|"Y_OFFSET"|"Z_OFFSET"|"Z_ROTATION" = 'Z_ROTATION'
+    const offsetVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_OFFSET'
+    const rotVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_ROTATION'
     // x, y, j1 - j6
     const constrValues = [
       { id: xAxis.id, name: offsetVal, value: step.xAxis },

@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer'
 import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
@@ -6,7 +7,6 @@ import arraybuffer4 from '../../resources/history/As1/Plate.ofb?buffer'
 import arraybuffer5 from '../../resources/history/As1/Rod.ofb?buffer'
 import { Create, GetScene, Param } from '../../store'
 import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../utils/utils'
-import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -33,7 +33,9 @@ export const create: Create = async (model, params?) => {
   const { result: rodAsm } = await assemblyApi.assemblyTemplate({ name: 'Rod_Asm' })
 
   /* Load Bolt part */
-  const { result: { id: bolt } } = await assemblyApi.loadProduct({ data: data, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: bolt },
+  } = await assemblyApi.loadProduct({ data: data, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -59,7 +61,9 @@ export const create: Create = async (model, params?) => {
   const { result: wcsIdBoltOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Load Nut part */
-  const { result: { id: nut } } = await assemblyApi.loadProduct({ data: data2, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: nut },
+  } = await assemblyApi.loadProduct({ data: data2, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -80,8 +84,8 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastenedOrigin({
     id: nutBoltAsm,
     mate1: {
-      matePath: [boltRefId as number],
-      wcsId: wcsIdBoltOrigin,
+      path: [boltRefId as number],
+      csys: wcsIdBoltOrigin,
     },
     name: 'FOC0',
   })
@@ -90,18 +94,20 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: nutBoltAsm,
     mate1: {
-      matePath: [boltRefId as number],
-      wcsId: wcsIdBoltNut,
+      path: [boltRefId as number],
+      csys: wcsIdBoltNut,
     },
     mate2: {
-      matePath: [nutRefId as number],
-      wcsId: wcsIdNut,
+      path: [nutRefId as number],
+      csys: wcsIdNut,
     },
     name: 'FC1',
   })
 
   /* Load LBracket part */
-  const { result: { id: lBracket } } = await assemblyApi.loadProduct({ data: data3, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: lBracket },
+  } = await assemblyApi.loadProduct({ data: data3, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on lBracket part (optional) */
   await partApi.updateExpression({
@@ -161,7 +167,7 @@ export const create: Create = async (model, params?) => {
   /* Set lBracket to origin of lBracket-assembly */
   await assemblyApi.fastenedOrigin({
     id: lBracketAsm,
-    mate1: { matePath: [lBracketRef1 as number], wcsId: wcsIdLBracketOrigin },
+    mate1: { path: [lBracketRef1 as number], csys: wcsIdLBracketOrigin },
     name: 'FOC1',
   })
 
@@ -169,12 +175,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef1 as number],
-      wcsId: wcsIdLBracket1,
+      path: [lBracketRef1 as number],
+      csys: wcsIdLBracket1,
     },
     mate2: {
-      matePath: [nutBoltAsmRefs[0]],
-      wcsId: wcsIdBoltHeadShaft,
+      path: [nutBoltAsmRefs[0]],
+      csys: wcsIdBoltHeadShaft,
     },
     name: 'FC2',
   })
@@ -183,12 +189,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef1 as number],
-      wcsId: wcsIdLBracket2Top,
+      path: [lBracketRef1 as number],
+      csys: wcsIdLBracket2Top,
     },
     mate2: {
-      matePath: [nutBoltAsmRefs[1]],
-      wcsId: wcsIdBoltHeadShaft,
+      path: [nutBoltAsmRefs[1]],
+      csys: wcsIdBoltHeadShaft,
     },
     name: 'FC3',
   })
@@ -197,18 +203,20 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
-      matePath: [lBracketRef1 as number],
-      wcsId: wcsIdLBracket3,
+      path: [lBracketRef1 as number],
+      csys: wcsIdLBracket3,
     },
     mate2: {
-      matePath: [nutBoltAsmRefs[2]],
-      wcsId: wcsIdBoltHeadShaft,
+      path: [nutBoltAsmRefs[2]],
+      csys: wcsIdBoltHeadShaft,
     },
     name: 'FC4',
   })
 
   /* Load Plate part */
-  const { result: { id: plate } } = await assemblyApi.loadProduct({ data: data4, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: plate },
+  } = await assemblyApi.loadProduct({ data: data4, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on plate part (optional) */
   await partApi.updateExpression({
@@ -239,7 +247,7 @@ export const create: Create = async (model, params?) => {
   /* Set plate to origin of as1-assembly */
   await assemblyApi.fastenedOrigin({
     id: as1Asm,
-    mate1: { matePath: [plateRef as number], wcsId: wcsIdPlateBase },
+    mate1: { path: [plateRef as number], csys: wcsIdPlateBase },
     name: 'FOC2',
   })
 
@@ -260,12 +268,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: as1Asm,
     mate1: {
-      matePath: [plateRef as number],
-      wcsId: wcsIdPlate2,
+      path: [plateRef as number],
+      csys: wcsIdPlate2,
     },
     mate2: {
-      matePath: [lBracketAsmRefs[0]],
-      wcsId: wcsIdLBracket2Bottom,
+      path: [lBracketAsmRefs[0]],
+      csys: wcsIdLBracket2Bottom,
     },
     name: 'FC5',
   })
@@ -274,18 +282,20 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: as1Asm,
     mate1: {
-      matePath: [plateRef as number],
-      wcsId: wcsIdPlate5,
+      path: [plateRef as number],
+      csys: wcsIdPlate5,
     },
     mate2: {
-      matePath: [lBracketAsmRefs[1]],
-      wcsId: wcsIdLBracket2Bottom,
+      path: [lBracketAsmRefs[1]],
+      csys: wcsIdLBracket2Bottom,
     },
     name: 'FC6',
   })
 
   /* Load Rod part */
-  const { result: { id: rod } } = await assemblyApi.loadProduct({ data: data5, format: 'OFB', encoding: 'base64' })
+  const {
+    result: { id: rod },
+  } = await assemblyApi.loadProduct({ data: data5, format: 'OFB', encoding: 'base64' })
 
   /* Set expressions on rod part (optional) */
   await partApi.updateExpression({
@@ -329,7 +339,7 @@ export const create: Create = async (model, params?) => {
   /* Set rod to origin of rod-assembly */
   await assemblyApi.fastenedOrigin({
     id: rodAsm,
-    mate1: { matePath: [rodRefId as number], wcsId: wcsIdRodOrigin },
+    mate1: { path: [rodRefId as number], csys: wcsIdRodOrigin },
     name: 'FOC3',
   })
 
@@ -337,12 +347,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: rodAsm,
     mate1: {
-      matePath: [rodRefId as number],
-      wcsId: wscIdRodLeft,
+      path: [rodRefId as number],
+      csys: wscIdRodLeft,
     },
     mate2: {
-      matePath: [nutRefIds[0]],
-      wcsId: wcsIdNut,
+      path: [nutRefIds[0]],
+      csys: wcsIdNut,
     },
     name: 'FC7',
   })
@@ -351,12 +361,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: rodAsm,
     mate1: {
-      matePath: [rodRefId as number],
-      wcsId: wcsIdRodRight,
+      path: [rodRefId as number],
+      csys: wcsIdRodRight,
     },
     mate2: {
-      matePath: [nutRefIds[1]],
-      wcsId: wcsIdNut,
+      path: [nutRefIds[1]],
+      csys: wcsIdNut,
     },
     name: 'FC8',
   })
@@ -371,12 +381,12 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: as1Asm,
     mate1: {
-      matePath: [lBracketAsmRefs[0]],
-      wcsId: wcsIdLBracketRod,
+      path: [lBracketAsmRefs[0]],
+      csys: wcsIdLBracketRod,
     },
     mate2: {
-      matePath: [rodAsmRef as number],
-      wcsId: wscIdRodLeft,
+      path: [rodAsmRef as number],
+      csys: wscIdRodLeft,
     },
     name: 'FC9',
   })
