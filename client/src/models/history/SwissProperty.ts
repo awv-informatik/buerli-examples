@@ -742,7 +742,7 @@ async function transformLayers(layers: Layer[], params: any[], model: CadModel) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await model.api.assembly.transformInstance({
+    await model.api.assembly.transformInstanceTo({
       id: tempLayers[i].refId,
       transformation: [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir],
     })
