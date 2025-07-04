@@ -127,7 +127,7 @@ export const update: Update = async (model, productId, params) => {
     deltaY = (params.values[1] - 10) / 2
     deltaZ = params.values[2] + 2.5
 
-    await assemblyApi.transformInstance([
+    await assemblyApi.transformInstanceTo([
       {
         id: 'ScrewInstanceIdent1', // by ident
         transformation: [
