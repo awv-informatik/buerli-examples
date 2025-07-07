@@ -52,7 +52,7 @@ export const create: Create = async (model, params) => {
 
   const { result: boxNut } = await partApi.box({ id: nut, references: [wcsBoxNut], length: 30, width: 30, height: 10 })
   const { result: cylNut } = await partApi.cylinder({ id: nut, references: [wcsCylNut], diameter: 20, height: 40 })
-  await partApi.boolean({ id: nut, type: 'SUBTRACTION', target: { id: boxNut }, tools: [{ id: cylNut }] })
+  await partApi.boolean({ id: nut, type: 'SUBTRACTION', target: boxNut , tools: [ cylNut ] })
 
   /* bolt part */
   const wcsBolt = {
@@ -90,7 +90,7 @@ export const create: Create = async (model, params) => {
 
   const { result: shaft } = await partApi.cylinder({ id: bolt, references: [wcsShaftBolt], diameter: 20, height: 60 })
   const { result: head } = await partApi.cylinder({ id: bolt, references: [wcsHeadBolt], diameter: 30, height: 10 })
-  await partApi.boolean({ id: bolt, type: 'UNION', target: { id: shaft }, tools: [{ id: head }] })
+  await partApi.boolean({ id: bolt, type: 'UNION', target: shaft , tools: [ head ] })
 
   /* lbracket part */
   const wcsLBracket = {
@@ -182,7 +182,7 @@ export const create: Create = async (model, params) => {
     id: lBracket,
     type: 'SUBTRACTION',
     target: { id: baseBracket },
-    tools: [{ id: subBracket }, { id: sub1Bracket }, { id: sub2Bracket }, { id: sub3Bracket }],
+    tools: [subBracket , sub1Bracket, sub2Bracket,  sub3Bracket ],
   })
 
   /* nut-bolt assembly */

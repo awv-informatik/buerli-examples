@@ -43,7 +43,7 @@ export const create: Create = async (model, params, options) => {
     id: part,
     type: 'UNION',
     target: { id: extrHoles },
-    tools: [{ id: extrOuter }, { id: extrInner }],
+    tools: [ extrOuter,  extrInner ],
   })
 
   // The following position have been found by selecting two loops

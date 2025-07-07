@@ -5,6 +5,7 @@ import { setObjectColor } from '../../utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
+
 const create: Create = async (model, params) => {
   const api = model.api.v1
 
@@ -12,20 +13,23 @@ const create: Create = async (model, params) => {
   const { result: ei } = await api.part.entityInjection({ id: part })
   const { result: ccShape } = await api.curve.shape({ id: ei })
 
-  await model.createPolyline(ccShape, [
-    { point: new THREE.Vector3(0, 0, 0), radius: 0 },
-    { point: new THREE.Vector3(0, 4, 0), radius: 0 },
-    { point: new THREE.Vector3(2.6, 4, 0), radius: 2 },
-    { point: new THREE.Vector3(6.8, 8.2, 0), radius: 1 },
-    { point: new THREE.Vector3(2.5, 8.2, 0), radius: 0 },
-    { point: new THREE.Vector3(2.5, 10, 0), radius: 1 },
-    { point: new THREE.Vector3(10, 10, 0), radius: 2 },
-    { point: new THREE.Vector3(10, 2.5, 0), radius: 1 },
-    { point: new THREE.Vector3(8.2, 2.5, 0), radius: 0 },
-    { point: new THREE.Vector3(8.2, 6.8, 0), radius: 1 },
-    { point: new THREE.Vector3(4, 2.6, 0), radius: 2 },
-    { point: new THREE.Vector3(4, 0, 0), radius: 0 },
-  ])
+
+const  pld = [{ xa: 0, ya: 0},
+  { xa: 0, ya: 4},
+  { xa: 2.6, ya: 4},    
+  { xa: 6.8, ya: 8.2, r: 1 },
+  { xa: 2.5, ya: 8.2},
+  { xa: 2.5, ya: 10, r: 1 },
+  { xa: 10, ya: 10, c: 2 },
+  { xa: 10, ya: 2.5, c: 2 },
+  { xa: 8.2, ya: 2.5},
+  { xa: 8.2, ya: 6.8, r: 1 },
+  { xa: 4, ya: 2.6, c: 2 },
+  { xa: 4, ya:0}
+ ];
+
+  await api.curve.advancedPolyline({ id: ccShape, pld: pld, close: true })
+ 
   const { result: extrusion } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 150] })
 
   for (let i = 1; i < 4; i++) {

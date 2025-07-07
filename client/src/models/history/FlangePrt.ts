@@ -52,8 +52,8 @@ export const create: Create = async (model, params, options) => {
     const { result: flangeSolid1 } = await partApi.boolean({
       id: flange,
       type: 'UNION',
-      target: { id: baseCyl },
-      tools: [{ id: upperCyl }],
+      target: baseCyl ,
+      tools: [upperCyl ],
     })
     const { result: subCylFlange } = await partApi.cylinder({
       id: flange,
@@ -64,8 +64,8 @@ export const create: Create = async (model, params, options) => {
     await partApi.boolean({
       id: flange,
       type: 'SUBTRACTION',
-      target: { id: flangeSolid1 },
-      tools: [{ id: subCylFlange }],
+      target: flangeSolid1 ,
+      tools: [subCylFlange ],
     })
 
     options?.onSelect()
@@ -109,7 +109,7 @@ export const create: Create = async (model, params, options) => {
       count: '@expr.holeCount',
       merged: true
     })
-    await partApi.boolean({ id: flange, type: 'SUBTRACTION', target: { id: flange2 }, tools: [{ id: pattern }]})
+    await partApi.boolean({ id: flange, type: 'SUBTRACTION', target: flange2 , tools: [ pattern ]})
     await partApi.workCSys({
       id: flange,
       offset: '[0, @expr.holeOffset, @expr.thickness]',

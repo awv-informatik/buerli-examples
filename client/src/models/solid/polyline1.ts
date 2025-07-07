@@ -6,23 +6,23 @@ import { setObjectColor } from '../../utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
+
 const create: Create = async (model, params) => {
   const api = model.api.v1
-
-  const fp0 = { point: new THREE.Vector3(0, 25, 0), radius: 0 }
-  const fp1 = { point: new THREE.Vector3(75, 25, 0), radius: 0 }
-  const fp2 = { point: new THREE.Vector3(75, 0, 0), radius: 10 }
-  const fp3 = { point: new THREE.Vector3(100, 0, 0), radius: 0 }
-  const fp4 = { point: new THREE.Vector3(100, 100, 0), radius: 20 }
-  const fp5 = { point: new THREE.Vector3(25, 75, 0), radius: 15 }
-  const fp6 = { point: new THREE.Vector3(25, 100, 0), radius: 0 }
-  const fp7 = { point: new THREE.Vector3(0, 100, 0), radius: 0 }
-
+  const pld = [{ xa: 0, ya: 25 }, { xa: 75, ya: 25 }, 
+    { xa: 75, ya: 0, r: 10 }, { xa: 100, ya: 0 },
+    { xa: 100, ya: 100, r: 20 }, { xa: 25, ya: 75, r: 15 }, 
+    { xa: 25, ya: 100 }, { xa: 0, ya: 100 }];
   const { result: part } = await api.part.create()
   const { result: ei } = await api.part.entityInjection({ id: part })
   const { result: ccShape } = await api.curve.shape({ id: ei })
-  await model.createPolyline(ccShape, [fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7])
+  await api.curve.advancedPolyline({ id: ccShape, pld: pld, close: true })
+ 
   const { result: extrusion } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 25] })
+  
+  //const extrusion  = await r(api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 25] }))
+  
+  
   return [extrusion]
 }
 
