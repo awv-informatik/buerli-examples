@@ -8,8 +8,8 @@ const data = Buffer.from(AWVLogoCube).toString('base64') // TODO: how to support
 
 const create: Create = async (model, params) => {
   const api = model.api.v1
-  const { result: part } = await api.part.create({ name: 'Part' })
-  const { result: importedId } = await api.part.importFeature({ id: part, data, format: 'STP', encoding: 'base64' })
+  const part = await api.part.create({ name: 'Part' })
+  const importedId = await api.part.importFeature({ id: part, data, format: 'STP', encoding: 'base64' })
   return [importedId]
 }
 

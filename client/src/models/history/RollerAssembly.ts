@@ -140,10 +140,8 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: rootAsm },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
-  segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })).result as number
+  const { id: rootAsm } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })) as number
 
   //*************************************************/
   // Create Methoden
@@ -151,41 +149,53 @@ export const create: Create = async (model, params) => {
 
   // Template
   if (rootAsm !== null) {
-    constrElectricPlug = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_ElectricPlug' }))
-      .result as FastenedConstraint
-    constrPneumaticPlug = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_PneumaticPlug' }))
-      .result as FastenedConstraint
+    constrElectricPlug = (await assemblyApi.getFastened({
+      id: rootAsm,
+      name: 'Fastened_ElectricPlug',
+    })) as FastenedConstraint
+    constrPneumaticPlug = (await assemblyApi.getFastened({
+      id: rootAsm,
+      name: 'Fastened_PneumaticPlug',
+    })) as FastenedConstraint
 
-    frame0 = (await assemblyApi.getInstance({ ownerId: rootAsm, name: 'Frame0' })).result as number
+    frame0 = (await assemblyApi.getInstance({ ownerId: rootAsm, name: 'Frame0' })) as number
 
-    wcsEPlugFrame0Left = (await partApi.getWorkGeometry({ id: frame0, name: 'Plug_csys' })).result as number
-    wcsEPlugFrame0Right = (await partApi.getWorkGeometry({ id: frame0, name: 'Plug2_csys' })).result as number
-    wcsPPlugFrame0Left = (await partApi.getWorkGeometry({ id: frame0, name: 'Screw_csys' })).result as number
-    wcsPPlugFrame0Right = (await partApi.getWorkGeometry({ id: frame0, name: 'Screw2_csys' })).result as number
+    wcsEPlugFrame0Left = (await partApi.getWorkGeometry({ id: frame0, name: 'Plug_csys' })) as number
+    wcsEPlugFrame0Right = (await partApi.getWorkGeometry({ id: frame0, name: 'Plug2_csys' })) as number
+    wcsPPlugFrame0Left = (await partApi.getWorkGeometry({ id: frame0, name: 'Screw_csys' })) as number
+    wcsPPlugFrame0Right = (await partApi.getWorkGeometry({ id: frame0, name: 'Screw2_csys' })) as number
 
-    frame1 = (await assemblyApi.getInstance({ ownerId: rootAsm, name: 'Frame1' })).result as number
-    wcsEPlugFrame1Left = (await partApi.getWorkGeometry({ id: frame1, name: 'Plug_csys' })).result as number
-    wcsEPlugFrame1Right = (await partApi.getWorkGeometry({ id: frame1, name: 'Plug2_csys' })).result as number
-    wcsPPlugFrame1Left = (await partApi.getWorkGeometry({ id: frame1, name: 'Screw_csys' })).result as number
-    wcsPPlugFrame1Right = (await partApi.getWorkGeometry({ id: frame1, name: 'Screw2_csys' })).result as number
+    frame1 = (await assemblyApi.getInstance({ ownerId: rootAsm, name: 'Frame1' })) as number
+    wcsEPlugFrame1Left = (await partApi.getWorkGeometry({ id: frame1, name: 'Plug_csys' })) as number
+    wcsEPlugFrame1Right = (await partApi.getWorkGeometry({ id: frame1, name: 'Plug2_csys' })) as number
+    wcsPPlugFrame1Left = (await partApi.getWorkGeometry({ id: frame1, name: 'Screw_csys' })) as number
+    wcsPPlugFrame1Right = (await partApi.getWorkGeometry({ id: frame1, name: 'Screw2_csys' })) as number
 
-    constrWalzeOrigin = (await assemblyApi.getFastenedOrigin({ id: rootAsm, name: 'Fastened_Origin_Walze' }))
-      .result as FastenedOriginConstraint
-    constrEnd1 = (await assemblyApi.getFastenedOrigin({ id: rootAsm, name: 'Fastened_Origin_End1' }))
-      .result as FastenedOriginConstraint
-    constrEnd2 = (await assemblyApi.getFastenedOrigin({ id: rootAsm, name: 'Fastened_Origin_End2' }))
-      .result as FastenedOriginConstraint
+    constrWalzeOrigin = (await assemblyApi.getFastenedOrigin({
+      id: rootAsm,
+      name: 'Fastened_Origin_Walze',
+    })) as FastenedOriginConstraint
+    constrEnd1 = (await assemblyApi.getFastenedOrigin({
+      id: rootAsm,
+      name: 'Fastened_Origin_End1',
+    })) as FastenedOriginConstraint
+    constrEnd2 = (await assemblyApi.getFastenedOrigin({
+      id: rootAsm,
+      name: 'Fastened_Origin_End2',
+    })) as FastenedOriginConstraint
 
-    constrArrow0Out = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow0_Out' }))
-      .result as FastenedConstraint
-    constrArrow1Out = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow1_Out' }))
-      .result as FastenedConstraint
-    constrArrow0In = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow0_In' }))
-      .result as FastenedConstraint
-    constrArrow1In = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow1_In' }))
-      .result as FastenedConstraint
-    constrLogo0 = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Logo0' })).result as FastenedConstraint
-    constrLogo1 = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Logo1' })).result as FastenedConstraint
+    constrArrow0Out = (await assemblyApi.getFastened({
+      id: rootAsm,
+      name: 'Fastened_Arrow0_Out',
+    })) as FastenedConstraint
+    constrArrow1Out = (await assemblyApi.getFastened({
+      id: rootAsm,
+      name: 'Fastened_Arrow1_Out',
+    })) as FastenedConstraint
+    constrArrow0In = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow0_In' })) as FastenedConstraint
+    constrArrow1In = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Arrow1_In' })) as FastenedConstraint
+    constrLogo0 = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Logo0' })) as FastenedConstraint
+    constrLogo1 = (await assemblyApi.getFastened({ id: rootAsm, name: 'Fastened_Logo1' })) as FastenedConstraint
 
     await update(model, rootAsm, { lastUpdatedParam: undefined, values: params.values })
   }
@@ -348,14 +358,14 @@ async function updateNofSegments(
       firstPos.z += i * distanceBtSegments
     }
   }
-  currSegmentInstances = (await model.api.assembly.instance(instances)).result as number[]
+  currSegmentInstances = (await model.api.assembly.instance(instances)) as number[]
 }
 
 ///////////////////////////////////////////////////////////////
 
 async function updateSegmentSize(segSize: number, model: ClassCAD) {
   // Set length of walze in expression set
-  const { result: segment } = await model.api.assembly.getPartTemplate({ name: 'Segment' })
+  const segment = await model.api.assembly.getPartTemplate({ name: 'Segment' })
   await model.api.part.updateExpression({ id: segment as number, toUpdate: [{ name: 'W', value: segSize }] })
 }
 
@@ -510,7 +520,7 @@ async function updateArrowDir(arrowDir: number, walzeLength: number, model: Clas
 
 async function updateWalze(walzeLength: number, model: ClassCAD) {
   // Set length of walze in expression set
-  const walze = (await model.api.assembly.getPartTemplate({ name: 'Walze' })).result as number
+  const walze = (await model.api.assembly.getPartTemplate({ name: 'Walze' })) as number
   await model.api.part.updateExpression({ id: walze as number, toUpdate: [{ name: 'L', value: walzeLength }] })
 
   // Set offset in z-Dir for frame0
@@ -726,7 +736,7 @@ async function prepareViews(model: ClassCAD) {
   if (currDimensions.length > 0) {
     await model.api.drawing2d.deleteDimension({ ids: currDimensions })
   }
-  currDimensions = (await model.api.drawing2d.dimension(dimensions)).result as number[]
+  currDimensions = (await model.api.drawing2d.dimension(dimensions)) as number[]
 
   await model.api.drawing2d.view({ id: productId, types: ['TOP', 'RIGHT_90', 'ISO'] })
   await model.api.drawing2d.placeView({
@@ -745,7 +755,7 @@ async function prepareViews(model: ClassCAD) {
  */
 async function exportDXF(model: ClassCAD) {
   const productId = await prepareViews(model)
-  const { result: dxfData } = await model.api.drawing2d.exportDXF({ id: productId })
+  const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
   if (dxfData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
@@ -760,7 +770,7 @@ async function exportDXF(model: ClassCAD) {
  */
 async function exportSVG(model: ClassCAD) {
   const productId = await prepareViews(model)
-  const { result: svgData } = await model.api.drawing2d.exportSVG({ id: productId })
+  const svgData = await model.api.drawing2d.exportSVG({ id: productId })
   if (svgData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
@@ -772,7 +782,7 @@ async function exportSVG(model: ClassCAD) {
 ///////////////////////////////////////////////////////////////
 
 async function saveOfb(model: ClassCAD) {
-  const { result: ofbData } = await model.api.v1.common.save({ format: 'ofb' })
+  const ofbData = await model.api.v1.common.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))

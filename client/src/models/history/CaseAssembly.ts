@@ -17,9 +17,7 @@ const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
-  const {
-    result: { id: root },
-  } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
+  const { id: root } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
 
   // screw distances from origin depending on parameters
   deltaX = (params.values[0] - 10) / 2
@@ -127,7 +125,7 @@ export const update: Update = async (model, productId, params) => {
     deltaY = (params.values[1] - 10) / 2
     deltaZ = params.values[2] + 2.5
 
-    await assemblyApi.transformInstanceTo([
+    await assemblyApi.transformInstance([
       {
         id: 'ScrewInstanceIdent1', // by ident
         transformation: [

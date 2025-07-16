@@ -90,9 +90,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: productId },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   // Set initial values
   const holesCount = params.values[0]
@@ -288,7 +286,7 @@ async function createDimensions(model: ClassCAD, productId: number) {
     await drawingApi.deleteDimension({ ids: currDimensions })
   }
   const res = await drawingApi.dimension(dimensions)
-  currDimensions = res.result as number[]
+  currDimensions = res as number[]
 
   await drawingApi.view({ id: productId, types: ['TOP', 'RIGHT', 'RIGHT_90', 'ISO'] })
   await drawingApi.placeView({
@@ -309,7 +307,7 @@ async function createDimensions(model: ClassCAD, productId: number) {
 async function exportDXF(model: ClassCAD) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
-  const { result: dxfData } = await drawingApi.exportDXF({ id: productId })
+  const dxfData = await drawingApi.exportDXF({ id: productId })
   if (dxfData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
@@ -325,7 +323,7 @@ async function exportDXF(model: ClassCAD) {
 async function exportSVG(model: ClassCAD) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
-  const { result: svgData } = await drawingApi.exportSVG({ id: productId })
+  const svgData = await drawingApi.exportSVG({ id: productId })
   if (svgData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
@@ -338,9 +336,7 @@ async function exportSVG(model: ClassCAD) {
 
 async function saveOfb(model: ClassCAD) {
   const { common: commonApi } = model.api.v1
-  const {
-    result: { content: ofbData },
-  } = await commonApi.save({ format: 'ofb' })
+  const { content: ofbData } = await commonApi.save({ format: 'ofb' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))

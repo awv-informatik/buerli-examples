@@ -14,12 +14,10 @@ export const create: Create = async (model, params) => {
 
   const shaftDiameter = 10
   const shaftLength = 37
-  const { result: nutBoltAsm } = await assemblyApi.create({ name: 'NutBolt_Asm' })
+  const nutBoltAsm = await assemblyApi.create({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const {
-    result: { id: bolt },
-  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: bolt,
@@ -28,28 +26,26 @@ export const create: Create = async (model, params) => {
       { name: 'Shaft_Diameter', value: shaftDiameter },
     ],
   })
-  const { result: boltRefId } = await assemblyApi.instance({
+  const boltRefId = await assemblyApi.instance({
     productId: bolt,
     ownerId: nutBoltAsm,
   })
 
-  const { result: wcsIdBoltNut } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
-  const { result: wcsIdOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
+  const wcsIdBoltNut = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
+  const wcsIdOrigin = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const {
-    result: { id: nut },
-  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: nut,
     toUpdate: [{ name: 'Hole_Diameter', value: shaftDiameter }],
   })
-  const { result: nutRefId } = await assemblyApi.instance({
+  const nutRefId = await assemblyApi.instance({
     productId: nut,
     ownerId: nutBoltAsm,
   })
-  const { result: wcsIdNut } = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
+  const wcsIdNut = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
 
   /* Bolt at origin */
   await assemblyApi.fastenedOrigin({

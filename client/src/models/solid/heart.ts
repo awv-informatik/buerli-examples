@@ -16,12 +16,12 @@ const create: Create = async (model, params) => {
   shape.bezierCurveTo(80, 35, 80, 0, 50, 0)
   shape.bezierCurveTo(35, 0, 25, 25, 25, 25)
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
+  const ccShape = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccShape, shape)
 
-  const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 5] })
+  const basicBody = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 5] })
   return [basicBody]
 }
 

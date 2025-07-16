@@ -67,23 +67,21 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: rootAsm },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getFastened({ id: rootAsm, name: 'Base-J1' })
-    const fcBase = res.result as FastenedConstraint
+    const fcBase = res as FastenedConstraint
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J1-J2' })
-    const fcJ1 = res.result as FastenedConstraint
+    const fcJ1 = res as FastenedConstraint
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J2-J3' })
-    const fcJ2 = res.result as FastenedConstraint
+    const fcJ2 = res as FastenedConstraint
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J3-J4' })
-    const fcJ3 = res.result as FastenedConstraint
+    const fcJ3 = res as FastenedConstraint
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J4-J5' })
-    const fcJ4 = res.result as FastenedConstraint
+    const fcJ4 = res as FastenedConstraint
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J5-J6' })
-    const fcJ5 = res.result as FastenedConstraint
+    const fcJ5 = res as FastenedConstraint
     constraints = [fcBase, fcJ1, fcJ2, fcJ3, fcJ4, fcJ5]
   }
 

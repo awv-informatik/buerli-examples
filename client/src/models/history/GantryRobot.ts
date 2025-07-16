@@ -98,28 +98,26 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: rootAsm },
-  } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis1' })
-    xAxis = res.result as SliderConstraint
+    xAxis = res as SliderConstraint
     res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis2' })
-    yAxis = res.result as SliderConstraint
+    yAxis = res as SliderConstraint
 
     let res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint1' })
-    j1 = res2.result as RevoluteConstraint
+    j1 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint2' })
-    j2 = res2.result as RevoluteConstraint
+    j2 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint3' })
-    j3 = res2.result as RevoluteConstraint
+    j3 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint4' })
-    j4 = res2.result as RevoluteConstraint
+    j4 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint5' })
-    j5 = res2.result as RevoluteConstraint
+    j5 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint6' })
-    j6 = res2.result as RevoluteConstraint
+    j6 = res2 as RevoluteConstraint
   }
 
   return rootAsm

@@ -9,29 +9,29 @@ const create: Create = async (model, params) => {
   const api = model.api.v1
 
   const direction = [0, 0, 5]
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
 
   const smiley = new THREE.Shape()
   smiley.moveTo(80, 40)
   smiley.absarc(40, 40, 40, 0, Math.PI * 2, false)
-  const { result: ccSmiley } = await api.curve.shape({ id: ei })
+  const ccSmiley = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccSmiley, smiley)
-  const { result: smileyBody } = await api.solid.extrusion({ id: ei, curves: [ccSmiley], direction })
+  const smileyBody = await api.solid.extrusion({ id: ei, curves: [ccSmiley], direction })
 
   const smileyEye1 = new THREE.Shape()
   smileyEye1.moveTo(35, 20)
   smileyEye1.absellipse(25, 20, 10, 10, 0, Math.PI * 2, true, 0)
-  const { result: ccSmileyEye1 } = await api.curve.shape({ id: ei })
+  const ccSmileyEye1 = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccSmileyEye1, smileyEye1)
-  const { result: smileyEye1Body } = await api.solid.extrusion({ id: ei, curves: [ccSmileyEye1], direction })
+  const smileyEye1Body = await api.solid.extrusion({ id: ei, curves: [ccSmileyEye1], direction })
 
   const smileyEye2 = new THREE.Shape()
   smileyEye2.moveTo(65, 20)
   smileyEye2.absarc(55, 20, 10, 0, Math.PI * 2, true)
-  const { result: ccSmileyEye2 } = await api.curve.shape({ id: ei })
+  const ccSmileyEye2 = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccSmileyEye2, smileyEye2)
-  const { result: smileyEye2Body } = await api.solid.extrusion({ id: ei, curves: [ccSmileyEye2], direction })
+  const smileyEye2Body = await api.solid.extrusion({ id: ei, curves: [ccSmileyEye2], direction })
 
   const smileyMouth = new THREE.Shape()
   smileyMouth.moveTo(20, 40)
@@ -39,9 +39,9 @@ const create: Create = async (model, params) => {
   smileyMouth.bezierCurveTo(70, 45, 70, 50, 60, 60)
   smileyMouth.quadraticCurveTo(40, 80, 20, 60)
   smileyMouth.quadraticCurveTo(5, 50, 20, 40)
-  const { result: ccSmileyMouth } = await api.curve.shape({ id: ei })
+  const ccSmileyMouth = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccSmileyMouth, smileyMouth)
-  const { result: smileyMouthBody } = await api.solid.extrusion({ id: ei, curves: [ccSmileyMouth], direction })
+  const smileyMouthBody = await api.solid.extrusion({ id: ei, curves: [ccSmileyMouth], direction })
 
   if (!params.values[0]) {
     await api.solid.rotation({ id: ei, target: { id: smileyMouthBody }, rotation: [Math.PI, 0, 0] })

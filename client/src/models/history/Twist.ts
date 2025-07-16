@@ -21,7 +21,7 @@ export const paramsMap: Param[] = [
       'Composite curve (Custom limits)',
       'Sketch curves (Up)',
       'Sketch "0" (Up)',
-      'Sketch "1" (Up)'
+      'Sketch "1" (Up)',
     ],
   },
 ].sort((a, b) => a.index - b.index)
@@ -31,9 +31,7 @@ const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params, options) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
-  const {
-    result: { id: part },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: part } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
 
   await update(model, part, { lastUpdatedParam: undefined, values: params.values })
 
@@ -55,19 +53,19 @@ export const update: Update = async (model, productId, params) => {
 
     switch (params.values[0]) {
       case 'Sketch region "triangle" (Up)':
-        const sRTriangle = (await partApi.getSketchRegion({ id: productId, name: 'Triangle' })).result
-        operation = (await partApi.twist({
+        const sRTriangle = await partApi.getSketchRegion({ id: productId, name: 'Triangle' })
+        operation = await partApi.twist({
           id: productId,
           references: [sRTriangle],
           type: 'UP',
           limit2: 100,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch region "rectangle" (Down without cap)':
-        const sRRectangle = (await partApi.getSketchRegion({ id: productId, name: 'Rectangle' })).result
-        operation = (await partApi.twist({
+        const sRRectangle = await partApi.getSketchRegion({ id: productId, name: 'Rectangle' })
+        operation = await partApi.twist({
           id: productId,
           references: [sRRectangle],
           type: 'DOWN',
@@ -75,90 +73,90 @@ export const update: Update = async (model, productId, params) => {
           limit2: 80,
           twistAngle: Math.PI / 2,
           capEnds: false,
-        })).result
+        })
         break
 
       case 'Sketch region "moon" (Down)':
-        const sRMoon = (await partApi.getSketchRegion({ id: productId, name: 'Moon' })).result
-        operation = (await partApi.twist({
+        const sRMoon = await partApi.getSketchRegion({ id: productId, name: 'Moon' })
+        operation = await partApi.twist({
           id: productId,
           references: [sRMoon],
           type: 'DOWN',
           limit2: 60,
           twistAngle: 2 * Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch region "cross" (Custom limits)':
-        const sRCross = (await partApi.getSketchRegion({ id: productId, name: 'Cross' })).result
-        operation = (await partApi.twist({
+        const sRCross = await partApi.getSketchRegion({ id: productId, name: 'Cross' })
+        operation = await partApi.twist({
           id: productId,
           references: [sRCross],
           type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch region "square" (Custom twist center)':
-        const sRSquare = (await partApi.getSketchRegion({ id: productId, name: 'Square' })).result
-        operation = (await partApi.twist({
+        const sRSquare = await partApi.getSketchRegion({ id: productId, name: 'Square' })
+        operation = await partApi.twist({
           id: productId,
           references: [sRSquare],
           type: 'CUSTOM',
           limit2: 60,
           twistAngle: '180g',
           twistCenter: { x: 10, y: 10, z: 0 },
-        })).result
+        })
         break
 
       case 'Composite curve (Custom limits)':
-        const compCurve = (await partApi.getFeature({ id: productId, name: 'Composite Curve' })).result
-        operation = (await partApi.twist({
+        const compCurve = await partApi.getFeature({ id: productId, name: 'Composite Curve' })
+        operation = await partApi.twist({
           id: productId,
           references: [compCurve],
           type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch "0" (Up)':
-        const sketch0 = (await partApi.getSketch({ id: productId, name: 'Sketch0' })).result
-        operation = (await partApi.twist({
+        const sketch0 = await partApi.getSketch({ id: productId, name: 'Sketch0' })
+        operation = await partApi.twist({
           id: productId,
           references: [sketch0],
           type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch "1" (Up)':
-        const sketch1 = (await partApi.getSketch({ id: productId, name: 'Sketch1' })).result
-        operation = (await partApi.twist({
+        const sketch1 = await partApi.getSketch({ id: productId, name: 'Sketch1' })
+        operation = await partApi.twist({
           id: productId,
           references: [sketch1],
           type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       case 'Sketch curves (Up)':
         const sketchLines = [481, 487, 495, 503, 511, 519]
-        operation = (await partApi.twist({
+        operation = await partApi.twist({
           id: productId,
           references: sketchLines,
           type: 'UP',
           limit1: 0,
           limit2: 120,
           twistAngle: Math.PI,
-        })).result
+        })
         break
 
       default:

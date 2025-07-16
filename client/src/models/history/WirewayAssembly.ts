@@ -66,13 +66,13 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
+  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })) .id
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })).result as number
-    kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })).result as number
-    constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })).result as FastenedConstraint
+    deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' }))  as number
+    kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' }))  as number
+    constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' }))  as FastenedConstraint
   }
   return rootNode
 }

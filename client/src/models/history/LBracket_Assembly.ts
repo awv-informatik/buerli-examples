@@ -18,13 +18,11 @@ export const create: Create = async (model, params) => {
   const shaftLength = 37
   const rodDiameter = 10
 
-  const { result: lBracketAsm } = await assemblyApi.create({ name: 'LBracket_Asm' })
-  const { result: nutBoltAsm } = await assemblyApi.assemblyTemplate({ name: 'NutBolt_Asm' })
+  const lBracketAsm = await assemblyApi.create({ name: 'LBracket_Asm' })
+  const nutBoltAsm = await assemblyApi.assemblyTemplate({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const {
-    result: { id: bolt },
-  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: bolt,
@@ -33,33 +31,31 @@ export const create: Create = async (model, params) => {
       { name: 'Shaft_Diameter', value: shaftDiameter },
     ],
   })
-  const { result: boltRefId } = await assemblyApi.instance({
+  const boltRefId = await assemblyApi.instance({
     productId: bolt,
     ownerId: nutBoltAsm,
   })
 
-  const { result: wcsIdBoltNut } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
-  const { result: wcsIdBoltHeadShaft } = await partApi.getWorkGeometry({
+  const wcsIdBoltNut = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Nut' })
+  const wcsIdBoltHeadShaft = await partApi.getWorkGeometry({
     id: boltRefId as number,
     name: 'WCS_Head-Shaft',
   })
-  const { result: wcsIdBoltOrigin } = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
+  const wcsIdBoltOrigin = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const {
-    result: { id: nut },
-  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: nut,
     toUpdate: [{ name: 'Hole_Diameter', value: shaftDiameter }],
   })
 
-  const { result: nutRefId } = await assemblyApi.instance({
+  const nutRefId = await assemblyApi.instance({
     productId: nut,
     ownerId: nutBoltAsm,
   })
-  const { result: wcsIdNut } = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
+  const wcsIdNut = await partApi.getWorkGeometry({ id: nutRefId as number, name: 'WCS_Hole_Top' })
 
   /* Set bolt to origin of nut-bolt-assembly */
   await assemblyApi.fastenedOrigin({
@@ -86,9 +82,7 @@ export const create: Create = async (model, params) => {
   })
 
   /* LBracket */
-  const {
-    result: { id: lBracket },
-  } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB', encoding: 'base64' })
+  const { id: lBracket } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB', encoding: 'base64' })
 
   await partApi.updateExpression({
     id: lBracket,
@@ -98,24 +92,24 @@ export const create: Create = async (model, params) => {
     ],
   })
 
-  const { result: lBracketRef1 } = await assemblyApi.instance({
+  const lBracketRef1 = await assemblyApi.instance({
     productId: lBracket,
     ownerId: lBracketAsm,
   })
 
-  const { result: wcsIdLBracketOrigin } = await partApi.getWorkGeometry({
+  const wcsIdLBracketOrigin = await partApi.getWorkGeometry({
     id: lBracketRef1 as number,
     name: 'WCS_Origin',
   })
-  const { result: wcsIdLBracket1 } = await partApi.getWorkGeometry({
+  const wcsIdLBracket1 = await partApi.getWorkGeometry({
     id: lBracketRef1 as number,
     name: 'WCS_Hole1-Top',
   })
-  const { result: wcsIdLBracket2Top } = await partApi.getWorkGeometry({
+  const wcsIdLBracket2Top = await partApi.getWorkGeometry({
     id: lBracketRef1 as number,
     name: 'WCS_Hole2-Top',
   })
-  const { result: wcsIdLBracket3 } = await partApi.getWorkGeometry({
+  const wcsIdLBracket3 = await partApi.getWorkGeometry({
     id: lBracketRef1 as number,
     name: 'WCS_Hole3-Top',
   })
@@ -144,7 +138,7 @@ export const create: Create = async (model, params) => {
       ownerId: lBracketAsm,
     },
   ])
-  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = res.result as number[]
+  const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = res as number[]
 
   /* NutBoltAsm on LBracket */
   await assemblyApi.fastened({

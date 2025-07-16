@@ -15,25 +15,19 @@ export const create: Create = async (model, param) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
 
   // Create the root assembly
-  const { result: root } = await assemblyApi.create({ name: 'FlangeAsm' })
+  const root = await assemblyApi.create({ name: 'FlangeAsm' })
 
   // Load all needed products
-  const {
-    result: { id: flange },
-  } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB', encoding: 'base64' })
-  const {
-    result: { id: bolt },
-  } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
-  const {
-    result: { id: nut },
-  } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: flange } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
-    const { result: wcsCenter } = await partApi.getWorkGeometry({ id: flange, name: 'WCSCenter' })
-    const { result: wcsHole1Top } = await partApi.getWorkGeometry({ id: flange, name: 'WCSBoltHoleTop' })
-    const { result: wcsBoltHead } = await partApi.getWorkGeometry({ id: bolt, name: 'WCSHead' })
-    const { result: wcsNut } = await partApi.getWorkGeometry({ id: nut, name: 'WCSNut' })
+    const wcsCenter = await partApi.getWorkGeometry({ id: flange, name: 'WCSCenter' })
+    const wcsHole1Top = await partApi.getWorkGeometry({ id: flange, name: 'WCSBoltHoleTop' })
+    const wcsBoltHead = await partApi.getWorkGeometry({ id: bolt, name: 'WCSHead' })
+    const wcsNut = await partApi.getWorkGeometry({ id: nut, name: 'WCSNut' })
 
     // Add the products as instances to the root assembly
     const res = await assemblyApi.instance([
@@ -55,7 +49,7 @@ export const create: Create = async (model, param) => {
       },
     ])
 
-    const [flange1Instance, flange2Instance, boltInstance, nutInstance] = res.result as number[]
+    const [flange1Instance, flange2Instance, boltInstance, nutInstance] = res as number[]
 
     // Create all the constraints
     await assemblyApi.fastenedOrigin({

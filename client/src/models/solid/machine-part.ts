@@ -14,25 +14,25 @@ const create: Create = async (model, params) => {
   const p3 = { point: new THREE.Vector3(0, depth, 5), radius: 0 }
   const p4 = { point: new THREE.Vector3(0, 0, depth), radius: 0 }
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
+  const ccShape = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape, [p1, p2, p3, p4])
-  const { result: basicBody } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
+  const basicBody = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
 
-  const { result: subBox1 } = await api.solid.box({ id: ei, length: 11, width: 10, height: 20 })
+  const subBox1 = await api.solid.box({ id: ei, length: 11, width: 10, height: 20 })
   await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-5.5, depth, 0] })
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: true })
   await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-42, 0, 0] })
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: false })
 
-  const { result: sideBox } = await api.solid.box({ id: ei, length: 7, width: 16.7, height: depth })
+  const sideBox = await api.solid.box({ id: ei, length: 7, width: 16.7, height: depth })
   await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-3.5, 16.7 / 2, 13] })
   await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: true })
   await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-46, 0, 0] })
   await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: false })
 
-  const { result: subBox2 } = await api.solid.box({ id: ei, length: 17, width: 16, height: depth })
+  const subBox2 = await api.solid.box({ id: ei, length: 17, width: 16, height: depth })
   await api.solid.translation({ id: ei, target: { id: subBox2 }, translation: [-width / 2, 13, 13] })
   await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox2 }], keepTools: false })
 
@@ -41,7 +41,7 @@ const create: Create = async (model, params) => {
       id: part,
       lines: [{ pos: [-3.5, 16.7, depth] }, { pos: [-49.5, 16.7, depth] }],
     })
-  ).result.lines
+  ).lines
   await api.solid.fillet({ radius: 2, geomIds: edges1 })
 
   const edges2 = (
@@ -54,7 +54,7 @@ const create: Create = async (model, params) => {
         { pos: [-(width + 17) / 2, 13, 0] },
       ],
     })
-  ).result.lines
+  ).lines
   await api.solid.fillet({ radius: 2, geomIds: edges2 })
 
   return [basicBody]
