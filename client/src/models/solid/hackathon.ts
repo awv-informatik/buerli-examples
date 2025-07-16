@@ -30,8 +30,8 @@ const create: Create = async (model, params) => {
   const positions2 = [{ pos: [10, 50, 50] }, { pos: [0, 0, 50] }, { pos: [20, 20, 50] }]
   const edges2 = (await api.part.getGeometryIds({ id: part, lines: positions2 })).lines
 
-  await api.solid.fillet({ radius: 5, geomIds: edges1 })
-  await api.solid.fillet({ radius: 5, geomIds: edges2 })
+  await api.solid.fillet({ id: ei, radius: 5, geomIds: edges1 })
+  await api.solid.fillet({ id: ei, radius: 5, geomIds: edges2 })
 
   const cyl1 = await api.solid.cylinder({ id: ei, height: 200, diameter: 40 })
   await api.solid.translation({ id: ei, target: { id: cyl1 }, translation: [-50, 50, 50] })

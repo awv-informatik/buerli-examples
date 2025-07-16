@@ -172,7 +172,7 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })).id
+  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })).id
 
   if (rootNode !== null) {
     // Get all needed parts from container
@@ -715,7 +715,7 @@ async function transformLayers(layers: Layer[], params: any[], model: ClassCAD) 
       ...tempLayers[i],
       posX: posXOfLayerBefore + thicknessOfLayerBefore + explodeDistance,
     }
-    await model.api.assembly.transformInstance({
+    await model.api.assembly.transformInstanceTo({
       id: tempLayers[i].refId,
       transformation: [{ x: tempLayers[i].posX, y: 0, z: 0 }, xDir, yDir],
     })

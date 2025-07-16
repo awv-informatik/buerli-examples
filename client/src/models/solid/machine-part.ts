@@ -42,7 +42,7 @@ const create: Create = async (model, params) => {
       lines: [{ pos: [-3.5, 16.7, depth] }, { pos: [-49.5, 16.7, depth] }],
     })
   ).lines
-  await api.solid.fillet({ radius: 2, geomIds: edges1 })
+  await api.solid.fillet({ id: ei, radius: 2, geomIds: edges1 })
 
   const edges2 = (
     await api.part.getGeometryIds({
@@ -55,7 +55,7 @@ const create: Create = async (model, params) => {
       ],
     })
   ).lines
-  await api.solid.fillet({ radius: 2, geomIds: edges2 })
+  await api.solid.fillet({ id: ei, radius: 2, geomIds: edges2 })
 
   return [basicBody]
 }

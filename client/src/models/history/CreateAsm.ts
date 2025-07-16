@@ -236,7 +236,7 @@ export const create: Create = async (model, params) => {
     zOffset: 20,
     name: 'FOC2',
   })
-
+  let nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef0, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -244,7 +244,7 @@ export const create: Create = async (model, params) => {
       csys: mate1LBracket,
     },
     mate2: {
-      path: [nutBoltRef0],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },
@@ -252,6 +252,7 @@ export const create: Create = async (model, params) => {
     name: 'FC2',
   })
 
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef1, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -259,7 +260,7 @@ export const create: Create = async (model, params) => {
       csys: mate2LBracket,
     },
     mate2: {
-      path: [nutBoltRef1],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },
@@ -267,6 +268,7 @@ export const create: Create = async (model, params) => {
     name: 'FC3',
   })
 
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef2, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -274,7 +276,7 @@ export const create: Create = async (model, params) => {
       csys: mate3LBracket,
     },
     mate2: {
-      path: [nutBoltRef2],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },

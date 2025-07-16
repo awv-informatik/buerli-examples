@@ -15,15 +15,15 @@ const create: Create = async (model, params) => {
   const pld = [
     { xa: 0, ya: 0 },
     { xa: 0, ya: 4 },
-    { xa: 2.6, ya: 4 },
+    { xa: 2.6, ya: 4, r: 2 },
     { xa: 6.8, ya: 8.2, r: 1 },
     { xa: 2.5, ya: 8.2 },
     { xa: 2.5, ya: 10, r: 1 },
-    { xa: 10, ya: 10, c: 2 },
-    { xa: 10, ya: 2.5, c: 2 },
+    { xa: 10, ya: 10, r: 2 },
+    { xa: 10, ya: 2.5, r: 1 },
     { xa: 8.2, ya: 2.5 },
     { xa: 8.2, ya: 6.8, r: 1 },
-    { xa: 4, ya: 2.6, c: 2 },
+    { xa: 4, ya: 2.6, r: 2 },
     { xa: 4, ya: 0 },
   ]
 

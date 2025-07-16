@@ -141,6 +141,7 @@ export const create: Create = async (model, params) => {
   const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = res as number[]
 
   /* NutBoltAsm on LBracket */
+  let nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef1, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -148,13 +149,14 @@ export const create: Create = async (model, params) => {
       csys: wcsIdLBracket1,
     },
     mate2: {
-      path: [nutBoltAsmRef1 as number],
+      path: [nutInstance],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC2',
   })
 
   /* NutBoltAsm on LBracket */
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef2, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -162,13 +164,14 @@ export const create: Create = async (model, params) => {
       csys: wcsIdLBracket2Top,
     },
     mate2: {
-      path: [nutBoltAsmRef2 as number],
+      path: [nutInstance],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC3',
   })
 
   /* NutBoltAsm on LBracket */
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef3, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -176,7 +179,7 @@ export const create: Create = async (model, params) => {
       csys: wcsIdLBracket3,
     },
     mate2: {
-      path: [nutBoltAsmRef3 as number],
+      path: [nutInstance],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC4',
@@ -187,7 +190,6 @@ export const create: Create = async (model, params) => {
 export const getScene = async (model: ClassCAD, productId: number) => {
   if (!model) return
   const { scene } = await model.createScene(productId, { meshPerGeometry: false })
-  console.info(scene)
   return scene
 }
 

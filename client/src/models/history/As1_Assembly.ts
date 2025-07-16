@@ -173,7 +173,7 @@ export const create: Create = async (model, params?) => {
       csys: wcsIdLBracket1,
     },
     mate2: {
-      path: [nutBoltAsmRefs[0]],
+      path: [boltRefId as number, nutBoltAsmRefs[0]],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC2',
@@ -187,7 +187,7 @@ export const create: Create = async (model, params?) => {
       csys: wcsIdLBracket2Top,
     },
     mate2: {
-      path: [nutBoltAsmRefs[1]],
+      path: [boltRefId as number, nutBoltAsmRefs[1]],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC3',
@@ -201,7 +201,7 @@ export const create: Create = async (model, params?) => {
       csys: wcsIdLBracket3,
     },
     mate2: {
-      path: [nutBoltAsmRefs[2]],
+      path: [boltRefId as number, nutBoltAsmRefs[2]],
       csys: wcsIdBoltHeadShaft,
     },
     name: 'FC4',
@@ -264,7 +264,7 @@ export const create: Create = async (model, params?) => {
       csys: wcsIdPlate2,
     },
     mate2: {
-      path: [lBracketAsmRefs[0]],
+      path: [lBracketRef1 as number, lBracketAsmRefs[0]],
       csys: wcsIdLBracket2Bottom,
     },
     name: 'FC5',
@@ -278,7 +278,7 @@ export const create: Create = async (model, params?) => {
       csys: wcsIdPlate5,
     },
     mate2: {
-      path: [lBracketAsmRefs[1]],
+      path: [lBracketRef1 as number, lBracketAsmRefs[1]],
       csys: wcsIdLBracket2Bottom,
     },
     name: 'FC6',
@@ -371,11 +371,11 @@ export const create: Create = async (model, params?) => {
   await assemblyApi.fastened({
     id: as1Asm,
     mate1: {
-      path: [lBracketAsmRefs[0]],
+      path: [lBracketRef1 as number, lBracketAsmRefs[0]],
       csys: wcsIdLBracketRod,
     },
     mate2: {
-      path: [rodAsmRef as number],
+      path: [rodRefId as number, rodAsmRef as number],
       csys: wscIdRodLeft,
     },
     name: 'FC9',
