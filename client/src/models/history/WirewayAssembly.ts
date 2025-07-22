@@ -66,7 +66,7 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })) .id
+  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })) .id
 
   if (rootNode !== null) {
     // Get all needed parts from container

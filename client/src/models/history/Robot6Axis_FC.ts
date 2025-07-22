@@ -67,7 +67,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getFastened({ id: rootAsm, name: 'Base-J1' })

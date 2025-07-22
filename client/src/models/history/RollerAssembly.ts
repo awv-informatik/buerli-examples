@@ -140,7 +140,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
   segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })) as number
 
   //*************************************************/
@@ -782,7 +782,7 @@ async function exportSVG(model: ClassCAD) {
 ///////////////////////////////////////////////////////////////
 
 async function saveOfb(model: ClassCAD) {
-  const ofbData = await model.api.v1.common.save({ format: 'ofb' })
+  const ofbData = await model.api.v1.common.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))

@@ -90,7 +90,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: productId } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   // Set initial values
   const holesCount = params.values[0]
@@ -336,7 +336,7 @@ async function exportSVG(model: ClassCAD) {
 
 async function saveOfb(model: ClassCAD) {
   const { common: commonApi } = model.api.v1
-  const { content: ofbData } = await commonApi.save({ format: 'ofb' })
+  const { content: ofbData } = await commonApi.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))
