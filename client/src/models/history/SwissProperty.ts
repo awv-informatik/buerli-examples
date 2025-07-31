@@ -162,6 +162,32 @@ const data = Buffer.from(templateSP).toString('base64') // TODO: how to support 
 export const create: Create = async (model, params) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  rootNode = null
+  currInstances = []
+  gipsplattePrt = null
+  spanplattePrt = null
+  daemmungPrt = null
+  verticalBeamPrt = null
+  horizontalBeamPrt = null
+  wallInsulationPrt = null
+  wallInsulationCustomPrt = null
+  holzlattungPrt = null
+  holzschalungPrt = null
+  balkenwandAsm = null
+  gipsplatteInstance = null
+  spanplatteInstance = null
+  daemmungInstance = null
+  holzlattungInstance = null
+  holzschalungInstance = null
+  balkenwandInstance = null
+  beamInstances = []
+  beamCustomInstances = []
+  wallInsulationInstances = []
+  wallInsulationCustomInstances = []
+  allInstances = []
+  activeExampleId = ''
+
   if (!params) {
     activeExampleId = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExampleId].params

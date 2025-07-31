@@ -63,6 +63,9 @@ const data = Buffer.from(robotArm).toString('base64') // TODO: how to support Ar
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  constraints = []
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params

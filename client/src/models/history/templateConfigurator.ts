@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Param, Create, Update, storeApi } from '../../store'
+import { Create, Param, Update, storeApi } from '../../store'
+
+// Example for a global module variable to show how it has to be reset if you need such variables
+let globalVariable: any = 0
 
 export const paramsMap: Param[] = [
   // number example
@@ -11,6 +14,9 @@ export const paramsMap: Param[] = [
 ].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (model, params) => {
+  // If you have global module variables, they have to be reset here
+  globalVariable = 0
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
@@ -26,8 +32,7 @@ export const create: Create = async (model, params) => {
 export const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Start updating your model here...
   // ...
