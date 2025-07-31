@@ -31,6 +31,9 @@ const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params, options) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  operation = 0
+
   const { id: part } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   await update(model, part, { lastUpdatedParam: undefined, values: params.values })

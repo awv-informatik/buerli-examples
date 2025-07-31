@@ -86,6 +86,9 @@ const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params) => {
   const { part: partApi, common: commonApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  currDimensions = []
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params

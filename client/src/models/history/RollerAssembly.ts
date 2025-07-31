@@ -136,6 +136,35 @@ const data = Buffer.from(templateAB).toString('base64') // TODO: how to support 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi, part: partApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  zDir = { x: 0, y: 0, z: 1 }
+  segmentPrt = null
+  electricPlug = undefined
+  pneumaticPlug = undefined
+  frame0 = undefined
+  frame1 = undefined
+  constrElectricPlug = undefined
+  constrPneumaticPlug = undefined
+  wcsEPlugFrame0Left = undefined
+  wcsEPlugFrame0Right = undefined
+  wcsPPlugFrame0Left = undefined
+  wcsPPlugFrame0Right = undefined
+  wcsEPlugFrame1Left = undefined
+  wcsEPlugFrame1Right = undefined
+  wcsPPlugFrame1Left = undefined
+  wcsPPlugFrame1Right = undefined
+  constrArrow0Out = undefined
+  constrArrow1Out = undefined
+  constrArrow0In = undefined
+  constrArrow1In = undefined
+  constrLogo0 = undefined
+  constrLogo1 = undefined
+  constrEnd1 = undefined
+  constrEnd2 = undefined
+  constrWalzeOrigin = undefined
+  currSegmentInstances = []
+  currDimensions = []
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
