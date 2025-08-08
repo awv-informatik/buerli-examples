@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import * as THREE from 'three'
 import { Create, Param } from '../../store'
 
@@ -19,7 +19,7 @@ export const create: Create = async (model, params) => {
   return 0 // product id
 }
 
-export const getBufferGeom = async (productId: number, model: ClassCAD) => {
+export const getBufferGeom = async (productId: number, model: BuerliCadFacade) => {
   if (!model) return
   const geoms = await model.createBufferGeometry(productId)
   return geoms.map(

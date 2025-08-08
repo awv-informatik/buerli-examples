@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Transform } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
 import produce from 'immer'
@@ -382,7 +382,7 @@ export default { create, update, paramsMap }
 ///////////////////////////////////////////////////////////////
 
 /** Changes the whole wall size */
-async function updateWallSize(length: number, height: number, params: any[], layers: Layer[], model: ClassCAD) {
+async function updateWallSize(length: number, height: number, params: any[], layers: Layer[], model: BuerliCadFacade) {
   if (gipsplattePrt && spanplattePrt && daemmungPrt && holzlattungPrt && holzschalungPrt) {
     await updateBalkenwandSize(length, height, params, layers, model)
     const exprSets: {
@@ -430,7 +430,7 @@ async function updateWallSize(length: number, height: number, params: any[], lay
 }
 
 /** Changes the size of the balkenwand subassembly */
-async function updateBalkenwandSize(length: number, height: number, params: any[], layers: Layer[], model: ClassCAD) {
+async function updateBalkenwandSize(length: number, height: number, params: any[], layers: Layer[], model: BuerliCadFacade) {
   if (balkenwandAsm && horizontalBeamPrt && verticalBeamPrt && wallInsulationPrt && wallInsulationCustomPrt) {
     const balkenwandInstanceId = layers.find(layer => layer.type === 'Beamwall')?.refId
     const exprSets: {
@@ -468,7 +468,7 @@ async function updateBalkenwandSize(length: number, height: number, params: any[
 }
 
 /** Adds beams and wall insulations depending on the wall length */
-async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, model: ClassCAD) {
+async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, model: BuerliCadFacade) {
   const distanceBtSegments = verticalBeamThickness + wallInsulationWidth
   let nofBeams = 0
   let nofBeamsCustom = 0
@@ -619,7 +619,7 @@ async function updateLayer(
   params: any[],
   layers: Layer[],
   updatedLayer: string,
-  model: ClassCAD,
+  model: BuerliCadFacade,
 ) {
   const tempLayers = [...layers]
   switch (updatedLayer) {
@@ -731,7 +731,7 @@ async function updateLayer(
   }
 }
 
-async function transformLayers(layers: Layer[], params: any[], model: ClassCAD) {
+async function transformLayers(layers: Layer[], params: any[], model: BuerliCadFacade) {
   const tempLayers = [...layers]
   for (let i = 0; i < tempLayers.length; i++) {
     const posXOfLayerBefore = i - 1 >= 0 ? tempLayers[i - 1].posX : 0
@@ -751,7 +751,7 @@ async function transformLayers(layers: Layer[], params: any[], model: ClassCAD) 
 
 ///////////////////////////////////////////////////////////////
 
-async function addLayer(layerType: string, params: any[], layers: Layer[], model: ClassCAD) {
+async function addLayer(layerType: string, params: any[], layers: Layer[], model: BuerliCadFacade) {
   const tempLayers = [...layers]
   const lastLayer = tempLayers[tempLayers.length - 1]
   const layerName = layerType + tempLayers.filter(layer => layer.type === layerType).length
@@ -915,13 +915,13 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
 ///////////////////////////////////////////////////////////////
 
 /** Changes the gap between layers to get kind of exploded view */
-async function explodeWall(params: any[], layers: Layer[], model: ClassCAD) {
+async function explodeWall(params: any[], layers: Layer[], model: BuerliCadFacade) {
   await transformLayers(layers, params, model)
 }
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeInstances(instances: number[], model: ClassCAD) {
+async function removeInstances(instances: number[], model: BuerliCadFacade) {
   if (instances.length > 0) {
     await model.api.assembly.deleteInstance({ ids: instances })
   }

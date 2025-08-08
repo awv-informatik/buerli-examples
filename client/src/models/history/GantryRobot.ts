@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { History } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
@@ -133,7 +133,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function startSequence(model: ClassCAD) {
+async function startSequence(model: BuerliCadFacade) {
   for (const step of sequence) {
     const offsetVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_OFFSET'
     const rotVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_ROTATION'

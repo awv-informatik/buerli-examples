@@ -1,6 +1,6 @@
 import { api as buerliApi, ObjectID } from '@buerli.io/core'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
@@ -99,7 +99,7 @@ const Part: React.FC = () => {
   const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
-  const model = React.useRef<ClassCAD>()
+  const model = React.useRef<BuerliCadFacade>()
   const productOrSolidIds = React.useRef<ObjectID | ObjectID[]>(0)
   const fit = useFit(f => f.fit)
   const setModel = useStore(s => s.setModel)
@@ -119,7 +119,7 @@ const Part: React.FC = () => {
     set({ busy: true })
 
     const run = async () => {
-      const m = new ClassCAD()
+      const m = new BuerliCadFacade()
       await m.connect()
       setModel(exampleId, m)
       model.current = m

@@ -1,4 +1,4 @@
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
@@ -187,7 +187,7 @@ export const create: Create = async (model, params) => {
   return lBracketAsm
 }
 
-export const getScene = async (model: ClassCAD, productId: number) => {
+export const getScene = async (model: BuerliCadFacade, productId: number) => {
   if (!model) return
   const { scene } = await model.createScene(productId, { meshPerGeometry: false })
   return scene

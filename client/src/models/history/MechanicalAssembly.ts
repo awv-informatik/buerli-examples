@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ClassCAD } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
 import mechAsm from '../../resources/history/MechanicalAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
@@ -103,7 +103,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function updateSlider(paramValues: number[], model: ClassCAD) {
+async function updateSlider(paramValues: number[], model: BuerliCadFacade) {
   await model.api.assembly.update3DConstraintValue({
     id: constrSlider.id,
     name: 'Z_OFFSET',
@@ -111,7 +111,7 @@ async function updateSlider(paramValues: number[], model: ClassCAD) {
   })
 }
 
-async function updateRevolute(paramValues: number[], model: ClassCAD) {
+async function updateRevolute(paramValues: number[], model: BuerliCadFacade) {
   const angleInRadian = (paramValues[a1] / 180) * Math.PI
   await model.api.assembly.update3DConstraintValue({
     id: constrRevolute.id,
