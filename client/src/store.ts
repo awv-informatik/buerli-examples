@@ -60,19 +60,18 @@ const toc: ExampleDef[] = [
   { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch', type: 'Part' },
   { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2', type: 'Part' },
   { exampleId: 'Twist', label: 'Twist Feature', file: 'history/Twist', type: 'Part' },
-
+  { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example', type: 'Part' },
+  { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt', type: 'Part' },
+  { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator', type: 'Part' },
+  { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox', type: 'Part' },
   // assembly example
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm', type: 'Assembly' },
   { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly', type: 'Assembly' }, // prettier-ignore
   { exampleId: 'L-Bracket_Assembly', label: 'LBracket Assembler', file: 'history/LBracket_Assembly', type: 'Assembly' }, // prettier-ignore
   { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly', type: 'Assembly' },
-  { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example', type: 'Assembly' },
-  { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt', type: 'Assembly' },
-  { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator', type: 'Assembly' },
   { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm', type: 'Assembly' },
   { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly', type: 'Assembly' },
   { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly', type: 'Assembly' },
-  { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox', type: 'Assembly' },
   { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty', type: 'Assembly' },
   { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis_FC', type: 'Assembly' },
   { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly', type: 'Assembly' }, // prettier-ignore
