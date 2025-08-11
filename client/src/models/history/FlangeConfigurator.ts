@@ -1,6 +1,6 @@
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing } from '@buerli.io/core'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -86,13 +86,14 @@ const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params) => {
   const { part: partApi, common: commonApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  currDimensions = []
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: productId },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   // Set initial values
   const holesCount = params.values[0]
@@ -131,7 +132,7 @@ export const update: Update = async (model, productId, params) => {
 
 export default { create, update, paramsMap }
 
-async function createDimensions(model: CadModel, productId: number) {
+async function createDimensions(model: BuerliCadFacade, productId: number) {
   const { drawing2d: drawingApi } = model.api.v1
 
   const activeExample = storeApi.getState().activeExample
@@ -288,7 +289,7 @@ async function createDimensions(model: CadModel, productId: number) {
     await drawingApi.deleteDimension({ ids: currDimensions })
   }
   const res = await drawingApi.dimension(dimensions)
-  currDimensions = res.result as number[]
+  currDimensions = res as number[]
 
   await drawingApi.view({ id: productId, types: ['TOP', 'RIGHT', 'RIGHT_90', 'ISO'] })
   await drawingApi.placeView({
@@ -306,10 +307,10 @@ async function createDimensions(model: CadModel, productId: number) {
 /**
  * Export DXF is not available for arm64 systems
  */
-async function exportDXF(model: CadModel) {
+async function exportDXF(model: BuerliCadFacade) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
-  const { result: dxfData } = await drawingApi.exportDXF({ id: productId })
+  const dxfData = await drawingApi.exportDXF({ id: productId })
   if (dxfData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
@@ -322,10 +323,10 @@ async function exportDXF(model: CadModel) {
 /**
  * Export SVG is not available for arm64 systems
  */
-async function exportSVG(model: CadModel) {
+async function exportSVG(model: BuerliCadFacade) {
   const { drawing2d: drawingApi } = model.api.v1
   const productId = getDrawing(model.drawingId).structure.currentProduct
-  const { result: svgData } = await drawingApi.exportSVG({ id: productId })
+  const svgData = await drawingApi.exportSVG({ id: productId })
   if (svgData?.content) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
@@ -336,11 +337,9 @@ async function exportSVG(model: CadModel) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOfb(model: CadModel) {
+async function saveOfb(model: BuerliCadFacade) {
   const { common: commonApi } = model.api.v1
-  const {
-    result: { content: ofbData },
-  } = await commonApi.save({ format: 'ofb' })
+  const { content: ofbData } = await commonApi.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))

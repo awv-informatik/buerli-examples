@@ -1,7 +1,7 @@
 import { ObjectID } from '@buerli.io/core'
 import * as THREE from 'three'
 import { Create, GetScene, Param } from '../../store'
-import { setObjectColor } from '../../utils/utils'
+import { setObjectColor } from '../../utils'
 
 const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
@@ -11,22 +11,22 @@ const create: Create = async (model, params) => {
   const lInnerBox = 80
   const dHole = 55
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
 
   // Create boxes and cylinders and subtract them
-  const { result: b0 } = await api.solid.box({ id: ei, length: lOuterBox, width: lOuterBox, height: lOuterBox })
-  const { result: b3 } = await api.solid.box({ id: ei, length: lInnerBox, width: lInnerBox, height: lInnerBox })
+  const b0 = await api.solid.box({ id: ei, length: lOuterBox, width: lOuterBox, height: lOuterBox })
+  const b3 = await api.solid.box({ id: ei, length: lInnerBox, width: lInnerBox, height: lInnerBox })
   await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: b3 }] })
 
-  const { result: cyl1 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
+  const cyl1 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl1 }] })
 
-  const { result: cyl2 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
+  const cyl2 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.rotation({ id: ei, target: { id: cyl2 }, rotation: [0, Math.PI / 2, 0] })
   await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl2 }] })
 
-  const { result: cyl3 } = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
+  const cyl3 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.rotation({ id: ei, target: { id: cyl3 }, rotation: [Math.PI / 2, 0, 0] })
   await api.solid.subtraction({ id: ei, target: { id: b0 }, tools: [{ id: cyl3 }] })
 

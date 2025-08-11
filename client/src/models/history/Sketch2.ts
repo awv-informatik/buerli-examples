@@ -10,30 +10,30 @@ const data = Buffer.from(sketches).toString('base64') // TODO: how to support Ar
 export const create: Create = async (model, params, options) => {
   const { sketch: sketchApi, part: partApi } = model.api.v1
 
-  const part = (await partApi.create({ name: 'Part' })).result
-  const { result: wp } = await partApi.workPlane({
+  const part = await partApi.create({ name: 'Part' })
+  const wp = await partApi.workPlane({
     id: part,
     normal: { x: 0, y: 0, z: 1 },
     name: 'WP',
   })
-  const { result: sketch } = await sketchApi.create({ id: part, planeId: wp })
+  const sketch = await sketchApi.create({ id: part, planeId: wp })
   await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB', encoding: 'base64' })
-  const sROuter = (await sketchApi.getSketchRegion({ id: sketch, name: 'Outer' })).result
-  const sRHoles = (await sketchApi.getSketchRegion({ id: sketch, name: 'Holes' })).result
-  const sRInner = (await sketchApi.getSketchRegion({ id: sketch, name: 'Inner' })).result
-  const { result: extrOuter } = await partApi.extrusion({
+  const sROuter = await sketchApi.getSketchRegion({ id: sketch, name: 'Outer' })
+  const sRHoles = await sketchApi.getSketchRegion({ id: sketch, name: 'Holes' })
+  const sRInner = await sketchApi.getSketchRegion({ id: sketch, name: 'Inner' })
+  const extrOuter = await partApi.extrusion({
     id: part,
     references: [sROuter],
     type: 'SYMMETRIC',
     limit2: 20,
   })
-  const { result: extrHoles } = await partApi.extrusion({
+  const extrHoles = await partApi.extrusion({
     id: part,
     references: [sRHoles],
     type: 'SYMMETRIC',
     limit2: 15,
   })
-  const { result: extrInner } = await partApi.extrusion({
+  const extrInner = await partApi.extrusion({
     id: part,
     references: [sRInner],
     type: 'SYMMETRIC',
@@ -43,7 +43,7 @@ export const create: Create = async (model, params, options) => {
     id: part,
     type: 'UNION',
     target: { id: extrHoles },
-    tools: [{ id: extrOuter }, { id: extrInner }],
+    tools: [extrOuter, extrInner],
   })
 
   // The following position have been found by selecting two loops
@@ -85,7 +85,7 @@ export const create: Create = async (model, params, options) => {
     { pos: { x: 30.135, y: 10.764, z: 5 } },
     { pos: { x: 28.016, y: 20.318, z: 5 } },
   ]
-  const edges = (await partApi.getGeometryIds({ id: part, arcs: positions })).result.arcs
+  const edges = (await partApi.getGeometryIds({ id: part, arcs: positions })).arcs
   await partApi.fillet({ id: part, references: edges, radius: 1 })
 
   return part

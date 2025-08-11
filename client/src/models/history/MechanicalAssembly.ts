@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
 import mechAsm from '../../resources/history/MechanicalAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -65,19 +65,21 @@ const data = Buffer.from(mechAsm).toString('base64') // TODO: how to support Arr
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  constrSlider = undefined
+  constrRevolute = undefined
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: rootAsm },
-  } = await commonApi.load({ data, format: 'ofb', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   if (rootAsm !== null) {
     const res = await assemblyApi.getSlider({ id: rootAsm, name: 'Slider' })
-    constrSlider = res.result as SliderConstraint
+    constrSlider = res as SliderConstraint
     const res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Revolute' })
-    constrRevolute = res2.result as RevoluteConstraint
+    constrRevolute = res2 as RevoluteConstraint
   }
 
   return rootAsm
@@ -101,7 +103,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function updateSlider(paramValues: number[], model: CadModel) {
+async function updateSlider(paramValues: number[], model: BuerliCadFacade) {
   await model.api.assembly.update3DConstraintValue({
     id: constrSlider.id,
     name: 'Z_OFFSET',
@@ -109,7 +111,7 @@ async function updateSlider(paramValues: number[], model: CadModel) {
   })
 }
 
-async function updateRevolute(paramValues: number[], model: CadModel) {
+async function updateRevolute(paramValues: number[], model: BuerliCadFacade) {
   const angleInRadian = (paramValues[a1] / 180) * Math.PI
   await model.api.assembly.update3DConstraintValue({
     id: constrRevolute.id,

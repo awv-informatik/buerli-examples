@@ -3,7 +3,7 @@ import { ObjectID } from '@buerli.io/core'
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, GetScene, Param, ParamType, Update } from '../../store'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { setObjectColor, setObjectTransparency } from '../../utils'
 
 const paramsMap: Param[] = [{ index: 0, name: 'Thickness', type: ParamType.Number, value: 5 }].sort(
   (a, b) => a.index - b.index,
@@ -25,12 +25,12 @@ const create: Create = async (model, params) => {
   shape.quadraticCurveTo(x + 100, y + 10, x + 90, y + 10)
   shape.quadraticCurveTo(x + 50, y + 80, x, y)
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
-  const { result: ccShape } = await api.curve.shape({ id: ei })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
+  const ccShape = await api.curve.shape({ id: ei })
   await model.createThreeShape(ccShape, shape)
-  const { result: fish1 } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
-  const { result: fish2 } = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
+  const fish1 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
+  const fish2 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
   await api.solid.mirror({ id: part, target: { id: fish2 }, originPos: origin, normal: normal })
   return [fish1, fish2]
 }

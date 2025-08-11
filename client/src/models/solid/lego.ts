@@ -23,12 +23,12 @@ const create: Create = async (model, params) => {
   const tubeHeight = height - thickness
   const tubeRadius = (2 * dotGap * Math.sqrt(2) - 2 * dotRadius) / 2
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
 
   // body
-  const { result: basic } = await api.solid.box({ id: ei, width, height, length })
-  const { result: subBox } = await api.solid.box({
+  const basic = await api.solid.box({ id: ei, width, height, length })
+  const subBox = await api.solid.box({
     id: ei,
     width: width - 2 * thickness,
     height: height - thickness,
@@ -40,7 +40,7 @@ const create: Create = async (model, params) => {
   // dots
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-      const { result: dot } = await api.solid.cylinder({ id: ei, diameter: 2 * dotRadius, height: dotHeight })
+      const dot = await api.solid.cylinder({ id: ei, diameter: 2 * dotRadius, height: dotHeight })
       await api.solid.translation({
         id: ei,
         target: { id: dot },
@@ -56,8 +56,8 @@ const create: Create = async (model, params) => {
 
   // tubes
   if (rows > 1 && columns > 1) {
-    const { result: tube } = await api.solid.cylinder({ id: ei, diameter: 2 * tubeRadius, height: tubeHeight })
-    const { result: subCyl } = await api.solid.cylinder({
+    const tube = await api.solid.cylinder({ id: ei, diameter: 2 * tubeRadius, height: tubeHeight })
+    const subCyl = await api.solid.cylinder({
       id: ei,
       diameter: 2 * (tubeRadius - thickness),
       height: tubeHeight,
@@ -65,9 +65,7 @@ const create: Create = async (model, params) => {
     await api.solid.subtraction({ id: ei, target: { id: tube }, tools: [{ id: subCyl }] })
     for (let i = 0; i < columns - 1; i++) {
       for (let j = 0; j < rows - 1; j++) {
-        const {
-          result: { copy: copy },
-        } = await api.solid.copy({ id: ei, target: { id: tube } })
+        const { copy: copy } = await api.solid.copy({ id: ei, target: { id: tube } })
         await api.solid.translation({
           id: ei,
           target: { id: copy },

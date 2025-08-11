@@ -2,7 +2,7 @@ import { ObjectID } from '@buerli.io/core'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
-import { CadModel } from './CadModel'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 
 // eslint-disable-next-line no-shadow
 export enum ParamType {
@@ -22,20 +22,20 @@ export type Param = {
   values?: any[]
 }
 export type Create = (
-  model: CadModel,
+  model: BuerliCadFacade,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
 ) => Promise<ObjectID | ObjectID[]>
 
 export type Update = (
-  model: CadModel,
+  model: BuerliCadFacade,
   productId: ObjectID | ObjectID[],
   params?: { lastUpdatedParam: number; values: any[] },
 ) => Promise<ObjectID | ObjectID[]>
 
-export type GetScene = (model: CadModel, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Scene>
+export type GetScene = (model: BuerliCadFacade, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Scene>
 
-export type GetBufferGeom = (model: CadModel, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Mesh[]>
+export type GetBufferGeom = (model: BuerliCadFacade, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Mesh[]>
 
 const toc: { exampleId: string; label: string; file: string; solid?: boolean }[] = [
   // solid example
@@ -98,7 +98,7 @@ const storeApi = vanillaCreate<State>(set => ({
       }),
     )
   },
-  setModel: (exampleId: string, model: CadModel | null) => {
+  setModel: (exampleId: string, model: BuerliCadFacade | null) => {
     set(state =>
       produce(state, draft => {
         if (!model) {
@@ -150,7 +150,7 @@ type State = Readonly<{
   busy?: boolean
   set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
-  setModel: (exampleId: string, model: CadModel | null) => void
+  setModel: (exampleId: string, model: BuerliCadFacade | null) => void
 }>
 
 export type Example = {
@@ -162,6 +162,6 @@ export type Example = {
   fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
-  model: CadModel
+  model: BuerliCadFacade
   solid?: boolean
 }

@@ -6,10 +6,10 @@ const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 const create: Create = async (model, params) => {
   const api = model.api.v1
 
-  const { result: part } = await api.part.create()
-  const { result: ei } = await api.part.entityInjection({ id: part })
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
 
-  const { result: ccShape1 } = await api.curve.shape({ id: ei })
+  const ccShape1 = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape1, [
     { point: new THREE.Vector3(0, 200, 140), radius: 0 },
     { point: new THREE.Vector3(0, 200, -73.676), radius: 0 },
@@ -30,7 +30,7 @@ const create: Create = async (model, params) => {
     { point: new THREE.Vector3(0, 220, 140), radius: 0 },
   ])
 
-  const { result: ccShape2 } = await api.curve.shape({ id: ei })
+  const ccShape2 = await api.curve.shape({ id: ei })
   await model.createPolyline(ccShape2, [
     { point: new THREE.Vector3(-85, -10, -137.5), radius: 0 },
     { point: new THREE.Vector3(-185, -36.795, -137.5), radius: 0 },
@@ -38,19 +38,19 @@ const create: Create = async (model, params) => {
     { point: new THREE.Vector3(-85, 10, -137.5), radius: 0 },
   ])
 
-  const { result: basicBody } = await api.solid.revolve({
+  const basicBody = await api.solid.revolve({
     id: ei,
     curves: [ccShape1],
     originPos: [0, 0, 0],
     direction: [0, 0, 100],
     angle: 2 * Math.PI,
   })
-  const { result: subSolid } = await api.solid.extrusion({ id: ei, curves: [ccShape2], direction: [0, 0, 500] })
+  const subSolid = await api.solid.extrusion({ id: ei, curves: [ccShape2], direction: [0, 0, 500] })
 
   const nof = 6
   const angle = (2 * Math.PI) / nof
   for (let i = 0; i < nof; i++) {
-    const { result: e1 } = await api.solid.copy({ id: ei, target: { id: subSolid } })
+    const e1 = await api.solid.copy({ id: ei, target: { id: subSolid } })
     await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, i * angle] })
     await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: e1.copy }] })
   }

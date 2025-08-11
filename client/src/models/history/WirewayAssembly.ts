@@ -56,6 +56,12 @@ const data = Buffer.from(templateSP).toString('base64') // TODO: how to support 
 export const create: Create = async (model, params) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  rootNode = null
+  deckelPrt = null
+  kanalPrt = null
+  constrDeckel = undefined
+
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
@@ -66,13 +72,13 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
+  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })).id
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })).result as number
-    kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })).result as number
-    constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })).result as FastenedConstraint
+    deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })) as number
+    kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })) as number
+    constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })) as FastenedConstraint
   }
   return rootNode
 }

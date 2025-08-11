@@ -1,18 +1,18 @@
 import * as THREE from 'three'
 import { Color } from 'three'
 import { Create, GetScene, Param } from '../../store'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { setObjectColor, setObjectTransparency } from '../../utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
 export const create: Create = async (model, params) => {
   const { part: partApi } = model.api.v1
-  const { result: part } = await partApi.create({ name: 'Part' })
+  const part = await partApi.create({ name: 'Part' })
 
   await partApi.cylinder({ id: part, diameter: 50, height: 100 })
-  const topEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 100 } }] })).result.circles
+  const topEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 100 } }] })).circles
   await partApi.fillet({ id: part, references: topEdges, radius: 10 })
-  const bottomEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 0 } }] })).result.circles
+  const bottomEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 0 } }] })).circles
   await partApi.chamfer({ id: part, type: 'EQUAL_DISTANCE', references: bottomEdges, distance1: 10 })
   return part
 }

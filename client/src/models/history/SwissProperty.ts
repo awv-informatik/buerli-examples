@@ -1,12 +1,12 @@
 /* eslint-disable max-lines */
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Transform } from '@buerli.io/headless'
+import { Buffer } from 'buffer'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/Wall.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
-import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
 
 type instance = {
   productId: number
@@ -127,14 +127,9 @@ const posXGipsplatte: number = 0
 const posXSpanplatte: number = paramsMap[gt].value
 const posXBalkenwand: number = paramsMap[gt].value + paramsMap[spt].value
 const posXDaemmung: number = paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value
-const posXHolzlattung: number =
-  paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value
+const posXHolzlattung: number = paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value
 const posXHolzschalung: number =
-  paramsMap[gt].value +
-  paramsMap[spt].value +
-  paramsMap[bwt].value +
-  paramsMap[dt].value +
-  2 * paramsMap[hlt].value
+  paramsMap[gt].value + paramsMap[spt].value + paramsMap[bwt].value + paramsMap[dt].value + 2 * paramsMap[hlt].value
 
 let gipsplattePrt: number | null = null
 let spanplattePrt: number | null = null
@@ -167,6 +162,32 @@ const data = Buffer.from(templateSP).toString('base64') // TODO: how to support 
 export const create: Create = async (model, params) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
+  // The global module variables might be set from a previous run --> reset them
+  rootNode = null
+  currInstances = []
+  gipsplattePrt = null
+  spanplattePrt = null
+  daemmungPrt = null
+  verticalBeamPrt = null
+  horizontalBeamPrt = null
+  wallInsulationPrt = null
+  wallInsulationCustomPrt = null
+  holzlattungPrt = null
+  holzschalungPrt = null
+  balkenwandAsm = null
+  gipsplatteInstance = null
+  spanplatteInstance = null
+  daemmungInstance = null
+  holzlattungInstance = null
+  holzschalungInstance = null
+  balkenwandInstance = null
+  beamInstances = []
+  beamCustomInstances = []
+  wallInsulationInstances = []
+  wallInsulationCustomInstances = []
+  allInstances = []
+  activeExampleId = ''
+
   if (!params) {
     activeExampleId = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExampleId].params
@@ -177,20 +198,20 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'ofb', encoding: 'base64' })).result.id
+  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })).id
 
   if (rootNode !== null) {
     // Get all needed parts from container
-    gipsplattePrt = (await assemblyApi.getPartTemplate({ name: 'Gipsplatte' })).result as number
-    spanplattePrt = (await assemblyApi.getPartTemplate({ name: 'Spanplatte' })).result as number
-    daemmungPrt = (await assemblyApi.getPartTemplate({ name: 'Daemmung' })).result as number
-    holzlattungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzlattung' })).result as number
-    holzschalungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzschalung' })).result as number
-    horizontalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'HorizontalBeam' })).result as number
-    verticalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'VerticalBeam' })).result as number
-    wallInsulationPrt = (await assemblyApi.getPartTemplate({ name: 'Insulation' })).result as number
-    wallInsulationCustomPrt = (await assemblyApi.getPartTemplate({ name: 'InsulationCustom' })).result as number
-    balkenwandAsm = (await assemblyApi.getAssemblyTemplate({ name: 'BalkenWandAsm' })).result as number
+    gipsplattePrt = (await assemblyApi.getPartTemplate({ name: 'Gipsplatte' })) as number
+    spanplattePrt = (await assemblyApi.getPartTemplate({ name: 'Spanplatte' })) as number
+    daemmungPrt = (await assemblyApi.getPartTemplate({ name: 'Daemmung' })) as number
+    holzlattungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzlattung' })) as number
+    holzschalungPrt = (await assemblyApi.getPartTemplate({ name: 'Holzschalung' })) as number
+    horizontalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'HorizontalBeam' })) as number
+    verticalBeamPrt = (await assemblyApi.getPartTemplate({ name: 'VerticalBeam' })) as number
+    wallInsulationPrt = (await assemblyApi.getPartTemplate({ name: 'Insulation' })) as number
+    wallInsulationCustomPrt = (await assemblyApi.getPartTemplate({ name: 'InsulationCustom' })) as number
+    balkenwandAsm = (await assemblyApi.getAssemblyTemplate({ name: 'BalkenWandAsm' })) as number
 
     // Add default instances to root node
     const defaultInstances: instance[] = [
@@ -231,7 +252,7 @@ export const create: Create = async (model, params) => {
         name: 'Holzschalung',
       },
     ]
-    const addedInstances = (await assemblyApi.instance(defaultInstances)).result as number[]
+    const addedInstances = (await assemblyApi.instance(defaultInstances)) as number[]
     gipsplatteInstance = addedInstances[0]
     spanplatteInstance = addedInstances[1]
     balkenwandInstance = addedInstances[2]
@@ -293,15 +314,11 @@ export const create: Create = async (model, params) => {
 }
 
 export const update: Update = async (model, productId, params) => {
-  
   if (Array.isArray(productId)) {
-    throw new Error(
-      'Calling update does not support multiple product ids. Use a single product id only.',
-    )
+    throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   activeExampleId = storeApi.getState().activeExample
 
   const layers = store.getState().layers[activeExampleId]
@@ -365,13 +382,7 @@ export default { create, update, paramsMap }
 ///////////////////////////////////////////////////////////////
 
 /** Changes the whole wall size */
-async function updateWallSize(
-  length: number,
-  height: number,
-  params: any[],
-  layers: Layer[],
-  model: CadModel,
-) {
+async function updateWallSize(length: number, height: number, params: any[], layers: Layer[], model: BuerliCadFacade) {
   if (gipsplattePrt && spanplattePrt && daemmungPrt && holzlattungPrt && holzschalungPrt) {
     await updateBalkenwandSize(length, height, params, layers, model)
     const exprSets: {
@@ -419,20 +430,8 @@ async function updateWallSize(
 }
 
 /** Changes the size of the balkenwand subassembly */
-async function updateBalkenwandSize(
-  length: number,
-  height: number,
-  params: any[],
-  layers: Layer[],
-  model: CadModel,
-) {
-  if (
-    balkenwandAsm &&
-    horizontalBeamPrt &&
-    verticalBeamPrt &&
-    wallInsulationPrt &&
-    wallInsulationCustomPrt
-  ) {
+async function updateBalkenwandSize(length: number, height: number, params: any[], layers: Layer[], model: BuerliCadFacade) {
+  if (balkenwandAsm && horizontalBeamPrt && verticalBeamPrt && wallInsulationPrt && wallInsulationCustomPrt) {
     const balkenwandInstanceId = layers.find(layer => layer.type === 'Beamwall')?.refId
     const exprSets: {
       id: number
@@ -469,7 +468,7 @@ async function updateBalkenwandSize(
 }
 
 /** Adds beams and wall insulations depending on the wall length */
-async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, model: CadModel) {
+async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, model: BuerliCadFacade) {
   const distanceBtSegments = verticalBeamThickness + wallInsulationWidth
   let nofBeams = 0
   let nofBeamsCustom = 0
@@ -540,7 +539,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       verticalBeamPrt,
       ownerInstance,
       'VerticalBeam',
-      true
+      true,
     )
     beamInstances.push(...instances)
     allInstances.push(...instances)
@@ -560,7 +559,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       wallInsulationPrt,
       ownerInstance,
       'Insulation',
-      true
+      true,
     )
     wallInsulationInstances.push(...instances)
     allInstances.push(...instances)
@@ -583,7 +582,7 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       verticalBeamPrt,
       ownerInstance,
       'VerticalBeamCustom',
-      true
+      true,
     )
     beamCustomInstances.push(...instances)
     allInstances.push(...instances)
@@ -603,13 +602,13 @@ async function updateBalkenwandBeams(ownerInstance: number, wallLength: number, 
       wallInsulationCustomPrt,
       ownerInstance,
       'InsulationCustom',
-      true
+      true,
     )
     wallInsulationCustomInstances.push(...instances)
     allInstances.push(...instances)
   }
   // Add all created instances at once
-  currInstances = (await model.api.assembly.instance(allInstances)).result as number[]
+  currInstances = (await model.api.assembly.instance(allInstances)) as number[]
 }
 
 ///////////////////////////////////////////////////////////////
@@ -620,7 +619,7 @@ async function updateLayer(
   params: any[],
   layers: Layer[],
   updatedLayer: string,
-  model: CadModel,
+  model: BuerliCadFacade,
 ) {
   const tempLayers = [...layers]
   switch (updatedLayer) {
@@ -732,7 +731,7 @@ async function updateLayer(
   }
 }
 
-async function transformLayers(layers: Layer[], params: any[], model: CadModel) {
+async function transformLayers(layers: Layer[], params: any[], model: BuerliCadFacade) {
   const tempLayers = [...layers]
   for (let i = 0; i < tempLayers.length; i++) {
     const posXOfLayerBefore = i - 1 >= 0 ? tempLayers[i - 1].posX : 0
@@ -752,7 +751,7 @@ async function transformLayers(layers: Layer[], params: any[], model: CadModel) 
 
 ///////////////////////////////////////////////////////////////
 
-async function addLayer(layerType: string, params: any[], layers: Layer[], model: CadModel) {
+async function addLayer(layerType: string, params: any[], layers: Layer[], model: BuerliCadFacade) {
   const tempLayers = [...layers]
   const lastLayer = tempLayers[tempLayers.length - 1]
   const layerName = layerType + tempLayers.filter(layer => layer.type === layerType).length
@@ -764,7 +763,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: gipsplattePrt,
           ownerId: rootNode,
           transformation,
@@ -789,7 +788,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: spanplattePrt,
           ownerId: rootNode,
           transformation,
@@ -814,7 +813,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: balkenwandAsm,
           ownerId: rootNode,
           transformation,
@@ -840,7 +839,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: daemmungPrt,
           ownerId: rootNode,
           transformation,
@@ -865,7 +864,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: holzlattungPrt,
           ownerId: rootNode,
           transformation,
@@ -890,7 +889,7 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
           xDir,
           yDir,
         ]
-        const { result: addedInstance } = await model.api.assembly.instance({
+        const addedInstance = await model.api.assembly.instance({
           productId: holzschalungPrt,
           ownerId: rootNode,
           transformation,
@@ -916,13 +915,13 @@ async function addLayer(layerType: string, params: any[], layers: Layer[], model
 ///////////////////////////////////////////////////////////////
 
 /** Changes the gap between layers to get kind of exploded view */
-async function explodeWall(params: any[], layers: Layer[], model: CadModel) {
+async function explodeWall(params: any[], layers: Layer[], model: BuerliCadFacade) {
   await transformLayers(layers, params, model)
 }
 
 //////////////////// Helpers //////////////////////////////////
 
-async function removeInstances(instances: number[], model: CadModel) {
+async function removeInstances(instances: number[], model: BuerliCadFacade) {
   if (instances.length > 0) {
     await model.api.assembly.deleteInstance({ ids: instances })
   }
@@ -935,7 +934,7 @@ async function createInstances(
   productId: number,
   ownerInstance: number,
   name: string,
-  isLocal?: boolean
+  isLocal?: boolean,
 ) {
   const instancesToAdd: instance[] = []
   for (let i = 0; i < nof; i++) {
@@ -950,7 +949,7 @@ async function createInstances(
         ownerId: ownerInstance,
         transformation: [pos, xDir, yDir],
         name: name + i,
-        isLocal
+        isLocal,
       })
       pos.y += i * distance
     }

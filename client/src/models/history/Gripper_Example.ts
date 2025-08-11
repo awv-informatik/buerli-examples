@@ -14,9 +14,7 @@ const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support
 export const create: Create = async (model, params) => {
   const { part: partApi, common: commonApi } = model.api.v1
 
-  const {
-    result: { id: productId },
-  } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
 
   // Set initial values
   await partApi.updateExpression({

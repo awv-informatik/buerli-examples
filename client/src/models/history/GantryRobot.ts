@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History, RevoluteConstraintType, SliderConstraintType } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
-import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
-import { LimitedValue } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@buerli.io/classcad'
+import { History } from '@buerli.io/headless'
 import { Buffer } from 'buffer'
-import { CadModel } from '../../CadModel'
+import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type Step = {
   xAxis: number
@@ -99,28 +98,26 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const {
-    result: { id: rootAsm },
-  } = await commonApi.load({ data: data, format: 'ofb', ident: 'root', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis1' })
-    xAxis = res.result as SliderConstraint
+    xAxis = res as SliderConstraint
     res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis2' })
-    yAxis = res.result as SliderConstraint
+    yAxis = res as SliderConstraint
 
     let res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint1' })
-    j1 = res2.result as RevoluteConstraint
+    j1 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint2' })
-    j2 = res2.result as RevoluteConstraint
+    j2 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint3' })
-    j3 = res2.result as RevoluteConstraint
+    j3 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint4' })
-    j4 = res2.result as RevoluteConstraint
+    j4 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint5' })
-    j5 = res2.result as RevoluteConstraint
+    j5 = res2 as RevoluteConstraint
     res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint6' })
-    j6 = res2.result as RevoluteConstraint
+    j6 = res2 as RevoluteConstraint
   }
 
   return rootAsm
@@ -136,7 +133,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-async function startSequence(model: CadModel) {
+async function startSequence(model: BuerliCadFacade) {
   for (const step of sequence) {
     const offsetVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_OFFSET'
     const rotVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_ROTATION'

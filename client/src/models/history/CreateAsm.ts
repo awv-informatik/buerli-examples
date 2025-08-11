@@ -14,7 +14,7 @@ export const create: Create = async (model, params) => {
   const nullRot = { x: 0, y: 0, z: 0 }
 
   /* root assembly */
-  const { result: lBracketAsm } = await assemblyApi.create({ name: 'L_Bracket_Assembly' })
+  const lBracketAsm = await assemblyApi.create({ name: 'L_Bracket_Assembly' })
 
   /* nut part */
   const wcsNut = {
@@ -25,8 +25,8 @@ export const create: Create = async (model, params) => {
     mate1Pos: { x: 15, y: 15, z: 0 },
     mate1Rot: nullRot,
   }
-  const { result: nut } = await assemblyApi.partTemplate({ name: 'Nut' })
-  const { result: wcsBoxNut } = await partApi.workCSys({
+  const nut = await assemblyApi.partTemplate({ name: 'Nut' })
+  const wcsBoxNut = await partApi.workCSys({
     id: nut,
     type: 'CUSTOM',
     offset: wcsNut.boxPos,
@@ -34,7 +34,7 @@ export const create: Create = async (model, params) => {
     name: 'wcsBoxNut',
   })
 
-  const { result: wcsCylNut } = await partApi.workCSys({
+  const wcsCylNut = await partApi.workCSys({
     id: nut,
     type: 'CUSTOM',
     offset: wcsNut.cylPos,
@@ -42,7 +42,7 @@ export const create: Create = async (model, params) => {
     name: 'wcsCylNut',
   })
 
-  const { result: mate1Nut } = await partApi.workCSys({
+  const mate1Nut = await partApi.workCSys({
     id: nut,
     type: 'CUSTOM',
     offset: wcsNut.mate1Pos,
@@ -50,9 +50,9 @@ export const create: Create = async (model, params) => {
     name: 'mate1Nut',
   })
 
-  const { result: boxNut } = await partApi.box({ id: nut, references: [wcsBoxNut], length: 30, width: 30, height: 10 })
-  const { result: cylNut } = await partApi.cylinder({ id: nut, references: [wcsCylNut], diameter: 20, height: 40 })
-  await partApi.boolean({ id: nut, type: 'SUBTRACTION', target: { id: boxNut }, tools: [{ id: cylNut }] })
+  const boxNut = await partApi.box({ id: nut, references: [wcsBoxNut], length: 30, width: 30, height: 10 })
+  const cylNut = await partApi.cylinder({ id: nut, references: [wcsCylNut], diameter: 20, height: 40 })
+  await partApi.boolean({ id: nut, type: 'SUBTRACTION', target: boxNut, tools: [cylNut] })
 
   /* bolt part */
   const wcsBolt = {
@@ -63,8 +63,8 @@ export const create: Create = async (model, params) => {
     mate1Pos: nullPos,
     mate1Rot: nullRot,
   }
-  const { result: bolt } = await assemblyApi.partTemplate({ name: 'Bolt' })
-  const { result: wcsShaftBolt } = await partApi.workCSys({
+  const bolt = await assemblyApi.partTemplate({ name: 'Bolt' })
+  const wcsShaftBolt = await partApi.workCSys({
     id: bolt,
     type: 'CUSTOM',
     offset: wcsBolt.shaftPos,
@@ -72,7 +72,7 @@ export const create: Create = async (model, params) => {
     name: 'wcsShaftBolt',
   })
 
-  const { result: wcsHeadBolt } = await partApi.workCSys({
+  const wcsHeadBolt = await partApi.workCSys({
     id: bolt,
     type: 'CUSTOM',
     offset: wcsBolt.headPos,
@@ -80,7 +80,7 @@ export const create: Create = async (model, params) => {
     name: 'wcsHeadBolt',
   })
 
-  const { result: mate1Bolt } = await partApi.workCSys({
+  const mate1Bolt = await partApi.workCSys({
     id: bolt,
     type: 'CUSTOM',
     offset: wcsBolt.mate1Pos,
@@ -88,9 +88,9 @@ export const create: Create = async (model, params) => {
     name: 'mate1Bolt',
   })
 
-  const { result: shaft } = await partApi.cylinder({ id: bolt, references: [wcsShaftBolt], diameter: 20, height: 60 })
-  const { result: head } = await partApi.cylinder({ id: bolt, references: [wcsHeadBolt], diameter: 30, height: 10 })
-  await partApi.boolean({ id: bolt, type: 'UNION', target: { id: shaft }, tools: [{ id: head }] })
+  const shaft = await partApi.cylinder({ id: bolt, references: [wcsShaftBolt], diameter: 20, height: 60 })
+  const head = await partApi.cylinder({ id: bolt, references: [wcsHeadBolt], diameter: 30, height: 10 })
+  await partApi.boolean({ id: bolt, type: 'UNION', target: shaft, tools: [head] })
 
   /* lbracket part */
   const wcsLBracket = {
@@ -105,8 +105,8 @@ export const create: Create = async (model, params) => {
     mate3Pos: { x: 75, y: 150, z: 0 },
     mate3Rot: nullRot,
   }
-  const { result: lBracket } = await assemblyApi.partTemplate({ name: 'L_Bracket' })
-  const { result: wcsBaseBracket } = await partApi.workCSys({
+  const lBracket = await assemblyApi.partTemplate({ name: 'L_Bracket' })
+  const wcsBaseBracket = await partApi.workCSys({
     id: lBracket,
     type: 'CUSTOM',
     offset: wcsLBracket.basePos,
@@ -114,7 +114,7 @@ export const create: Create = async (model, params) => {
     name: 'wcsBaseBracket',
   })
 
-  const { result: wcsSubBracket } = await partApi.workCSys({
+  const wcsSubBracket = await partApi.workCSys({
     id: lBracket,
     type: 'CUSTOM',
     offset: wcsLBracket.subPos,
@@ -122,21 +122,21 @@ export const create: Create = async (model, params) => {
     name: 'wcsSubBracket',
   })
 
-  const { result: baseBracket } = await partApi.box({
+  const baseBracket = await partApi.box({
     id: lBracket,
     references: [wcsBaseBracket],
     length: 100,
     width: 200,
     height: 100,
   })
-  const { result: subBracket } = await partApi.box({
+  const subBracket = await partApi.box({
     id: lBracket,
     references: [wcsSubBracket],
     length: 100,
     width: 200,
     height: 100,
   })
-  const { result: mate1LBracket } = await partApi.workCSys({
+  const mate1LBracket = await partApi.workCSys({
     id: lBracket,
     type: 'CUSTOM',
     offset: wcsLBracket.mate1Pos,
@@ -144,7 +144,7 @@ export const create: Create = async (model, params) => {
     name: 'mate1LBracket',
   })
 
-  const { result: mate2LBracket } = await partApi.workCSys({
+  const mate2LBracket = await partApi.workCSys({
     id: lBracket,
     type: 'CUSTOM',
     offset: wcsLBracket.mate2Pos,
@@ -152,7 +152,7 @@ export const create: Create = async (model, params) => {
     name: 'mate2LBracket',
   })
 
-  const { result: mate3LBracket } = await partApi.workCSys({
+  const mate3LBracket = await partApi.workCSys({
     id: lBracket,
     type: 'CUSTOM',
     offset: wcsLBracket.mate3Pos,
@@ -160,19 +160,19 @@ export const create: Create = async (model, params) => {
     name: 'mate3LBracket',
   })
 
-  const { result: sub1Bracket } = await partApi.cylinder({
+  const sub1Bracket = await partApi.cylinder({
     id: lBracket,
     references: [mate1LBracket],
     diameter: 20,
     height: 40,
   })
-  const { result: sub2Bracket } = await partApi.cylinder({
+  const sub2Bracket = await partApi.cylinder({
     id: lBracket,
     references: [mate2LBracket],
     diameter: 20,
     height: 40,
   })
-  const { result: sub3Bracket } = await partApi.cylinder({
+  const sub3Bracket = await partApi.cylinder({
     id: lBracket,
     references: [mate3LBracket],
     diameter: 20,
@@ -182,16 +182,16 @@ export const create: Create = async (model, params) => {
     id: lBracket,
     type: 'SUBTRACTION',
     target: { id: baseBracket },
-    tools: [{ id: subBracket }, { id: sub1Bracket }, { id: sub2Bracket }, { id: sub3Bracket }],
+    tools: [subBracket, sub1Bracket, sub2Bracket, sub3Bracket],
   })
 
   /* nut-bolt assembly */
-  const { result: nutBoltAsm } = await assemblyApi.assemblyTemplate({ name: 'Nut_Bolt_Assembly' })
+  const nutBoltAsm = await assemblyApi.assemblyTemplate({ name: 'Nut_Bolt_Assembly' })
   let res = await assemblyApi.instance([
     { productId: nut, ownerId: nutBoltAsm },
     { productId: bolt, ownerId: nutBoltAsm },
   ])
-  const [nutRef, boltRef] = res.result as number[]
+  const [nutRef, boltRef] = res as number[]
 
   await assemblyApi.fastenedOrigin({
     id: nutBoltAsm,
@@ -226,7 +226,7 @@ export const create: Create = async (model, params) => {
     { productId: lBracket, ownerId: lBracketAsm, transformation: [pt3, xDir, yDir] },
   ])
 
-  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = res.result as number[]
+  const [nutBoltRef0, nutBoltRef1, nutBoltRef2, lBracketRef] = res as number[]
   await assemblyApi.fastenedOrigin({
     id: lBracketAsm,
     mate1: {
@@ -236,7 +236,7 @@ export const create: Create = async (model, params) => {
     zOffset: 20,
     name: 'FOC2',
   })
-
+  let nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef0, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -244,7 +244,7 @@ export const create: Create = async (model, params) => {
       csys: mate1LBracket,
     },
     mate2: {
-      path: [nutBoltRef0],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },
@@ -252,6 +252,7 @@ export const create: Create = async (model, params) => {
     name: 'FC2',
   })
 
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef1, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -259,7 +260,7 @@ export const create: Create = async (model, params) => {
       csys: mate2LBracket,
     },
     mate2: {
-      path: [nutBoltRef1],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },
@@ -267,6 +268,7 @@ export const create: Create = async (model, params) => {
     name: 'FC3',
   })
 
+  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltRef2, name: "Bolt"}) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -274,7 +276,7 @@ export const create: Create = async (model, params) => {
       csys: mate3LBracket,
     },
     mate2: {
-      path: [nutBoltRef2],
+      path: [nutInstance],
       csys: wcsShaftBolt,
       flip: '-Z',
     },

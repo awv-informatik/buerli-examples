@@ -12,7 +12,7 @@ export const create: Create = async (model, params, options) => {
   const origin = { x: 0, y: 0, z: 0 }
   const zDir = { x: 0, y: 0, z: 1 }
 
-  const { result: flange } = await partApi.create({ name: 'Flange' })
+  const flange = await partApi.create({ name: 'Flange' })
 
   if (flange) {
     // Expressions
@@ -31,31 +31,31 @@ export const create: Create = async (model, params, options) => {
     })
 
     // Create geometry
-    const { result: wcsCenter } = await partApi.workCSys({
+    const wcsCenter = await partApi.workCSys({
       id: flange,
       offset,
       rotation,
       name: 'WCSCenter',
     })
-    const { result: baseCyl } = await partApi.cylinder({
+    const baseCyl = await partApi.cylinder({
       id: flange,
       references: [wcsCenter],
       diameter: '@expr.baseCylDiam',
       height: '@expr.thickness',
     })
-    const { result: upperCyl } = await partApi.cylinder({
+    const upperCyl = await partApi.cylinder({
       id: flange,
       references: [wcsCenter],
       diameter: '@expr.upperCylDiam',
       height: '@expr.flangeHeight',
     })
-    const { result: flangeSolid1 } = await partApi.boolean({
+    const flangeSolid1 = await partApi.boolean({
       id: flange,
       type: 'UNION',
-      target: { id: baseCyl },
-      tools: [{ id: upperCyl }],
+      target: baseCyl ,
+      tools: [upperCyl ],
     })
-    const { result: subCylFlange } = await partApi.cylinder({
+    const subCylFlange = await partApi.cylinder({
       id: flange,
       references: [wcsCenter],
       diameter: '@expr.upperCylHoleDiam',
@@ -64,25 +64,25 @@ export const create: Create = async (model, params, options) => {
     await partApi.boolean({
       id: flange,
       type: 'SUBTRACTION',
-      target: { id: flangeSolid1 },
-      tools: [{ id: subCylFlange }],
+      target: flangeSolid1 ,
+      tools: [subCylFlange ],
     })
 
     options?.onSelect()
     const selections = await model.selectGeometry([ScgGraphicType.ARC, ScgGraphicType.CIRCLE], 2)
     options?.onResume()
 
-    const { result: flange2 } = await partApi.chamfer({
+    const flange2 = await partApi.chamfer({
       id: flange,
       references: selections.map(sel => sel.graphicId),
     })
-    const { result: wcsHole1Bottom } = await partApi.workCSys({
+    const wcsHole1Bottom = await partApi.workCSys({
       id: flange,
       offset: '[0, @expr.upperCylDiam / 2 + @expr.thickness, 0]',
       rotation,
       name: 'WCSBoltHoleBottom',
     })
-    const { result: subCylHole1 } = await partApi.cylinder({
+    const subCylHole1 = await partApi.cylinder({
       id: flange,
       references: [wcsHole1Bottom],
       diameter: 30,
@@ -93,7 +93,7 @@ export const create: Create = async (model, params, options) => {
     const selections2 = await model.selectGeometry([ScgGraphicType.ARC, ScgGraphicType.CIRCLE])
     options?.onResume()
 
-    const { result: waCenter } = await partApi.workAxis({
+    const waCenter = await partApi.workAxis({
       id: flange,
       type: 'CURVE',
       references: selections2.map(sel => sel.graphicId),
@@ -101,7 +101,7 @@ export const create: Create = async (model, params, options) => {
       direction: zDir,
       name: 'WACenter'
     })
-    const { result: pattern } = await partApi.circularPattern({
+    const pattern = await partApi.circularPattern({
       id: flange,
       targets: [{ id: subCylHole1 }],
       references: [waCenter],
@@ -109,7 +109,7 @@ export const create: Create = async (model, params, options) => {
       count: '@expr.holeCount',
       merged: true
     })
-    await partApi.boolean({ id: flange, type: 'SUBTRACTION', target: { id: flange2 }, tools: [{ id: pattern }]})
+    await partApi.boolean({ id: flange, type: 'SUBTRACTION', target: flange2 , tools: [ pattern ]})
     await partApi.workCSys({
       id: flange,
       offset: '[0, @expr.holeOffset, @expr.thickness]',
