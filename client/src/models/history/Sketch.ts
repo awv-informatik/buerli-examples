@@ -1,32 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
-import { Param, Create } from '../../store'
+import { Buffer } from 'buffer'
 import sketches from '../../resources/history/SketchesTemplate.ofb?buffer'
-import { ExtrusionType, WorkPlaneType } from '@buerli.io/classcad'
+import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const data = Buffer.from(sketches).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
-
-  const part = api.createPart('Part')
-  const wp = api.createWorkPlane(
-    part,
-    WorkPlaneType.WP_USERDEFINED,
-    [],
-    0,
-    0,
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 1 },
-    false,
-    'WP',
-  )
-  const sketch = await api.loadSketch(part, sketches, wp)
-  await api.extrusion(part, sketch, ExtrusionType.UP, 0, 20, 0, { x: 0, y: 0, z: 1 }, 1)
-
+export const create: Create = async (model, params) => {
+  const api = model.api.v1
+  const part = await api.part.create({ name: 'Part' })
+  const wp = await api.part.workPlane({ id: part, normal: { x: 0, y: 0, z: 1 }, name: 'WP' })
+  const sketch = await api.sketch.create({ id: part, planeId: wp })
+  await api.sketch.loadFrom({ id: sketch, partId: part, data, format: 'OFB', encoding: 'base64' })
+  await api.part.extrusion({ id: part, type: 'UP', references: [sketch], limit2: 20 })
   return part
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }

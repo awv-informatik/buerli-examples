@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
 import { Param, Create, ParamType, Update } from '../../store'
 import arraybuffer from '../../resources/history/SketchRegionsTemplate.ofb?buffer'
-import { ExtrusionType } from '@buerli.io/classcad'
 import { ObjectID } from '@buerli.io/core'
+import { Buffer } from 'buffer'
 
 let operation: ObjectID = 0
 
@@ -22,23 +21,28 @@ export const paramsMap: Param[] = [
       'Composite curve (Custom limits)',
       'Sketch curves (Up)',
       'Sketch "0" (Up)',
-      'Sketch "1" (Up)'
+      'Sketch "1" (Up)',
     ],
   },
 ].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params, options) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-  const [part] = await api.load(arraybuffer, 'ofb')
+export const create: Create = async (model, params, options) => {
+  const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
-  await update(api, part, { lastUpdatedParam: undefined, values: params.values })
+  // The global module variables might be set from a previous run --> reset them
+  operation = 0
+
+  const { id: part } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+
+  await update(model, part, { lastUpdatedParam: undefined, values: params.values })
 
   return part
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi } = model.api.v1
   if (Array.isArray(productId)) {
     throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
@@ -47,126 +51,114 @@ export const update: Update = async (apiType, productId, params) => {
 
   if (check(paramsMap[0])) {
     if (operation != 0) {
-      await api.removeOperations([operation], undefined)
+      await partApi.deleteFeature({ ids: [operation] })
     }
 
     switch (params.values[0]) {
       case 'Sketch region "triangle" (Up)':
-        const [sRTriangle] = await api.getSketchRegion(productId, 'Triangle')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sRTriangle,
-          type: ExtrusionType.UP,
-          limit1: 0,
+        const sRTriangle = await partApi.getSketchRegion({ id: productId, name: 'Triangle' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sRTriangle],
+          type: 'UP',
           limit2: 100,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch region "rectangle" (Down without cap)':
-        const [sRRectangle] = await api.getSketchRegion(productId, 'Rectangle')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sRRectangle,
-          type: ExtrusionType.DOWN,
+        const sRRectangle = await partApi.getSketchRegion({ id: productId, name: 'Rectangle' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sRRectangle],
+          type: 'DOWN',
           limit1: 0,
           limit2: 80,
           twistAngle: Math.PI / 2,
-          capEnds: 0,
+          capEnds: false,
         })
         break
 
       case 'Sketch region "moon" (Down)':
-        const [sRMoon] = await api.getSketchRegion(productId, 'Moon')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sRMoon,
-          type: ExtrusionType.DOWN,
-          limit1: 0,
+        const sRMoon = await partApi.getSketchRegion({ id: productId, name: 'Moon' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sRMoon],
+          type: 'DOWN',
           limit2: 60,
           twistAngle: 2 * Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch region "cross" (Custom limits)':
-        const [sRCross] = await api.getSketchRegion(productId, 'Cross')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sRCross,
-          type: ExtrusionType.UP,
+        const sRCross = await partApi.getSketchRegion({ id: productId, name: 'Cross' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sRCross],
+          type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch region "square" (Custom twist center)':
-        const [sRSquare] = await api.getSketchRegion(productId, 'Square')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sRSquare,
-          type: ExtrusionType.CUSTOM,
-          limit1: 0,
+        const sRSquare = await partApi.getSketchRegion({ id: productId, name: 'Square' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sRSquare],
+          type: 'CUSTOM',
           limit2: 60,
           twistAngle: '180g',
-          capEnds: 1,
-          direction: { x: 0, y: 0, z: 1 },
           twistCenter: { x: 10, y: 10, z: 0 },
         })
         break
 
       case 'Composite curve (Custom limits)':
-        const compCurve = await api.getFeatureByName(productId, 'Composite Curve')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: compCurve,
-          type: ExtrusionType.UP,
+        const compCurve = await partApi.getFeature({ id: productId, name: 'Composite Curve' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [compCurve],
+          type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch "0" (Up)':
-        const [sketch0] = await api.getSketch(productId, 'Sketch0')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sketch0,
-          type: ExtrusionType.UP,
+        const sketch0 = await partApi.getSketch({ id: productId, name: 'Sketch0' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sketch0],
+          type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch "1" (Up)':
-        const [sketch1] = await api.getSketch(productId, 'Sketch1')
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sketch1,
-          type: ExtrusionType.UP,
+        const sketch1 = await partApi.getSketch({ id: productId, name: 'Sketch1' })
+        operation = await partApi.twist({
+          id: productId,
+          references: [sketch1],
+          type: 'UP',
           limit1: 40,
           limit2: 120,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
       case 'Sketch curves (Up)':
         const sketchLines = [481, 487, 495, 503, 511, 519]
-        operation = await api.twist({
-          partId: productId,
-          sketchOrRegionIds: sketchLines,
-          type: ExtrusionType.UP,
+        operation = await partApi.twist({
+          id: productId,
+          references: sketchLines,
+          type: 'UP',
           limit1: 0,
           limit2: 120,
           twistAngle: Math.PI,
-          capEnds: 1,
         })
         break
 
@@ -177,6 +169,4 @@ export const update: Update = async (apiType, productId, params) => {
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

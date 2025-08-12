@@ -1,7 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, FastenedConstraintType, History } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
+import { Buffer } from 'buffer'
 import robotArm from '../../resources/history/Robot6Axis_FC.ofb?buffer'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
+
+type FastenedConstraint = {
+  id: number
+  name: string
+  mate1: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  mate2: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  xOffset: number
+  yOffset: number
+  zOffset: number
+  xRotation: number
+  yRotation: number
+  zRotation: number
+}
 
 const a1 = 0 // axis 1
 const a2 = 1 // axis 2
@@ -33,49 +56,55 @@ export const paramsMap: Param[] = [
   },
 ].sort((a, b) => a.index - b.index)
 
-let constraints: FastenedConstraintType[] = []
+let constraints: FastenedConstraint[] = []
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(robotArm).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { assembly: assemblyApi, common: commonApi } = model.api.v1
+
+  // The global module variables might be set from a previous run --> reset them
+  constraints = []
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const root = await api.load(robotArm, 'ofb')
-  const rootAsm = root ? root[0] : null
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   if (rootAsm !== null) {
-    constraints = [
-      await api.getFastenedConstraint(rootAsm, 'Base-J1'),
-      await api.getFastenedConstraint(rootAsm, 'J1-J2'),
-      await api.getFastenedConstraint(rootAsm, 'J2-J3'),
-      await api.getFastenedConstraint(rootAsm, 'J3-J4'),
-      await api.getFastenedConstraint(rootAsm, 'J4-J5'),
-      await api.getFastenedConstraint(rootAsm, 'J5-J6'),
-    ]
+    let res = await assemblyApi.getFastened({ id: rootAsm, name: 'Base-J1' })
+    const fcBase = res as FastenedConstraint
+    res = await assemblyApi.getFastened({ id: rootAsm, name: 'J1-J2' })
+    const fcJ1 = res as FastenedConstraint
+    res = await assemblyApi.getFastened({ id: rootAsm, name: 'J2-J3' })
+    const fcJ2 = res as FastenedConstraint
+    res = await assemblyApi.getFastened({ id: rootAsm, name: 'J3-J4' })
+    const fcJ3 = res as FastenedConstraint
+    res = await assemblyApi.getFastened({ id: rootAsm, name: 'J4-J5' })
+    const fcJ4 = res as FastenedConstraint
+    res = await assemblyApi.getFastened({ id: rootAsm, name: 'J5-J6' })
+    const fcJ5 = res as FastenedConstraint
+    constraints = [fcBase, fcJ1, fcJ2, fcJ3, fcJ4, fcJ5]
   }
 
   return rootAsm
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { assembly: assemblyApi } = model.api.v1
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // Update axis
   for (let index = 0; index < 6; index++) {
     if (check(paramsMap[index])) {
-      await api.updateFastenedConstraints({ ...constraints[index], zRotation: (params.values[index] / 180) * Math.PI })
+      await assemblyApi.updateFastened({ ...constraints[index], zRotation: (params.values[index] / 180) * Math.PI })
     }
   }
 
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

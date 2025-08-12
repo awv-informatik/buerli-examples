@@ -1,20 +1,22 @@
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ObjectID } from '@buerli.io/core'
 import * as THREE from 'three'
 import { Color } from 'three'
-import { Create, Param, ParamType, Update } from '../../store'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
+import { Create, GetScene, Param, ParamType, Update } from '../../store'
+import { setObjectColor, setObjectTransparency } from '../../utils'
 
-export const paramsMap: Param[] = [
-  { index: 0, name: 'Thickness', type: ParamType.Number, value: 5 },
-].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [{ index: 0, name: 'Thickness', type: ParamType.Number, value: 5 }].sort(
+  (a, b) => a.index - b.index,
+)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
 
-  const x = 25
-  const y = 25
   const origin = [0, 0, 0]
   const normal = [1, 0, 0]
+  const direction = [0, 0, params.values[0]]
+  const x = 25
+  const y = 25
   const shape = new THREE.Shape()
   shape.moveTo(x, y)
   shape.quadraticCurveTo(x + 50, y - 80, x + 90, y - 10)
@@ -22,37 +24,39 @@ export const create: Create = async (apiType, params) => {
   shape.quadraticCurveTo(x + 115, y, x + 115, y + 40)
   shape.quadraticCurveTo(x + 100, y + 10, x + 90, y + 10)
   shape.quadraticCurveTo(x + 50, y + 80, x, y)
-  const fish1 = await api.extrude([0, 0, params.values[0]], shape)
-  const fish2 = await api.extrude([0, 0, params.values[0]], shape)
-  await api.mirror(fish2, origin, normal)
+
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
+  const ccShape = await api.curve.shape({ id: ei })
+  await model.createThreeShape(ccShape, shape)
+  const fish1 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
+  const fish2 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
+  await api.solid.mirror({ id: part, target: { id: fish2 }, originPos: origin, normal: normal })
   return [fish1, fish2]
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiNoHistory
+const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
-
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
   if (check(paramsMap[0])) {
-    api.clearSolids()
-    return create(api, params)
+    await model.api.common.clear()
+    return create(model, params)
   }
+  return undefined
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
-  const { scene, solids } = await api.createScene(solidIds, { meshPerGeometry: true})
-  scene && colorize(solids)
+const getScene: GetScene = async (model, ids) => {
+  if (!model) return
+  const { scene, nodes } = await model.createScene(ids, { meshPerGeometry: false })
+  scene && colorize(ids, nodes)
   return scene
 }
 
-const colorize = (solids: THREE.Group[]) => {
-  setObjectColor(solids[0], new Color('rgb(88, 55, 99)'))
-  setObjectColor(solids[1], new Color('rgb(166, 55, 112)'))
-  setObjectTransparency(solids[1], 0.5)
+const colorize = (ids: ObjectID | ObjectID[], nodes: { [key: string]: THREE.Object3D }) => {
+  const [fish1, fish2] = ids as ObjectID[]
+  setObjectColor(nodes[`${fish1}`], new Color('rgb(88, 55, 99)'))
+  setObjectColor(nodes[`${fish2}`], new Color('rgb(166, 55, 112)'))
+  setObjectTransparency(nodes[`${fish2}`], 0.5)
 }
 
-export const cad = new Solid()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, update, getScene, paramsMap }

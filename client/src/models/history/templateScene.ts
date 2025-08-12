@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
 import * as THREE from 'three'
 import { Color } from 'three'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Param, Create } from '../../store'
-import { findObjectsByName, setObjectColor } from '../../utils/utils'
+import { findObjectsByName, setObjectColor } from '../../utils'
+
+// Example for a global module variable to show how it has to be reset if you need such variables
+let globalVariable: any = 0
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+export const create: Create = async (model, params) => {
+  // If you have global module variables, they have to be reset here
+  globalVariable = 0
 
   // Start creating your model here...
   // ...
@@ -17,9 +21,9 @@ export const create: Create = async (apiType, params) => {
   return 0 // product id
 }
 
-export const getScene = async (productId: number, api: ApiHistory) => {
-  if (!api) return
-  const { scene } = await api.createScene(productId)
+export const getScene = async (productId: number, model: BuerliCadFacade) => {
+  if (!model) return
+  const { scene } = await model.createScene(productId)
   scene && colorize(scene)
   return scene
 }
@@ -31,6 +35,4 @@ const colorize = (scene: THREE.Scene) => {
   setObjectColor(boltObj, customRed)
 }
 
-export const cad = new History()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, getScene, paramsMap }

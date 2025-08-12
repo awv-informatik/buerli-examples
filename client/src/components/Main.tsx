@@ -1,14 +1,13 @@
-import { api as buerliApi } from '@buerli.io/core'
-import { ApiHistory, ApiNoHistory } from '@buerli.io/headless'
+import { BuerliCadFacade } from '@buerli.io/classcad'
+import { api as buerliApi, ObjectID } from '@buerli.io/core'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import * as THREE from 'three'
 import { CanvasContainer, ExampleLayout, Spin } from '.'
+
 import { storeApi, useStore } from '../store'
-import { Code } from './Code'
-import { Resizer, useResizeStore } from './Resizer'
 import { Sidebar } from './Sidebar'
 import AutoClear from './canvas/AutoClear'
 import { Controls } from './canvas/Controls'
@@ -21,11 +20,6 @@ export const Main: React.FC = () => {
   const activeExample = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
   const busy = useStore(s => s.busy)
-  const [visible, setVisible] = React.useState<boolean>(true)
-
-  const widthCodeStore = useResizeStore(500)
-  const widthCode = `${widthCodeStore[0]}px`
-  const rightResizer = `${widthCodeStore[0] + 50}px`
 
   React.useEffect(() => {
     document.title = 'buerli-examples'
@@ -33,17 +27,10 @@ export const Main: React.FC = () => {
 
   return activeExample ? (
     <div style={{ width: '100%', height: '100%' }}>
-      <div style={{ position: 'absolute', right: 65, top: 80 }}>
-        <button
-          onClick={e => {
-            setVisible(!visible)
-          }}
-          style={{ cursor: 'pointer' }}>
-          {visible ? 'Hide Code' : 'Show Code'}
-        </button>
-      </div>
       <ExampleLayout>
-        <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        <div style={{ width: '320px' }}>
+          <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
+        </div>
         <CanvasContainer>
           <Canvas shadows orthographic frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
@@ -72,17 +59,6 @@ export const Main: React.FC = () => {
           </Canvas>
           {busy && <Spin />}
         </CanvasContainer>
-        {visible && (
-          <div style={{ width: widthCode }}>
-            <Resizer
-              style={{ right: rightResizer, top: '120px' }}
-              xStore={widthCodeStore}
-              xRange={{ min: 500, max: 850 }}
-              xDir="-"
-            />
-            <CodeWrapper />
-          </div>
-        )}
       </ExampleLayout>
     </div>
   ) : null
@@ -94,14 +70,14 @@ const Part: React.FC = () => {
   const set = useStore(s => s.set)
   const exampleId = useStore(s => s.activeExample)
   const drawingId = useBuerli(state => state.drawing.active)
-  const { update, create, getScene, getBufferGeom, cad } = useStore(s => s.examples.objs[exampleId])
+  const { update, create, getScene, getBufferGeom } = useStore(s => s.examples.objs[exampleId])
   const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
-  const headlessApi = React.useRef<ApiHistory | ApiNoHistory>()
-  const productOrSolidIds = React.useRef<number | number[]>(0)
+  const model = React.useRef<BuerliCadFacade>()
+  const productOrSolidIds = React.useRef<ObjectID | ObjectID[]>(0)
   const fit = useFit(f => f.fit)
-  const setAPI = useStore(s => s.setAPI)
+  const setModel = useStore(s => s.setModel)
 
   const onSelect = React.useCallback(() => {
     fit()
@@ -113,21 +89,23 @@ const Part: React.FC = () => {
   }, [set])
 
   React.useEffect(() => {
-    headlessApi.current = null
+    model.current = null
     setMeshes([])
     set({ busy: true })
 
-    cad.init(async api => {
-      setAPI(exampleId, api)
-      headlessApi.current = api
+    const run = async () => {
+      const m = new BuerliCadFacade()
+      await m.connect()
+      setModel(exampleId, m)
+      model.current = m
       try {
         const p = storeApi.getState().examples.objs[storeApi.getState().activeExample].params
-        productOrSolidIds.current = await create(api, p, { onSelect, onResume })
+        productOrSolidIds.current = await create(m, p, { onSelect, onResume })
         if (getBufferGeom) {
-          const tempMeshes = await getBufferGeom(productOrSolidIds.current, api)
+          const tempMeshes = await getBufferGeom(m, productOrSolidIds.current)
           setMeshes(tempMeshes)
         } else if (getScene) {
-          const createdScene = await getScene(productOrSolidIds.current, api)
+          const createdScene = await getScene(m, productOrSolidIds.current)
           scene.copy(createdScene)
         }
       } catch (error) {
@@ -137,7 +115,9 @@ const Part: React.FC = () => {
         set({ busy: false })
         fit()
       }
-    })
+    }
+    run()
+
     return () => {
       // Remove inactive drawings
       const activeDrawing = buerliApi.getState().drawing.active
@@ -148,21 +128,20 @@ const Part: React.FC = () => {
         }
       })
       scene.children = []
-      // cad.destroy()
     }
-  }, [cad, create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setAPI])
+  }, [create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setModel])
 
   React.useEffect(() => {
     const run = async () => {
-      if (headlessApi.current && update && params) {
+      if (model.current && update && params) {
         set({ busy: true })
         try {
-          productOrSolidIds.current = await update(headlessApi.current, productOrSolidIds.current, params)
+          productOrSolidIds.current = await update(model.current, productOrSolidIds.current, params)
           if (getBufferGeom) {
-            const tempMeshes = await getBufferGeom(productOrSolidIds.current, headlessApi.current)
+            const tempMeshes = await getBufferGeom(model.current, productOrSolidIds.current)
             setMeshes(tempMeshes)
           } else if (getScene) {
-            const updatedScene = await getScene(productOrSolidIds.current, headlessApi.current)
+            const updatedScene = await getScene(model.current, productOrSolidIds.current)
             if (updatedScene) {
               scene.clear()
               scene.copy(updatedScene)
@@ -177,7 +156,7 @@ const Part: React.FC = () => {
       }
     }
     run()
-  }, [update, params, headlessApi, set, getBufferGeom, getScene, fit, scene])
+  }, [update, params, model, set, getBufferGeom, getScene, fit, scene])
 
   if (getBufferGeom && meshes) {
     return (
@@ -196,10 +175,4 @@ const Part: React.FC = () => {
   } else {
     return <group>{drawingId && <BuerliGeometry selection />}</group>
   }
-}
-
-const CodeWrapper: React.FC = () => {
-  const activeExample = useStore(s => s.activeExample)
-  const example = useStore(s => s.examples.objs[activeExample])
-  return <Code fileUrl={example.fileUrl}></Code>
 }

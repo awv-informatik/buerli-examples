@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History, RevoluteConstraintType, SliderConstraintType } from '@buerli.io/headless'
-import { Param, Create, storeApi, ParamType, Update } from '../../store'
+import { BuerliCadFacade } from '@buerli.io/classcad'
+import { History } from '@buerli.io/headless'
+import { Buffer } from 'buffer'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
-import { LimitedValue } from '@buerli.io/classcad'
+import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type Step = {
   xAxis: number
@@ -15,86 +16,139 @@ type Step = {
   j6: number
 }
 
+type SliderConstraint = {
+  id: number
+  name: string
+  mate1: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  mate2: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  xOffset: number
+  yOffset: number
+  zOffsetLimits: {
+    min: number
+    max: number
+  }
+}
+
+type RevoluteConstraint = {
+  id: number
+  name: string
+  mate1: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  mate2: {
+    path: number[]
+    csys: number
+    flip: 'X' | '-X' | 'Y' | '-Y' | 'Z' | '-Z'
+    reorient: '0' | '90' | '180' | '270'
+  }
+  zOffset: number
+  zRotationLimits: {
+    min: number
+    max: number
+  }
+}
+
 // Sequence table
 const sequence: Step[] = [
   { xAxis: 0, yAxis: 0, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
-  { xAxis: 200, yAxis: -200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 400, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 600, yAxis: -600, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 800, yAxis: -800, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 1000, yAxis: -1000, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 1200, yAxis: -700, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 900, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 600, yAxis: -100, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 300, yAxis: 200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
-  { xAxis: 0, yAxis: 500, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0  },
+  { xAxis: 200, yAxis: -200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 400, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 600, yAxis: -600, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 800, yAxis: -800, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 1000, yAxis: -1000, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 1200, yAxis: -700, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 900, yAxis: -400, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 600, yAxis: -100, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 300, yAxis: 200, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
+  { xAxis: 0, yAxis: 500, j1: 0, j2: 0, j3: 0, j4: 0, j5: 0, j6: 0 },
 ]
 
-export const paramsMap: Param[] = [
-  { index: 0, name: 'Sequence', type: ParamType.Button, value: startSequence },
-].sort((a, b) => a.index - b.index)
+export const paramsMap: Param[] = [{ index: 0, name: 'Sequence', type: ParamType.Button, value: startSequence }].sort(
+  (a, b) => a.index - b.index,
+)
 
-let xAxis: SliderConstraintType
-let yAxis: SliderConstraintType
-let j1: RevoluteConstraintType
-let j2: RevoluteConstraintType
-let j3: RevoluteConstraintType
-let j4: RevoluteConstraintType
-let j5: RevoluteConstraintType
-let j6: RevoluteConstraintType
+let xAxis: SliderConstraint
+let yAxis: SliderConstraint
+let j1: RevoluteConstraint
+let j2: RevoluteConstraint
+let j3: RevoluteConstraint
+let j4: RevoluteConstraint
+let j5: RevoluteConstraint
+let j6: RevoluteConstraint
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(gantryRobiAsm).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const root = await api.load(gantryRobiAsm, 'ofb')
-  const rootAsm = root ? root[0] : null
+  const { id: rootAsm } = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
 
   if (rootAsm !== null) {
-    xAxis = await api.getSliderConstraint(rootAsm, 'Axis1')
-    yAxis = await api.getSliderConstraint(rootAsm, 'Axis2')
-    j1 = await api.getRevoluteConstraint(rootAsm, 'Joint1')
-    j2 = await api.getRevoluteConstraint(rootAsm, 'Joint2')
-    j3 = await api.getRevoluteConstraint(rootAsm, 'Joint3')
-    j4 = await api.getRevoluteConstraint(rootAsm, 'Joint4')
-    j5 = await api.getRevoluteConstraint(rootAsm, 'Joint5')
-    j6 = await api.getRevoluteConstraint(rootAsm, 'Joint6')
+    let res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis1' })
+    xAxis = res as SliderConstraint
+    res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis2' })
+    yAxis = res as SliderConstraint
+
+    let res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint1' })
+    j1 = res2 as RevoluteConstraint
+    res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint2' })
+    j2 = res2 as RevoluteConstraint
+    res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint3' })
+    j3 = res2 as RevoluteConstraint
+    res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint4' })
+    j4 = res2 as RevoluteConstraint
+    res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint5' })
+    j5 = res2 as RevoluteConstraint
+    res2 = await assemblyApi.getRevolute({ id: rootAsm, name: 'Joint6' })
+    j6 = res2 as RevoluteConstraint
   }
 
   return rootAsm
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
   const updatedParamIndex = params.lastUpdatedParam
 
-  const check = (param: Param) =>
-    typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
+  const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
 
   // ...
 
   return productId
 }
 
-async function startSequence(api: ApiHistory) {
+async function startSequence(model: BuerliCadFacade) {
   for (const step of sequence) {
-    const offsetVal = 'zOffsetValue' as LimitedValue
-    const rotVal = 'zRotationValue' as LimitedValue
+    const offsetVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_OFFSET'
+    const rotVal: 'X_OFFSET' | 'Y_OFFSET' | 'Z_OFFSET' | 'Z_ROTATION' = 'Z_ROTATION'
     // x, y, j1 - j6
     const constrValues = [
-      { constrId: xAxis.constrId, paramName: offsetVal, value: step.xAxis },
-      { constrId: yAxis.constrId, paramName: offsetVal, value: step.yAxis },
-      { constrId: j1.constrId, paramName: rotVal, value: step.j1 },
-      { constrId: j2.constrId, paramName: rotVal, value: step.j2 },
-      { constrId: j3.constrId, paramName: rotVal, value: step.j3 },
-      { constrId: j4.constrId, paramName: rotVal, value: step.j4 },
-      { constrId: j5.constrId, paramName: rotVal, value: step.j5 },
-      { constrId: j6.constrId, paramName: rotVal, value: step.j6 },
+      { id: xAxis.id, name: offsetVal, value: step.xAxis },
+      { id: yAxis.id, name: offsetVal, value: step.yAxis },
+      { id: j1.id, name: rotVal, value: step.j1 },
+      { id: j2.id, name: rotVal, value: step.j2 },
+      { id: j3.id, name: rotVal, value: step.j3 },
+      { id: j4.id, name: rotVal, value: step.j4 },
+      { id: j5.id, name: rotVal, value: step.j5 },
+      { id: j6.id, name: rotVal, value: step.j6 },
     ]
-    await api.update3dConstraintValues(...constrValues)
+    await model.api.assembly.update3DConstraintValue(constrValues)
     await new Promise(resolve => setTimeout(resolve, 300))
   }
 }

@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiHistory, History } from '@buerli.io/headless'
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import * as THREE from 'three'
-import { Param, Create } from '../../store'
+import { Create, Param } from '../../store'
+
+// Example for a global module variable to show how it has to be reset if you need such variables
+let globalVariable: any = 0
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+export const create: Create = async (model, params) => {
+  // If you have global module variables, they have to be reset here
+  globalVariable = 0
 
   // Start creating your model here...
   // ...
@@ -15,18 +19,12 @@ export const create: Create = async (apiType, params) => {
   return 0 // product id
 }
 
-export const getBufferGeom = async (productId: number, api: ApiHistory) => {
-  if (!api) return
-  const geoms = await api.createBufferGeometry(productId)
+export const getBufferGeom = async (productId: number, model: BuerliCadFacade) => {
+  if (!model) return
+  const geoms = await model.createBufferGeometry(productId)
   return geoms.map(
-    geom =>
-      new THREE.Mesh(
-        geom,
-        new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') }),
-      ),
+    geom => new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: new THREE.Color('rgb(52, 89, 87)') })),
   )
 }
 
-export const cad = new History()
-
-export default { create, getBufferGeom, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }

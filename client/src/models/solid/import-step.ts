@@ -1,31 +1,34 @@
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ObjectID } from '@buerli.io/core'
+import { Buffer } from 'buffer'
 import * as THREE from 'three'
 import { Color } from 'three'
-import data from '../../resources/solid/Ventil.stp?raw'
-import { Create, Param } from '../../store'
-import { setObjectColor } from '../../utils/utils'
+import Ventil from '../../resources/solid/Ventil.stp?raw'
+import { Create, GetScene, Param } from '../../store'
+import { setObjectColor } from '../../utils'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const data = Buffer.from(Ventil).toString('base64') // TODO: how to support ArrayBuffer in the API?
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
-
-  const importedIds = await api.import(data as any)
-  return importedIds
+const create: Create = async (model, params) => {
+  const api = model.api.v1
+  const part = await api.part.create({ name: 'Part' })
+  const importedId = await api.part.importFeature({ id: part, data, format: 'STP', encoding: 'base64' })
+  return [importedId]
 }
 
-export const getScene = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
-  const { scene, solids } = await api.createScene(solidIds)
-  scene && colorize(solids)
+const getScene: GetScene = async (model, ids) => {
+  if (!model) return
+  ids = Array.isArray(ids) ? ids : [ids]
+  const { scene, nodes } = await model.createScene(ids)
+  scene && colorize(ids, nodes)
   return scene
 }
 
-const colorize = (solids: THREE.Group[]) => {
+const colorize = (ids: ObjectID | ObjectID[], nodes: { [key: string]: THREE.Object3D }) => {
+  const [id] = ids as ObjectID[]
   const customRed = new Color('rgb(203, 159, 22)')
-  setObjectColor(solids[0], customRed)
+  setObjectColor(nodes[`${id}`], customRed)
 }
 
-export const cad = new Solid()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, getScene, paramsMap }

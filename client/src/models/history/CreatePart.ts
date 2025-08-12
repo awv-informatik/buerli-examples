@@ -1,27 +1,25 @@
-import { ApiHistory, GraphicType, History } from '@buerli.io/headless'
-import { Create, Param } from '../../store'
 import * as THREE from 'three'
-import { ChamferType } from '@buerli.io/classcad'
-import { setObjectColor, setObjectTransparency } from '../../utils/utils'
 import { Color } from 'three'
+import { Create, GetScene, Param } from '../../store'
+import { setObjectColor, setObjectTransparency } from '../../utils'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+export const create: Create = async (model, params) => {
+  const { part: partApi } = model.api.v1
+  const part = await partApi.create({ name: 'Part' })
 
-  const part = api.createPart('Part')
-  api.cylinder(part, [], 50, 100)
-  const topEdges = await api.findGeometry(part, GraphicType.CIRCLE, [[{ x: 0, y: 0, z: 100 }]])
-  api.fillet(part, topEdges, 10)
-  const bottomEdges = await api.findGeometry(part, GraphicType.CIRCLE, [[{ x: 0, y: 0, z: 0 }]])
-  api.chamfer(part, ChamferType.EQUAL_DISTANCE, bottomEdges, 10, 0, 0)
+  await partApi.cylinder({ id: part, diameter: 50, height: 100 })
+  const topEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 100 } }] })).circles
+  await partApi.fillet({ id: part, references: topEdges, radius: 10 })
+  const bottomEdges = (await partApi.getGeometryIds({ id: part, circles: [{ pos: { x: 0, y: 0, z: 0 } }] })).circles
+  await partApi.chamfer({ id: part, type: 'EQUAL_DISTANCE', references: bottomEdges, distance1: 10 })
   return part
 }
 
-export const getScene = async (productId: number, api: ApiHistory) => {
-  if (!api) return
-  const { scene, nodes } = await api.createScene(productId, { meshPerGeometry: true})
+export const getScene: GetScene = async (model, productId) => {
+  if (!model) return
+  const { scene, nodes } = await model.createScene(productId as number, { meshPerGeometry: true })
   scene && colorize(nodes)
   return scene
 }
@@ -31,8 +29,6 @@ const colorize = (nodes: { [key: string]: THREE.Object3D }) => {
   // Color and set transparency on part node
   setObjectColor(nodes.Part, customRed)
   setObjectTransparency(nodes.Part, 0.5)
-} 
+}
 
-export const cad = new History()
-
-export default { create, getScene, paramsMap, cad }
+export default { create, getScene, paramsMap }

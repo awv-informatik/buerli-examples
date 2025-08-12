@@ -1,137 +1,109 @@
 /* eslint-disable max-lines */
-import { CCClasses, FlipType, ReorientedType } from '@buerli.io/classcad'
-import { ApiHistory, History } from '@buerli.io/headless'
 import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
 import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'
 import { Create, Param } from '../../store'
-
-const origin = { x: 0, y: 0, z: 0 }
-const xDir = { x: 1, y: 0, z: 0 }
-const yDir = { x: 0, y: 1, z: 0 }
+import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, param) => {
-  const api = apiType as ApiHistory
+const flangeData = Buffer.from(flangeAB).toString('base64')
+const boltData = Buffer.from(boltAB).toString('base64')
+const nutData = Buffer.from(nutAB).toString('base64')
+
+export const create: Create = async (model, param) => {
+  const { assembly: assemblyApi, part: partApi } = model.api.v1
 
   // Create the root assembly
-  const root = await api.createRootAssembly('FlangeAsm')
+  const root = await assemblyApi.create({ name: 'FlangeAsm' })
 
   // Load all needed products
-  const [flange] = await api.loadProduct(flangeAB, 'ofb')
-  const [bolt] = await api.loadProduct(boltAB, 'ofb')
-  const [nut] = await api.loadProduct(nutAB, 'ofb')
+  const { id: flange } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
-    const [wcsCenter] = await api.getWorkGeometry(flange, CCClasses.CCWorkCSys, 'WCSCenter')
-    const [wcsHole1Top] = await api.getWorkGeometry(flange, CCClasses.CCWorkCSys, 'WCSBoltHoleTop')
-    const [wcsBoltHead] = await api.getWorkGeometry(bolt, CCClasses.CCWorkCSys, 'WCSHead')
-    const [wcsNut] = await api.getWorkGeometry(nut, CCClasses.CCWorkCSys, 'WCSNut')
+    const wcsCenter = await partApi.getWorkGeometry({ id: flange, name: 'WCSCenter' })
+    const wcsHole1Top = await partApi.getWorkGeometry({ id: flange, name: 'WCSBoltHoleTop' })
+    const wcsBoltHead = await partApi.getWorkGeometry({ id: bolt, name: 'WCSHead' })
+    const wcsNut = await partApi.getWorkGeometry({ id: nut, name: 'WCSNut' })
 
     // Add the products as instances to the root assembly
-    const [flange1Instance, flange2Instance, boltInstance, nutInstance] = await api.addInstances(
+    const res = await assemblyApi.instance([
       {
         productId: flange,
         ownerId: root,
-        transformation: [origin, xDir, yDir],
       },
       {
         productId: flange,
         ownerId: root,
-        transformation: [origin, xDir, yDir],
       },
       {
         productId: bolt,
         ownerId: root,
-        transformation: [origin, xDir, yDir],
       },
       {
         productId: nut,
         ownerId: root,
-        transformation: [origin, xDir, yDir],
       },
-    )
+    ])
+
+    const [flange1Instance, flange2Instance, boltInstance, nutInstance] = res as number[]
 
     // Create all the constraints
-    await api.createFastenedOriginConstraint(
-      root,
-      {
-        matePath: [flange1Instance],
-        wcsId: wcsCenter,
-        flip: FlipType.FLIP_Z,
-        reoriented: ReorientedType.REORIENTED_0,
+    await assemblyApi.fastenedOrigin({
+      id: root,
+      mate1: {
+        path: [flange1Instance],
+        csys: wcsCenter,
       },
-      0,
-      0,
-      0,
-      'FOCFlange1',
-    )
+      name: 'FOCFlange1',
+    })
 
-    await api.createFastenedConstraint(
-      root,
+    await assemblyApi.fastened([
       {
-        matePath: [flange1Instance],
-        wcsId: wcsCenter,
-        flip: FlipType.FLIP_Z,
-        reoriented: ReorientedType.REORIENTED_0,
+        id: root,
+        mate1: {
+          path: [flange1Instance],
+          csys: wcsCenter,
+        },
+        mate2: {
+          path: [flange2Instance],
+          csys: wcsCenter,
+          flip: '-Z',
+          reorient: '180',
+        },
+        name: 'FCFlange1Flange2',
       },
       {
-        matePath: [flange2Instance],
-        wcsId: wcsCenter,
-        flip: FlipType.FLIP_Z_INV,
-        reoriented: ReorientedType.REORIENTED_180,
-      },
-      0,
-      0,
-      0,
-      'FCFlange1Flange2',
-    )
-
-    await api.createFastenedConstraint(
-      root,
-      {
-        matePath: [flange1Instance],
-        wcsId: wcsHole1Top,
-        flip: FlipType.FLIP_Z,
-        reoriented: ReorientedType.REORIENTED_0,
+        id: root,
+        mate1: {
+          path: [flange1Instance],
+          csys: wcsHole1Top,
+        },
+        mate2: {
+          path: [boltInstance],
+          csys: wcsBoltHead,
+        },
+        name: 'FCFlange1Bolt',
       },
       {
-        matePath: [boltInstance],
-        wcsId: wcsBoltHead,
-        flip: FlipType.FLIP_Z,
-        reoriented: ReorientedType.REORIENTED_0,
+        id: root,
+        mate1: {
+          path: [flange2Instance],
+          csys: wcsHole1Top,
+        },
+        mate2: {
+          path: [nutInstance],
+          csys: wcsNut,
+          flip: '-Z',
+        },
+        name: 'FCFlange2Nut',
       },
-      0,
-      0,
-      0,
-      'FCFlange1Bolt',
-    )
-
-    await api.createFastenedConstraint(
-      root,
-      {
-        matePath: [flange2Instance],
-        wcsId: wcsHole1Top,
-        flip: FlipType.FLIP_Z,
-        reoriented: ReorientedType.REORIENTED_0,
-      },
-      {
-        matePath: [nutInstance],
-        wcsId: wcsNut,
-        flip: FlipType.FLIP_Z_INV,
-        reoriented: ReorientedType.REORIENTED_0,
-      },
-      0,
-      0,
-      0,
-      'FCFlange2Nut',
-    )
+    ])
     return root
   }
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }

@@ -1,7 +1,68 @@
-import { CCClasses, OrientationType, ViewType } from '@buerli.io/classcad'
-import { ApiHistory, DimensionType, History } from '@buerli.io/headless'
+import { BuerliCadFacade } from '@buerli.io/classcad'
+import { getDrawing } from '@buerli.io/core'
+import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
+
+type point = { x: number; y: number; z: number } | [number, number, number]
+
+type LinearDimension = {
+  id: string | number | number
+  viewType: 'TOP' | 'FRONT' | 'RIGHT' | 'LEFT' | 'BOTTOM' | 'RIGHT_90' | 'LEFT_90' | 'BACK' | 'ISO'
+  common: {
+    type: 'LINEAR' | 'ANGULAR' | 'RADIAL' | 'DIAMETER'
+    name?: string
+    label?: string
+    value?: string | number
+    color?: number
+    layer?: string
+    textPos: point
+  }
+  linear?: {
+    startPos: point
+    endPos: point
+    textAngle?: number
+    orientation: 'VERTICAL' | 'HORIZONTAL' | 'ALIGNED'
+  }
+}
+
+type RadialDimension = {
+  id: string | number | number
+  viewType: 'TOP' | 'FRONT' | 'RIGHT' | 'LEFT' | 'BOTTOM' | 'RIGHT_90' | 'LEFT_90' | 'BACK' | 'ISO'
+  common: {
+    type: 'LINEAR' | 'ANGULAR' | 'RADIAL' | 'DIAMETER'
+    name?: string
+    label?: string
+    value?: string | number
+    color?: number
+    layer?: string
+    textPos: point
+  }
+  radial?: {
+    centerPos: point
+    radius: number
+  }
+}
+
+type AngularDimension = {
+  id: string | number | number
+  viewType: 'TOP' | 'FRONT' | 'RIGHT' | 'LEFT' | 'BOTTOM' | 'RIGHT_90' | 'LEFT_90' | 'BACK' | 'ISO'
+  common: {
+    type: 'LINEAR' | 'ANGULAR' | 'RADIAL' | 'DIAMETER'
+    name?: string
+    label?: string
+    value?: string | number
+    color?: number
+    layer?: string
+    textPos: point
+  }
+  angular?: {
+    startPos: point
+    endPos: point
+    cornerPos: point
+    isCCW?: boolean
+  }
+}
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'Holes Count', type: ParamType.Slider, value: 6, step: 1, values: [2, 12] },
@@ -20,59 +81,65 @@ export const paramsMap: Param[] = [
 
 let currDimensions: number[] = []
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiHistory
+const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+
+export const create: Create = async (model, params) => {
+  const { part: partApi, common: commonApi } = model.api.v1
+
+  // The global module variables might be set from a previous run --> reset them
+  currDimensions = []
 
   if (!params) {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const [productId] = await api.load(arraybuffer, 'ofb')
+  const { id: productId } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
 
   // Set initial values
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
 
-  await api.setExpressions({
-    partId: productId,
-    members: [
+  await partApi.updateExpression({
+    id: productId,
+    toUpdate: [
       { name: 'holeCount', value: holesCount },
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
-  await createDimensions(api, productId)
+  await createDimensions(model, productId)
   return productId
 }
 
-export const update: Update = async (apiType, productId, params) => {
-  const api = apiType as ApiHistory
+export const update: Update = async (model, productId, params) => {
+  const { part: partApi } = model.api.v1
+
   if (Array.isArray(productId)) {
     throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
   }
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
 
-  await api.setExpressions({
-    partId: productId,
-    members: [
+  await partApi.updateExpression({
+    id: productId,
+    toUpdate: [
       { name: 'holeCount', value: holesCount },
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
-  await createDimensions(api, productId)
+  await createDimensions(model, productId)
   return productId
 }
 
-export const cad = new History()
+export default { create, update, paramsMap }
 
-export default { create, update, paramsMap, cad }
+async function createDimensions(model: BuerliCadFacade, productId: number) {
+  const { drawing2d: drawingApi } = model.api.v1
 
-async function createDimensions(api: ApiHistory, productId: number) {
   const activeExample = storeApi.getState().activeExample
   const params = storeApi.getState().examples.objs[activeExample].params
   const holesCount = params.values[0]
   const flangeHeight = params.values[1]
-  const dimensions: DimensionType[] = []
+  const dimensions = []
 
   if (productId === null) {
     console.warn('No product found')
@@ -80,141 +147,159 @@ async function createDimensions(api: ApiHistory, productId: number) {
   }
 
   // *** Diameter of the base plate with the holes
-  const diameterLD: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCLinearDimension,
+  const diameterLD: LinearDimension = {
+    id: productId,
+    common: {
+      type: 'LINEAR',
       name: 'Diameter1',
       label: 'Diameter = ',
+      textPos: { x: -200, y: 0, z: 0 },
+    },
+    linear: {
       startPos: { x: 0, y: 155, z: 0 },
       endPos: { x: 0, y: -155, z: 0 },
-      textPos: { x: -200, y: 0, z: 0 },
-      orientation: OrientationType.ALIGNED,
+      orientation: 'ALIGNED',
     },
-    dxfView: ViewType.TOP,
+    viewType: 'TOP',
   }
   dimensions.push(diameterLD)
 
   // *** Angle between the first hole (90° / 0 o'clock / y-Axis dir) and the second one in clockwise direction
-  const angleBetweenHolesInRad = 2 * Math.PI / holesCount // 360° / holes Count
-  const angleFromZeroInRad = (Math.PI / 2) - angleBetweenHolesInRad
-  const xEndPos = Math.cos(angleFromZeroInRad) * 125  // 125 = radius holes
-  const yEndPos = Math.sin(angleFromZeroInRad) * 125  // 125 = radius holes
-  const xPosText = Math.cos(angleFromZeroInRad + (angleBetweenHolesInRad / 2)) * 300  // 300 = radius text
-  const yPosText = Math.sin(angleFromZeroInRad + (angleBetweenHolesInRad / 2)) * 300  // 300 = radius text
-  const angle_cw: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCAngularDimension,
+  const angleBetweenHolesInRad = (2 * Math.PI) / holesCount // 360° / holes Count
+  const angleFromZeroInRad = Math.PI / 2 - angleBetweenHolesInRad
+  const xEndPos = Math.cos(angleFromZeroInRad) * 125 // 125 = radius holes
+  const yEndPos = Math.sin(angleFromZeroInRad) * 125 // 125 = radius holes
+  const xPosText = Math.cos(angleFromZeroInRad + angleBetweenHolesInRad / 2) * 300 // 300 = radius text
+  const yPosText = Math.sin(angleFromZeroInRad + angleBetweenHolesInRad / 2) * 300 // 300 = radius text
+  const angle_cw: AngularDimension = {
+    id: productId,
+    common: {
+      type: 'ANGULAR',
       name: 'Angle',
       label: 'Angle = ',
       value: '<>', // <> = placeholder for value
+      textPos: { x: xPosText, y: yPosText, z: 30 },
+    },
+    angular: {
       startPos: { x: 0, y: 125, z: 30 },
       endPos: { x: xEndPos, y: yEndPos, z: 30 },
       cornerPos: { x: 0, y: 0, z: 30 },
-      textPos: { x: xPosText, y: yPosText, z: 30 },
       isCCW: false,
     },
-    dxfView: ViewType.TOP,
+    viewType: 'TOP',
   }
   dimensions.push(angle_cw)
-  
+
   // *** Radius of the upper cylinder
-  const upperCylRadius: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCRadialDimension,
+  const upperCylRadius: RadialDimension = {
+    id: productId,
+    common: {
+      type: 'RADIAL',
       name: 'Radius',
       label: 'Radius = ',
-      centerPos: { x: 0, y: 0, z: flangeHeight },
       textPos: { x: -100, y: -100, z: flangeHeight },
+    },
+    radial: {
+      centerPos: { x: 0, y: 0, z: flangeHeight },
       radius: 95,
     },
-    dxfView: ViewType.TOP,
+    viewType: 'TOP',
   }
   dimensions.push(upperCylRadius)
 
   // *** Diameter of the hole closest to 270° (6 o'clock)
-  const holeIndex = Math.floor(holesCount / 2)  // The middle one or the one before
-  const angleFrom270InRad = Math.PI - (holeIndex * angleBetweenHolesInRad)  // delta angle from 270°
+  const holeIndex = Math.floor(holesCount / 2) // The middle one or the one before
+  const angleFrom270InRad = Math.PI - holeIndex * angleBetweenHolesInRad // delta angle from 270°
   const xHoleCenter = Math.sin(angleFrom270InRad) * 125 // x Pos of the hole center
   const yHoleCenter = Math.cos(angleFrom270InRad) * 125 // y Pos of the hole center
-  const holeDiameter: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCLinearDimension,
+  const holeDiameter: LinearDimension = {
+    id: productId,
+    common: {
+      type: 'LINEAR',
       name: 'Durchmesser2',
       label: 'Durchmesser = ',
-      startPos: { x: xHoleCenter -15, y: -yHoleCenter, z: 30 }, // left side of the hole
-      endPos: { x: xHoleCenter + 15, y: -yHoleCenter, z: 30 },  // right side of the hole
       textPos: { x: 0, y: -200, z: 30 },
-      orientation: OrientationType.HORIZONTAL,
     },
-    dxfView: ViewType.TOP,
+    linear: {
+      startPos: { x: xHoleCenter - 15, y: -yHoleCenter, z: 30 }, // left side of the hole
+      endPos: { x: xHoleCenter + 15, y: -yHoleCenter, z: 30 }, // right side of the hole
+      orientation: 'HORIZONTAL',
+    },
+    viewType: 'TOP',
   }
   dimensions.push(holeDiameter)
 
   // *** Thickness of the base plate with the holes
-  const thicknessDim: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCLinearDimension,
+  const thicknessDim: LinearDimension = {
+    id: productId,
+    common: {
+      type: 'LINEAR',
       name: 'Thickness',
       label: 'Thickness = ',
+      textPos: { x: 0, y: -250, z: 70 },
+    },
+    linear: {
       startPos: { x: 0, y: -155, z: 0 },
       endPos: { x: 0, y: -155, z: 30 },
-      textPos: { x: 0, y: -250, z: 70 },
-      orientation: OrientationType.VERTICAL,
+      orientation: 'VERTICAL',
     },
-    dxfView: ViewType.RIGHT,
+    viewType: 'RIGHT',
   }
   dimensions.push(thicknessDim)
 
   // *** Diameter of the upper cylinder
-  const upperCylDiameter: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCLinearDimension,
+  const upperCylDiameter: LinearDimension = {
+    id: productId,
+    common: {
+      type: 'LINEAR',
       name: 'DiameterDM',
-      label: '', 
+      label: '',
       value: 'DM <>',
+      textPos: { x: 0, y: 0, z: flangeHeight + 50 },
+    },
+    linear: {
       startPos: { x: 0, y: 95, z: flangeHeight },
       endPos: { x: 0, y: -95, z: flangeHeight },
-      textPos: { x: 0, y: 0, z: flangeHeight + 50 },
-      orientation: OrientationType.HORIZONTAL,
+      orientation: 'HORIZONTAL',
     },
-    dxfView: ViewType.RIGHT,
+    viewType: 'RIGHT',
   }
   dimensions.push(upperCylDiameter)
 
   // *** Height of the entire flange, equal to "Flange Height" parameter
-  const upperCylHeight: DimensionType = {
-    productId,
-    param: {
-      type: CCClasses.CCLinearDimension,
+  const upperCylHeight: LinearDimension = {
+    id: productId,
+    common: {
+      type: 'LINEAR',
       name: 'Height',
       label: 'Height = ',
+      textPos: { x: 0, y: 200, z: 70 },
+    },
+    linear: {
       startPos: { x: 0, y: 95, z: 0 },
       endPos: { x: 0, y: 95, z: flangeHeight },
-      textPos: { x: 0, y: 200, z: 70 },
-      orientation: OrientationType.HORIZONTAL,
+      orientation: 'HORIZONTAL',
     },
-    dxfView: ViewType.RIGHT_90,
+    viewType: 'RIGHT_90',
   }
   dimensions.push(upperCylHeight)
 
   // If any dimensions already exist, remove them
   if (currDimensions.length > 0) {
-    await api.removeDimensions(currDimensions)
+    await drawingApi.deleteDimension({ ids: currDimensions })
   }
-  currDimensions = await api.addDimensions(...dimensions)
+  const res = await drawingApi.dimension(dimensions)
+  currDimensions = res as number[]
 
-  await api.create2DViews(productId, [ViewType.TOP, ViewType.RIGHT, ViewType.RIGHT_90, ViewType.ISO])
-  await api.place2DViews(productId, [
-    { viewType: ViewType.ISO, vector: { x: 500, y: 500, z: 0 } },
-    { viewType: ViewType.RIGHT, vector: { x: 500, y: 0, z: 0 } },
-    { viewType: ViewType.RIGHT_90, vector: { x: 1000, y: 0, z: 0 } },
-  ])
+  await drawingApi.view({ id: productId, types: ['TOP', 'RIGHT', 'RIGHT_90', 'ISO'] })
+  await drawingApi.placeView({
+    id: productId,
+    placements: [
+      { type: 'ISO', offset: { x: 500, y: 500, z: 0 } },
+      { type: 'RIGHT', offset: { x: 500, y: 0, z: 0 } },
+      { type: 'RIGHT_90', offset: { x: 1000, y: 0, z: 0 } },
+    ],
+  })
   return productId
 }
 
@@ -222,12 +307,13 @@ async function createDimensions(api: ApiHistory, productId: number) {
 /**
  * Export DXF is not available for arm64 systems
  */
- async function exportDXF(api: ApiHistory) {
-  const productId = await api.getCurrentProduct()
-  const data = await api.exportDXF(productId)
-  if (data) {
+async function exportDXF(model: BuerliCadFacade) {
+  const { drawing2d: drawingApi } = model.api.v1
+  const productId = getDrawing(model.drawingId).structure.currentProduct
+  const dxfData = await drawingApi.exportDXF({ id: productId })
+  if (dxfData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
     link.download = `Flange.dxf`
     link.click()
   }
@@ -237,12 +323,13 @@ async function createDimensions(api: ApiHistory, productId: number) {
 /**
  * Export SVG is not available for arm64 systems
  */
-async function exportSVG(api: ApiHistory) {
-  const productId = await api.getCurrentProduct()
-  const data = await api.exportSVG(productId)
-  if (data) {
+async function exportSVG(model: BuerliCadFacade) {
+  const { drawing2d: drawingApi } = model.api.v1
+  const productId = getDrawing(model.drawingId).structure.currentProduct
+  const svgData = await drawingApi.exportSVG({ id: productId })
+  if (svgData?.content) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
     link.download = `Flange.svg`
     link.click()
   }
@@ -250,11 +337,12 @@ async function exportSVG(api: ApiHistory) {
 
 ///////////////////////////////////////////////////////////////
 
-async function saveOfb(api: ApiHistory) {
-  const data = await api.save('ofb')
-  if (data) {
+async function saveOfb(model: BuerliCadFacade) {
+  const { common: commonApi } = model.api.v1
+  const { content: ofbData } = await commonApi.save({ format: 'OFB' })
+  if (ofbData) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))
     link.download = `Flange.ofb`
     link.click()
   }

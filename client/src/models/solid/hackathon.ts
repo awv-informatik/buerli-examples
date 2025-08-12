@@ -1,11 +1,12 @@
-import { ApiNoHistory, Solid } from '@buerli.io/headless'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
-import { Create, Param } from '../../store'
+import { Create, GetBufferGeom, Param } from '../../store'
 
-export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
+const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-export const create: Create = async (apiType, params) => {
-  const api = apiType as ApiNoHistory
+const create: Create = async (model, params) => {
+  const api = model.api.v1
+
   const shape = new THREE.Shape()
   shape.lineTo(100, 0)
   shape.lineTo(100, 20)
@@ -15,36 +16,46 @@ export const create: Create = async (apiType, params) => {
   shape.lineTo(10, 100)
   shape.lineTo(0, 100)
   shape.lineTo(0, 0)
-  const basicBody = api.extrude([0, 0, 100], shape)
-  const edges1 = api.pick(
-    basicBody,
-    'edge',
-    [100, 10, 0],
-    [100, 10, 100],
-    [5, 100, 100],
-    [5, 100, 0],
-  )
-  const edges2 = api.pick(basicBody, 'edge', [10, 50, 50], [0, 0, 50], [20, 20, 50])
-  api.fillet(5, edges1)
-  api.fillet(5, edges2)
-  const cyl1 = api.cylinder(200, 40)
-  api.moveTo(cyl1, [-50, 50, 50])
-  api.rotateTo(cyl1, [0, Math.PI / 2, 0])
-  const cyl2 = api.cylinder(200, 40)
-  api.moveTo(cyl2, [55, 50, 50])
-  api.rotateTo(cyl2, [Math.PI / 2, 0, 0])
-  api.subtract(basicBody, false, cyl1, cyl2)
-  const offset = api.offset(basicBody, 1)
-  return [await offset]
+
+  const part = await api.part.create()
+  const ei = await api.part.entityInjection({ id: part })
+  const ccShape = await api.curve.shape({ id: ei })
+  await model.createThreeShape(ccShape, shape)
+
+  const basicBody = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 100] })
+
+  const positions1 = [{ pos: [100, 10, 0] }, { pos: [100, 10, 100] }, { pos: [5, 100, 100] }, { pos: [5, 100, 0] }]
+  const edges1 = (await api.part.getGeometryIds({ id: part, lines: positions1 })).lines
+
+  const positions2 = [{ pos: [10, 50, 50] }, { pos: [0, 0, 50] }, { pos: [20, 20, 50] }]
+  const edges2 = (await api.part.getGeometryIds({ id: part, lines: positions2 })).lines
+
+  await api.solid.fillet({ id: ei, radius: 5, geomIds: edges1 })
+  await api.solid.fillet({ id: ei, radius: 5, geomIds: edges2 })
+
+  const cyl1 = await api.solid.cylinder({ id: ei, height: 200, diameter: 40 })
+  await api.solid.translation({ id: ei, target: { id: cyl1 }, translation: [-50, 50, 50] })
+  await api.solid.rotation({ id: ei, target: { id: cyl1 }, rotation: [0, Math.PI / 2, 0] })
+
+  const cyl2 = await api.solid.cylinder({ id: ei, height: 200, diameter: 40 })
+  await api.solid.translation({ id: ei, target: { id: cyl2 }, translation: [55, 50, 50] })
+  await api.solid.rotation({ id: ei, target: { id: cyl2 }, rotation: [Math.PI / 2, 0, 0] })
+
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl1 }] })
+  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl2 }] })
+
+  const offset = await api.solid.offset({ id: ei, target: { id: basicBody }, distance: 1, extend: false })
+  return [offset]
 }
 
-export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
-  if (!api) return
+const getBufferGeom: GetBufferGeom = async (model, ids) => {
+  if (!model) return
   const meshes: THREE.Mesh[] = []
-  for await (const solidId of solidIds) {
-    const geom = await api.createBufferGeometry(solidId)
+  ids = Array.isArray(ids) ? ids : [ids]
+  for await (const solidId of ids) {
+    const geom = await model.createBufferGeometry(solidId)
     const mesh = new THREE.Mesh(
-      geom,
+      geom[0],
       new THREE.MeshStandardMaterial({
         transparent: true,
         opacity: 1,
@@ -56,6 +67,4 @@ export const getBufferGeom = async (solidIds: number[], api: ApiNoHistory) => {
   return meshes
 }
 
-export const cad = new Solid()
-
-export default { create, paramsMap, cad }
+export default { create, getBufferGeom, paramsMap }

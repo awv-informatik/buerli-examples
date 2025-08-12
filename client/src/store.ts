@@ -1,4 +1,5 @@
-import { ApiHistory, ApiNoHistory, History, Solid } from '@buerli.io/headless'
+import { BuerliCadFacade } from '@buerli.io/classcad'
+import { ObjectID } from '@buerli.io/core'
 import produce from 'immer'
 import create, { StoreApi } from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
@@ -21,63 +22,63 @@ export type Param = {
   values?: any[]
 }
 export type Create = (
-  api: ApiHistory | ApiNoHistory,
+  model: BuerliCadFacade,
   params?: { lastUpdatedParam: number; values: any[] },
   options?: any,
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
+
 export type Update = (
-  api: ApiHistory | ApiNoHistory,
-  productId: number | number[],
+  model: BuerliCadFacade,
+  productId: ObjectID | ObjectID[],
   params?: { lastUpdatedParam: number; values: any[] },
-) => Promise<number | number[]>
+) => Promise<ObjectID | ObjectID[]>
 
-const toc: { exampleId: string; label: string; file: string }[] = [
+export type GetScene = (model: BuerliCadFacade, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Scene>
+
+export type GetBufferGeom = (model: BuerliCadFacade, productOrSolidId: ObjectID | ObjectID[]) => Promise<THREE.Mesh[]>
+
+type ExampleDef = { exampleId: string; label: string; file: string; type: string }
+
+const toc: ExampleDef[] = [
   // solid example
-  { exampleId: 'Fish', label: 'Fish', file: 'solid/fish' },
-  { exampleId: 'Heart', label: 'Heart', file: 'solid/heart' },
-  { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego' },
-  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step' },
-  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2' },
-  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball' },
-  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile' },
-  { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon' },
-  { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part' },
-  { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1' },
-  { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2' },
-  { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley' },
-  { exampleId: 'WheelRim', label: 'Wheel Rim', file: 'solid/wheelRim' },
+  { exampleId: 'Fish', label: 'Fish', file: 'solid/fish', type: 'Solid' },
+  { exampleId: 'Heart', label: 'Heart', file: 'solid/heart', type: 'Solid' },
+  { exampleId: 'Lego', label: 'Lego Configurator', file: 'solid/lego', type: 'Solid' },
+  { exampleId: 'StepImport 1', label: 'Step Import 1', file: 'solid/import-step', type: 'Solid' },
+  { exampleId: 'StepImport 2', label: 'Step Import 2', file: 'solid/import-step-2', type: 'Solid' },
+  { exampleId: 'Whiffleball', label: 'Whiffleball', file: 'solid/whiffleball', type: 'Solid' },
+  { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile', type: 'Solid' },
+  { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon', type: 'Solid' },
+  { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part', type: 'Solid' },
+  { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1', type: 'Solid' },
+  { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2', type: 'Solid' },
+  { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley', type: 'Solid' },
+  { exampleId: 'WheelRim', label: 'Wheel Rim', file: 'solid/wheelRim', type: 'Solid' },
 
-  // history example
-  { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart' },
-  { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch' },
-  { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2' },
-  { exampleId: 'Twist', label: 'Twist Feature', file: 'history/Twist' },
-  { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm' },
-  {
-    exampleId: 'Nut-Bolt_Assembly',
-    label: 'Nut-Bolt Assembler',
-    file: 'history/Nut-Bolt_Assembly',
-  },
-  {
-    exampleId: 'L-Bracket_Assembly',
-    label: 'LBracket Assembler',
-    file: 'history/LBracket_Assembly',
-  },
-  { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly' },
-  { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example' },
-  { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt' },
-  { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator' },
-  { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm' },
-  { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly' },
-  { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly' },
-  { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox' },
-  { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty' },
-  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis_FC' },
-  { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly' },
-  { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2' },
-  { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3' },
-  { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot' },
-  { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly' },
+  // part example
+  { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart', type: 'Part' },
+  { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch', type: 'Part' },
+  { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2', type: 'Part' },
+  { exampleId: 'Twist', label: 'Twist Feature', file: 'history/Twist', type: 'Part' },
+  { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example', type: 'Part' },
+  { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt', type: 'Part' },
+  { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator', type: 'Part' },
+  { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox', type: 'Part' },
+  // assembly example
+  { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm', type: 'Assembly' },
+  { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly', type: 'Assembly' }, // prettier-ignore
+  { exampleId: 'L-Bracket_Assembly', label: 'LBracket Assembler', file: 'history/LBracket_Assembly', type: 'Assembly' }, // prettier-ignore
+  { exampleId: 'As1_Assembly', label: 'As1 Assembler', file: 'history/As1_Assembly', type: 'Assembly' },
+  { exampleId: 'FlangeAsm', label: 'Flange Assembler', file: 'history/FlangeAsm', type: 'Assembly' },
+  { exampleId: 'RollerAsm', label: 'FMS Roller Configurator', file: 'history/RollerAssembly', type: 'Assembly' },
+  { exampleId: 'Wireway', label: 'Wireway Configurator', file: 'history/WirewayAssembly', type: 'Assembly' },
+  { exampleId: 'Wall', label: 'Wall Configurator', file: 'history/SwissProperty', type: 'Assembly' },
+  { exampleId: 'RobotArm', label: 'Robot Configurator', file: 'history/Robot6Axis_FC', type: 'Assembly' },
+  { exampleId: 'MechanicalAssembly', label: 'Mechanical Simulation', file: 'history/MechanicalAssembly', type: 'Assembly' }, // prettier-ignore
+  { exampleId: 'MechanicalAssembly2', label: 'Mechanical Simulation 2', file: 'history/MechanicalAssembly2', type: 'Assembly' }, // prettier-ignore
+  { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3', type: 'Assembly' }, // prettier-ignore
+  { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot', type: 'Assembly' },
+  { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly', type: 'Assembly' },
 ]
 
 const storeApi = vanillaCreate<State>(set => ({
@@ -92,22 +93,22 @@ const storeApi = vanillaCreate<State>(set => ({
       }),
     )
   },
-  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => {
+  setModel: (exampleId: string, model: BuerliCadFacade | null) => {
     set(state =>
       produce(state, draft => {
-        if (!api) {
+        if (!model) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          delete draft.examples.objs[exampleId].api
+          delete draft.examples.objs[exampleId].model
         } else {
-          draft.examples.objs[exampleId].api = api
+          draft.examples.objs[exampleId].model = model
         }
       }),
     )
   },
 }))
 
-const useStore = create(storeApi)
+const useStore = create<State>(storeApi as any) // TODO: Remove 'as any' once types are fine again with zustand
 
 export { storeApi, useStore }
 
@@ -115,11 +116,14 @@ const initExamples = async () => {
   const examples: Record<string, Example> = {}
   for (const t of toc) {
     // console.info(t.exampleId)
-    const example = await import(`./models/${t.file}`)
+    let example = await import(`./models/${t.file}`)
+    if (example.default) {
+      example = { ...example, ...example.default }
+    }
     examples[t.exampleId] = {
-      label: t.label,
       fileUrl: `/models/${t.file}.ts`,
       params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
+      ...t,
       ...example,
     }
   }
@@ -140,18 +144,16 @@ type State = Readonly<{
   busy?: boolean
   set: StoreApi<State>['setState']
   setParam: (exampleId: string, paramIndex: number, paramValue: number | boolean | string) => void
-  setAPI: (exampleId: string, api: ApiHistory | ApiNoHistory | null) => void
+  setModel: (exampleId: string, model: BuerliCadFacade | null) => void
 }>
 
-export type Example = {
-  label: string
+export type Example = ExampleDef & {
   create: Create
   update?: Update
-  getScene?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
-  getBufferGeom?: (productOrSolidId: number | number[], api: ApiHistory | ApiNoHistory) => any
+  getScene?: GetScene
+  getBufferGeom?: GetBufferGeom
   fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
-  cad: History | Solid
-  api: ApiHistory | ApiNoHistory | null
+  model: BuerliCadFacade
 }
