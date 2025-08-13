@@ -50,6 +50,7 @@ const toc: ExampleDef[] = [
   { exampleId: 'Profile', label: 'Profile', file: 'solid/Profile', type: 'Solid' },
   { exampleId: 'Hackathon', label: 'Hackathon', file: 'solid/hackathon', type: 'Solid' },
   { exampleId: 'Mechanical', label: 'Mechanical', file: 'solid/machine-part', type: 'Solid' },
+  { exampleId: 'Mechanical2', label: 'Mechanical 2', file: 'solid/machine-part-2', type: 'Solid' },
   { exampleId: 'Polylines1', label: 'Polylines 1', file: 'solid/polyline1', type: 'Solid' },
   { exampleId: 'Polylines2', label: 'Polylines 2', file: 'solid/polyline2', type: 'Solid' },
   { exampleId: 'Smiley', label: 'Smiley', file: 'solid/smiley', type: 'Solid' },
@@ -59,11 +60,17 @@ const toc: ExampleDef[] = [
   { exampleId: 'CreatePart', label: 'Simple Part Creator', file: 'history/CreatePart', type: 'Part' },
   { exampleId: 'Sketch', label: 'Simple Sketch', file: 'history/Sketch', type: 'Part' },
   { exampleId: 'Sketch 2', label: 'Simple Sketch 2', file: 'history/Sketch2', type: 'Part' },
+  { exampleId: 'Sketch 3', label: 'Sketch 3', file: 'history/Sketch3', type: 'Part' },
+  { exampleId: 'Sketch 4', label: 'Sketch 4', file: 'history/Sketch4', type: 'Part' },
   { exampleId: 'Twist', label: 'Twist Feature', file: 'history/Twist', type: 'Part' },
   { exampleId: 'Gripper', label: 'Gripper Configurator', file: 'history/Gripper_Example', type: 'Part' },
   { exampleId: 'FlangePart', label: 'Flange Creator', file: 'history/FlangePrt', type: 'Part' },
   { exampleId: 'Flange', label: 'Flange Configurator', file: 'history/FlangeConfigurator', type: 'Part' },
   { exampleId: 'Shadowbox', label: 'Shadowbox Configurator', file: 'history/Shadowbox', type: 'Part' },
+  { exampleId: 'MechanicalPart', label: 'Mechanical Part', file: 'history/MechanicalPart', type: 'Part' },
+  { exampleId: 'MechanicalPart2', label: 'Mechanical Part 2', file: 'history/MechanicalPart2', type: 'Part' },
+  { exampleId: 'MechanicalPart3', label: 'Mechanical Part 3', file: 'history/MechanicalPart3', type: 'Part' },
+
   // assembly example
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm', type: 'Assembly' },
   { exampleId: 'Nut-Bolt_Assembly', label: 'Nut-Bolt Assembler', file: 'history/Nut-Bolt_Assembly', type: 'Assembly' }, // prettier-ignore
