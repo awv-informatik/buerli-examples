@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
+import { Buffer } from 'buffer'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
-import { Buffer } from 'buffer'
 
 type FastenedConstraint = {
   id: number

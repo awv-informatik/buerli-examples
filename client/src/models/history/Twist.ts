@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Buffer } from 'buffer'
 import { Param, Create, ParamType, Update } from '../../store'
 import arraybuffer from '../../resources/history/SketchRegionsTemplate.ofb?buffer'
 import { ObjectID } from '@buerli.io/core'
-import { Buffer } from 'buffer'
 
 let operation: ObjectID = 0
 

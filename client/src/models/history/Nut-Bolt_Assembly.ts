@@ -1,8 +1,8 @@
 import { History } from '@buerli.io/headless'
+import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
-import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 const nutData = Buffer.from(arraybuffer2).toString('base64') // TODO: how to support ArrayBuffer in the API?

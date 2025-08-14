@@ -1,9 +1,9 @@
 /* eslint-disable max-lines */
+import { Buffer } from 'buffer'
 import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
 import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'
 import { Create, Param } from '../../store'
-import { Buffer } from 'buffer'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
