@@ -158,6 +158,32 @@ const Part: React.FC = () => {
     run()
   }, [update, params, model, set, getBufferGeom, getScene, fit, scene])
 
+  React.useEffect(() => {
+    if (exampleId == 'TrainStationClock') {
+      const interval = setInterval(async () => {
+        if (model.current && update && params) {
+          try {
+            productOrSolidIds.current = await update(model.current, productOrSolidIds.current, params)
+            if (getBufferGeom) {
+              const tempMeshes = await getBufferGeom(model.current, productOrSolidIds.current)
+              setMeshes(tempMeshes)
+            } else if (getScene) {
+              const updatedScene = await getScene(model.current, productOrSolidIds.current)
+              if (updatedScene) {
+                scene.clear()
+                scene.copy(updatedScene)
+              }
+            }
+          } catch (error) {
+            setMeshes([])
+            console.error(error)
+          }
+        }
+      }, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [update, params, model, set, getBufferGeom, getScene, fit, scene, exampleId])
+
   if (getBufferGeom && meshes) {
     return (
       <group>
