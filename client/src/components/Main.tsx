@@ -128,6 +128,7 @@ const Part: React.FC = () => {
         }
       })
       scene.children = []
+      productOrSolidIds.current = null
     }
   }, [create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setModel])
 
@@ -161,7 +162,7 @@ const Part: React.FC = () => {
   React.useEffect(() => {
     if (exampleId == 'TrainStationClock') {
       const interval = setInterval(async () => {
-        if (model.current && update && params) {
+        if (model.current && update && params && productOrSolidIds.current) {
           try {
             productOrSolidIds.current = await update(model.current, productOrSolidIds.current, params)
             if (getBufferGeom) {
