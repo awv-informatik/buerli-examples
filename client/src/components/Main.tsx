@@ -160,6 +160,7 @@ const Part: React.FC = () => {
   }, [update, params, model, set, getBufferGeom, getScene, fit, scene])
 
   React.useEffect(() => {
+    // The following code happens every second (setInterval) and is currently only used by the train station clock example.
     if (exampleId == 'TrainStationClock') {
       const interval = setInterval(async () => {
         if (model.current && update && params && productOrSolidIds.current) {
