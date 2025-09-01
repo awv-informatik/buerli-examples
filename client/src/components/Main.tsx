@@ -128,6 +128,7 @@ const Part: React.FC = () => {
         }
       })
       scene.children = []
+      productOrSolidIds.current = null
     }
   }, [create, exampleId, fit, getBufferGeom, getScene, onResume, onSelect, scene, set, setModel])
 
@@ -157,6 +158,33 @@ const Part: React.FC = () => {
     }
     run()
   }, [update, params, model, set, getBufferGeom, getScene, fit, scene])
+
+  React.useEffect(() => {
+    // The following code happens every second (setInterval) and is currently only used by the train station clock example.
+    if (exampleId == 'TrainStationClock') {
+      const interval = setInterval(async () => {
+        if (model.current && update && params && productOrSolidIds.current) {
+          try {
+            productOrSolidIds.current = await update(model.current, productOrSolidIds.current, params)
+            if (getBufferGeom) {
+              const tempMeshes = await getBufferGeom(model.current, productOrSolidIds.current)
+              setMeshes(tempMeshes)
+            } else if (getScene) {
+              const updatedScene = await getScene(model.current, productOrSolidIds.current)
+              if (updatedScene) {
+                scene.clear()
+                scene.copy(updatedScene)
+              }
+            }
+          } catch (error) {
+            setMeshes([])
+            console.error(error)
+          }
+        }
+      }, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [update, params, model, set, getBufferGeom, getScene, fit, scene, exampleId])
 
   if (getBufferGeom && meshes) {
     return (

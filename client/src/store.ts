@@ -86,6 +86,7 @@ const toc: ExampleDef[] = [
   { exampleId: 'MechanicalAssembly3', label: 'Mechanical Simulation 3', file: 'history/MechanicalAssembly3', type: 'Assembly' }, // prettier-ignore
   { exampleId: 'GantryRobot', label: 'Gantry Robot', file: 'history/GantryRobot', type: 'Assembly' },
   { exampleId: 'CaseAssembly', label: 'Case Configurator', file: 'history/CaseAssembly', type: 'Assembly' },
+  { exampleId: 'TrainStationClock', label: 'Train Station Clock', file: 'history/TrainStationClock', type: 'Assembly' },
 ]
 
 const storeApi = vanillaCreate<State>(set => ({
