@@ -21,20 +21,20 @@ const create: Create = async (model, params) => {
   const basicBody = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
 
   const subBox1 = await api.solid.box({ id: ei, length: 11, width: 10, height: 20 })
-  await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-5.5, depth, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: true })
-  await api.solid.translation({ id: ei, target: { id: subBox1 }, translation: [-42, 0, 0] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox1 }], keepTools: false })
+  await api.solid.translation({ id: ei, target: subBox1, translation: [-5.5, depth, 0] })
+  await api.solid.subtraction({ id: ei, target: basicBody, tools: [subBox1], keepTools: true })
+  await api.solid.translation({ id: ei, target: subBox1, translation: [-42, 0, 0] })
+  await api.solid.subtraction({ id: ei, target: basicBody, tools: [subBox1], keepTools: false })
 
   const sideBox = await api.solid.box({ id: ei, length: 7, width: 16.7, height: depth })
-  await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-3.5, 16.7 / 2, 13] })
-  await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: true })
-  await api.solid.translation({ id: ei, target: { id: sideBox }, translation: [-46, 0, 0] })
-  await api.solid.union({ id: ei, target: { id: basicBody }, tools: [{ id: sideBox }], keepTools: false })
+  await api.solid.translation({ id: ei, target: sideBox, translation: [-3.5, 16.7 / 2, 13] })
+  await api.solid.union({ id: ei, target: basicBody, tools: [sideBox], keepTools: true })
+  await api.solid.translation({ id: ei, target: sideBox, translation: [-46, 0, 0] })
+  await api.solid.union({ id: ei, target: basicBody, tools: [sideBox], keepTools: false })
 
   const subBox2 = await api.solid.box({ id: ei, length: 17, width: 16, height: depth })
-  await api.solid.translation({ id: ei, target: { id: subBox2 }, translation: [-width / 2, 13, 13] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: subBox2 }], keepTools: false })
+  await api.solid.translation({ id: ei, target: subBox2, translation: [-width / 2, 13, 13] })
+  await api.solid.subtraction({ id: ei, target: basicBody, tools: [subBox2], keepTools: false })
 
   const edges1 = (
     await api.part.getGeometryIds({

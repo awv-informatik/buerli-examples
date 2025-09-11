@@ -40,15 +40,17 @@ const create: Create = async (model, params) => {
     merged: true,
   })
 
+
   const entityInjection2 = await api.part.entityInjection({ id: part, name: 'SolidContainer2' })
+  const cPSolids = await api.solid.getSolidFromFeature({ id: entityInjection2, targets: [circularPattern] });
   const slice = await api.solid.slice({
     id: entityInjection2,
-    target: { id: circularPattern },
+    target: cPSolids[0],
     originPos: [0, 0, 50],
     normal: [0, 1, 1],
   })
 
-  const translation = await api.solid.translation({ id: entityInjection2, target: slice.target, translation: [0, 0, -50] })
+  const translation = await api.solid.translation({ id: entityInjection2, target: slice, translation: [0, 0, -50] })
   let rotation = await api.solid.rotation({ id: entityInjection2, target: translation, rotation: [-Math.PI/2, 0, 0] })
   rotation = await api.solid.rotation({ id: entityInjection2, target: rotation, rotation: [0, Math.PI, 0] })
   await api.solid.translation({ id: entityInjection2, target: rotation, translation: [0, 0, 50] })

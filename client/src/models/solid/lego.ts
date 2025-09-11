@@ -34,8 +34,8 @@ const create: Create = async (model, params) => {
     height: height - thickness,
     length: length - 2 * thickness,
   })
-  await api.solid.translation({ id: ei, target: { id: subBox }, translation: [0, 0, -thickness] })
-  await api.solid.subtraction({ id: ei, target: { id: basic }, tools: [{ id: subBox }] })
+  await api.solid.translation({ id: ei, target: subBox, translation: [0, 0, -thickness] })
+  await api.solid.subtraction({ id: ei, target: basic, tools: [subBox] })
 
   // dots
   for (let i = 0; i < columns; i++) {
@@ -43,14 +43,14 @@ const create: Create = async (model, params) => {
       const dot = await api.solid.cylinder({ id: ei, diameter: 2 * dotRadius, height: dotHeight })
       await api.solid.translation({
         id: ei,
-        target: { id: dot },
+        target: dot,
         translation: [
           length / 2 - dotGap - j * (2 * dotGap),
           width / 2 - dotGap - i * (2 * dotGap),
           (height + dotHeight) / 2,
         ],
       })
-      await api.solid.union({ id: ei, target: { id: basic }, tools: [{ id: dot }] })
+      await api.solid.union({ id: ei, target: basic, tools: [dot] })
     }
   }
 
@@ -62,20 +62,20 @@ const create: Create = async (model, params) => {
       diameter: 2 * (tubeRadius - thickness),
       height: tubeHeight,
     })
-    await api.solid.subtraction({ id: ei, target: { id: tube }, tools: [{ id: subCyl }] })
+    await api.solid.subtraction({ id: ei, target: tube, tools: [subCyl] })
     for (let i = 0; i < columns - 1; i++) {
       for (let j = 0; j < rows - 1; j++) {
-        const { copy: copy } = await api.solid.copy({ id: ei, target: { id: tube } })
+        const copy = await api.solid.copy({ id: ei, target: tube })
         await api.solid.translation({
           id: ei,
-          target: { id: copy },
+          target: copy,
           translation: [
             length / 2 - 2 * dotGap - j * (2 * dotGap),
             width / 2 - 2 * dotGap - i * (2 * dotGap),
             -thickness / 2,
           ],
         })
-        await api.solid.union({ id: ei, target: { id: basic }, tools: [{ id: copy }] })
+        await api.solid.union({ id: ei, target: basic, tools: [copy] })
       }
     }
     await api.solid.deleteSolid({ id: ei, ids: [tube] })

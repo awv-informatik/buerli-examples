@@ -32,9 +32,9 @@ const create: Create = async (model, params) => {
   const extrusion = await api.solid.extrusion({ id: ei, curves: [ccShape], direction: [0, 0, 150] })
 
   for (let i = 1; i < 4; i++) {
-    const e1 = await api.solid.copy({ id: ei, target: { id: extrusion } })
-    await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, (i * Math.PI) / 2] })
-    await api.solid.union({ id: ei, target: { id: extrusion }, tools: [{ id: e1.copy }] })
+    const copy = await api.solid.copy({ id: ei, target: extrusion })
+    await api.solid.rotation({ id: ei, target: copy, rotation: [0, 0, (i * Math.PI) / 2] })
+    await api.solid.union({ id: ei, target: extrusion, tools: [copy] })
   }
   return [extrusion]
 }
