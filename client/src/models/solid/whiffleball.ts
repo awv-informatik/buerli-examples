@@ -22,12 +22,10 @@ const create: Create = async (model, params) => {
   const cyl1 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
   await api.solid.subtraction({ id: ei, target: b0, tools: [cyl1] })
 
-  const cyl2 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
-  await api.solid.rotation({ id: ei, target: cyl2, rotation: [0, Math.PI / 2, 0] })
+  const cyl2 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole, rotation: [0, Math.PI / 2, 0] })
   await api.solid.subtraction({ id: ei, target: b0, tools: [cyl2] })
 
-  const cyl3 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole })
-  await api.solid.rotation({ id: ei, target: cyl3, rotation: [Math.PI / 2, 0, 0] })
+  const cyl3 = await api.solid.cylinder({ id: ei, height: 2 * lOuterBox, diameter: dHole, rotation: [Math.PI / 2, 0, 0] })
   await api.solid.subtraction({ id: ei, target: b0, tools: [cyl3] })
 
   // Slice lower corners
