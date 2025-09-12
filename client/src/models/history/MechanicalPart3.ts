@@ -42,7 +42,7 @@ const create: Create = async (model, params) => {
 
 
   const entityInjection2 = await api.part.entityInjection({ id: part, name: 'SolidContainer2' })
-  const cPSolids = await api.solid.getSolidFromFeature({ id: entityInjection2, targets: [circularPattern] });
+  const cPSolids = await api.solid.useSolid({ in: entityInjection2, from: [circularPattern] });
   const slice = await api.solid.slice({
     id: entityInjection2,
     target: cPSolids[0],
