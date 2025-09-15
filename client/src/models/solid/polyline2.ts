@@ -99,8 +99,7 @@ const create: Create = async (model, params) => {
   const ccShape2 = await api.curve.shape({ id: ei })
   const star = generateStarPolygon(5, 200, 100, 4, 5)
   await api.curve.advancedPolyline({ id: ccShape2, pld: star, close: true })
-  const extrusion2 = await api.solid.extrusion({ id: ei, curves: [ccShape2], direction: [0, 0, -500] })
-  await api.solid.translation({ id: ei, target: { id: extrusion2 }, translation: [500, 200, 500] })
+  const extrusion2 = await api.solid.extrusion({ id: ei, curves: [ccShape2], direction: [0, 0, -500], translation: [500, 200, 500] })
 
   return [extrusion, extrusion1, extrusion2]
 }

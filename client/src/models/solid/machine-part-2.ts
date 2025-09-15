@@ -26,23 +26,20 @@ const create: Create = async (model, params) => {
 
   const extrusion = await api.solid.extrusion({ id: eI, direction: [0, 0, 30], curves: shape })
 
-  const cyl = await api.solid.cylinder({ id: eI, height: 40, diameter: 40 })
-  await api.solid.translation({ id: eI, target: cyl, translation: [40, 40, 20] })
-
-  const cyl2 = await api.solid.cylinder({ id: eI, height: 40, diameter: 20 })
-  await api.solid.translation({ id: eI, target: cyl2, translation: [40, 40, 20] })
+  const cyl = await api.solid.cylinder({ id: eI, height: 40, diameter: 40, translation: [40, 40, 20] })
+  const cyl2 = await api.solid.cylinder({ id: eI, height: 40, diameter: 20, translation: [40, 40, 20] })
 
   const union = await api.solid.union({ id: eI, target: extrusion, tools: [cyl] })
-  const subtraction = await api.solid.subtraction({ id: eI, target: union.target, tools: [cyl2] })
+  const subtraction = await api.solid.subtraction({ id: eI, target: union, tools: [cyl2] })
   const slice = await api.solid.slice({
     id: eI,
-    target: subtraction.target,
+    target: subtraction,
     originPos: [40, 40, 20],
     normal: [0, 1, 0],
     keepBoth: false,
   })
 
-  return slice.target
+  return slice
 }
 
 export default { create, paramsMap }

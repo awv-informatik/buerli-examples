@@ -33,18 +33,28 @@ const create: Create = async (model, params) => {
   await api.solid.fillet({ id: ei, radius: 5, geomIds: edges1 })
   await api.solid.fillet({ id: ei, radius: 5, geomIds: edges2 })
 
-  const cyl1 = await api.solid.cylinder({ id: ei, height: 200, diameter: 40 })
-  await api.solid.translation({ id: ei, target: { id: cyl1 }, translation: [-50, 50, 50] })
-  await api.solid.rotation({ id: ei, target: { id: cyl1 }, rotation: [0, Math.PI / 2, 0] })
+  const cyl1 = await api.solid.cylinder({
+    id: ei,
+    height: 200,
+    diameter: 40,
+    translation: [-50, 50, 50],
+    rotation: [0, Math.PI / 2, 0],
+    rotateFirst: false,
+  })
 
-  const cyl2 = await api.solid.cylinder({ id: ei, height: 200, diameter: 40 })
-  await api.solid.translation({ id: ei, target: { id: cyl2 }, translation: [55, 50, 50] })
-  await api.solid.rotation({ id: ei, target: { id: cyl2 }, rotation: [Math.PI / 2, 0, 0] })
+  const cyl2 = await api.solid.cylinder({
+    id: ei,
+    height: 200,
+    diameter: 40,
+    translation: [55, 50, 50],
+    rotation: [Math.PI / 2, 0, 0],
+    rotateFirst: false,
+  })
 
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl1 }] })
-  await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: cyl2 }] })
+  await api.solid.subtraction({ id: ei, target: basicBody, tools: [cyl1] })
+  await api.solid.subtraction({ id: ei, target: basicBody, tools: [cyl2] })
 
-  const offset = await api.solid.offset({ id: ei, target: { id: basicBody }, distance: 1, extend: false })
+  const offset = await api.solid.offset({ id: ei, target: basicBody, distance: 1, extend: false })
   return [offset]
 }
 

@@ -50,9 +50,8 @@ const create: Create = async (model, params) => {
   const nof = 6
   const angle = (2 * Math.PI) / nof
   for (let i = 0; i < nof; i++) {
-    const e1 = await api.solid.copy({ id: ei, target: { id: subSolid } })
-    await api.solid.rotation({ id: ei, target: { id: e1.copy }, rotation: [0, 0, i * angle] })
-    await api.solid.subtraction({ id: ei, target: { id: basicBody }, tools: [{ id: e1.copy }] })
+    const copy = await api.solid.copy({ id: ei, target: subSolid, rotation: [0, 0, i * angle] })
+    await api.solid.subtraction({ id: ei, target: basicBody, tools: [copy] })
   }
   return [basicBody]
 }
