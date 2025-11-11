@@ -31,7 +31,7 @@ const create: Create = async (model, params) => {
   await model.createThreeShape(ccShape, shape)
   const fish1 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
   const fish2 = await api.solid.extrusion({ id: ei, curves: [ccShape], direction })
-  await api.solid.mirror({ id: part, target: fish2, originPos: origin, normal: normal })
+  await api.solid.mirror({ id: ei, target: fish2, originPos: origin, normal: normal })
   return [fish1, fish2]
 }
 
