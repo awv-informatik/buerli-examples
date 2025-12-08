@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Buffer } from 'buffer'
 import robotArm from '../../resources/history/Robot6Axis_FC.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -58,7 +57,7 @@ export const paramsMap: Param[] = [
 
 let constraints: FastenedConstraint[] = []
 
-const data = Buffer.from(robotArm).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = robotArm
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
@@ -70,7 +69,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getFastened({ id: rootAsm, name: 'Base-J1' })

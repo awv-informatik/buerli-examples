@@ -1,6 +1,5 @@
-import { Create, Param, ParamType, Update } from '../../store'
-import { Buffer } from 'buffer'
 import arrayBuffer from '../../resources/history/CaseAssembly.ofb?buffer'
+import { Create, Param, ParamType, Update } from '../../store'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'width', type: ParamType.Slider, value: 120, step: 2, values: [30, 200] },
@@ -12,12 +11,12 @@ let deltaX = 0
 let deltaY = 0
 let deltaZ = 0
 
-const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = arrayBuffer
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
 
-  const { id: root } = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
+  const { id: root } = await commonApi.load({ data: data, format: 'OFB', ident: 'root' })
 
   // screw distances from origin depending on parameters
   deltaX = (params.values[0] - 10) / 2

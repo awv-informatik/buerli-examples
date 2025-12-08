@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Buffer } from 'buffer'
-import { Param, Create, ParamType, Update } from '../../store'
-import arraybuffer from '../../resources/history/SketchRegionsTemplate.ofb?buffer'
 import { ObjectID } from '@buerli.io/core'
+import arraybuffer from '../../resources/history/SketchRegionsTemplate.ofb?buffer'
+import { Create, Param, ParamType, Update } from '../../store'
 
 let operation: ObjectID = 0
 
@@ -26,7 +25,7 @@ export const paramsMap: Param[] = [
   },
 ].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = arraybuffer
 
 export const create: Create = async (model, params, options) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
@@ -34,7 +33,7 @@ export const create: Create = async (model, params, options) => {
   // The global module variables might be set from a previous run --> reset them
   operation = 0
 
-  const { id: part } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: part } = await commonApi.load({ data, format: 'OFB' })
 
   await update(model, part, { lastUpdatedParam: undefined, values: params.values })
 

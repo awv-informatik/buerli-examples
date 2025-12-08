@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BuerliCadFacade } from '@buerli.io/classcad'
-import { Buffer } from 'buffer'
 import mechAsm from '../../resources/history/MechanicalAssembly3.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -32,7 +31,7 @@ type RevoluteConstraint = {
 
 let constrRevolute: RevoluteConstraint
 
-const data = Buffer.from(mechAsm).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = mechAsm
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
@@ -44,7 +43,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB' })
 
   if (rootAsm !== null) {
     const res = await assemblyApi.getRevolute({ id: rootAsm, name: 'Revolute' })

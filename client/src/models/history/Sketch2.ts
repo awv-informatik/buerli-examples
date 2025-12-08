@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Buffer } from 'buffer'
 import sketches from '../../resources/history/SuspensionBracket.ofb?buffer'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(sketches).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = sketches
 
 export const create: Create = async (model, params, options) => {
   const { sketch: sketchApi, part: partApi } = model.api.v1
@@ -17,7 +16,7 @@ export const create: Create = async (model, params, options) => {
     name: 'WP',
   })
   const sketch = await sketchApi.create({ id: part, planeId: wp })
-  await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB', encoding: 'base64' })
+  await sketchApi.loadFrom({ id: sketch, partId: part, data, format: 'OFB' })
   const sROuter = await sketchApi.getSketchRegion({ id: sketch, name: 'Outer' })
   const sRHoles = await sketchApi.getSketchRegion({ id: sketch, name: 'Holes' })
   const sRInner = await sketchApi.getSketchRegion({ id: sketch, name: 'Inner' })

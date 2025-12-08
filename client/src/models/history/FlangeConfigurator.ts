@@ -1,6 +1,5 @@
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing } from '@buerli.io/core'
-import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -81,7 +80,7 @@ export const paramsMap: Param[] = [
 
 let currDimensions: number[] = []
 
-const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = arraybuffer
 
 export const create: Create = async (model, params) => {
   const { part: partApi, common: commonApi } = model.api.v1
@@ -93,7 +92,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: productId } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data, format: 'OFB' })
 
   // Set initial values
   const holesCount = params.values[0]

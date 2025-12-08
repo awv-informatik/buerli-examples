@@ -1,5 +1,4 @@
 import { BuerliCadFacade } from '@buerli.io/classcad'
-import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
@@ -7,9 +6,9 @@ import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const boltData = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
-const lBracketData = Buffer.from(arraybuffer3).toString('base64') // TODO: how to support ArrayBuffer in the API?
-const nutData = Buffer.from(arraybuffer2).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const boltData = arraybuffer
+const lBracketData = arraybuffer3
+const nutData = arraybuffer2
 
 export const create: Create = async (model, params) => {
   const { part: partApi, assembly: assemblyApi } = model.api.v1
@@ -22,7 +21,7 @@ export const create: Create = async (model, params) => {
   const nutBoltAsm = await assemblyApi.assemblyTemplate({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
 
   await partApi.updateExpression({
     id: bolt,
@@ -44,7 +43,7 @@ export const create: Create = async (model, params) => {
   const wcsIdBoltOrigin = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
 
   await partApi.updateExpression({
     id: nut,
@@ -82,7 +81,7 @@ export const create: Create = async (model, params) => {
   })
 
   /* LBracket */
-  const { id: lBracket } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB', encoding: 'base64' })
+  const { id: lBracket } = await assemblyApi.loadProduct({ data: lBracketData, format: 'OFB' })
 
   await partApi.updateExpression({
     id: lBracket,
@@ -141,7 +140,7 @@ export const create: Create = async (model, params) => {
   const [nutBoltAsmRef1, nutBoltAsmRef2, nutBoltAsmRef3] = res as number[]
 
   /* NutBoltAsm on LBracket */
-  let nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef1, name: "Bolt"}) as number
+  let nutInstance = (await assemblyApi.getInstance({ ownerId: nutBoltAsmRef1, name: 'Bolt' })) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -156,7 +155,7 @@ export const create: Create = async (model, params) => {
   })
 
   /* NutBoltAsm on LBracket */
-  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef2, name: "Bolt"}) as number
+  nutInstance = (await assemblyApi.getInstance({ ownerId: nutBoltAsmRef2, name: 'Bolt' })) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {
@@ -171,7 +170,7 @@ export const create: Create = async (model, params) => {
   })
 
   /* NutBoltAsm on LBracket */
-  nutInstance = await assemblyApi.getInstance({ ownerId: nutBoltAsmRef3, name: "Bolt"}) as number
+  nutInstance = (await assemblyApi.getInstance({ ownerId: nutBoltAsmRef3, name: 'Bolt' })) as number
   await assemblyApi.fastened({
     id: lBracketAsm,
     mate1: {

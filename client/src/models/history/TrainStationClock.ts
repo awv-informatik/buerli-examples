@@ -1,7 +1,6 @@
-import { Create, Param, Update } from '../../store'
-import { Buffer } from 'buffer'
-import arrayBuffer from '../../resources/history/TrainStationClock.ofb?buffer'
 import { ObjectID } from '@buerli.io/core'
+import arrayBuffer from '../../resources/history/TrainStationClock.ofb?buffer'
+import { Create, Param, Update } from '../../store'
 
 type RevoluteConstraint = {
   id: number
@@ -31,23 +30,22 @@ let revoluteHour: RevoluteConstraint
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(arrayBuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = arrayBuffer
 
 export const create: Create = async (model, params) => {
-
   hourPointerInst = undefined
   revoluteHour = undefined
   root = undefined
 
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
 
-  const res = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
+  const res = await commonApi.load({ data: data, format: 'OFB', ident: 'root' })
   root = res.id
-  hourPointerInst = await assemblyApi.getInstance({ ownerId: root, name: "hours"}) as number
-  revoluteHour = await assemblyApi.getRevolute({ id: root, name: "Revolute1" }) as RevoluteConstraint
+  hourPointerInst = (await assemblyApi.getInstance({ ownerId: root, name: 'hours' })) as number
+  revoluteHour = (await assemblyApi.getRevolute({ id: root, name: 'Revolute1' })) as RevoluteConstraint
 
   // reset time to 0:00:00 Uhr
-  await assemblyApi.update3DConstraintValue({ id: revoluteHour.id, name: "Z_ROTATION", value: 0 })
+  await assemblyApi.update3DConstraintValue({ id: revoluteHour.id, name: 'Z_ROTATION', value: 0 })
 
   const currentTime = new Date()
   let h = currentTime.getHours()
@@ -55,20 +53,25 @@ export const create: Create = async (model, params) => {
   const s = currentTime.getSeconds()
 
   // current time in hours
-  h = h % 12 + m / 60 + s / 3600
-  const angleH_deg = 360 / 12 * h
-  const angleH_rad = angleH_deg / 180 * Math.PI
+  h = (h % 12) + m / 60 + s / 3600
+  const angleH_deg = (360 / 12) * h
+  const angleH_rad = (angleH_deg / 180) * Math.PI
 
   // calculate rotation
   const rotation = {
     xDir: [Math.cos(angleH_rad), -Math.sin(angleH_rad), 0],
     yDir: [Math.sin(angleH_rad), Math.cos(angleH_rad), 0],
-    zDir: [0, 0, 1]
+    zDir: [0, 0, 1],
   }
 
   // rotate to current time
-  await assemblyApi.startMovingUnderConstraints({ id: root, instanceIds: [hourPointerInst], pivotInfo: [0,0,0], mucType: "ROTATION" })
-  await assemblyApi.moveUnderConstraints({ id: root, rotation })  
+  await assemblyApi.startMovingUnderConstraints({
+    id: root,
+    instanceIds: [hourPointerInst],
+    pivotInfo: [0, 0, 0],
+    mucType: 'ROTATION',
+  })
+  await assemblyApi.moveUnderConstraints({ id: root, rotation })
   await assemblyApi.finishMovingUnderConstraints({ id: root })
 
   return root
@@ -82,17 +85,22 @@ export const update: Update = async (model, productId, params) => {
   }
 
   // calculate angle per second of hour pointer, which rotates 30° in 1 hour
-  const h = 1/3600
-  const angleH_deg = 360 / 12 * h
-  const angleH_rad = angleH_deg / 180 * Math.PI
+  const h = 1 / 3600
+  const angleH_deg = (360 / 12) * h
+  const angleH_rad = (angleH_deg / 180) * Math.PI
 
   const rotation = {
     xDir: [Math.cos(angleH_rad), -Math.sin(angleH_rad), 0],
     yDir: [Math.sin(angleH_rad), Math.cos(angleH_rad), 0],
-    zDir: [0, 0, 1]
+    zDir: [0, 0, 1],
   }
 
-  await assemblyApi.startMovingUnderConstraints({ id: root, instanceIds: [hourPointerInst], pivotInfo: [0,0,0], mucType: "ROTATION" })
+  await assemblyApi.startMovingUnderConstraints({
+    id: root,
+    instanceIds: [hourPointerInst],
+    pivotInfo: [0, 0, 0],
+    mucType: 'ROTATION',
+  })
   await assemblyApi.moveUnderConstraints({ id: root, rotation })
   await assemblyApi.finishMovingUnderConstraints({ id: root })
 

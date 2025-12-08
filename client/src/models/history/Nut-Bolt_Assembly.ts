@@ -1,13 +1,11 @@
 import { History } from '@buerli.io/headless'
-import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
-const nutData = Buffer.from(arraybuffer2).toString('base64') // TODO: how to support ArrayBuffer in the API?
-
-const boltData = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const nutData = arraybuffer2
+const boltData = arraybuffer
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
@@ -17,7 +15,7 @@ export const create: Create = async (model, params) => {
   const nutBoltAsm = await assemblyApi.create({ name: 'NutBolt_Asm' })
 
   /* Bolt */
-  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
 
   await partApi.updateExpression({
     id: bolt,
@@ -35,7 +33,7 @@ export const create: Create = async (model, params) => {
   const wcsIdOrigin = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Nut */
-  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
 
   await partApi.updateExpression({
     id: nut,
