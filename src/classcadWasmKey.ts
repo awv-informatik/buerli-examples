@@ -3,4 +3,4 @@
 /**
  * The ClassCAD key used to initialize the WASM build of ClassCAD.
  */
-export const classcadKey = ''
+export const classcadWasmKey = ''
