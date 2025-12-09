@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { History } from '@buerli.io/headless'
-import { Buffer } from 'buffer'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -89,7 +88,7 @@ let j4: RevoluteConstraint
 let j5: RevoluteConstraint
 let j6: RevoluteConstraint
 
-const data = Buffer.from(gantryRobiAsm).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = gantryRobiAsm
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi } = model.api.v1
@@ -98,7 +97,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data: data, format: 'OFB', ident: 'root', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data: data, format: 'OFB', ident: 'root' })
 
   if (rootAsm !== null) {
     let res = await assemblyApi.getSlider({ id: rootAsm, name: 'Axis1' })

@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer'
 import arraybuffer from '../../resources/history/Shadowbox.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -15,7 +14,7 @@ export const paramsMap: Param[] = [
   // { index: 6, name: 'test', type: 'enum', value: 't1', values: ['t2', 't3', 't4'] },
 ].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(arraybuffer).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = arraybuffer
 
 export const create: Create = async (model, params) => {
   const { common: commonApi, part: partApi } = model.api.v1
@@ -24,7 +23,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: productId } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: productId } = await commonApi.load({ data, format: 'OFB' })
 
   // Set initial values
   const minGap = params.values[3]

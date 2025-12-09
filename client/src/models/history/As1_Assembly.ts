@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer'
 import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
@@ -10,11 +9,11 @@ import { findObjectsByName, setObjectColor, setObjectTransparency } from '../../
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const data = Buffer.from(arraybuffer).toString('base64')
-const data3 = Buffer.from(arraybuffer3).toString('base64')
-const data2 = Buffer.from(arraybuffer2).toString('base64')
-const data4 = Buffer.from(arraybuffer4).toString('base64')
-const data5 = Buffer.from(arraybuffer5).toString('base64')
+const data = arraybuffer
+const data3 = arraybuffer3
+const data2 = arraybuffer2
+const data4 = arraybuffer4
+const data5 = arraybuffer5
 
 export const create: Create = async (model, params?) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
@@ -33,7 +32,7 @@ export const create: Create = async (model, params?) => {
   const rodAsm = await assemblyApi.assemblyTemplate({ name: 'Rod_Asm' })
 
   /* Load Bolt part */
-  const { id: bolt } = await assemblyApi.loadProduct({ data: data, format: 'OFB', encoding: 'base64' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: data, format: 'OFB' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -59,7 +58,7 @@ export const create: Create = async (model, params?) => {
   const wcsIdBoltOrigin = await partApi.getWorkGeometry({ id: boltRefId as number, name: 'WCS_Origin' })
 
   /* Load Nut part */
-  const { id: nut } = await assemblyApi.loadProduct({ data: data2, format: 'OFB', encoding: 'base64' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: data2, format: 'OFB' })
 
   /* Set expressions on bolt part (optional) */
   await partApi.updateExpression({
@@ -101,7 +100,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load LBracket part */
-  const { id: lBracket } = await assemblyApi.loadProduct({ data: data3, format: 'OFB', encoding: 'base64' })
+  const { id: lBracket } = await assemblyApi.loadProduct({ data: data3, format: 'OFB' })
 
   /* Set expressions on lBracket part (optional) */
   await partApi.updateExpression({
@@ -208,7 +207,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load Plate part */
-  const { id: plate } = await assemblyApi.loadProduct({ data: data4, format: 'OFB', encoding: 'base64' })
+  const { id: plate } = await assemblyApi.loadProduct({ data: data4, format: 'OFB' })
 
   /* Set expressions on plate part (optional) */
   await partApi.updateExpression({
@@ -285,7 +284,7 @@ export const create: Create = async (model, params?) => {
   })
 
   /* Load Rod part */
-  const { id: rod } = await assemblyApi.loadProduct({ data: data5, format: 'OFB', encoding: 'base64' })
+  const { id: rod } = await assemblyApi.loadProduct({ data: data5, format: 'OFB' })
 
   /* Set expressions on rod part (optional) */
   await partApi.updateExpression({

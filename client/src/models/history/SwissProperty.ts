@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { Transform } from '@buerli.io/headless'
-import { Buffer } from 'buffer'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
@@ -157,7 +156,7 @@ let allInstances: instance[] = []
 
 let activeExampleId: string = ''
 
-const data = Buffer.from(templateSP).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = templateSP
 
 export const create: Create = async (model, params) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
@@ -198,7 +197,7 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })).id
+  rootNode = (await commonApi.load({ data, format: 'OFB' })).id
 
   if (rootNode !== null) {
     // Get all needed parts from container
@@ -430,7 +429,13 @@ async function updateWallSize(length: number, height: number, params: any[], lay
 }
 
 /** Changes the size of the balkenwand subassembly */
-async function updateBalkenwandSize(length: number, height: number, params: any[], layers: Layer[], model: BuerliCadFacade) {
+async function updateBalkenwandSize(
+  length: number,
+  height: number,
+  params: any[],
+  layers: Layer[],
+  model: BuerliCadFacade,
+) {
   if (balkenwandAsm && horizontalBeamPrt && verticalBeamPrt && wallInsulationPrt && wallInsulationCustomPrt) {
     const balkenwandInstanceId = layers.find(layer => layer.type === 'Beamwall')?.refId
     const exprSets: {

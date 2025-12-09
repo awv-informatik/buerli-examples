@@ -2,7 +2,6 @@
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing, ObjectID } from '@buerli.io/core'
 import { History, Transform } from '@buerli.io/headless'
-import { Buffer } from 'buffer'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -131,7 +130,7 @@ let constrWalzeOrigin: FastenedOriginConstraint
 let currSegmentInstances: number[] = []
 let currDimensions: number[] = []
 
-const data = Buffer.from(templateAB).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = templateAB
 
 export const create: Create = async (model, params) => {
   const { assembly: assemblyApi, common: commonApi, part: partApi } = model.api.v1
@@ -169,7 +168,7 @@ export const create: Create = async (model, params) => {
     const activeExample = storeApi.getState().activeExample
     params = storeApi.getState().examples.objs[activeExample].params
   }
-  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB', encoding: 'base64' })
+  const { id: rootAsm } = await commonApi.load({ data, format: 'OFB' })
   segmentPrt = (await assemblyApi.getPartTemplate({ name: 'Segment' })) as number
 
   //*************************************************/

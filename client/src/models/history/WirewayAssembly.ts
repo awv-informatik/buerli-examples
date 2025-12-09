@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-import { Buffer } from 'buffer'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -51,7 +50,7 @@ let deckelPrt: number | null = null
 let kanalPrt: number | null = null
 let constrDeckel: FastenedConstraint
 
-const data = Buffer.from(templateSP).toString('base64') // TODO: how to support ArrayBuffer in the API?
+const data = templateSP
 
 export const create: Create = async (model, params) => {
   const { common: commonApi, assembly: assemblyApi } = model.api.v1
@@ -72,7 +71,7 @@ export const create: Create = async (model, params) => {
   //*************************************************/
 
   // Load template
-  rootNode = (await commonApi.load({ data, format: 'OFB', encoding: 'base64' })).id
+  rootNode = (await commonApi.load({ data, format: 'OFB' })).id
 
   if (rootNode !== null) {
     // Get all needed parts from container

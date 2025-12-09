@@ -1,15 +1,14 @@
 /* eslint-disable max-lines */
-import { Buffer } from 'buffer'
-import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
+import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)
 
-const flangeData = Buffer.from(flangeAB).toString('base64')
-const boltData = Buffer.from(boltAB).toString('base64')
-const nutData = Buffer.from(nutAB).toString('base64')
+const flangeData = flangeAB
+const boltData = boltAB
+const nutData = nutAB
 
 export const create: Create = async (model, param) => {
   const { assembly: assemblyApi, part: partApi } = model.api.v1
@@ -18,9 +17,9 @@ export const create: Create = async (model, param) => {
   const root = await assemblyApi.create({ name: 'FlangeAsm' })
 
   // Load all needed products
-  const { id: flange } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB', encoding: 'base64' })
-  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB', encoding: 'base64' })
-  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB', encoding: 'base64' })
+  const { id: flange } = await assemblyApi.loadProduct({ data: flangeData, format: 'OFB' })
+  const { id: bolt } = await assemblyApi.loadProduct({ data: boltData, format: 'OFB' })
+  const { id: nut } = await assemblyApi.loadProduct({ data: nutData, format: 'OFB' })
 
   if (flange && bolt && nut) {
     // Get all necessary work coordinate systems
