@@ -1,15 +1,25 @@
-# buerli examples
-
-Examples that show what buerli and ClassCAD can do.
-
-More information and documentation can be found at [buerli.io](https://buerli.io/).
+# The buerli examples client
 
 ## Getting Started
 
-### Client
+**Install**
 
-If the ClassCAD server is up, you are ready to start building cool CAD web apps!
+```
+# working dir 'client'
+yarn
+```
 
-The client bundles the different use cases into one npm package. The project is located in the subfolder `./client`.
+**Start the web dev server**
 
-How to start the [client](./client/README.md).
+```
+# working dir 'client'
+yarn start
+```
+
+The examples application is now available at http://localhost:8082.
+
+> Please check the console output for possible node incompatiblities of the development tools. In case of problems, the use of `nvm` is recommended. `nvm` allows installing different Node versions on the same system.
+
+## ClassCAD Server
+
+Please do not forget to start the [ClassCAD Server](../server/README.md) first.
