@@ -6,7 +6,7 @@ import { classcadWasmKey } from './classcadWasmKey'
 export const initBuerli = async () => {
   init(id => {
     if (classcadWasmKey) {
-      return new WASMClient(id, { appKey: classcadWasmKey })
+      return new WASMClient(id, { classcadKey: classcadWasmKey })
     } else {
       return new SocketIOClient(CCSERVERURL, id)
     }
