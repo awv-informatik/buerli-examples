@@ -1,4 +1,4 @@
-client/public/models/
+public/models/
 dist/
 build/
 node_modules/
