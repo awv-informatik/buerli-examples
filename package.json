@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "npm run start",
     "start": "npm run copy && vite",
     "build": "tsc && npm run copy && vite build",
     "serve": "npm run copy && vite preview",
