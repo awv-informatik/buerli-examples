@@ -85,6 +85,13 @@ export const create: Create = async (model, params) => {
     res = await assemblyApi.getFastened({ id: rootAsm, name: 'J5-J6' })
     const fcJ5 = res as FastenedConstraint
     constraints = [fcBase, fcJ1, fcJ2, fcJ3, fcJ4, fcJ5]
+    
+    // Update axis depending on current parameter values
+    for (let index = 0; index < 6; index++) {
+      if (params.values[index] !== paramsMap[index].value) {
+        await assemblyApi.updateFastened({ ...constraints[index], zRotation: (params.values[index] / 180) * Math.PI })
+      }
+    }
   }
 
   return rootAsm
