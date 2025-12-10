@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+import { BuerliCadFacade } from '@buerli.io/classcad'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -29,20 +30,12 @@ const le = 0
 const he = 1
 const wi = 2
 const pd = 3
-const pa = 4
 
 export const paramsMap: Param[] = [
   { index: le, name: 'Length', type: ParamType.Slider, value: 200, step: 5, values: [100, 400] },
-  { index: he, name: 'Height', type: ParamType.Slider, value: 40, step: 5, values: [20, 80] },
-  { index: wi, name: 'Width', type: ParamType.Slider, value: 60, step: 5, values: [20, 120] },
+  { index: he, name: 'Height', type: ParamType.Slider, value: 30, step: 5, values: [20, 80] },
+  { index: wi, name: 'Width', type: ParamType.Slider, value: 30, step: 5, values: [20, 120] },
   { index: pd, name: 'Position', type: ParamType.Slider, value: 0, step: 5, values: [0, 100] },
-  {
-    index: pa,
-    name: 'Product Selection',
-    type: ParamType.Dropdown,
-    value: 'Select a product ...',
-    values: ['40x60', '60x80', '60x120'],
-  },
 ].sort((a, b) => a.index - b.index)
 
 let rootNode: number | null
@@ -78,81 +71,34 @@ export const create: Create = async (model, params) => {
     deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })) as number
     kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })) as number
     constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })) as FastenedConstraint
+    params.values[le] !== paramsMap[le].value && await updateLength(params.values[le], model)
+    params.values[wi] !== paramsMap[wi].value && await updateWidth(params.values[wi], model)
+    params.values[he] !== paramsMap[he].value && await updateHeight(params.values[he], model)
+    params.values[pd] !== paramsMap[pd].value &&
+      (await assemblyApi.updateFastened({ ...constrDeckel, zOffset: params.values[pd] }))
   }
   return rootNode
 }
 
 export const update: Update = async (model, productId, params) => {
-  const { part: partApi, assembly: assemblyApi } = model.api.v1
+  const { assembly: assemblyApi } = model.api.v1
 
   const updatedParamIndex = params.lastUpdatedParam
   const check = (param: Param) => typeof updatedParamIndex === 'undefined' || param.index === updatedParamIndex
-  const activeExample = storeApi.getState().activeExample
 
   // Update length
   if (check(paramsMap[le])) {
-    deckelPrt &&
-      kanalPrt &&
-      (await partApi.updateExpression([
-        {
-          id: deckelPrt,
-          toUpdate: [
-            {
-              name: 'Laenge',
-              value: params.values[le],
-            },
-          ],
-        },
-        {
-          id: kanalPrt,
-          toUpdate: [
-            {
-              name: 'Laenge',
-              value: params.values[le],
-            },
-          ],
-        },
-      ]))
+    await updateLength(params.values[le], model)
   }
 
   // Update height
   if (check(paramsMap[he])) {
-    kanalPrt &&
-      (await partApi.updateExpression({
-        id: kanalPrt,
-        toUpdate: [
-          {
-            name: 'Hoehe',
-            value: params.values[he],
-          },
-        ],
-      }))
+    await updateHeight(params.values[he], model)
   }
 
   // Update width
   if (check(paramsMap[wi])) {
-    deckelPrt &&
-      kanalPrt &&
-      (await partApi.updateExpression([
-        {
-          id: deckelPrt,
-          toUpdate: [
-            {
-              name: 'Breite',
-              value: params.values[wi] + 3,
-            },
-          ],
-        },
-        {
-          id: kanalPrt,
-          toUpdate: [
-            {
-              name: 'Breite',
-              value: params.values[wi],
-            },
-          ],
-        },
-      ]))
+    await updateWidth(params.values[wi], model)
   }
 
   // Update pos
@@ -160,29 +106,50 @@ export const update: Update = async (model, productId, params) => {
     await assemblyApi.updateFastened({ ...constrDeckel, zOffset: params.values[pd] })
   }
 
-  // Update produkt
-  if (check(paramsMap[pa])) {
-    switch (
-      params.values[pa] //'40x60', '60x80', '60x120'
-    ) {
-      case '40x60':
-        storeApi.getState().setParam(activeExample, he, 40)
-        storeApi.getState().setParam(activeExample, wi, 60)
-        break
-      case '60x80':
-        storeApi.getState().setParam(activeExample, he, 60)
-        storeApi.getState().setParam(activeExample, wi, 80)
-        break
-      case '60x120':
-        storeApi.getState().setParam(activeExample, he, 60)
-        storeApi.getState().setParam(activeExample, wi, 120)
-        break
-      default:
-        break
-    }
-  }
-
   return productId
+}
+
+const updateLength = async (length: number, model: BuerliCadFacade) => {
+  deckelPrt &&
+    kanalPrt &&
+    (await model.api.v1.part.updateExpression([
+      {
+        id: deckelPrt,
+        toUpdate: [{ name: 'Laenge', value: length }],
+      },
+      {
+        id: kanalPrt,
+        toUpdate: [{ name: 'Laenge', value: length }],
+      },
+    ]))
+}
+
+const updateWidth = async (width: number, model: BuerliCadFacade) => {
+  deckelPrt &&
+    kanalPrt &&
+    (await model.api.v1.part.updateExpression([
+      {
+        id: deckelPrt,
+        toUpdate: [{ name: 'Breite', value: width + 3 }],
+      },
+      {
+        id: kanalPrt,
+        toUpdate: [{ name: 'Breite', value: width }],
+      },
+    ]))
+}
+
+const updateHeight = async (height: number, model: BuerliCadFacade) => {
+  kanalPrt &&
+    (await model.api.v1.part.updateExpression({
+      id: kanalPrt,
+      toUpdate: [
+        {
+          name: 'Hoehe',
+          value: height,
+        },
+      ],
+    }))
 }
 
 export default { create, update, paramsMap }
