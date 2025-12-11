@@ -17,9 +17,7 @@ export const App: React.FC = () => {
         <div className="menu left" style={{ marginTop: '-0.8rem' }}>
           <h1>
             buerli.
-            <span style={{ fontSize: '0.4em', verticalAlign: 'super', letterSpacing: 0 }}>
-              BETA | EXAMPLES
-            </span>
+            <span style={{ fontSize: '0.4em', verticalAlign: 'super', letterSpacing: 0 }}>EXAMPLES</span>
           </h1>
         </div>
       </Home>
