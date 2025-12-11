@@ -779,31 +779,43 @@ async function prepareViews(model: BuerliCadFacade) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export DXF is not available for arm64 systems
+ * Export DXF is not available for WASM and arm64 systems
  */
 async function exportDXF(model: BuerliCadFacade) {
-  const productId = await prepareViews(model)
-  const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
-  if (dxfData?.content) {
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
-    link.download = `RollerAssembly.dxf`
-    link.click()
+  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable() 
+  if (isDXFAvailable) {
+    const productId = await prepareViews(model)
+    const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
+    if (dxfData?.content) {
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
+      link.download = `RollerAssembly.dxf`
+      link.click()
+    }
+  } else {
+    console.error('Export DXF not supported by the used ClassCAD build.')
+    alert('Export DXF not supported by the used ClassCAD build.')
   }
 }
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export SVG is not available for arm64 systems
+ * Export SVG is not available for WASM and arm64 systems
  */
 async function exportSVG(model: BuerliCadFacade) {
-  const productId = await prepareViews(model)
-  const svgData = await model.api.drawing2d.exportSVG({ id: productId })
-  if (svgData?.content) {
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
-    link.download = `RollerAssembly.svg`
-    link.click()
+  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable() 
+  if (isSVGAvailable) {
+    const productId = await prepareViews(model)
+    const svgData = await model.api.drawing2d.exportSVG({ id: productId })
+    if (svgData?.content) {
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
+      link.download = `RollerAssembly.svg`
+      link.click()
+    }
+  } else {
+    console.error('Export SVG not supported by the used ClassCAD build.')
+    alert('Export SVG not supported by the used ClassCAD build.')
   }
 }
 

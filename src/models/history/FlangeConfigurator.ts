@@ -83,7 +83,7 @@ let currDimensions: number[] = []
 const data = arraybuffer
 
 export const create: Create = async (model, params) => {
-  const { part: partApi, common: commonApi } = model.api.v1
+  const { part: partApi, common: commonApi, drawing2d: drawing2dApi } = model.api.v1
 
   // The global module variables might be set from a previous run --> reset them
   currDimensions = []
@@ -105,12 +105,15 @@ export const create: Create = async (model, params) => {
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
-  await createDimensions(model, productId)
+  const isDXFAvailable = await drawing2dApi.isDXFAvailable()
+  if (isDXFAvailable) {
+    await createDimensions(model, productId)
+  }
   return productId
 }
 
 export const update: Update = async (model, productId, params) => {
-  const { part: partApi } = model.api.v1
+  const { part: partApi, drawing2d: drawing2dApi } = model.api.v1
 
   if (Array.isArray(productId)) {
     throw new Error('Calling update does not support multiple product ids. Use a single product id only.')
@@ -125,7 +128,10 @@ export const update: Update = async (model, productId, params) => {
       { name: 'flangeHeight', value: flangeHeight },
     ],
   })
-  await createDimensions(model, productId)
+  const isDXFAvailable = await drawing2dApi.isDXFAvailable()
+  if (isDXFAvailable) {
+    await createDimensions(model, productId)
+  }
   return productId
 }
 
@@ -304,33 +310,45 @@ async function createDimensions(model: BuerliCadFacade, productId: number) {
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export DXF is not available for arm64 systems
+ * Export DXF is not available for WASM and arm64 systems
  */
 async function exportDXF(model: BuerliCadFacade) {
   const { drawing2d: drawingApi } = model.api.v1
-  const productId = getDrawing(model.drawingId).structure.currentProduct
-  const dxfData = await drawingApi.exportDXF({ id: productId })
-  if (dxfData?.content) {
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
-    link.download = `Flange.dxf`
-    link.click()
+  const isDXFAvailable = await drawingApi.isDXFAvailable() 
+  if (isDXFAvailable) {
+    const productId = getDrawing(model.drawingId).structure.currentProduct
+    const dxfData = await drawingApi.exportDXF({ id: productId })
+    if (dxfData?.content) {
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
+      link.download = `Flange.dxf`
+      link.click()
+    }
+  } else {
+    console.error('Export DXF not supported by the used ClassCAD build.')
+    alert('Export DXF not supported by the used ClassCAD build.')
   }
 }
 
 ///////////////////////////////////////////////////////////////
 /**
- * Export SVG is not available for arm64 systems
+ * Export SVG is not available for WASM and arm64 systems
  */
 async function exportSVG(model: BuerliCadFacade) {
   const { drawing2d: drawingApi } = model.api.v1
-  const productId = getDrawing(model.drawingId).structure.currentProduct
-  const svgData = await drawingApi.exportSVG({ id: productId })
-  if (svgData?.content) {
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
-    link.download = `Flange.svg`
-    link.click()
+  const isSVGAvailable = await drawingApi.isSVGAvailable() 
+  if (isSVGAvailable) {
+    const productId = getDrawing(model.drawingId).structure.currentProduct
+    const svgData = await drawingApi.exportSVG({ id: productId })
+    if (svgData?.content) {
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
+      link.download = `Flange.svg`
+      link.click()
+    }
+  } else {
+    console.error('Export SVG not supported by the used ClassCAD build.')
+    alert('Export SVG not supported by the used ClassCAD build.')
   }
 }
 
