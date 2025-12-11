@@ -793,7 +793,8 @@ async function exportDXF(model: BuerliCadFacade) {
       link.click()
     }
   } else {
-    console.error('Export DXF not supported.')
+    console.error('Export DXF not supported by the used ClassCAD build.')
+    alert('Export DXF not supported by the used ClassCAD build.')
   }
 }
 
@@ -813,7 +814,8 @@ async function exportSVG(model: BuerliCadFacade) {
       link.click()
     }
   } else {
-    console.error('Export SVG not supported.')
+    console.error('Export SVG not supported by the used ClassCAD build.')
+    alert('Export SVG not supported by the used ClassCAD build.')
   }
 }
 
