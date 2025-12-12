@@ -268,13 +268,13 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@buerli.io/classcad@0.13.1-beta.13":
-  version "0.13.1-beta.13"
-  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.13.1-beta.13.tgz#0a913828ea61483d4babdba15c021b3b4050cbef"
-  integrity sha512-9SAdYg5K17SvVZnlnK1dYas2wj7TpG2nK4Pqr6ThFJPd4Pn67D6+FDhNZ7QTWp6ZAcXwDv63wtZfjqAFrS8HOw==
+"@buerli.io/classcad@0.13.1-beta.14":
+  version "0.13.1-beta.14"
+  resolved "https://registry.npmjs.org/@buerli.io/classcad/-/classcad-0.13.1-beta.14.tgz#8d3d8a0cee2fd97cd6a5b9c577591654f9ba50e7"
+  integrity sha512-pOPJxrj37UofF2T7Y1uoLdhQ196jY+QTK+9vXHSSLvTnCpl3cJpaT99+K8TKTMzL2gxf/nf2kg2FpY+N8cs/PQ==
   dependencies:
-    "@buerli.io/core" "0.13.1-beta.13"
-    "@classcad/api-js" "https://awvstatic.com/classcad/download/dev/20.0.0-dev.293/classcad-api-js-20.0.0-dev.293.tgz"
+    "@buerli.io/core" "0.13.1-beta.14"
+    "@classcad/api-js" "https://awvstatic.com/classcad/download/release/21.0.0/classcad-api-js-21.0.0.tgz"
     "@types/events" "^3.0.0"
     base64-arraybuffer "^0.2.0"
     comlink "^4.3.1"
@@ -289,33 +289,33 @@
     uuid "^9.0.0"
     xmlhttprequest-ssl "^2.0.0"
 
-"@buerli.io/core@0.13.1-beta.13":
-  version "0.13.1-beta.13"
-  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.13.1-beta.13.tgz#a00877bc5d1beb3285b3d9df226e091407cc9abb"
-  integrity sha512-rns6MicWm9hhpJGJSanscNXz21nSTuSSeptpGBIl+KnWK9BdgxJm74s/qxjq1ITofo91Zg3Rhi9Vw0umBz2OMQ==
+"@buerli.io/core@0.13.1-beta.14":
+  version "0.13.1-beta.14"
+  resolved "https://registry.npmjs.org/@buerli.io/core/-/core-0.13.1-beta.14.tgz#7c0af56d7854b4552c238172df399f1c24b5cd8a"
+  integrity sha512-JRbVBf+yGxy1SKHGtoFSdDMC2dqmFkFIqAOle3OkDzrELcE3RjnFHPViW+Wc+Xnsfj3PSDnr2ZU5cnEi3z+HXw==
   dependencies:
-    "@classcad/api-js" "https://awvstatic.com/classcad/download/dev/20.0.0-dev.293/classcad-api-js-20.0.0-dev.293.tgz"
+    "@classcad/api-js" "https://awvstatic.com/classcad/download/release/21.0.0/classcad-api-js-21.0.0.tgz"
     fast-json-patch "^3.1.1"
     jsonpatch "^3.1.0"
     uuid "^9.0.0"
     zustand "^4.1.4"
 
-"@buerli.io/headless@0.13.1-beta.13":
-  version "0.13.1-beta.13"
-  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.13.1-beta.13.tgz#acf264da68da0f76b511f77dc021145150ce26eb"
-  integrity sha512-bBEg9hecM2GDvW80GsIjn/GCaxou+pTHTfubTwyvH2bAZ+0ZIWbWli8BT1SfxmtSNkVHtNaW1RoMkbUz9/hzug==
+"@buerli.io/headless@0.13.1-beta.14":
+  version "0.13.1-beta.14"
+  resolved "https://registry.npmjs.org/@buerli.io/headless/-/headless-0.13.1-beta.14.tgz#fee935f86778570de463e7c80960c48df90dbbea"
+  integrity sha512-DAbTThrjRmdYTWX0bOQxKVAS1H1wk9hHi57mwoZqn++zDZ9q2EAH6CCc9HVYZwM5//uhdCEkQkc3OLDWCZe8Iw==
   dependencies:
-    "@buerli.io/classcad" "0.13.1-beta.13"
+    "@buerli.io/classcad" "0.13.1-beta.14"
     flat-promise "^1.0.3"
 
-"@buerli.io/react@0.13.1-beta.13":
-  version "0.13.1-beta.13"
-  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.13.1-beta.13.tgz#c388a6b8b2ac5f67078a68713836f2631c4dae29"
-  integrity sha512-Nvr4BHnRXOxuvHQLK2UaxHR9y4KnqqEAemTPsOTk9Tl9QasEHU+pEtsh0gJptjdxT0lCp5Vo+scF7mKTDJmHDA==
+"@buerli.io/react@0.13.1-beta.14":
+  version "0.13.1-beta.14"
+  resolved "https://registry.npmjs.org/@buerli.io/react/-/react-0.13.1-beta.14.tgz#4a8e45122c6aa9caec35743895db1ae3f4ffbe92"
+  integrity sha512-fy97ag/3shD8cz8JX1J/Ces02HWVWrNMYY6ERsqd77KO3Mvbl8BZ5BmJEalqWspkwQ+W/8OOoDOPLjrPDe7/Lg==
   dependencies:
     "@ant-design/icons" "^4.7.0"
-    "@buerli.io/core" "0.13.1-beta.13"
-    "@buerli.io/headless" "0.13.1-beta.13"
+    "@buerli.io/core" "0.13.1-beta.14"
+    "@buerli.io/headless" "0.13.1-beta.14"
     antd "^4.23.4"
     deepmerge "^4.2.2"
     lodash-es "^4.17.15"
@@ -325,10 +325,10 @@
     uuid "^9.0.0"
     zustand "^4.1.4"
 
-"@classcad/api-js@https://awvstatic.com/classcad/download/dev/20.0.0-dev.293/classcad-api-js-20.0.0-dev.293.tgz":
-  version "20.0.0-dev.293"
-  uid "1b5aae3509de21e09c3b9a6aa9a2414cfdae33ac"
-  resolved "https://awvstatic.com/classcad/download/dev/20.0.0-dev.293/classcad-api-js-20.0.0-dev.293.tgz#1b5aae3509de21e09c3b9a6aa9a2414cfdae33ac"
+"@classcad/api-js@https://awvstatic.com/classcad/download/release/21.0.0/classcad-api-js-21.0.0.tgz":
+  version "21.0.0"
+  uid e3e9eee68db0df7ae648c2ca499cbd2a1480bf28
+  resolved "https://awvstatic.com/classcad/download/release/21.0.0/classcad-api-js-21.0.0.tgz#e3e9eee68db0df7ae648c2ca499cbd2a1480bf28"
 
 "@codemirror/autocomplete@^6.0.0":
   version "6.9.0"
