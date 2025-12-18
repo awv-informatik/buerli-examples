@@ -1,14 +1,14 @@
 import { init, SocketIOClient, WASMClient } from '@buerli.io/classcad'
 import { CCSERVERURL } from './config'
 
-import { classcadWasmKey } from './classcadWasmKey'
+const classcadKey = process.env.CLASSCADKEY
 
 export const initBuerli = async () => {
   init(id => {
-    if (classcadWasmKey) {
-      return new WASMClient(id, { classcadKey: classcadWasmKey })
+    if (classcadKey) {
+      return new WASMClient(id, { classcadKey })
     } else {
-      return new SocketIOClient(CCSERVERURL, id)
+      return new SocketIOClient(CCSERVERURL, id)  // TODO: URL also in .env?
     }
   })
 }
