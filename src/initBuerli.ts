@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { init, SocketIOClient, WASMClient } from '@buerli.io/classcad'
-import { CCSERVERURL } from './config'
 
-import { classcadWasmKey } from './classcadWasmKey'
+// @ts-ignore
+const classcadWasmKey = CLASSCAD_WASM_KEY
+// @ts-ignore
+const socketIoUrl = SOCKETIO_URL
 
 export const initBuerli = async () => {
   init(id => {
     if (classcadWasmKey) {
-      return new WASMClient(id, { classcadKey: classcadWasmKey })
+      return new WASMClient(id, { classcadKey: classcadWasmKey, logToConsole: true })
     } else {
-      return new SocketIOClient(CCSERVERURL, id)
+      return new SocketIOClient(socketIoUrl, id)
     }
   })
 }
