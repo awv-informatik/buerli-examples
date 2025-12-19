@@ -12,7 +12,7 @@ yarn
 
 ### Create an account and get your ClassCAD key
 
-In order for **buerli-examples** to work, you need to have a running ClassCAD. You can either run it in the browser using WASM or connect to a lokal or remote ClassCAD server using SocketIO.
+In order for **buerli-examples** to work, you need to have a running ClassCAD. You can either run it in the browser using WASM or connect to a local or remote ClassCAD server using SocketIO.
 
 ### Running ClassCAD using WASM
 
