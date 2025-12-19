@@ -1,11 +1,14 @@
 /* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
-import { Transform } from '@buerli.io/headless'
 import produce from 'immer'
 import * as createStore from 'zustand'
 import vanillaCreate from 'zustand/vanilla'
 import templateSP from '../../resources/history/Wall.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
+
+type point = { x: number; y: number; z: number } | [number, number, number]
+
+type Transform = [point, point, point]
 
 type instance = {
   productId: number
@@ -307,16 +310,21 @@ export const create: Create = async (model, params) => {
     store.getState().setLayers(activeExampleId, -1, layers)
 
     // Initial settings
-    params.values[gt] !== paramsMap[gt].value && await updateLayer(params.values[gt], params.values, layers, 'Gipsplatte', model)
-    params.values[spt] !== paramsMap[spt].value && await updateLayer(params.values[spt], params.values, layers, 'Spanplatte', model)
-    params.values[dt] !== paramsMap[dt].value && await updateLayer(params.values[dt], params.values, layers, 'Daemmung', model)
-    params.values[hlt] !== paramsMap[hlt].value && await updateLayer(params.values[hlt], params.values, layers, 'Holzlattung', model)
-    params.values[hst] !== paramsMap[hst].value && await updateLayer(params.values[hst], params.values, layers, 'Holzschalung', model)
+    params.values[gt] !== paramsMap[gt].value &&
+      (await updateLayer(params.values[gt], params.values, layers, 'Gipsplatte', model))
+    params.values[spt] !== paramsMap[spt].value &&
+      (await updateLayer(params.values[spt], params.values, layers, 'Spanplatte', model))
+    params.values[dt] !== paramsMap[dt].value &&
+      (await updateLayer(params.values[dt], params.values, layers, 'Daemmung', model))
+    params.values[hlt] !== paramsMap[hlt].value &&
+      (await updateLayer(params.values[hlt], params.values, layers, 'Holzlattung', model))
+    params.values[hst] !== paramsMap[hst].value &&
+      (await updateLayer(params.values[hst], params.values, layers, 'Holzschalung', model))
     if (params.values[wl] !== paramsMap[wl].value || params.values[wh] !== paramsMap[wh].value) {
       await updateWallSize(params.values[wl], params.values[wh], params.values, layers, model)
       await updateBalkenwandSize(params.values[wl], params.values[wh], params.values, layers, model)
     }
-    params.values[di] !== paramsMap[di].value && await explodeWall(params.values, layers, model)
+    params.values[di] !== paramsMap[di].value && (await explodeWall(params.values, layers, model))
   }
   return rootNode
 }

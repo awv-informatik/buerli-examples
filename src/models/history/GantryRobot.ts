@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BuerliCadFacade } from '@buerli.io/classcad'
-import { History } from '@buerli.io/headless'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
@@ -152,6 +151,4 @@ async function startSequence(model: BuerliCadFacade) {
   }
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }

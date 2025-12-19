@@ -1,11 +1,12 @@
 /* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing, ObjectID } from '@buerli.io/core'
-import { History, Transform } from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type point = { x: number; y: number; z: number } | [number, number, number]
+
+type Transform = [point, point, point]
 
 type LinearDimension = {
   id: string | number | number
@@ -277,9 +278,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }
 
 ///////////////////////////////////////////////////////////////
 // INTERNALS
@@ -782,7 +781,7 @@ async function prepareViews(model: BuerliCadFacade) {
  * Export DXF is not available for WASM and arm64 systems
  */
 async function exportDXF(model: BuerliCadFacade) {
-  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable() 
+  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable()
   if (isDXFAvailable) {
     const productId = await prepareViews(model)
     const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
@@ -803,7 +802,7 @@ async function exportDXF(model: BuerliCadFacade) {
  * Export SVG is not available for WASM and arm64 systems
  */
 async function exportSVG(model: BuerliCadFacade) {
-  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable() 
+  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable()
   if (isSVGAvailable) {
     const productId = await prepareViews(model)
     const svgData = await model.api.drawing2d.exportSVG({ id: productId })

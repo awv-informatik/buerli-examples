@@ -29,7 +29,6 @@
   ],
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@buerli.io/headless": "1.0.0",
     "@buerli.io/react": "1.0.0",
     "@codemirror/lang-javascript": "^6.0.2",
     "@mdx-js/react": "2.1.0",
