@@ -1,11 +1,12 @@
 /* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing, ObjectID } from '@buerli.io/core'
-import { History, Transform } from '@buerli.io/headless'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 
 type point = { x: number; y: number; z: number } | [number, number, number]
+
+type Transform = [point, point, point]
 
 type LinearDimension = {
   id: string | number | number
@@ -277,9 +278,7 @@ export const update: Update = async (model, productId, params) => {
   return productId
 }
 
-export const cad = new History()
-
-export default { create, update, paramsMap, cad }
+export default { create, update, paramsMap }
 
 ///////////////////////////////////////////////////////////////
 // INTERNALS

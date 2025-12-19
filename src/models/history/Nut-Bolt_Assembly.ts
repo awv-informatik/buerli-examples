@@ -1,4 +1,3 @@
-import { History } from '@buerli.io/headless'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'
 import { Create, Param } from '../../store'
@@ -71,6 +70,4 @@ export const create: Create = async (model, params) => {
   return nutBoltAsm
 }
 
-export const cad = new History()
-
-export default { create, paramsMap, cad }
+export default { create, paramsMap }
