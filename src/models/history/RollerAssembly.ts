@@ -781,7 +781,7 @@ async function prepareViews(model: BuerliCadFacade) {
  * Export DXF is not available for WASM and arm64 systems
  */
 async function exportDXF(model: BuerliCadFacade) {
-  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable()
+  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable() 
   if (isDXFAvailable) {
     const productId = await prepareViews(model)
     const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
@@ -802,7 +802,7 @@ async function exportDXF(model: BuerliCadFacade) {
  * Export SVG is not available for WASM and arm64 systems
  */
 async function exportSVG(model: BuerliCadFacade) {
-  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable()
+  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable() 
   if (isSVGAvailable) {
     const productId = await prepareViews(model)
     const svgData = await model.api.drawing2d.exportSVG({ id: productId })
