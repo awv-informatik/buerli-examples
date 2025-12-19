@@ -1,23 +1,56 @@
-# The buerli examples client
+# buerli-examples
 
-## Getting Started
+A collection of examples showing how to use the ClassCAD API in TypeScript. 
 
-**Install**
+First, clone the repository
 
-```
+```shell
+git clone https://github.com/awv-informatik/buerli-examples
+cd buerli-examples
 yarn
 ```
 
-**Start the web dev server**
+### Create an account and get your ClassCAD key
 
-```
-yarn start
+In order for **buerli-examples** to work, you need to have a running ClassCAD. You can either run it in the browser using WASM or connect to a lokal or remote ClassCAD server using SocketIO.
+
+### Running ClassCAD using WASM
+
+Follow the instruction points 1-3 about **"Create an account and get your ClassCAD key"** on [Getting Started with WASM](https://buerli.io/docs/quickstart/wasm).
+
+Copy your created ClassCAD WASM key into the .env file at `CLASSCAD_WASM_KEY=` in the root of this project. The variable `SOCKETIO_URL` is not relevant in this case.
+
+```shell
+CLASSCAD_WASM_KEY=MS4xLlZZUG51....
+SOCKETIO_URL=ws://localhost:9091
 ```
 
-The examples application is now available at http://localhost:3000.
+### Running ClassCAD using SocketIO
+
+Follow the instruction points 1-3 about **"Create an account, get your ClassCAD key, download ClassCAD"** on [Getting Started with SocketIO](https://buerli.io/docs/quickstart/socketio)
+
+Start ClassCAD via SocketIO as described in the [Downloads](https://classcad.ch/downloads/) page
+
+Open the .env file in the root of this project and comment out `CLASSCAD_WASM_KEY` to make sure ClassCAD is not running via SocketIO
+
+```shell
+#CLASSCAD_WASM_KEY=MS4xLlZZUG51....
+SOCKETIO_URL=ws://localhost:9091
+```
+
+### Run the examples
+
+```shell
+yarn dev
+```
+
+The examples application is now available at http://localhost:5173.
 
 > Please check the console output for possible node incompatiblities of the development tools. In case of problems, the use of `nvm` is recommended. `nvm` allows installing different Node versions on the same system.
 
-## ClassCAD Server
+### Links to our homepages and documentations
 
-TODO: Add link to classcad.ch documentation
+- [buerligons.io](https://buerligons.io)
+- [buerli.io](https://buerli.io)
+- [classcad.ch](https://classcad.ch)
+- [awv-informatik.ch](https://awv-informatik.ch)
