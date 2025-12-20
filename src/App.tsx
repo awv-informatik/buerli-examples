@@ -2,10 +2,7 @@ import 'antd/dist/antd.css'
 import React from 'react'
 import styled from 'styled-components'
 import Main from './components/Main'
-import { initBuerli } from './initBuerli'
 import { Home } from './styles/Home'
-
-initBuerli()
 
 /**
  * The application component.
