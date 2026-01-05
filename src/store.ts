@@ -70,6 +70,7 @@ const toc: ExampleDef[] = [
   { exampleId: 'MechanicalPart', label: 'Mechanical Part', file: 'history/MechanicalPart', type: 'Part' },
   { exampleId: 'MechanicalPart2', label: 'Mechanical Part 2', file: 'history/MechanicalPart2', type: 'Part' },
   { exampleId: 'MechanicalPart3', label: 'Mechanical Part 3', file: 'history/MechanicalPart3', type: 'Part' },
+  { exampleId: 'MechanicalPart4', label: 'Mechanical Part 4', file: 'history/MechanicalPart4', type: 'Part' },
 
   // assembly example
   { exampleId: 'CreateAsm', label: 'LBracket Creator', file: 'history/CreateAsm', type: 'Assembly' },
