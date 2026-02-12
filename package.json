@@ -9,7 +9,8 @@
     "serve": "npm run copy && vite preview",
     "lint": "eslint \"./src/**/*.ts?(x)\"",
     "prettify": "prettier --write \"./{src,tests}/**/*.{js,jsx,ts,tsx,json}\"",
-    "copy": "copyfiles -a -u 1 \"./src/models/**/*.*\" \"./public\""
+    "copy": "copyfiles -a -u 1 \"./src/models/**/*.*\" \"./public\"",
+    "deploy:production": "firebase deploy --project buerli --only hosting:production"
   },
   "husky": {
     "hooks": {

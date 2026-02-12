@@ -10,6 +10,9 @@ _gitignore/
 **/*.cfe
 **/*.cf1
 
+# Firebase cache
+.firebase/
+
 # Logs
 logs
 *.log
