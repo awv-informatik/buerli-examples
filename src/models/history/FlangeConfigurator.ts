@@ -320,7 +320,7 @@ async function exportDXF(model: BuerliCadFacade) {
     const dxfData = await drawingApi.exportDXF({ id: productId })
     if (dxfData?.content) {
       const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
+      link.href = window.URL.createObjectURL(new Blob([dxfData.content as BlobPart], { type: 'application/octet-stream' }))
       link.download = `Flange.dxf`
       link.click()
     }
@@ -342,7 +342,7 @@ async function exportSVG(model: BuerliCadFacade) {
     const svgData = await drawingApi.exportSVG({ id: productId })
     if (svgData?.content) {
       const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
+      link.href = window.URL.createObjectURL(new Blob([svgData.content as BlobPart], { type: 'application/octet-stream' }))
       link.download = `Flange.svg`
       link.click()
     }
@@ -359,7 +359,7 @@ async function saveOfb(model: BuerliCadFacade) {
   const { content: ofbData } = await commonApi.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([ofbData], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([ofbData as BlobPart], { type: 'application/octet-stream' }))
     link.download = `Flange.ofb`
     link.click()
   }

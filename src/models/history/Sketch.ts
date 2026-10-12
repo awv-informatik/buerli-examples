@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import sketches from '../../resources/history/SketchesTemplate.ofb?buffer'
 import { Create, Param } from '../../store'
 

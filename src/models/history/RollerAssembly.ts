@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { getDrawing, ObjectID } from '@buerli.io/core'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
@@ -781,13 +780,13 @@ async function prepareViews(model: BuerliCadFacade) {
  * Export DXF is not available for WASM and arm64 systems
  */
 async function exportDXF(model: BuerliCadFacade) {
-  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable() 
+  const isDXFAvailable = await model.api.drawing2d.isDXFAvailable()
   if (isDXFAvailable) {
     const productId = await prepareViews(model)
     const dxfData = await model.api.drawing2d.exportDXF({ id: productId })
     if (dxfData?.content) {
       const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([dxfData.content], { type: 'application/octet-stream' }))
+      link.href = window.URL.createObjectURL(new Blob([dxfData.content as BlobPart], { type: 'application/octet-stream' }))
       link.download = `RollerAssembly.dxf`
       link.click()
     }
@@ -802,13 +801,13 @@ async function exportDXF(model: BuerliCadFacade) {
  * Export SVG is not available for WASM and arm64 systems
  */
 async function exportSVG(model: BuerliCadFacade) {
-  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable() 
+  const isSVGAvailable = await model.api.drawing2d.isSVGAvailable()
   if (isSVGAvailable) {
     const productId = await prepareViews(model)
     const svgData = await model.api.drawing2d.exportSVG({ id: productId })
     if (svgData?.content) {
       const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(new Blob([svgData.content], { type: 'application/octet-stream' }))
+      link.href = window.URL.createObjectURL(new Blob([svgData.content as BlobPart], { type: 'application/octet-stream' }))
       link.download = `RollerAssembly.svg`
       link.click()
     }
@@ -824,7 +823,7 @@ async function saveOfb(model: BuerliCadFacade) {
   const ofbData = await model.api.v1.common.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([ofbData.content as BlobPart], { type: 'application/octet-stream' }))
     link.download = `RollerAssembly.ofb`
     link.click()
   }

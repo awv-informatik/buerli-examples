@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redeclare */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable max-lines */
-/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-this-alias */
 /* eslint-disable no-var */
 
@@ -20,7 +16,9 @@
 
 import { Camera, EventDispatcher, Quaternion, Vector2, Vector3 } from 'three'
 
-export class OrthographicTrackballControls extends EventDispatcher {
+type ControlsEvents = { change: object; start: object; end: object }
+
+export class OrthographicTrackballControls extends EventDispatcher<ControlsEvents> {
   public object: Camera
   public domElement: HTMLElement
 
@@ -37,14 +35,15 @@ export class OrthographicTrackballControls extends EventDispatcher {
   public dynamicDampingFactor: number
   public keys: number[]
 
-  public handleResize(): void
-  public rotateCamera(): void
-  public zoomCamera(): void
-  public panCamera(): void
-  public update(): void
-  public reset(): void
-  public dispose(): void
-  public connect(domElement: HTMLElement): void
+  // assigned in the constructor
+  declare handleResize: () => void
+  declare rotateCamera: () => void
+  declare zoomCamera: () => void
+  declare panCamera: () => void
+  declare update: () => void
+  declare reset: () => void
+  declare dispose: () => void
+  declare connect: (domElement: HTMLElement) => void
 
   constructor(object: Camera, domElement?: HTMLElement) {
     super()
@@ -110,9 +109,9 @@ export class OrthographicTrackballControls extends EventDispatcher {
 
     // events
 
-    const changeEvent = { type: 'change' }
-    const startEvent = { type: 'start' }
-    const endEvent = { type: 'end' }
+    const changeEvent = { type: 'change' } as const
+    const startEvent = { type: 'start' } as const
+    const endEvent = { type: 'end' } as const
 
     // methods
 
@@ -144,10 +143,7 @@ export class OrthographicTrackballControls extends EventDispatcher {
       const vector = new Vector2()
 
       return function getMouseOnScreen(pageX, pageY) {
-        vector.set(
-          (pageX - _this.screen.left) / _this.screen.width,
-          (pageY - _this.screen.top) / _this.screen.height,
-        )
+        vector.set((pageX - _this.screen.left) / _this.screen.width, (pageY - _this.screen.top) / _this.screen.height)
 
         return vector
       }
@@ -194,9 +190,7 @@ export class OrthographicTrackballControls extends EventDispatcher {
       const quaternion = new Quaternion()
 
       return function rotateCamera() {
-        let angle = Math.acos(
-          _rotateStart.dot(_rotateEnd) / _rotateStart.length() / _rotateEnd.length(),
-        )
+        let angle = Math.acos(_rotateStart.dot(_rotateEnd) / _rotateStart.length() / _rotateEnd.length())
 
         if (angle) {
           axis.crossVectors(_rotateStart, _rotateEnd).normalize()
@@ -281,9 +275,7 @@ export class OrthographicTrackballControls extends EventDispatcher {
           if (_this.staticMoving) {
             _panStart.copy(_panEnd)
           } else {
-            _panStart.add(
-              mouseChange.subVectors(_panEnd, _panStart).multiplyScalar(_this.dynamicDampingFactor),
-            )
+            _panStart.add(mouseChange.subVectors(_panEnd, _panStart).multiplyScalar(_this.dynamicDampingFactor))
           }
 
           _changed = true

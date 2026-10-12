@@ -106,7 +106,7 @@ async function saveOfb(model: BuerliCadFacade) {
   const ofbData = await model.api.v1.common.save({ format: 'OFB' })
   if (ofbData) {
     const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(new Blob([ofbData.content], { type: 'application/octet-stream' }))
+    link.href = window.URL.createObjectURL(new Blob([ofbData.content as BlobPart], { type: 'application/octet-stream' }))
     link.download = `Sketch4.ofb`
     link.click()
   }

@@ -1,3 +1,4 @@
+import type * as THREE from 'three'
 import { Color, Mesh, MeshStandardMaterial, Object3D } from 'three'
 
 /**

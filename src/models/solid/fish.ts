@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectID } from '@buerli.io/core'
 import * as THREE from 'three'
 import { Color } from 'three'

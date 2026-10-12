@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import mechAsm from '../../resources/history/MechanicalAssembly3.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'

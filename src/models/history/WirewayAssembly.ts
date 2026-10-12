@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import templateSP from '../../resources/history/WirewayTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
@@ -71,9 +70,9 @@ export const create: Create = async (model, params) => {
     deckelPrt = (await assemblyApi.getPartTemplate({ name: 'Deckel' })) as number
     kanalPrt = (await assemblyApi.getPartTemplate({ name: 'Kanal' })) as number
     constrDeckel = (await assemblyApi.getFastened({ id: rootNode, name: 'Fastened' })) as FastenedConstraint
-    params.values[le] !== paramsMap[le].value && await updateLength(params.values[le], model)
-    params.values[wi] !== paramsMap[wi].value && await updateWidth(params.values[wi], model)
-    params.values[he] !== paramsMap[he].value && await updateHeight(params.values[he], model)
+    params.values[le] !== paramsMap[le].value && (await updateLength(params.values[le], model))
+    params.values[wi] !== paramsMap[wi].value && (await updateWidth(params.values[wi], model))
+    params.values[he] !== paramsMap[he].value && (await updateHeight(params.values[he], model))
     params.values[pd] !== paramsMap[pd].value &&
       (await assemblyApi.updateFastened({ ...constrDeckel, zOffset: params.values[pd] }))
   }

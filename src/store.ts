@@ -1,10 +1,10 @@
+import type * as THREE from 'three'
 import { BuerliCadFacade } from '@buerli.io/classcad'
 import { ObjectID } from '@buerli.io/core'
-import produce from 'immer'
-import create, { StoreApi } from 'zustand'
-import vanillaCreate from 'zustand/vanilla'
+import { produce } from 'immer'
+import { StoreApi, useStore as useZustandStore } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 
-// eslint-disable-next-line no-shadow
 export enum ParamType {
   Number = 0,
   Checkbox = 1,
@@ -90,7 +90,7 @@ const toc: ExampleDef[] = [
   { exampleId: 'TrainStationClock', label: 'Train Station Clock', file: 'history/TrainStationClock', type: 'Assembly' },
 ]
 
-const storeApi = vanillaCreate<State>(set => ({
+const storeApi = createStore<State>()(set => ({
   activeExample: '',
   examples: { ids: [], objs: {} },
   set,
@@ -106,7 +106,6 @@ const storeApi = vanillaCreate<State>(set => ({
     set(state =>
       produce(state, draft => {
         if (!model) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           delete draft.examples.objs[exampleId].model
         } else {
@@ -117,20 +116,23 @@ const storeApi = vanillaCreate<State>(set => ({
   },
 }))
 
-const useStore = create<State>(storeApi as any) // TODO: Remove 'as any' once types are fine again with zustand
+function useStore<T>(selector: (state: State) => T): T {
+  return useZustandStore(storeApi, selector)
+}
 
 export { storeApi, useStore }
+
+// Every model module, loaded when the examples start (see toc for which of them are listed).
+const models = import.meta.glob<any>('./models/**/*.ts')
 
 const initExamples = async () => {
   const examples: Record<string, Example> = {}
   for (const t of toc) {
-    // console.info(t.exampleId)
-    let example = await import(`./models/${t.file}`)
+    let example = await models[`./models/${t.file}.ts`]()
     if (example.default) {
       example = { ...example, ...example.default }
     }
     examples[t.exampleId] = {
-      fileUrl: `/models/${t.file}.ts`,
       params: { lastUpdatedParam: -1, values: example.paramsMap.map((p: any) => p.value) },
       ...t,
       ...example,
@@ -161,7 +163,6 @@ export type Example = ExampleDef & {
   update?: Update
   getScene?: GetScene
   getBufferGeom?: GetBufferGeom
-  fileUrl?: string
   params?: { lastUpdatedParam: number; values: any[] }
   paramsMap: Param[]
   model: BuerliCadFacade

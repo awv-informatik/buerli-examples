@@ -1,41 +1,25 @@
-import { ReactThreeFiber, useFrame, useThree } from '@react-three/fiber'
+import { ReactThreeFiber, ThreeElement, useFrame, useThree } from '@react-three/fiber'
 import * as React from 'react'
 import * as THREE from 'three'
 import { OrthographicTrackballControls } from './OrthographicTrackballControls'
 
-export type ControlsProps = ReactThreeFiber.Overwrite<
-  ReactThreeFiber.Object3DNode<OrthographicTrackballControls, typeof OrthographicTrackballControls>,
-  {
-    target?: ReactThreeFiber.Vector3
-    camera?: THREE.Camera
-    domElement?: HTMLElement
-    regress?: boolean
-    makeDefault?: boolean
-    onChange?: (e?: THREE.Event) => void
-    onStart?: (e?: THREE.Event) => void
-    onEnd?: (e?: THREE.Event) => void
-  }
->
+export type ControlsProps = Omit<ThreeElement<typeof OrthographicTrackballControls>, 'onChange'> & {
+  target?: ReactThreeFiber.Vector3
+  camera?: THREE.Camera
+  domElement?: HTMLElement
+  regress?: boolean
+  makeDefault?: boolean
+  onChange?: (e?: THREE.Event) => void
+  onStart?: (e?: THREE.Event) => void
+  onEnd?: (e?: THREE.Event) => void
+}
 
 export const Controls = React.forwardRef<OrthographicTrackballControls, ControlsProps>(
   ({ makeDefault, camera, domElement, regress, onChange, onStart, onEnd, ...restProps }, ref) => {
-    const {
-      invalidate,
-      camera: defaultCamera,
-      gl,
-      events,
-      set,
-      get,
-      performance,
-      viewport,
-    } = useThree()
+    const { invalidate, camera: defaultCamera, gl, events, set, get, performance, viewport } = useThree()
     const explCamera = camera || defaultCamera
-    const explDomElement =
-      domElement || (typeof events.connected !== 'boolean' ? events.connected : gl.domElement)
-    const controls = React.useMemo(
-      () => new OrthographicTrackballControls(explCamera),
-      [explCamera],
-    )
+    const explDomElement = domElement || (typeof events.connected !== 'boolean' ? events.connected : gl.domElement)
+    const controls = React.useMemo(() => new OrthographicTrackballControls(explCamera), [explCamera])
 
     useFrame(() => {
       if (controls.enabled) controls.update()

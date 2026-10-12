@@ -1,3 +1,4 @@
+import type * as THREE from 'three'
 import { Color } from 'three'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'

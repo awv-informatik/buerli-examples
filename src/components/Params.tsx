@@ -1,5 +1,5 @@
 import { DownOutlined } from '@ant-design/icons'
-import { Dropdown, Menu, Slider } from 'antd'
+import { Dropdown, Slider } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
 import { Param, ParamType, storeApi, useStore } from '../store'
@@ -153,6 +153,16 @@ const SliderParam: React.FC<{ param: Param }> = ({ param }) => {
   )
 }
 
+const entryStyle: React.CSSProperties = {
+  fontFamily: 'courier new',
+  whiteSpace: 'nowrap',
+  fontSize: '12px',
+  lineHeight: '15px',
+  paddingTop: '2px',
+  paddingBottom: '2px',
+  textDecoration: 'none',
+}
+
 const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
   const { index, value, values } = param
   const vals = values || []
@@ -161,31 +171,17 @@ const DropdownParam: React.FC<{ param: Param }> = ({ param }) => {
   const val = useStore(s => s.examples.objs[exampleId].params.values[index] || value)
   return (
     <Dropdown
-      overlay={
-        <Menu style={{ maxHeight: '255px', overflow: 'auto' }} disabled={busy}>
-          {vals.map((c, i) => {
-            return (
-              <Menu.Item
-                key={i}
-                title={c}
-                onClick={() => {
-                  setParamIfValChanged(c, val, index)
-                }}
-                style={{
-                  fontFamily: 'courier new',
-                  whiteSpace: 'nowrap',
-                  fontSize: '12px',
-                  lineHeight: '15px',
-                  paddingTop: '2px',
-                  paddingBottom: '2px',
-                  textDecoration: 'none',
-                }}>
-                {c}
-              </Menu.Item>
-            )
-          })}
-        </Menu>
-      }
+      disabled={busy}
+      menu={{
+        style: { maxHeight: '255px', overflow: 'auto' },
+        items: vals.map((c, i) => ({
+          key: i,
+          title: c,
+          label: c,
+          style: entryStyle,
+          onClick: () => setParamIfValChanged(c, val, index),
+        })),
+      }}
       trigger={['click']}>
       <a>
         {val} <DownOutlined />

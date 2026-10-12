@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
 import { Create, GetBufferGeom, Param, ParamType, Update } from '../../store'
 

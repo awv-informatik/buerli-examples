@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import boltAB from '../../resources/history/Flange/Bolt_M22.ofb?buffer'
 import flangeAB from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import nutAB from '../../resources/history/Flange/Nut_M22.ofb?buffer'

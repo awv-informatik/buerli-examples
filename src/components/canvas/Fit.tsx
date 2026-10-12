@@ -1,14 +1,13 @@
 import { Bounds, useBounds } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React from 'react'
-import create, { GetState, SetState } from 'zustand'
+import { create } from 'zustand'
 
 type StoreProps = { stamp: number; fit: () => void }
-const store = (set: SetState<StoreProps>, get: GetState<StoreProps>): StoreProps => ({
+export const useFit = create<StoreProps>()(set => ({
   stamp: 0,
   fit: () => set({ stamp: Date.now() }),
-})
-export const useFit = create<StoreProps>(store)
+}))
 
 /**
  * Fit to scene bounds if the user request by store.fit.

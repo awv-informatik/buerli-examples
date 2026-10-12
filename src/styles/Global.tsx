@@ -26,6 +26,14 @@ const Global = styled.createGlobalStyle`
     overflow: auto;
   }
 
+  /* the page's own text, as antd 4's stylesheet set it (antd 5+ styles its components only) */
+  body {
+    font-size: 14px;
+    line-height: 1.5715;
+    font-variant: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
   body {
     position: fixed;
     overflow: hidden;

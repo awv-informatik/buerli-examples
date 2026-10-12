@@ -1,7 +1,4 @@
-import Collapse from 'antd/lib/collapse/Collapse'
-import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
-import Tabs from 'antd/lib/tabs'
-import TabPane from 'rc-tabs/lib/TabPanelList/TabPane'
+import { Collapse, Tabs } from 'antd'
 import React from 'react'
 import { Example, useStore } from '../store'
 import './../styles/custom.css'
@@ -12,20 +9,19 @@ export const Sidebar: React.FC<{
   active?: string | undefined
   onChange: (value: string) => void
 }> = ({ examples, active, onChange }) => {
-  const arr = Object.keys(examples).map(e => examples[e])
   const groups: Record<string, Example[]> = {}
-  for (const entry of arr) {
-    groups[entry.type] = groups[entry.type] ? [...groups[entry.type], entry] : [entry]
+  for (const entry of Object.values(examples)) {
+    groups[entry.type] = [...(groups[entry.type] || []), entry]
   }
-  const groupNames = Object.keys(groups)
   return (
-    <Tabs defaultActiveKey="0">
-      {groupNames.map((name, index) => (
-        <TabPane tab={name} key={`${index}`}>
-          <Options examples={groups[name]} active={active} onChange={onChange} />
-        </TabPane>
-      ))}
-    </Tabs>
+    <Tabs
+      defaultActiveKey="0"
+      items={Object.keys(groups).map((name, index) => ({
+        key: `${index}`,
+        label: name,
+        children: <Options examples={groups[name]} active={active} onChange={onChange} />,
+      }))}
+    />
   )
 }
 
@@ -41,19 +37,19 @@ const Options: React.FC<{
       accordion
       activeKey={active}
       ghost
-      onChange={e => {
-        e && onChange && onChange(e as string)
-      }}>
-      {examples.map(example => (
-        <CollapsePanel
-          header={<div style={active === example.exampleId ? activeStyle : {}}>{example.label}</div>}
-          key={example.exampleId}
-          showArrow={false}
-          collapsible={busy ? 'disabled' : 'header'}>
-          <div style={{ paddingLeft: '20px' }}>{example.paramsMap.length > 0 && <Params />}</div>
-        </CollapsePanel>
-      ))}
-    </Collapse>
+      onChange={keys => {
+        // accordion: one panel at most, the one opened last
+        const key = Array.isArray(keys) ? keys[0] : keys
+        key && onChange && onChange(key)
+      }}
+      items={examples.map(example => ({
+        key: example.exampleId,
+        label: <div style={active === example.exampleId ? activeStyle : {}}>{example.label}</div>,
+        showArrow: false,
+        collapsible: busy ? 'disabled' : 'header',
+        children: <div style={{ paddingLeft: '20px' }}>{example.paramsMap.length > 0 && <Params />}</div>,
+      }))}
+    />
   )
 }
 

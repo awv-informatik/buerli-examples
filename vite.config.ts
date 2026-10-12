@@ -1,49 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 import checker from 'vite-plugin-checker'
-import dynamicImport from 'vite-plugin-dynamic-import'
-import svgrPlugin from 'vite-plugin-svgr'
-import viteTsconfigPaths from 'vite-tsconfig-paths'
-import rawLoader from './vite-plugins/raw-loader'
+import cadFiles from './vite-plugins/cad-files'
 
-// https://vitejs.dev/config/
-export default () => {
-  const env = loadEnv('', process.cwd(), '')
-
-  return defineConfig({
+// https://vite.dev/config/
+export default defineConfig(({ mode }) => {
+  // How ClassCAD is reached is set in .env.
+  const env = loadEnv(mode, process.cwd(), '')
+  return {
     define: {
-      'CLASSCAD_WASM_KEY': JSON.stringify(env.CLASSCAD_WASM_KEY ?? ''),
-      'SOCKETIO_URL': JSON.stringify(env.SOCKETIO_URL ?? ''),
+      CLASSCAD_WASM_KEY: JSON.stringify(env.CLASSCAD_WASM_KEY ?? ''),
+      SOCKETIO_URL: JSON.stringify(env.SOCKETIO_URL ?? ''),
     },
-    build: {
-      outDir: './build',
-      commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-    },
-    plugins: [
-      rawLoader(),
-      dynamicImport(),
-      react(),
-      checker({
-        overlay: { initialIsOpen: false },
-        typescript: true,
-        eslint: {
-          lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
-        },
-      }),
-      viteTsconfigPaths(),
-      svgrPlugin(),
-    ],
-    css: {
-      preprocessorOptions: {
-        less: {
-          math: 'always',
-          relativeUrls: true,
-          javascriptEnabled: true,
-        },
-      },
-    },
-  })
-}
+    build: { outDir: './build' },
+    plugins: [cadFiles(), react(), checker({ overlay: { initialIsOpen: false }, typescript: true })],
+  }
+})

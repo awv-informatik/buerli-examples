@@ -32,7 +32,12 @@ export const Main: React.FC = () => {
           <Sidebar examples={exampleIds} onChange={v => set({ activeExample: v })} active={activeExample} />
         </div>
         <CanvasContainer>
-          <Canvas shadows orthographic frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0, 100], fov: 90 }}>
+          <Canvas
+            shadows="percentage"
+            orthographic
+            frameloop="demand"
+            dpr={[1, 2]}
+            camera={{ position: [0, 0, 100], fov: 90 }}>
             <Controls makeDefault staticMoving rotateSpeed={2} />
             <Lights drawingId={drawingId} />
             <Fit>
@@ -74,7 +79,7 @@ const Part: React.FC = () => {
   const params = useStore(s => s.examples.objs[exampleId].params)
   const [meshes, setMeshes] = React.useState<THREE.Mesh[]>([])
   const [scene] = React.useState(() => new THREE.Scene())
-  const model = React.useRef<BuerliCadFacade>()
+  const model = React.useRef<BuerliCadFacade | null>(null)
   const productOrSolidIds = React.useRef<ObjectID | ObjectID[]>(0)
   const fit = useFit(f => f.fit)
   const setModel = useStore(s => s.setModel)

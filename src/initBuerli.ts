@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { init, SocketIOClient, WASMClient } from '@buerli.io/classcad'
 
 // @ts-ignore
