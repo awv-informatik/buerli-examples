@@ -19,5 +19,6 @@ declare module '*?buffer' {
 }
 
 // How ClassCAD is reached, set when the app is built (vite.config.ts, from .env).
-declare const CLASSCAD_WASM_KEY: string
+declare const CLASSCAD_PUBLIC_TOKEN: string
+declare const WS_URL: string
 declare const SOCKETIO_URL: string
