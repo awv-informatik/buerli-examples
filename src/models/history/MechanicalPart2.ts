@@ -1,4 +1,4 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import { Create, Param, ParamType } from '../../store'
 
 const paramsMap: Param[] = [
@@ -38,7 +38,8 @@ const create: Create = async (model, params) => {
     width: '@expr.thickness',
   })
   const subtraction = await api.part.boolean({ id: part, type: 'SUBTRACTION', target: { id: box1 }, tools: [box2] })
-  const expr = await api.part.getExpression({ id: part, name: 'length' })
+  // with a name, getExpression answers that one expression (without, all of them as an array)
+  const [expr] = [await api.part.getExpression({ id: part, name: 'length' })].flat()
   const faces = await api.part.getGeometryIds({ id: part, planes: [{ positions: [[expr.value, 1, 1]] }] })
   const workPlane = await api.part.workPlane({ id: part, type: 'PLANE', references: [faces.planes[0]] })
   const mirror = await api.part.mirror({ id: part, references: [workPlane], targets: [subtraction] })

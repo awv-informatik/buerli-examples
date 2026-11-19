@@ -1,4 +1,4 @@
-import { init, SocketIOClient, WASMClient, WSClient } from '@buerli.io/classcad'
+import { init, SocketIOClient, WASMClient, WSClient } from '@classcad/client'
 
 // Set in .env, see the README
 const token = CLASSCAD_PUBLIC_TOKEN

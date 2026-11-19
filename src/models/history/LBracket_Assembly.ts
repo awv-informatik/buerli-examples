@@ -1,4 +1,4 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import arraybuffer from '../../resources/history/As1/Bolt.ofb?buffer'
 import arraybuffer3 from '../../resources/history/As1/LBracket.ofb?buffer'
 import arraybuffer2 from '../../resources/history/As1/Nut.ofb?buffer'

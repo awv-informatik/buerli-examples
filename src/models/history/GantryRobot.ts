@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import gantryRobiAsm from '../../resources/history/GantryRobiAssembly.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

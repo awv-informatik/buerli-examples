@@ -1,4 +1,4 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import mechAsm from '../../resources/history/MechanicalAssembly3.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

@@ -1,5 +1,5 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
-import { getDrawing, ObjectID } from '@buerli.io/core'
+import { BuerliCadFacade } from '@classcad/client'
+import { getDrawing, ObjectID } from '@classcad/sdkjs'
 import templateAB from '../../resources/history/RollerTemplate.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

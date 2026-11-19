@@ -1,5 +1,5 @@
 import { Create, Param, ParamType } from '../../store'
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 
 export const paramsMap: Param[] = [
   { index: 901, name: 'saveAsOfb', type: ParamType.Button, value: saveOfb },

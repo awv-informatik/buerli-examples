@@ -1,5 +1,5 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
-import { getDrawing } from '@buerli.io/core'
+import { BuerliCadFacade } from '@classcad/client'
+import { getDrawing } from '@classcad/sdkjs'
 import arraybuffer from '../../resources/history/Flange/FlangePrt.ofb?buffer'
 import { Create, Param, ParamType, storeApi, Update } from '../../store'
 

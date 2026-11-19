@@ -1,4 +1,4 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import { produce } from 'immer'
 import { createStore } from 'zustand/vanilla'
 import templateSP from '../../resources/history/Wall.ofb?buffer'

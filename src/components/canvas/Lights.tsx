@@ -1,5 +1,5 @@
-import { DrawingID } from '@buerli.io/core'
-import { useDrawing } from '@buerli.io/react'
+import { DrawingID } from '@classcad/sdkjs'
+import { useDrawing } from '@classcad/react'
 import React from 'react'
 
 export function Lights({ drawingId }: { drawingId: DrawingID }) {
