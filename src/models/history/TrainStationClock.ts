@@ -1,4 +1,4 @@
-import { ObjectID } from '@buerli.io/core'
+import { ObjectID } from '@classcad/sdkjs'
 import arrayBuffer from '../../resources/history/TrainStationClock.ofb?buffer'
 import { Create, Param, Update } from '../../store'
 

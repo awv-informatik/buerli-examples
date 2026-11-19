@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ObjectID } from '@buerli.io/core'
+import { ObjectID } from '@classcad/sdkjs'
 import arraybuffer from '../../resources/history/SketchRegionsTemplate.ofb?buffer'
 import { Create, Param, ParamType, Update } from '../../store'
 

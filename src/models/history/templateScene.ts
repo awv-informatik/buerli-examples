@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as THREE from 'three'
 import { Color } from 'three'
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import { Param, Create } from '../../store'
 import { findObjectsByName, setObjectColor } from '../../utils'
 

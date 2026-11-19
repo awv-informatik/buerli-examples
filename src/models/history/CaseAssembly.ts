@@ -1,4 +1,4 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 import arrayBuffer from '../../resources/history/CaseAssembly.ofb?buffer'
 import { Create, Param, ParamType, Update } from '../../store'
 

@@ -1,5 +1,5 @@
 import { Create, Param, ParamType, Update } from '../../store'
-import { BuerliCadFacade } from '@buerli.io/classcad'
+import { BuerliCadFacade } from '@classcad/client'
 
 export const paramsMap: Param[] = [
   { index: 0, name: 'radius', type: ParamType.Slider, value: 100, step: 5, values: [50, 130] },

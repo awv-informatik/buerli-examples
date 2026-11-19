@@ -1,6 +1,6 @@
-import { BuerliCadFacade } from '@buerli.io/classcad'
-import { api as buerliApi, ObjectID } from '@buerli.io/core'
-import { BuerliGeometry, useBuerli } from '@buerli.io/react'
+import { BuerliCadFacade } from '@classcad/client'
+import { api as buerliApi, ObjectID } from '@classcad/sdkjs'
+import { BuerliGeometry, useBuerli } from '@classcad/react'
 import { GizmoHelper, GizmoViewcube, GizmoViewport } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
@@ -22,7 +22,7 @@ export const Main: React.FC = () => {
   const busy = useStore(s => s.busy)
 
   React.useEffect(() => {
-    document.title = 'buerli-examples'
+    document.title = 'ClassCAD SDK examples'
   }, [])
 
   return activeExample ? (

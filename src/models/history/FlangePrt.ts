@@ -1,4 +1,4 @@
-import { ScgGraphicType } from '@buerli.io/classcad'
+import { ScgGraphicType } from '@classcad/client'
 import { Create, Param } from '../../store'
 
 export const paramsMap: Param[] = [].sort((a, b) => a.index - b.index)

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ObjectID } from '@buerli.io/core'
+import { ObjectID } from '@classcad/sdkjs'
 import * as THREE from 'three'
 import { Create, GetScene, Param } from '../../store'
 import { setObjectColor, setObjectTransparency } from '../../utils'

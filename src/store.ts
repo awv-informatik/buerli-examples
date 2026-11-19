@@ -1,6 +1,6 @@
 import type * as THREE from 'three'
-import { BuerliCadFacade } from '@buerli.io/classcad'
-import { ObjectID } from '@buerli.io/core'
+import { BuerliCadFacade } from '@classcad/client'
+import { ObjectID } from '@classcad/sdkjs'
 import { produce } from 'immer'
 import { StoreApi, useStore as useZustandStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'

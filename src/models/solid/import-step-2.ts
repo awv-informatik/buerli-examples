@@ -10,6 +10,6 @@ const create: Create = async (model, params) => {
   return [importedId]
 }
 
-// The default buerli geometry component will be used, if getScene nor getBufferGeom are exported
+// The SDK's default geometry component will be used, if getScene nor getBufferGeom are exported
 
 export default { create, paramsMap }
